@@ -1,0 +1,5 @@
+rootProject.name = 'livedoc'
+include ':livedoc-core'
+include ':livedoc-springmvc'
+include ':livedoc-springboot'
+include ':livedoc-ui-webjar'

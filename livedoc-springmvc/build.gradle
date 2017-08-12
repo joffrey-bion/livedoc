@@ -1,0 +1,10 @@
+description = 'The Spring MVC helper of the Livedoc project'
+
+dependencies {
+    compile project(':livedoc-core')
+    compileOnly 'org.springframework:spring-webmvc:4.2.0.RELEASE'
+    testCompile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
+    compileOnly 'org.springframework.data:spring-data-rest-webmvc:2.5.1.RELEASE'
+    testCompile 'org.springframework.data:spring-data-rest-webmvc:2.5.1.RELEASE'
+    testCompile 'org.springframework:spring-test:3.1.2.RELEASE'
+}
