@@ -1,10 +1,59 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+
 allprojects {
     group = 'org.hildan.livedoc'
     version = '0.1.0'
+    ext.labels = ['doc', 'generation', 'annotation', 'java', 'rest', 'websocket', 'api']
+    ext.licenses = ['MIT']
+}
+
+def getPropOrEnv = { String prop, String envVar, String defaultValue = null ->
+    if (project.hasProperty(prop)) {
+        return project.property(prop)
+    }
+    return System.getenv(envVar) ?: defaultValue
+}
+
+ext {
+    githubUser = getPropOrEnv('githubUser', 'GITHUB_USER')
+    githubRepoName = rootProject.name
+    githubSlug = "$githubUser/$githubRepoName"
+    githubRepoUrl = "https://github.com/$githubSlug"
+    ossrhUserToken = getPropOrEnv('ossrhUserToken', 'OSSRH_USER_TOKEN')
+    ossrhKey = getPropOrEnv('ossrhKey', 'OSSRH_KEY')
+}
+
+def pomConfig = {
+    scm {
+        url githubRepoUrl
+        connection 'scm:git:' + githubRepoUrl + '.git'
+        developerConnection 'scm:git:git@github.com:' + githubSlug + '.git'
+    }
+    licenses {
+        license {
+            name 'The MIT License'
+            url 'https://opensource.org/licenses/MIT'
+        }
+    }
+    developers {
+        developer {
+            name 'Joffrey Bion'
+            email 'joffrey.bion@gmail.com'
+        }
+    }
 }
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
 
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
@@ -28,9 +77,53 @@ subprojects {
             from javadoc.destinationDir
         }
 
-        artifacts {
-            archives sourcesJar
-            archives javadocJar
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+                    artifact sourcesJar
+                    artifact javadocJar
+                    pom.withXml {
+                        def root = asNode()
+                        root.appendNode('name', project.name)
+                        root.appendNode('description', project.description)
+                        root.appendNode('url', githubRepoUrl)
+                        root.children().last() + pomConfig
+                    }
+                }
+            }
         }
+
+        bintray {
+            user = getPropOrEnv('bintrayUser', 'BINTRAY_USER')
+            key = getPropOrEnv('bintrayApiKey', 'BINTRAY_KEY')
+            publications = ['maven']
+            publish = true
+
+            pkg {
+                repo = getPropOrEnv('bintrayRepoLibs', 'BINTRAY_REPO_LIBS')
+                name = project.name
+                desc = project.description
+                labels = project.labels ?: [project.name]
+                licenses = project.licenses ?: []
+
+                websiteUrl = githubRepoUrl
+                issueTrackerUrl = githubRepoUrl + '/issues'
+                vcsUrl = githubRepoUrl + '.git'
+                githubRepo = githubSlug
+
+                version {
+                    desc = project.description
+                    vcsTag = 'v' + project.version
+                    gpg { sign = true }
+                    mavenCentralSync {
+                        sync = true
+                        user = ossrhUserToken
+                        password = ossrhKey
+                    }
+                }
+            }
+        }
+        bintrayUpload.dependsOn(build)
     }
 }
