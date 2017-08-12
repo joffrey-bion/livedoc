@@ -1,4 +1,4 @@
-package org.hidlan.livedoc.spring.boot.starter;
+package org.hildan.livedoc.spring.boot.starter;
 
 import java.util.ArrayList;
 import java.util.List;

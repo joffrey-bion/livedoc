@@ -1,4 +1,4 @@
-package org.hidlan.livedoc.spring.boot.starter;
+package org.hildan.livedoc.spring.boot.starter;
 
 import org.hildan.livedoc.springmvc.controller.JSONDocController;
 import org.springframework.beans.factory.annotation.Autowired;
