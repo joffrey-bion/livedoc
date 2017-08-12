@@ -22,7 +22,6 @@ public class SpringQueryParamBuilder {
 	 * inherit this parameter restriction
 	 * 
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<ApiParamDoc> buildQueryParams(Method method) {

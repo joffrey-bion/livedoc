@@ -21,7 +21,6 @@ public class SpringHeaderBuilder {
 	 * annotations on parameters and adds the result to the final Set
 	 * 
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<ApiHeaderDoc> buildHeaders(Method method) {

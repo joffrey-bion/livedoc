@@ -13,7 +13,6 @@ public class SpringVerbBuilder {
 	/**
 	 * From Spring's documentation: When [RequestMapping method is] used at the type level, all method-level mappings inherit this HTTP method restriction 
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<ApiVerb> buildVerb(Method method) {

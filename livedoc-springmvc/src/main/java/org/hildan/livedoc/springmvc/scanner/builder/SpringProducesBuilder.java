@@ -15,7 +15,6 @@ public class SpringProducesBuilder {
 	 * From Spring's documentation: [produces is] supported at the type level as well as at the method level! 
 	 * When used at the type level, all method-level mappings override this produces restriction.
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<String> buildProduces(Method method) {

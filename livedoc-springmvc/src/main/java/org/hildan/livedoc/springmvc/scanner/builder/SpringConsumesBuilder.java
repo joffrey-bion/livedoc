@@ -14,7 +14,6 @@ public class SpringConsumesBuilder {
 	 * From Spring's documentation: [consumes is] supported at the type level as well as at the method level! 
 	 * When used at the type level, all method-level mappings override this consumes restriction.
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<String> buildConsumes(Method method) {

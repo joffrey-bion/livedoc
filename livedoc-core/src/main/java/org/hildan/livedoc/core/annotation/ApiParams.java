@@ -8,9 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation is to be used on your method and contains an array of ApiParam
- * @see ApiParam
- * @author Fabio Maffioletti
  *
+ * @author Fabio Maffioletti
  */
 @Documented
 @Target(value=ElementType.METHOD)
@@ -19,15 +18,11 @@ public @interface ApiParams {
 
 	/**
 	 * An array of ApiQueryParam annotations
-	 * @see ApiQueryParam
-	 * @return
 	 */
 	public ApiQueryParam[] queryparams() default {};
 	
 	/**
 	 * An array of ApiPathParam annotations
-	 * @see ApiPathParam
-	 * @return
 	 */
 	public ApiPathParam[] pathparams() default {};
 	

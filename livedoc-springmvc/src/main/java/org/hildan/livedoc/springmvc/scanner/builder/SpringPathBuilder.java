@@ -16,9 +16,7 @@ public class SpringPathBuilder {
 	 * the method level! When used at the type level, all method-level mappings
 	 * inherit this primary mapping, narrowing it for a specific handler method.
 	 * 
-	 * @param apiMethodDoc
 	 * @param method
-	 * @param controller
 	 * @return
 	 */
 	public static Set<String> buildPath(Method method) {
