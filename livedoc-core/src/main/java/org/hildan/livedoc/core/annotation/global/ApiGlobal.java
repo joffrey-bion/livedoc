@@ -7,20 +7,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation has to be used on a class dedicated to global api documentation 
- * 
- * @author Fabio Maffioletti
+ * This annotation has to be used on a class dedicated to global api documentation
  *
+ * @author Fabio Maffioletti
  */
 @Documented
-@Target(value=ElementType.TYPE)
+@Target(value = ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiGlobal {
-	
-	/**
-	 * An array of ApiGlobalSection annotations
-	 * @return
-	 */
-	public ApiGlobalSection[] sections();
-	
+
+    /**
+     * An array of ApiGlobalSection annotations
+     *
+     * @return
+     */
+    public ApiGlobalSection[] sections();
+
 }

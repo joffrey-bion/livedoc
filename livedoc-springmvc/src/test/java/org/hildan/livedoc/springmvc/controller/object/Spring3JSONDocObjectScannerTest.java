@@ -1,6 +1,9 @@
 package org.hildan.livedoc.springmvc.controller.object;
 
-import com.google.common.collect.Lists;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
+
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.JSONDoc;
 import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
@@ -10,14 +13,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
 import static org.junit.Assert.fail;
 
 public class Spring3JSONDocObjectScannerTest {
     private String version = "1.0";
+
     private String basePath = "http://localhost:8080/api";
 
     private static Logger log = LoggerFactory.getLogger(Spring3JSONDocObjectScannerTest.class);
@@ -25,7 +26,8 @@ public class Spring3JSONDocObjectScannerTest {
     @Test
     public void getJSONDoc() throws IOException {
         JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
-        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.hildan.livedoc.springmvc.controller"), true, MethodDisplay.URI);
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath,
+                Lists.newArrayList("org.hildan.livedoc.springmvc.controller"), true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {
@@ -39,7 +41,8 @@ public class Spring3JSONDocObjectScannerTest {
     @Test
     public void findsNestedObject() throws Exception {
         JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
-        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.hildan.livedoc.springmvc.controller"), true, MethodDisplay.URI);
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath,
+                Lists.newArrayList("org.hildan.livedoc.springmvc.controller"), true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {
@@ -50,7 +53,8 @@ public class Spring3JSONDocObjectScannerTest {
     @Test
     public void findsDeeplyNestedObjects() throws Exception {
         JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
-        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath, Lists.newArrayList("org.hildan.livedoc.springmvc.controller"), true, MethodDisplay.URI);
+        JSONDoc jsondoc = jsondocScanner.getJSONDoc(version, basePath,
+                Lists.newArrayList("org.hildan.livedoc.springmvc.controller"), true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {
@@ -59,10 +63,9 @@ public class Spring3JSONDocObjectScannerTest {
         }
     }
 
-
     public void assertContainsDoc(Set<ApiObjectDoc> values, String name) {
         for (ApiObjectDoc apiObjectDoc : values) {
-            if(apiObjectDoc.getName().equals(name)) {
+            if (apiObjectDoc.getName().equals(name)) {
                 return;
             }
         }

@@ -1,15 +1,17 @@
 package org.hildan.livedoc.core.pojo;
 
 public enum ApiVisibility {
-	UNDEFINED(""), PRIVATE("PRIVATE"), PUBLIC("PUBLIC");
+    UNDEFINED(""),
+    PRIVATE("PRIVATE"),
+    PUBLIC("PUBLIC");
 
-	private String label;
+    private String label;
 
-	ApiVisibility(String label) {
-		this.label = label;
-	}
+    ApiVisibility(String label) {
+        this.label = label;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public String getLabel() {
+        return label;
+    }
 }

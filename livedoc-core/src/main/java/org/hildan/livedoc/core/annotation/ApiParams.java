@@ -12,18 +12,18 @@ import java.lang.annotation.Target;
  * @author Fabio Maffioletti
  */
 @Documented
-@Target(value=ElementType.METHOD)
+@Target(value = ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiParams {
 
-	/**
-	 * An array of ApiQueryParam annotations
-	 */
-	public ApiQueryParam[] queryparams() default {};
-	
-	/**
-	 * An array of ApiPathParam annotations
-	 */
-	public ApiPathParam[] pathparams() default {};
-	
+    /**
+     * An array of ApiQueryParam annotations
+     */
+    public ApiQueryParam[] queryparams() default {};
+
+    /**
+     * An array of ApiPathParam annotations
+     */
+    public ApiPathParam[] pathparams() default {};
+
 }

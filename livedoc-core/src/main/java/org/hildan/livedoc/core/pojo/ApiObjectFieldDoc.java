@@ -9,127 +9,140 @@ import org.hildan.livedoc.core.util.JSONDocType;
 import com.google.common.base.Joiner;
 
 public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObjectFieldDoc> {
-	public final String jsondocId = UUID.randomUUID().toString();
-	private JSONDocType jsondocType;
-	private String name;
-	private String description;
-	private Set<String> format;
-	private String[] allowedvalues;
-	private String required;
-	private ApiVersionDoc supportedversions;
-	private Integer order;
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	public ApiObjectFieldDoc() {
-		this.format = new LinkedHashSet<String>();
-	}
+    private JSONDocType jsondocType;
 
-	public String[] getAllowedvalues() {
-		return allowedvalues;
-	}
+    private String name;
 
-	public void setAllowedvalues(String[] allowedvalues) {
-		this.allowedvalues = allowedvalues;
-	}
+    private String description;
 
-	public Set<String> getFormat() {
-		return format;
-	}
-	
-	public String getDisplayedFormat() {
-		return Joiner.on(", ").join(format);
-	}
+    private Set<String> format;
 
-	public void setFormat(Set<String> format) {
-		this.format = format;
-	}
-	
-	public void addFormat(String format) {
-		this.format.add(format);
-	}
+    private String[] allowedvalues;
 
-	public String getName() {
-		return name;
-	}
+    private String required;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private ApiVersionDoc supportedversions;
 
-	public String getDescription() {
-		return description;
-	}
+    private Integer order;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public ApiObjectFieldDoc() {
+        this.format = new LinkedHashSet<String>();
+    }
 
-	public String getRequired() {
-		return required;
-	}
+    public String[] getAllowedvalues() {
+        return allowedvalues;
+    }
 
-	public void setRequired(String required) {
-		this.required = required;
-	}
+    public void setAllowedvalues(String[] allowedvalues) {
+        this.allowedvalues = allowedvalues;
+    }
 
-	public ApiVersionDoc getSupportedversions() {
-		return supportedversions;
-	}
+    public Set<String> getFormat() {
+        return format;
+    }
 
-	public void setSupportedversions(ApiVersionDoc supportedversions) {
-		this.supportedversions = supportedversions;
-	}
+    public String getDisplayedFormat() {
+        return Joiner.on(", ").join(format);
+    }
 
-	public JSONDocType getJsondocType() {
-		return jsondocType;
-	}
+    public void setFormat(Set<String> format) {
+        this.format = format;
+    }
 
-	public void setJsondocType(JSONDocType jsondocType) {
-		this.jsondocType = jsondocType;
-	}
+    public void addFormat(String format) {
+        this.format.add(format);
+    }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Integer getOrder() {
-		return order;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ApiObjectFieldDoc other = (ApiObjectFieldDoc) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	/**
-	 * This comparison is the same as the one in ApiObjectFieldDoc class 
-	 */
-	@Override
-	public int compareTo(ApiObjectFieldDoc o) {
-		if(this.getOrder().equals(o.getOrder())) {
-			return this.getName().compareTo(o.getName());
-		} else {
-			return this.getOrder() - o.getOrder();
-		}
-	}
+    public String getRequired() {
+        return required;
+    }
+
+    public void setRequired(String required) {
+        this.required = required;
+    }
+
+    public ApiVersionDoc getSupportedversions() {
+        return supportedversions;
+    }
+
+    public void setSupportedversions(ApiVersionDoc supportedversions) {
+        this.supportedversions = supportedversions;
+    }
+
+    public JSONDocType getJsondocType() {
+        return jsondocType;
+    }
+
+    public void setJsondocType(JSONDocType jsondocType) {
+        this.jsondocType = jsondocType;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ApiObjectFieldDoc other = (ApiObjectFieldDoc) obj;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This comparison is the same as the one in ApiObjectFieldDoc class
+     */
+    @Override
+    public int compareTo(ApiObjectFieldDoc o) {
+        if (this.getOrder().equals(o.getOrder())) {
+            return this.getName().compareTo(o.getName());
+        } else {
+            return this.getOrder() - o.getOrder();
+        }
+    }
 
 }

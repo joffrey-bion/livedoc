@@ -9,66 +9,68 @@ import java.util.Set;
 
 public class ApiAuthDoc {
 
-	private String type;
+    private String type;
 
-	// Basic auth
-	private List<String> roles = new ArrayList<String>();
-	private Map<String, String> testusers = new HashMap<String, String>();
+    // Basic auth
+    private List<String> roles = new ArrayList<String>();
 
-	// Token auth
-	private String scheme;
-	private Set<String> testtokens = new HashSet<String>();
+    private Map<String, String> testusers = new HashMap<String, String>();
 
-	public String getType() {
-		return type;
-	}
+    // Token auth
+    private String scheme;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    private Set<String> testtokens = new HashSet<String>();
 
-	public List<String> getRoles() {
-		return roles;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void addRole(String role) {
-		this.roles.add(role);
-	}
+    public List<String> getRoles() {
+        return roles;
+    }
 
-	public void addTestUser(String username, String password) {
-		this.testusers.put(username, password);
-	}
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
-	public Map<String, String> getTestusers() {
-		return testusers;
-	}
+    public void addRole(String role) {
+        this.roles.add(role);
+    }
 
-	public void setTestusers(Map<String, String> testusers) {
-		this.testusers = testusers;
-	}
+    public void addTestUser(String username, String password) {
+        this.testusers.put(username, password);
+    }
 
-	public String getScheme() {
-		return scheme;
-	}
+    public Map<String, String> getTestusers() {
+        return testusers;
+    }
 
-	public void setScheme(String scheme) {
-		this.scheme = scheme;
-	}
+    public void setTestusers(Map<String, String> testusers) {
+        this.testusers = testusers;
+    }
 
-	public Set<String> getTesttokens() {
-		return testtokens;
-	}
+    public String getScheme() {
+        return scheme;
+    }
 
-	public void setTesttokens(Set<String> testtokens) {
-		this.testtokens = testtokens;
-	}
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
 
-	public void addTestToken(String testtoken) {
-		this.testtokens.add(testtoken);
-	}
+    public Set<String> getTesttokens() {
+        return testtokens;
+    }
+
+    public void setTesttokens(Set<String> testtokens) {
+        this.testtokens = testtokens;
+    }
+
+    public void addTestToken(String testtoken) {
+        this.testtokens.add(testtoken);
+    }
 
 }

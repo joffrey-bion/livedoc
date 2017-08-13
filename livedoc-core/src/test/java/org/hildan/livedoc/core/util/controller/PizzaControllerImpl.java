@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 public class PizzaControllerImpl implements PizzaController {
 
-	@Override
-	public @ResponseBody
-  Pizza get(@PathVariable Long id) {
-		return null;
-	}
+    @Override
+    public @ResponseBody
+    Pizza get(@PathVariable Long id) {
+        return null;
+    }
 
 }

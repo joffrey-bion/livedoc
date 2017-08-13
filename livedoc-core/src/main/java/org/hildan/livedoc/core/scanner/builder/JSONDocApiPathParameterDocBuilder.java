@@ -13,30 +13,33 @@ import org.hildan.livedoc.core.util.JSONDocType;
 import org.hildan.livedoc.core.util.JSONDocTypeBuilder;
 
 public class JSONDocApiPathParameterDocBuilder {
-	
-	public static Set<ApiParamDoc> build(Method method) {
-		Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
 
-		if (method.isAnnotationPresent(ApiParams.class)) {
-			for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathparams()) {
-				ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(apiParam, JSONDocTypeBuilder
-                .build(new JSONDocType(), apiParam.clazz(), apiParam.clazz()), ApiParamType.PATH);
-				docs.add(apiParamDoc);
-			}
-		}
+    public static Set<ApiParamDoc> build(Method method) {
+        Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
 
-		Annotation[][] parametersAnnotations = method.getParameterAnnotations();
-		for (int i = 0; i < parametersAnnotations.length; i++) {
-			for (int j = 0; j < parametersAnnotations[i].length; j++) {
-				if (parametersAnnotations[i][j] instanceof ApiPathParam) {
-					ApiPathParam annotation = (ApiPathParam) parametersAnnotations[i][j];
-					ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(annotation, JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i], method.getGenericParameterTypes()[i]), ApiParamType.PATH);
-					docs.add(apiParamDoc);
-				}
-			}
-		}
+        if (method.isAnnotationPresent(ApiParams.class)) {
+            for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathparams()) {
+                ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(apiParam,
+                        JSONDocTypeBuilder.build(new JSONDocType(), apiParam.clazz(), apiParam.clazz()),
+                        ApiParamType.PATH);
+                docs.add(apiParamDoc);
+            }
+        }
 
-		return docs;
-	}
+        Annotation[][] parametersAnnotations = method.getParameterAnnotations();
+        for (int i = 0; i < parametersAnnotations.length; i++) {
+            for (int j = 0; j < parametersAnnotations[i].length; j++) {
+                if (parametersAnnotations[i][j] instanceof ApiPathParam) {
+                    ApiPathParam annotation = (ApiPathParam) parametersAnnotations[i][j];
+                    ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(annotation,
+                            JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i],
+                                    method.getGenericParameterTypes()[i]), ApiParamType.PATH);
+                    docs.add(apiParamDoc);
+                }
+            }
+        }
+
+        return docs;
+    }
 
 }

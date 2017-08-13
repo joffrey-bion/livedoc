@@ -5,8 +5,8 @@ import org.hildan.livedoc.core.annotation.ApiObjectField;
 
 @ApiObject
 public interface PojoInterface {
-	
-	@ApiObjectField
-	Integer id = 0;
+
+    @ApiObjectField
+    Integer id = 0;
 
 }

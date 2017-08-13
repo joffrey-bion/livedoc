@@ -7,95 +7,106 @@ import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
 
 public class JSONDoc {
-	private String version;
-	private String basePath;
-	// The key is the group these apis belongs to. It can be empty.
-	private Map<String, Set<ApiDoc>> apis;
-	// The key is the group these objects belongs to. It can be empty.
-	private Map<String, Set<ApiObjectDoc>> objects;
-	// The key is the group these flows belongs to. It can be empty.
-	private Map<String, Set<ApiFlowDoc>> flows;
-	private ApiGlobalDoc global;
-	private boolean playgroundEnabled;
-	private MethodDisplay displayMethodAs;
+    private String version;
 
-	public enum MethodDisplay {
-		URI, SUMMARY, METHOD;
-	}
+    private String basePath;
 
-	public JSONDoc(String version, String basePath) {
-		super();
-		this.version = version;
-		this.basePath = basePath;
-	}
+    // The key is the group these apis belongs to. It can be empty.
+    private Map<String, Set<ApiDoc>> apis;
 
-	public String getVersion() {
-		return version;
-	}
+    // The key is the group these objects belongs to. It can be empty.
+    private Map<String, Set<ApiObjectDoc>> objects;
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    // The key is the group these flows belongs to. It can be empty.
+    private Map<String, Set<ApiFlowDoc>> flows;
 
-	public Map<String, Set<ApiObjectDoc>> getObjects() {
-		return objects;
-	}
+    private ApiGlobalDoc global;
 
-	public Map<String, Set<ApiDoc>> getApis() {
-		return apis;
-	}
+    private boolean playgroundEnabled;
 
-	public void setApis(Map<String, Set<ApiDoc>> apis) {
-		this.apis = apis;
-	}
+    private MethodDisplay displayMethodAs;
 
-	public void setObjects(Map<String, Set<ApiObjectDoc>> objects) {
-		this.objects = objects;
-	}
+    public enum MethodDisplay {
+        URI,
+        SUMMARY,
+        METHOD;
+    }
 
-	public String getBasePath() {
-		return basePath;
-	}
+    public JSONDoc(String version, String basePath) {
+        super();
+        this.version = version;
+        this.basePath = basePath;
+    }
 
-	public void setBasePath(String basePath) {
-		this.basePath = basePath;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public Map<String, Set<ApiFlowDoc>> getFlows() {
-		return flows;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public void setFlows(Map<String, Set<ApiFlowDoc>> flows) {
-		this.flows = flows;
-	}
+    public Map<String, Set<ApiObjectDoc>> getObjects() {
+        return objects;
+    }
 
-	public boolean isPlaygroundEnabled() {
-		return playgroundEnabled;
-	}
+    public Map<String, Set<ApiDoc>> getApis() {
+        return apis;
+    }
 
-	public void setPlaygroundEnabled(boolean playgroundEnabled) {
-		this.playgroundEnabled = playgroundEnabled;
-	}
+    public void setApis(Map<String, Set<ApiDoc>> apis) {
+        this.apis = apis;
+    }
 
-	public MethodDisplay getDisplayMethodAs() {
-		return displayMethodAs;
-	}
+    public void setObjects(Map<String, Set<ApiObjectDoc>> objects) {
+        this.objects = objects;
+    }
 
-	public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
-		this.displayMethodAs = displayMethodAs;
-	}
+    public String getBasePath() {
+        return basePath;
+    }
 
-	public ApiGlobalDoc getGlobal() {
-		return global;
-	}
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
+    }
 
-	public void setGlobal(ApiGlobalDoc global) {
-		this.global = global;
-	}
+    public Map<String, Set<ApiFlowDoc>> getFlows() {
+        return flows;
+    }
 
-	@Override
-	public String toString() {
-		return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects + ", flows=" + flows + ", global=" + global + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + "]";
-	}
+    public void setFlows(Map<String, Set<ApiFlowDoc>> flows) {
+        this.flows = flows;
+    }
+
+    public boolean isPlaygroundEnabled() {
+        return playgroundEnabled;
+    }
+
+    public void setPlaygroundEnabled(boolean playgroundEnabled) {
+        this.playgroundEnabled = playgroundEnabled;
+    }
+
+    public MethodDisplay getDisplayMethodAs() {
+        return displayMethodAs;
+    }
+
+    public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
+        this.displayMethodAs = displayMethodAs;
+    }
+
+    public ApiGlobalDoc getGlobal() {
+        return global;
+    }
+
+    public void setGlobal(ApiGlobalDoc global) {
+        this.global = global;
+    }
+
+    @Override
+    public String toString() {
+        return "JSONDoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects
+                + ", flows=" + flows + ", global=" + global + ", playgroundEnabled=" + playgroundEnabled
+                + ", displayMethodAs=" + displayMethodAs + "]";
+    }
 
 }

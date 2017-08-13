@@ -9,98 +9,104 @@ import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 
 public class ApiFlowDoc implements Comparable<ApiFlowDoc> {
-	public final String jsondocId = UUID.randomUUID().toString();
-	private String name;
-	private String description;
-	private List<String> preconditions;
-	private List<ApiFlowStepDoc> steps;
-	private List<ApiMethodDoc> methods;
-	private String group;
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation, List<ApiMethodDoc> apiMethodDocs) {
-		ApiFlowDoc apiFlowDoc = new ApiFlowDoc();
-		apiFlowDoc.setDescription(annotation.description());
-		apiFlowDoc.setName(annotation.name());
-		apiFlowDoc.setGroup(annotation.group());
-		for (String precondition : annotation.preconditions()) {
-			apiFlowDoc.addPrecondition(precondition);
-		}
-		for (ApiFlowStep apiFlowStep : annotation.steps()) {
-			ApiFlowStepDoc apiFlowStepDoc = ApiFlowStepDoc.buildFromAnnotation(apiFlowStep, apiMethodDocs);
-			apiFlowDoc.addStep(apiFlowStepDoc);
-			apiFlowDoc.addMethod(apiFlowStepDoc.getApimethoddoc());
-		}
-		return apiFlowDoc;
-	}
+    private String name;
 
-	public ApiFlowDoc() {
-		this.preconditions = new LinkedList<String>();
-		this.steps = new LinkedList<ApiFlowStepDoc>();
-		this.methods = new LinkedList<ApiMethodDoc>();
-	}
+    private String description;
 
-	public String getName() {
-		return name;
-	}
+    private List<String> preconditions;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private List<ApiFlowStepDoc> steps;
 
-	public String getDescription() {
-		return description;
-	}
+    private List<ApiMethodDoc> methods;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private String group;
 
-	public String getGroup() {
-		return group;
-	}
+    public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation, List<ApiMethodDoc> apiMethodDocs) {
+        ApiFlowDoc apiFlowDoc = new ApiFlowDoc();
+        apiFlowDoc.setDescription(annotation.description());
+        apiFlowDoc.setName(annotation.name());
+        apiFlowDoc.setGroup(annotation.group());
+        for (String precondition : annotation.preconditions()) {
+            apiFlowDoc.addPrecondition(precondition);
+        }
+        for (ApiFlowStep apiFlowStep : annotation.steps()) {
+            ApiFlowStepDoc apiFlowStepDoc = ApiFlowStepDoc.buildFromAnnotation(apiFlowStep, apiMethodDocs);
+            apiFlowDoc.addStep(apiFlowStepDoc);
+            apiFlowDoc.addMethod(apiFlowStepDoc.getApimethoddoc());
+        }
+        return apiFlowDoc;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public ApiFlowDoc() {
+        this.preconditions = new LinkedList<String>();
+        this.steps = new LinkedList<ApiFlowStepDoc>();
+        this.methods = new LinkedList<ApiMethodDoc>();
+    }
 
-	public void addStep(ApiFlowStepDoc apiFlowStepDoc) {
-		this.steps.add(apiFlowStepDoc);
-	}
+    public String getName() {
+        return name;
+    }
 
-	public List<ApiFlowStepDoc> getSteps() {
-		return steps;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSteps(List<ApiFlowStepDoc> steps) {
-		this.steps = steps;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public List<String> getPreconditions() {
-		return preconditions;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setPreconditions(List<String> preconditions) {
-		this.preconditions = preconditions;
-	}
+    public String getGroup() {
+        return group;
+    }
 
-	public void addPrecondition(String precondition) {
-		this.preconditions.add(precondition);
-	}
+    public void setGroup(String group) {
+        this.group = group;
+    }
 
-	public List<ApiMethodDoc> getMethods() {
-		return methods;
-	}
+    public void addStep(ApiFlowStepDoc apiFlowStepDoc) {
+        this.steps.add(apiFlowStepDoc);
+    }
 
-	public void setMethods(List<ApiMethodDoc> methods) {
-		this.methods = methods;
-	}
-	
-	public void addMethod(ApiMethodDoc method) {
-		this.methods.add(method);
-	}
+    public List<ApiFlowStepDoc> getSteps() {
+        return steps;
+    }
 
-	@Override
-	public int compareTo(ApiFlowDoc o) {
-		return name.compareTo(o.getName());
-	}
+    public void setSteps(List<ApiFlowStepDoc> steps) {
+        this.steps = steps;
+    }
+
+    public List<String> getPreconditions() {
+        return preconditions;
+    }
+
+    public void setPreconditions(List<String> preconditions) {
+        this.preconditions = preconditions;
+    }
+
+    public void addPrecondition(String precondition) {
+        this.preconditions.add(precondition);
+    }
+
+    public List<ApiMethodDoc> getMethods() {
+        return methods;
+    }
+
+    public void setMethods(List<ApiMethodDoc> methods) {
+        this.methods = methods;
+    }
+
+    public void addMethod(ApiMethodDoc method) {
+        this.methods.add(method);
+    }
+
+    @Override
+    public int compareTo(ApiFlowDoc o) {
+        return name.compareTo(o.getName());
+    }
 }

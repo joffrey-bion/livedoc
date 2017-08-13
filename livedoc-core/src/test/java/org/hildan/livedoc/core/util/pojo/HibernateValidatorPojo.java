@@ -8,10 +8,10 @@ import org.hildan.livedoc.core.annotation.ApiObjectField;
 
 @ApiObject
 public class HibernateValidatorPojo {
-	
-	@ApiObjectField(format = "a not empty id")
-	@Length(min = 2)
-	@Max(9)
-	private String id;
+
+    @ApiObjectField(format = "a not empty id")
+    @Length(min = 2)
+    @Max(9)
+    private String id;
 
 }

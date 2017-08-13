@@ -16,58 +16,66 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class JSONDocController {
-	private String version;
-	private String basePath;
-	private List<String> packages;
-	private JSONDocScanner jsondocScanner;
-	private boolean playgroundEnabled = true;
-	private MethodDisplay displayMethodAs = MethodDisplay.URI;
+    private String version;
 
-	public final static String JSONDOC_DEFAULT_PATH = "/jsondoc";
-	private final static Integer SPRING_VERSION_3_X = 3;
+    private String basePath;
 
-	public JSONDocController(String version, String basePath, List<String> packages) {
-		this.version = version;
-		this.basePath = basePath;
-		this.packages = packages;
-		String springVersion = SpringVersion.getVersion();
-		if(springVersion != null && !springVersion.isEmpty()) {
-			Integer majorSpringVersion = Integer.parseInt(springVersion.split("\\.")[0]);
-			if(majorSpringVersion > SPRING_VERSION_3_X) {
-				this.jsondocScanner = new Spring4JSONDocScanner();
-			} else {
-				this.jsondocScanner = new Spring3JSONDocScanner();
-			}
-		} else {
-			try {
-				Class.forName("org.springframework.web.bind.annotation.RestController");
-				this.jsondocScanner = new Spring4JSONDocScanner();
-				
-			} catch (ClassNotFoundException e) {
-				this.jsondocScanner = new Spring3JSONDocScanner();
-			}
-		}
-	}
+    private List<String> packages;
 
-	public boolean isPlaygroundEnabled() {
-		return playgroundEnabled;
-	}
+    private JSONDocScanner jsondocScanner;
 
-	public void setPlaygroundEnabled(boolean playgroundEnabled) {
-		this.playgroundEnabled = playgroundEnabled;
-	}
+    private boolean playgroundEnabled = true;
 
-	public MethodDisplay getDisplayMethodAs() {
-		return displayMethodAs;
-	}
+    private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
-	public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
-		this.displayMethodAs = displayMethodAs;
-	}
+    public final static String JSONDOC_DEFAULT_PATH = "/jsondoc";
 
-	@RequestMapping(value = JSONDocController.JSONDOC_DEFAULT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody JSONDoc getApi() {
-		return jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
-	}
+    private final static Integer SPRING_VERSION_3_X = 3;
+
+    public JSONDocController(String version, String basePath, List<String> packages) {
+        this.version = version;
+        this.basePath = basePath;
+        this.packages = packages;
+        String springVersion = SpringVersion.getVersion();
+        if (springVersion != null && !springVersion.isEmpty()) {
+            Integer majorSpringVersion = Integer.parseInt(springVersion.split("\\.")[0]);
+            if (majorSpringVersion > SPRING_VERSION_3_X) {
+                this.jsondocScanner = new Spring4JSONDocScanner();
+            } else {
+                this.jsondocScanner = new Spring3JSONDocScanner();
+            }
+        } else {
+            try {
+                Class.forName("org.springframework.web.bind.annotation.RestController");
+                this.jsondocScanner = new Spring4JSONDocScanner();
+
+            } catch (ClassNotFoundException e) {
+                this.jsondocScanner = new Spring3JSONDocScanner();
+            }
+        }
+    }
+
+    public boolean isPlaygroundEnabled() {
+        return playgroundEnabled;
+    }
+
+    public void setPlaygroundEnabled(boolean playgroundEnabled) {
+        this.playgroundEnabled = playgroundEnabled;
+    }
+
+    public MethodDisplay getDisplayMethodAs() {
+        return displayMethodAs;
+    }
+
+    public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
+        this.displayMethodAs = displayMethodAs;
+    }
+
+    @RequestMapping(value = JSONDocController.JSONDOC_DEFAULT_PATH, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    JSONDoc getApi() {
+        return jsondocScanner.getJSONDoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
+    }
 
 }

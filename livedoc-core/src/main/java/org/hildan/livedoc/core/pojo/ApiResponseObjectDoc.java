@@ -5,15 +5,16 @@ import java.util.UUID;
 import org.hildan.livedoc.core.util.JSONDocType;
 
 public class ApiResponseObjectDoc {
-	public final String jsondocId = UUID.randomUUID().toString();
-	private JSONDocType jsondocType;
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	public ApiResponseObjectDoc(JSONDocType jsondocType) {
-		this.jsondocType = jsondocType;
-	}
+    private JSONDocType jsondocType;
 
-	public JSONDocType getJsondocType() {
-		return jsondocType;
-	}
+    public ApiResponseObjectDoc(JSONDocType jsondocType) {
+        this.jsondocType = jsondocType;
+    }
+
+    public JSONDocType getJsondocType() {
+        return jsondocType;
+    }
 
 }

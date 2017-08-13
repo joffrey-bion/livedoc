@@ -9,11 +9,11 @@ import org.hildan.livedoc.core.annotation.ApiVersion;
 @ApiObject(name = "grandparent", show = false)
 public class Grandparent {
 
-	@ApiObjectField(description = "the test surname")
-	@ApiVersion(since = "1.0")
-	private String surname;
+    @ApiObjectField(description = "the test surname")
+    @ApiVersion(since = "1.0")
+    private String surname;
 
-	@ApiObjectField(description = "the date of birth", format = "yyyy-MM-dd HH:mm:ss")
-	private Date dob;
+    @ApiObjectField(description = "the date of birth", format = "yyyy-MM-dd HH:mm:ss")
+    private Date dob;
 
 }

@@ -1,10 +1,11 @@
 package org.hildan.livedoc.springmvc.issues.issue174;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import java.util.List;
 
 /**
  *
@@ -12,8 +13,8 @@ import java.util.List;
 public class TestController {
 
     /**
-     *
      * @param testId
+     *
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/test/{testId}")
@@ -24,8 +25,8 @@ public class TestController {
     }
 
     /**
-     *
      * @param testId
+     *
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/test/{testId}")

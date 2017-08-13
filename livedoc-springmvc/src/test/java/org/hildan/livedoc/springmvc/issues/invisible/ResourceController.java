@@ -6,17 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ResourceController {
-	
-	@RequestMapping("/resource-get")
-	public ResponseEntity<ResourceInterface> get() {
-		ResourceInterface ri = new ResourceImplementation();
-		return ResponseEntity.ok(ri);
-	}
 
-	@RequestMapping("/resource-get-2")
-	public ResourceInterface get2() {
-		ResourceInterface ri = new ResourceImplementation();
-		return ri;
-	}
+    @RequestMapping("/resource-get")
+    public ResponseEntity<ResourceInterface> get() {
+        ResourceInterface ri = new ResourceImplementation();
+        return ResponseEntity.ok(ri);
+    }
+
+    @RequestMapping("/resource-get-2")
+    public ResourceInterface get2() {
+        ResourceInterface ri = new ResourceImplementation();
+        return ri;
+    }
 
 }

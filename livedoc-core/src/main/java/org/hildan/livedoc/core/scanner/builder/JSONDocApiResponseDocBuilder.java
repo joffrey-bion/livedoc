@@ -10,18 +10,20 @@ import org.hildan.livedoc.core.util.JSONDocTypeBuilder;
 
 public class JSONDocApiResponseDocBuilder {
 
-	public static ApiResponseObjectDoc build(Method method) {
-		if(method.isAnnotationPresent(ApiResponseObject.class)) {
-			ApiResponseObject annotation = method.getAnnotation(ApiResponseObject.class);
-			
-			if(annotation.clazz().isAssignableFrom(JSONDocDefaultType.class)) {
-				return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getReturnType(), method.getGenericReturnType()));
-			} else { 
-				return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), annotation.clazz(), annotation.clazz()));
-			}
-		}
-		
-		return null;
-	}
+    public static ApiResponseObjectDoc build(Method method) {
+        if (method.isAnnotationPresent(ApiResponseObject.class)) {
+            ApiResponseObject annotation = method.getAnnotation(ApiResponseObject.class);
+
+            if (annotation.clazz().isAssignableFrom(JSONDocDefaultType.class)) {
+                return new ApiResponseObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), method.getReturnType(),
+                        method.getGenericReturnType()));
+            } else {
+                return new ApiResponseObjectDoc(
+                        JSONDocTypeBuilder.build(new JSONDocType(), annotation.clazz(), annotation.clazz()));
+            }
+        }
+
+        return null;
+    }
 
 }

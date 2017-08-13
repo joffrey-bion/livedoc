@@ -7,114 +7,132 @@ import org.hildan.livedoc.core.annotation.ApiQueryParam;
 import org.hildan.livedoc.core.util.JSONDocType;
 
 public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {
-	public final String jsondocId = UUID.randomUUID().toString();
-	private JSONDocType jsondocType;
-	private String name;
-	private String description;
-	private String required;
-	private String[] allowedvalues;
-	private String format;
-	private String defaultvalue;
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	public ApiParamDoc(String name, String description, JSONDocType jsondocType, String required, String[] allowedvalues, String format, String defaultvalue) {
-		super();
-		this.name = name;
-		this.description = description;
-		this.jsondocType = jsondocType;
-		this.required = required;
-		this.allowedvalues = allowedvalues;
-		this.format = format;
-		this.defaultvalue = defaultvalue;
-	}
+    private JSONDocType jsondocType;
 
-	public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
-		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, "true", annotation.allowedvalues(), annotation.format(), null);
-	}
+    private String name;
 
-	public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, JSONDocType jsondocType, ApiParamType paramType) {
-		return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(), annotation.defaultvalue());
-	}
+    private String description;
 
-	public JSONDocType getJsondocType() {
-		return jsondocType;
-	}
+    private String required;
 
-	public String getName() {
-		return name;
-	}
+    private String[] allowedvalues;
 
-	public String getDescription() {
-		return description;
-	}
+    private String format;
 
-	public String getRequired() {
-		return required;
-	}
+    private String defaultvalue;
 
-	public String[] getAllowedvalues() {
-		return allowedvalues;
-	}
+    public ApiParamDoc(String name, String description, JSONDocType jsondocType, String required,
+            String[] allowedvalues, String format, String defaultvalue) {
+        super();
+        this.name = name;
+        this.description = description;
+        this.jsondocType = jsondocType;
+        this.required = required;
+        this.allowedvalues = allowedvalues;
+        this.format = format;
+        this.defaultvalue = defaultvalue;
+    }
 
-	public String getFormat() {
-		return format;
-	}
+    public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, JSONDocType jsondocType,
+            ApiParamType paramType) {
+        return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, "true",
+                annotation.allowedvalues(), annotation.format(), null);
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, JSONDocType jsondocType,
+            ApiParamType paramType) {
+        return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType,
+                String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(),
+                annotation.defaultvalue());
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public JSONDocType getJsondocType() {
+        return jsondocType;
+    }
 
-	public void setRequired(String required) {
-		this.required = required;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setAllowedvalues(String[] allowedvalues) {
-		this.allowedvalues = allowedvalues;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setFormat(String format) {
-		this.format = format;
-	}
+    public String getRequired() {
+        return required;
+    }
 
-	public String getDefaultvalue() {
-		return defaultvalue;
-	}
+    public String[] getAllowedvalues() {
+        return allowedvalues;
+    }
 
-	public void setDefaultvalue(String defaultvalue) {
-		this.defaultvalue = defaultvalue;
-	}
+    public String getFormat() {
+        return format;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ApiParamDoc other = (ApiParamDoc) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Override
-	public int compareTo(ApiParamDoc o) {
-		return this.name.compareTo(o.getName());
-	}
+    public void setRequired(String required) {
+        this.required = required;
+    }
+
+    public void setAllowedvalues(String[] allowedvalues) {
+        this.allowedvalues = allowedvalues;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getDefaultvalue() {
+        return defaultvalue;
+    }
+
+    public void setDefaultvalue(String defaultvalue) {
+        this.defaultvalue = defaultvalue;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ApiParamDoc other = (ApiParamDoc) obj;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int compareTo(ApiParamDoc o) {
+        return this.name.compareTo(o.getName());
+    }
 
 }

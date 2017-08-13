@@ -3,36 +3,36 @@ package org.hildan.livedoc.core.pojo.global;
 import java.util.UUID;
 
 public class ApiMigrationDoc {
-	public final String jsondocId = UUID.randomUUID().toString();
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	private String fromVersion;
+    private String fromVersion;
 
-	private String toVersion;
+    private String toVersion;
 
-	private String[] steps;
+    private String[] steps;
 
-	public String getFromVersion() {
-		return fromVersion;
-	}
+    public String getFromVersion() {
+        return fromVersion;
+    }
 
-	public void setFromVersion(String fromVersion) {
-		this.fromVersion = fromVersion;
-	}
+    public void setFromVersion(String fromVersion) {
+        this.fromVersion = fromVersion;
+    }
 
-	public String getToVersion() {
-		return toVersion;
-	}
+    public String getToVersion() {
+        return toVersion;
+    }
 
-	public void setToVersion(String toVersion) {
-		this.toVersion = toVersion;
-	}
+    public void setToVersion(String toVersion) {
+        this.toVersion = toVersion;
+    }
 
-	public String[] getSteps() {
-		return steps;
-	}
+    public String[] getSteps() {
+        return steps;
+    }
 
-	public void setSteps(String[] steps) {
-		this.steps = steps;
-	}
+    public void setSteps(String[] steps) {
+        this.steps = steps;
+    }
 
 }

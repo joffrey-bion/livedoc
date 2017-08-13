@@ -5,24 +5,24 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ApiMigrationsDoc {
-	public final String jsondocId = UUID.randomUUID().toString();
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	private Set<ApiMigrationDoc> migrations;
+    private Set<ApiMigrationDoc> migrations;
 
-	public ApiMigrationsDoc() {
-		this.migrations = new LinkedHashSet<ApiMigrationDoc>();
-	}
+    public ApiMigrationsDoc() {
+        this.migrations = new LinkedHashSet<ApiMigrationDoc>();
+    }
 
-	public Set<ApiMigrationDoc> getMigrations() {
-		return migrations;
-	}
+    public Set<ApiMigrationDoc> getMigrations() {
+        return migrations;
+    }
 
-	public void setMigrations(Set<ApiMigrationDoc> migrations) {
-		this.migrations = migrations;
-	}
+    public void setMigrations(Set<ApiMigrationDoc> migrations) {
+        this.migrations = migrations;
+    }
 
-	public void addMigration(ApiMigrationDoc apiMigrationDoc) {
-		this.migrations.add(apiMigrationDoc);
-	}
+    public void addMigration(ApiMigrationDoc apiMigrationDoc) {
+        this.migrations.add(apiMigrationDoc);
+    }
 
 }

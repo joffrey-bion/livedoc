@@ -10,19 +10,20 @@ import org.hildan.livedoc.core.util.JSONDocDefaultType;
 
 /**
  * This annotation is to be used on your method and represents the returned value
- * @see ApiObject
- * @author Fabio Maffioletti
  *
+ * @author Fabio Maffioletti
+ * @see ApiObject
  */
 @Documented
-@Target(value=ElementType.METHOD)
+@Target(value = ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiResponseObject {
-	
-	/**
-	 * Specify this element if are using old style servlets which return void for methods like doGet and doPost
-	 * @return
-	 */
-	public Class<?> clazz() default JSONDocDefaultType.class;
+
+    /**
+     * Specify this element if are using old style servlets which return void for methods like doGet and doPost
+     *
+     * @return
+     */
+    public Class<?> clazz() default JSONDocDefaultType.class;
 
 }

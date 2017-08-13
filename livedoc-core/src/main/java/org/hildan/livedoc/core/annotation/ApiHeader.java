@@ -8,31 +8,34 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation is to be used inside an annotation of type ApiHeaders
- * @see ApiHeaders
- * @author Fabio Maffioletti
  *
+ * @author Fabio Maffioletti
+ * @see ApiHeaders
  */
 @Documented
-@Target(value = { ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
+@Target(value = {ElementType.ANNOTATION_TYPE, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiHeader {
 
-	/**
-	 * The name of the header parameter
-	 * @return
-	 */
-	public String name() default "";
+    /**
+     * The name of the header parameter
+     *
+     * @return
+     */
+    public String name() default "";
 
-	/**
-	 * A description of what the header is needed for
-	 * @return
-	 */
-	public String description() default "";
-	
-	/**
-	 * An array representing the allowed values this header can have. Default value is *
-	 * @return
-	 */
-	public String[] allowedvalues() default {};
-	
+    /**
+     * A description of what the header is needed for
+     *
+     * @return
+     */
+    public String description() default "";
+
+    /**
+     * An array representing the allowed values this header can have. Default value is *
+     *
+     * @return
+     */
+    public String[] allowedvalues() default {};
+
 }

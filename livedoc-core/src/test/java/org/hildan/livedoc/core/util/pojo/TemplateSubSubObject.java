@@ -1,11 +1,12 @@
 package org.hildan.livedoc.core.util.pojo;
 
 public class TemplateSubSubObject {
-	private String id;
-	private String name;
+    private String id;
 
-	public TemplateSubSubObject() {
+    private String name;
 
-	}
+    public TemplateSubSubObject() {
+
+    }
 
 }

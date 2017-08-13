@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @param <T>
  */
 public class TestResponse<T> {

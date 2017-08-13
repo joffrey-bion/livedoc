@@ -3,26 +3,26 @@ package org.hildan.livedoc.core.pojo.global;
 import java.util.UUID;
 
 public class ApiChangelogDoc {
-	public final String jsondocId = UUID.randomUUID().toString();
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	private String version;
+    private String version;
 
-	private String[] changes;
+    private String[] changes;
 
-	public String getVersion() {
-		return version;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public String[] getChanges() {
-		return changes;
-	}
+    public String[] getChanges() {
+        return changes;
+    }
 
-	public void setChanges(String[] changes) {
-		this.changes = changes;
-	}
+    public void setChanges(String[] changes) {
+        this.changes = changes;
+    }
 
 }

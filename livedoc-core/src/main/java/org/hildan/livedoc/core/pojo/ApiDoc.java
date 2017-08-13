@@ -5,102 +5,108 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 public class ApiDoc implements Comparable<ApiDoc> {
-	public final String jsondocId = UUID.randomUUID().toString();
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	// properties that can be overridden by the values specified in the JSONDoc @Api annotation 
-	private String name;
-	private String description;
-	private ApiVisibility visibility;
-	private ApiStage stage;
-	private String group;
-	
-	// properties that cannot be overridden in the mergeApiDoc method
-	private Set<ApiMethodDoc> methods;
-	private ApiVersionDoc supportedversions;
-	private ApiAuthDoc auth;
+    // properties that can be overridden by the values specified in the JSONDoc @Api annotation
+    private String name;
 
-	public ApiDoc() {
-		this.name = "";
-		this.description = "";
-		this.visibility = ApiVisibility.UNDEFINED;
-		this.stage = ApiStage.UNDEFINED;
-		this.group = "";
-		this.methods = new TreeSet<ApiMethodDoc>();
-		this.supportedversions = null;
-		this.auth = null;
-	}
+    private String description;
 
-	public String getName() {
-		return name;
-	}
+    private ApiVisibility visibility;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private ApiStage stage;
 
-	public String getDescription() {
-		return description;
-	}
+    private String group;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    // properties that cannot be overridden in the mergeApiDoc method
+    private Set<ApiMethodDoc> methods;
 
-	public Set<ApiMethodDoc> getMethods() {
-		return methods;
-	}
+    private ApiVersionDoc supportedversions;
 
-	public void setMethods(Set<ApiMethodDoc> methods) {
-		this.methods = methods;
-	}
+    private ApiAuthDoc auth;
 
-	public void addMethod(ApiMethodDoc apiMethod) {
-		this.methods.add(apiMethod);
-	}
+    public ApiDoc() {
+        this.name = "";
+        this.description = "";
+        this.visibility = ApiVisibility.UNDEFINED;
+        this.stage = ApiStage.UNDEFINED;
+        this.group = "";
+        this.methods = new TreeSet<ApiMethodDoc>();
+        this.supportedversions = null;
+        this.auth = null;
+    }
 
-	public ApiVersionDoc getSupportedversions() {
-		return supportedversions;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setSupportedversions(ApiVersionDoc supportedversions) {
-		this.supportedversions = supportedversions;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public ApiAuthDoc getAuth() {
-		return auth;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setAuth(ApiAuthDoc auth) {
-		this.auth = auth;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public Set<ApiMethodDoc> getMethods() {
+        return methods;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public void setMethods(Set<ApiMethodDoc> methods) {
+        this.methods = methods;
+    }
 
-	public ApiVisibility getVisibility() {
-		return visibility;
-	}
+    public void addMethod(ApiMethodDoc apiMethod) {
+        this.methods.add(apiMethod);
+    }
 
-	public void setVisibility(ApiVisibility visibility) {
-		this.visibility = visibility;
-	}
+    public ApiVersionDoc getSupportedversions() {
+        return supportedversions;
+    }
 
-	public ApiStage getStage() {
-		return stage;
-	}
+    public void setSupportedversions(ApiVersionDoc supportedversions) {
+        this.supportedversions = supportedversions;
+    }
 
-	public void setStage(ApiStage stage) {
-		this.stage = stage;
-	}
-	
-	@Override
-	public int compareTo(ApiDoc o) {
-		return name.compareTo(o.getName());
-	}
+    public ApiAuthDoc getAuth() {
+        return auth;
+    }
+
+    public void setAuth(ApiAuthDoc auth) {
+        this.auth = auth;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public ApiVisibility getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(ApiVisibility visibility) {
+        this.visibility = visibility;
+    }
+
+    public ApiStage getStage() {
+        return stage;
+    }
+
+    public void setStage(ApiStage stage) {
+        this.stage = stage;
+    }
+
+    @Override
+    public int compareTo(ApiDoc o) {
+        return name.compareTo(o.getName());
+    }
 
 }

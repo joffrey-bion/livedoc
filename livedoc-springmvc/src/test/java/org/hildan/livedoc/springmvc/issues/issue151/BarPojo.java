@@ -6,7 +6,7 @@ import org.hildan.livedoc.core.annotation.ApiObjectField;
 @ApiObject(group = "bargroup", description = "Bar description")
 public class BarPojo {
 
-	@ApiObjectField(description = "Bar description")
-	private String barField;
+    @ApiObjectField(description = "Bar description")
+    private String barField;
 
 }

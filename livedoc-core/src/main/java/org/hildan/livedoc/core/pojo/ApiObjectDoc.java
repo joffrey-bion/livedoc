@@ -5,115 +5,124 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
-	public final String jsondocId = UUID.randomUUID().toString();
+    public final String jsondocId = UUID.randomUUID().toString();
 
-	private String name;
-	private String description;
-	private Set<ApiObjectFieldDoc> fields;
-	private ApiVersionDoc supportedversions;
-	private String[] allowedvalues;
-	private String group;
-	private ApiVisibility visibility;
-	private ApiStage stage;
-	private JSONDocTemplate jsondocTemplate;
-	private boolean show;
+    private String name;
 
-	public ApiObjectDoc() {
-		this.name = "";
-		this.description = "";
-		this.supportedversions = null;
-		this.allowedvalues = new String[] {};
-		this.fields = new TreeSet<ApiObjectFieldDoc>();
-		this.group = "";
-		this.visibility = ApiVisibility.UNDEFINED;
-		this.stage = ApiStage.UNDEFINED;
-		this.jsondocTemplate = null;
-		this.show = true;
-	}
+    private String description;
 
-	public String getName() {
-		return name;
-	}
+    private Set<ApiObjectFieldDoc> fields;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private ApiVersionDoc supportedversions;
 
-	public String getDescription() {
-		return description;
-	}
+    private String[] allowedvalues;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private String group;
 
-	public Set<ApiObjectFieldDoc> getFields() {
-		return fields;
-	}
+    private ApiVisibility visibility;
 
-	public void setFields(Set<ApiObjectFieldDoc> fields) {
-		this.fields = fields;
-	}
+    private ApiStage stage;
 
-	public ApiVersionDoc getSupportedversions() {
-		return supportedversions;
-	}
+    private JSONDocTemplate jsondocTemplate;
 
-	public void setSupportedversions(ApiVersionDoc supportedversions) {
-		this.supportedversions = supportedversions;
-	}
+    private boolean show;
 
-	public String[] getAllowedvalues() {
-		return allowedvalues;
-	}
+    public ApiObjectDoc() {
+        this.name = "";
+        this.description = "";
+        this.supportedversions = null;
+        this.allowedvalues = new String[] {};
+        this.fields = new TreeSet<ApiObjectFieldDoc>();
+        this.group = "";
+        this.visibility = ApiVisibility.UNDEFINED;
+        this.stage = ApiStage.UNDEFINED;
+        this.jsondocTemplate = null;
+        this.show = true;
+    }
 
-	public void setAllowedvalues(String[] allowedvalues) {
-		this.allowedvalues = allowedvalues;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public JSONDocTemplate getJsondocTemplate() {
-		return jsondocTemplate;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setJsondocTemplate(JSONDocTemplate jsondocTemplate) {
-		this.jsondocTemplate = jsondocTemplate;
-	}
+    public Set<ApiObjectFieldDoc> getFields() {
+        return fields;
+    }
 
-	public ApiVisibility getVisibility() {
-		return visibility;
-	}
+    public void setFields(Set<ApiObjectFieldDoc> fields) {
+        this.fields = fields;
+    }
 
-	public void setVisibility(ApiVisibility visibility) {
-		this.visibility = visibility;
-	}
+    public ApiVersionDoc getSupportedversions() {
+        return supportedversions;
+    }
 
-	public ApiStage getStage() {
-		return stage;
-	}
+    public void setSupportedversions(ApiVersionDoc supportedversions) {
+        this.supportedversions = supportedversions;
+    }
 
-	public void setStage(ApiStage stage) {
-		this.stage = stage;
-	}
+    public String[] getAllowedvalues() {
+        return allowedvalues;
+    }
 
-	public boolean isShow() {
-		return show;
-	}
+    public void setAllowedvalues(String[] allowedvalues) {
+        this.allowedvalues = allowedvalues;
+    }
 
-	public void setShow(boolean show) {
-		this.show = show;
-	}
+    public String getGroup() {
+        return group;
+    }
 
-	@Override
-	public int compareTo(ApiObjectDoc o) {
-		return name.compareTo(o.getName());
-	}
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public JSONDocTemplate getJsondocTemplate() {
+        return jsondocTemplate;
+    }
+
+    public void setJsondocTemplate(JSONDocTemplate jsondocTemplate) {
+        this.jsondocTemplate = jsondocTemplate;
+    }
+
+    public ApiVisibility getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(ApiVisibility visibility) {
+        this.visibility = visibility;
+    }
+
+    public ApiStage getStage() {
+        return stage;
+    }
+
+    public void setStage(ApiStage stage) {
+        this.stage = stage;
+    }
+
+    public boolean isShow() {
+        return show;
+    }
+
+    public void setShow(boolean show) {
+        this.show = show;
+    }
+
+    @Override
+    public int compareTo(ApiObjectDoc o) {
+        return name.compareTo(o.getName());
+    }
 
 }

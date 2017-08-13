@@ -8,11 +8,11 @@ import org.junit.Test;
 
 public class SpringObjectBuilderTest {
 
-	@Test
-	public void testApiVerb() {
-		ApiObjectDoc buildObject = SpringObjectBuilder.buildObject(MyObject.class);
-		Assert.assertEquals("MyObject", buildObject.getName());
-		Assert.assertEquals(3, buildObject.getFields().size());
-	}
+    @Test
+    public void testApiVerb() {
+        ApiObjectDoc buildObject = SpringObjectBuilder.buildObject(MyObject.class);
+        Assert.assertEquals("MyObject", buildObject.getName());
+        Assert.assertEquals(3, buildObject.getFields().size());
+    }
 
 }
