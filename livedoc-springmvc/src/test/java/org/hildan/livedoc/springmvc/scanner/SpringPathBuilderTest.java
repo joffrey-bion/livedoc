@@ -2,8 +2,8 @@ package org.hildan.livedoc.springmvc.scanner;
 
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import com.google.common.collect.Sets;
 
 public class SpringPathBuilderTest {
 
-    private JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
+    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
 
     @Controller
     @RequestMapping
@@ -87,7 +87,7 @@ public class SpringPathBuilderTest {
 
     @Test
     public void testPath() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController", apiDoc.getName());
@@ -111,7 +111,7 @@ public class SpringPathBuilderTest {
 
     @Test
     public void testPath2() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController2", apiDoc.getName());
@@ -137,7 +137,7 @@ public class SpringPathBuilderTest {
 
     @Test
     public void testPath3() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController3.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController3.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController3", apiDoc.getName());
@@ -156,7 +156,7 @@ public class SpringPathBuilderTest {
 
     @Test
     public void testPath4() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController4.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController4.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController4", apiDoc.getName());
@@ -174,7 +174,7 @@ public class SpringPathBuilderTest {
 
     @Test
     public void testPath5() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController5.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController5.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController5", apiDoc.getName());
@@ -194,7 +194,7 @@ public class SpringPathBuilderTest {
 
     @Test
     public void testPathWithMethodDisplayMethod() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController5.class),
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController5.class),
                 MethodDisplay.METHOD).iterator().next();
         boolean allRight = FluentIterable.from(apiDoc.getMethods()).anyMatch(new Predicate<ApiMethodDoc>() {
             @Override

@@ -4,12 +4,12 @@ import java.util.UUID;
 
 import org.hildan.livedoc.core.annotation.ApiPathParam;
 import org.hildan.livedoc.core.annotation.ApiQueryParam;
-import org.hildan.livedoc.core.util.JSONDocType;
+import org.hildan.livedoc.core.util.LivedocType;
 
 public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
-    private JSONDocType jsondocType;
+    private LivedocType livedocType;
 
     private String name;
 
@@ -23,33 +23,33 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
 
     private String defaultvalue;
 
-    public ApiParamDoc(String name, String description, JSONDocType jsondocType, String required,
+    public ApiParamDoc(String name, String description, LivedocType livedocType, String required,
             String[] allowedvalues, String format, String defaultvalue) {
         super();
         this.name = name;
         this.description = description;
-        this.jsondocType = jsondocType;
+        this.livedocType = livedocType;
         this.required = required;
         this.allowedvalues = allowedvalues;
         this.format = format;
         this.defaultvalue = defaultvalue;
     }
 
-    public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, JSONDocType jsondocType,
+    public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, LivedocType livedocType,
             ApiParamType paramType) {
-        return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType, "true",
+        return new ApiParamDoc(annotation.name(), annotation.description(), livedocType, "true",
                 annotation.allowedvalues(), annotation.format(), null);
     }
 
-    public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, JSONDocType jsondocType,
+    public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType,
             ApiParamType paramType) {
-        return new ApiParamDoc(annotation.name(), annotation.description(), jsondocType,
+        return new ApiParamDoc(annotation.name(), annotation.description(), livedocType,
                 String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(),
                 annotation.defaultvalue());
     }
 
-    public JSONDocType getJsondocType() {
-        return jsondocType;
+    public LivedocType getJsondocType() {
+        return livedocType;
     }
 
     public String getName() {

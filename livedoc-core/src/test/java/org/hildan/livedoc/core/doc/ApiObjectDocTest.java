@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.hildan.livedoc.core.annotation.ApiObject;
 import org.hildan.livedoc.core.annotation.ApiObjectField;
 import org.hildan.livedoc.core.annotation.ApiVersion;
@@ -14,13 +14,13 @@ import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
 import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVisibility;
-import org.hildan.livedoc.core.scanner.DefaultJSONDocScanner;
+import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ApiObjectDocTest {
 
-    private JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
+    private DocAnnotationScanner scanner = new DefaultDocAnnotationScanner();
 
     @ApiObject(name = "test-object", visibility = ApiVisibility.PUBLIC, stage = ApiStage.PRE_ALPHA)
     @ApiVersion(since = "1.0", until = "2.12")
@@ -106,7 +106,7 @@ public class ApiObjectDocTest {
     public void testUndefinedVisibilityAndStageDoc() {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         classes.add(UndefinedVisibilityAndStage.class);
-        ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
+        ApiObjectDoc apiObjectDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("UndefinedVisibilityAndStage", apiObjectDoc.getName());
         Assert.assertEquals(ApiVisibility.UNDEFINED, apiObjectDoc.getVisibility());
         Assert.assertEquals(ApiStage.UNDEFINED, apiObjectDoc.getStage());
@@ -116,7 +116,7 @@ public class ApiObjectDocTest {
     public void testTemplateApiObjectDoc() {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         classes.add(TemplateApiObject.class);
-        ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
+        ApiObjectDoc apiObjectDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("TemplateApiObject", apiObjectDoc.getName());
         Iterator<ApiObjectFieldDoc> iterator = apiObjectDoc.getFields().iterator();
         Assert.assertEquals("id", iterator.next().getName());
@@ -127,7 +127,7 @@ public class ApiObjectDocTest {
     public void testNoNameApiObjectDoc() {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         classes.add(NoNameApiObject.class);
-        ApiObjectDoc apiObjectDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
+        ApiObjectDoc apiObjectDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("NoNameApiObject", apiObjectDoc.getName());
         Assert.assertEquals("id", apiObjectDoc.getFields().iterator().next().getName());
         Assert.assertEquals(1, apiObjectDoc.getJsondochints().size());
@@ -137,7 +137,7 @@ public class ApiObjectDocTest {
     public void testEnumObjectDoc() {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         classes.add(TestEnum.class);
-        ApiObjectDoc childDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
+        ApiObjectDoc childDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("test-enum", childDoc.getName());
         Assert.assertEquals(0, childDoc.getFields().size());
         Assert.assertEquals(TestEnum.TESTENUM1.name(), childDoc.getAllowedvalues()[0]);
@@ -149,7 +149,7 @@ public class ApiObjectDocTest {
     public void testApiObjectDoc() {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         classes.add(TestObject.class);
-        ApiObjectDoc childDoc = jsondocScanner.getApiObjectDocs(classes).iterator().next();
+        ApiObjectDoc childDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("test-object", childDoc.getName());
         Assert.assertEquals(14, childDoc.getFields().size());
         Assert.assertEquals("1.0", childDoc.getSupportedversions().getSince());

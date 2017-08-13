@@ -4,14 +4,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.util.JSONDocType;
+import org.hildan.livedoc.core.util.LivedocType;
 
 import com.google.common.base.Joiner;
 
 public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObjectFieldDoc> {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
-    private JSONDocType jsondocType;
+    private LivedocType livedocType;
 
     private String name;
 
@@ -87,12 +87,12 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
         this.supportedversions = supportedversions;
     }
 
-    public JSONDocType getJsondocType() {
-        return jsondocType;
+    public LivedocType getJsondocType() {
+        return livedocType;
     }
 
-    public void setJsondocType(JSONDocType jsondocType) {
-        this.jsondocType = jsondocType;
+    public void setJsondocType(LivedocType livedocType) {
+        this.livedocType = livedocType;
     }
 
     public void setOrder(int order) {

@@ -5,9 +5,9 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 public class ApiDoc implements Comparable<ApiDoc> {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
-    // properties that can be overridden by the values specified in the JSONDoc @Api annotation
+    // properties that can be overridden by the values specified in the @Api annotation
     private String name;
 
     private String description;

@@ -6,9 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.hildan.livedoc.core.annotation.ApiMethod;
+
 /**
- * This annotation is to be used inside an annotaion of type @ApiFlow and references a method previously documented with
- * the JSONDoc @ApiMethod annotation in which the "id" property is specified
+ * This annotation is to be used inside an annotaion of type {@link ApiFlow} and references a method previously
+ * documented with the {@link ApiMethod} annotation in which the "id" property is specified
  *
  * @author Fabio Maffioletti
  */

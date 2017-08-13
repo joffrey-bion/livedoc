@@ -3,7 +3,7 @@ package org.hildan.livedoc.core.pojo.global;
 import java.util.UUID;
 
 public class ApiChangelogDoc {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
     private String version;
 

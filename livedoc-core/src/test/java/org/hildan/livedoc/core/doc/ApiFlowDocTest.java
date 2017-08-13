@@ -10,14 +10,14 @@ import org.hildan.livedoc.core.annotation.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.scanner.DefaultJSONDocScanner;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ApiFlowDocTest {
 
-    private JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
+    private DocAnnotationScanner scanner = new DefaultDocAnnotationScanner();
 
     @ApiFlowSet
     private class TestFlow {
@@ -48,7 +48,7 @@ public class ApiFlowDocTest {
         apiMethodDoc.setId("F1");
         apiMethodDocs.add(apiMethodDoc);
 
-        Set<ApiFlowDoc> apiFlowDocs = jsondocScanner.getApiFlowDocs(classes, apiMethodDocs);
+        Set<ApiFlowDoc> apiFlowDocs = scanner.getApiFlowDocs(classes, apiMethodDocs);
         for (ApiFlowDoc apiFlowDoc : apiFlowDocs) {
             if (apiFlowDoc.getName().equals("flow")) {
                 Assert.assertEquals("A test flow", apiFlowDoc.getDescription());

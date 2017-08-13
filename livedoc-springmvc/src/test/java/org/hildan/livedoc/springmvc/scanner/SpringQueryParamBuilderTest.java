@@ -6,8 +6,8 @@ import org.hildan.livedoc.core.annotation.ApiQueryParam;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import com.google.common.collect.Sets;
 
 public class SpringQueryParamBuilderTest {
 
-    private JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
+    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
 
     @Controller
     @RequestMapping
@@ -114,7 +114,7 @@ public class SpringQueryParamBuilderTest {
     @SuppressWarnings("unused")
     @Test
     public void testQueryParam() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController", apiDoc.getName());
@@ -138,7 +138,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
+        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
                                .iterator()
                                .next();
         Assert.assertEquals("SpringController2", apiDoc.getName());
@@ -152,7 +152,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController3.class), MethodDisplay.URI)
+        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController3.class), MethodDisplay.URI)
                                .iterator()
                                .next();
         Assert.assertEquals("SpringController3", apiDoc.getName());
@@ -190,7 +190,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController4.class), MethodDisplay.URI)
+        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController4.class), MethodDisplay.URI)
                                .iterator()
                                .next();
         Assert.assertEquals("SpringController4", apiDoc.getName());
@@ -206,7 +206,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController5.class), MethodDisplay.URI)
+        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController5.class), MethodDisplay.URI)
                                .iterator()
                                .next();
         Assert.assertEquals("SpringController5", apiDoc.getName());

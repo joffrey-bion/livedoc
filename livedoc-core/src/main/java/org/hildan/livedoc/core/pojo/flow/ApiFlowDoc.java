@@ -9,7 +9,7 @@ import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 
 public class ApiFlowDoc implements Comparable<ApiFlowDoc> {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
     private String name;
 

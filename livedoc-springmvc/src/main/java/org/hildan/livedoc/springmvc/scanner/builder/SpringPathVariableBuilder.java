@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotation.ApiPathParam;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.util.JSONDocType;
-import org.hildan.livedoc.core.util.JSONDocTypeBuilder;
+import org.hildan.livedoc.core.util.LivedocType;
+import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 import org.springframework.web.bind.annotation.PathVariable;
 
 public class SpringPathVariableBuilder {
@@ -32,7 +32,7 @@ public class SpringPathVariableBuilder {
 
                 if (pathVariable != null) {
                     apiParamDoc = new ApiParamDoc(pathVariable.value(), "",
-                            JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i],
+                            LivedocTypeBuilder.build(new LivedocType(), method.getParameterTypes()[i],
                                     method.getGenericParameterTypes()[i]), "true", new String[] {}, null, "");
                     mergeApiPathParamDoc(apiPathParam, apiParamDoc);
                 }

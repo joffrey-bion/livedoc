@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotation.ApiQueryParam;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.util.JSONDocType;
-import org.hildan.livedoc.core.util.JSONDocTypeBuilder;
+import org.hildan.livedoc.core.util.LivedocType;
+import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,11 +35,11 @@ public class SpringQueryParamBuilder {
                     String[] splitParam = param.split("=");
                     if (splitParam.length > 1) {
                         apiParamDocs.add(new ApiParamDoc(splitParam[0], "",
-                                JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true",
+                                LivedocTypeBuilder.build(new LivedocType(), String.class, null), "true",
                                 new String[] {splitParam[1]}, null, null));
                     } else {
                         apiParamDocs.add(new ApiParamDoc(param, "",
-                                JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true",
+                                LivedocTypeBuilder.build(new LivedocType(), String.class, null), "true",
                                 new String[] {}, null, null));
                     }
                 }
@@ -53,11 +53,11 @@ public class SpringQueryParamBuilder {
                     String[] splitParam = param.split("=");
                     if (splitParam.length > 1) {
                         apiParamDocs.add(new ApiParamDoc(splitParam[0], "",
-                                JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true",
+                                LivedocTypeBuilder.build(new LivedocType(), String.class, null), "true",
                                 new String[] {splitParam[1]}, null, null));
                     } else {
                         apiParamDocs.add(new ApiParamDoc(param, "",
-                                JSONDocTypeBuilder.build(new JSONDocType(), String.class, null), "true",
+                                LivedocTypeBuilder.build(new LivedocType(), String.class, null), "true",
                                 new String[] {}, null, null));
                     }
                 }
@@ -84,7 +84,7 @@ public class SpringQueryParamBuilder {
 
                 if (requestParam != null) {
                     apiParamDoc = new ApiParamDoc(requestParam.value(), "",
-                            JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i],
+                            LivedocTypeBuilder.build(new LivedocType(), method.getParameterTypes()[i],
                                     method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()),
                             new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ?
                             "" :
@@ -93,7 +93,7 @@ public class SpringQueryParamBuilder {
                 }
                 if (modelAttribute != null) {
                     apiParamDoc = new ApiParamDoc(modelAttribute.value(), "",
-                            JSONDocTypeBuilder.build(new JSONDocType(), method.getParameterTypes()[i],
+                            LivedocTypeBuilder.build(new LivedocType(), method.getParameterTypes()[i],
                                     method.getGenericParameterTypes()[i]), "false", new String[] {}, null, null);
                     mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
                 }

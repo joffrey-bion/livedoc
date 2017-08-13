@@ -2,19 +2,19 @@ package org.hildan.livedoc.core.pojo;
 
 import java.util.UUID;
 
-import org.hildan.livedoc.core.util.JSONDocType;
+import org.hildan.livedoc.core.util.LivedocType;
 
 public class ApiResponseObjectDoc {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
-    private JSONDocType jsondocType;
+    private LivedocType livedocType;
 
-    public ApiResponseObjectDoc(JSONDocType jsondocType) {
-        this.jsondocType = jsondocType;
+    public ApiResponseObjectDoc(LivedocType livedocType) {
+        this.livedocType = livedocType;
     }
 
-    public JSONDocType getJsondocType() {
-        return jsondocType;
+    public LivedocType getJsondocType() {
+        return livedocType;
     }
 
 }

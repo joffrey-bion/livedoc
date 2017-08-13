@@ -5,16 +5,16 @@ import java.util.List;
 
 public abstract class AbstractDoc {
 
-    protected List<String> jsondocerrors;
+    private List<String> jsondocerrors;
 
-    protected List<String> jsondocwarnings;
+    private List<String> jsondocwarnings;
 
-    protected List<String> jsondochints;
+    private List<String> jsondochints;
 
-    public AbstractDoc() {
-        this.jsondocerrors = new ArrayList<String>();
-        this.jsondocwarnings = new ArrayList<String>();
-        this.jsondochints = new ArrayList<String>();
+    AbstractDoc() {
+        this.jsondocerrors = new ArrayList<>();
+        this.jsondocwarnings = new ArrayList<>();
+        this.jsondochints = new ArrayList<>();
     }
 
     public List<String> getJsondocerrors() {

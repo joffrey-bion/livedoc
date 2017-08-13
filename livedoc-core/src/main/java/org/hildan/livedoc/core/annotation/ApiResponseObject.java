@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.util.JSONDocDefaultType;
+import org.hildan.livedoc.core.util.LivedocDefaultType;
 
 /**
  * This annotation is to be used on your method and represents the returned value
@@ -24,6 +24,6 @@ public @interface ApiResponseObject {
      *
      * @return
      */
-    public Class<?> clazz() default JSONDocDefaultType.class;
+    public Class<?> clazz() default LivedocDefaultType.class;
 
 }

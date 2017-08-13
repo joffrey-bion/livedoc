@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ApiGlobalSectionDoc {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
     private String title;
 

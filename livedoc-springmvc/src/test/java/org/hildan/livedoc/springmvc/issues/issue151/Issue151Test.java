@@ -1,9 +1,9 @@
 package org.hildan.livedoc.springmvc.issues.issue151;
 
-import org.hildan.livedoc.core.pojo.JSONDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
-import org.hildan.livedoc.springmvc.scanner.Spring3JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.scanner.Spring3DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,15 +13,15 @@ import com.google.common.collect.Lists;
 // https://github.com/fabiomaffioletti/jsondoc/issues/151
 public class Issue151Test {
 
-    JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
+    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
 
     @Test
     public void testIssue151() {
-        JSONDoc jsonDoc = jsondocScanner.getJSONDoc("version", "basePath",
+        Livedoc livedoc = scanner.getLivedoc("version", "basePath",
                 Lists.newArrayList("org.hildan.livedoc.springmvc.issues.issue151"), true, MethodDisplay.URI);
-        Assert.assertEquals(2, jsonDoc.getObjects().keySet().size());
-        Assert.assertEquals(1, jsonDoc.getObjects().get("bargroup").size());
-        Assert.assertEquals(1, jsonDoc.getObjects().get("foogroup").size());
+        Assert.assertEquals(2, livedoc.getObjects().keySet().size());
+        Assert.assertEquals(1, livedoc.getObjects().get("bargroup").size());
+        Assert.assertEquals(1, livedoc.getObjects().get("foogroup").size());
     }
 
 }

@@ -6,8 +6,8 @@ import org.hildan.livedoc.core.annotation.ApiPathParam;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import com.google.common.collect.Sets;
 
 public class SpringPathVariableBuilderTest {
 
-    private JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
+    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
 
     @Controller
     @RequestMapping
@@ -51,7 +51,7 @@ public class SpringPathVariableBuilderTest {
 
     @Test
     public void testPathVariable() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController", apiDoc.getName());
@@ -87,7 +87,7 @@ public class SpringPathVariableBuilderTest {
 
     @Test
     public void testPathVariableWithJSONDoc() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController2", apiDoc.getName());

@@ -7,10 +7,10 @@ import java.util.TreeSet;
 
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
-import org.hildan.livedoc.core.scanner.DefaultJSONDocScanner;
-import org.hildan.livedoc.core.util.JSONDocHibernateValidatorProcessor;
-import org.hildan.livedoc.core.util.JSONDocType;
-import org.hildan.livedoc.core.util.JSONDocTypeBuilder;
+import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
+import org.hildan.livedoc.core.util.HibernateValidationProcessor;
+import org.hildan.livedoc.core.util.LivedocType;
+import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 
 public class SpringObjectBuilder {
 
@@ -24,11 +24,11 @@ public class SpringObjectBuilder {
             ApiObjectFieldDoc fieldDoc = new ApiObjectFieldDoc();
             fieldDoc.setName(field.getName());
             fieldDoc.setOrder(Integer.MAX_VALUE);
-            fieldDoc.setRequired(DefaultJSONDocScanner.UNDEFINED.toUpperCase());
+            fieldDoc.setRequired(DefaultDocAnnotationScanner.UNDEFINED.toUpperCase());
             fieldDoc.setJsondocType(
-                    JSONDocTypeBuilder.build(new JSONDocType(), field.getType(), field.getGenericType()));
+                    LivedocTypeBuilder.build(new LivedocType(), field.getType(), field.getGenericType()));
 
-            JSONDocHibernateValidatorProcessor.processHibernateValidatorAnnotations(field, fieldDoc);
+            HibernateValidationProcessor.addConstraintMessages(field, fieldDoc);
 
             fieldDocs.add(fieldDoc);
         }
@@ -40,7 +40,7 @@ public class SpringObjectBuilder {
         }
 
         if (clazz.isEnum()) {
-            apiObjectDoc.setAllowedvalues(DefaultJSONDocScanner.enumConstantsToStringArray(clazz.getEnumConstants()));
+            apiObjectDoc.setAllowedvalues(DefaultDocAnnotationScanner.enumConstantsToStringArray(clazz.getEnumConstants()));
         }
 
         apiObjectDoc.setFields(fieldDocs);

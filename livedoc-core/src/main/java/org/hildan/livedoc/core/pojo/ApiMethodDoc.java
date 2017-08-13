@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 
 import com.google.common.collect.Sets;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
     private Set<String> path;
 

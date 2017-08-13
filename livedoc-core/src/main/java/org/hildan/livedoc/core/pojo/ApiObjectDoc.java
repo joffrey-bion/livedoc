@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
     private String name;
 
@@ -23,7 +23,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 
     private ApiStage stage;
 
-    private JSONDocTemplate jsondocTemplate;
+    private LivedocTemplate jsondocTemplate;
 
     private boolean show;
 
@@ -88,11 +88,11 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.group = group;
     }
 
-    public JSONDocTemplate getJsondocTemplate() {
+    public LivedocTemplate getJsondocTemplate() {
         return jsondocTemplate;
     }
 
-    public void setJsondocTemplate(JSONDocTemplate jsondocTemplate) {
+    public void setJsondocTemplate(LivedocTemplate jsondocTemplate) {
         this.jsondocTemplate = jsondocTemplate;
     }
 

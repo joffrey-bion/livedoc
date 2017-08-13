@@ -5,8 +5,8 @@ import java.util.Iterator;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ import com.google.common.collect.Sets;
 
 public class SpringApiHeadersDocTest {
 
-    private JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
+    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
 
     @Controller
     @RequestMapping(headers = {"h1", "h2"})
@@ -43,7 +43,7 @@ public class SpringApiHeadersDocTest {
     @SuppressWarnings("unused")
     @Test
     public void testApiHeadersOnClass() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiHeadersController.class),
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiHeadersController.class),
                 MethodDisplay.URI).iterator().next();
         Assert.assertEquals("SpringApiHeadersController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());

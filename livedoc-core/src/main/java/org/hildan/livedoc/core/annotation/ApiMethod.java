@@ -21,8 +21,8 @@ import org.hildan.livedoc.core.pojo.ApiVisibility;
 public @interface ApiMethod {
 
     /**
-     * A custom identifier to be used inside JSONDoc. This string has to be unique inside the JSONDoc documentation.
-     * It's responsibility of the documentation writer to guarantee this uniqueness
+     * A custom identifier to be used inside Livedoc. This string has to be unique inside the Livedoc documentation.
+     * It's the responsibility of the documentation writer to guarantee this uniqueness.
      *
      * @return
      */

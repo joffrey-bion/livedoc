@@ -9,7 +9,7 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import com.google.common.collect.Sets;
 
 public class ApiFlowStepDoc {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
     private String apimethodid;
 

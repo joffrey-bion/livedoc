@@ -28,15 +28,15 @@ public class StackOverflowTemplateBuilderTest {
                 StackOverflowTemplateObjectOne.class, StackOverflowTemplateObjectTwo.class);
 
         StackOverflowTemplateSelf objectSelf = new StackOverflowTemplateSelf();
-        Map<String, Object> template = JSONDocTemplateBuilder.build(objectSelf.getClass(), classes);
+        Map<String, Object> template = LivedocTemplateBuilder.build(objectSelf.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
 
         StackOverflowTemplateObjectOne objectOne = new StackOverflowTemplateObjectOne();
-        template = JSONDocTemplateBuilder.build(objectOne.getClass(), classes);
+        template = LivedocTemplateBuilder.build(objectOne.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
 
         StackOverflowTemplateObjectTwo objectTwo = new StackOverflowTemplateObjectTwo();
-        template = JSONDocTemplateBuilder.build(objectTwo.getClass(), classes);
+        template = LivedocTemplateBuilder.build(objectTwo.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
     }
 
@@ -46,7 +46,7 @@ public class StackOverflowTemplateBuilderTest {
                 NotAnnotatedStackOverflowObjectTwo.class);
 
         NotAnnotatedStackOverflowObjectOne typeOne = new NotAnnotatedStackOverflowObjectOne();
-        Map<String, Object> template = JSONDocTemplateBuilder.build(typeOne.getClass(), classes);
+        Map<String, Object> template = LivedocTemplateBuilder.build(typeOne.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
     }
 

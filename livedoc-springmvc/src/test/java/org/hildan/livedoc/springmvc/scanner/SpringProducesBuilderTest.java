@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import com.google.common.collect.Sets;
 
 public class SpringProducesBuilderTest {
 
-    private JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
+    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
 
     @Controller
     @RequestMapping
@@ -64,7 +64,7 @@ public class SpringProducesBuilderTest {
 
     @Test
     public void testApiVerb() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
                                       .iterator()
                                       .next();
         Assert.assertEquals("SpringController", apiDoc.getName());
@@ -87,7 +87,7 @@ public class SpringProducesBuilderTest {
             }
         }
 
-        apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
+        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
                                .iterator()
                                .next();
         Assert.assertEquals("SpringController2", apiDoc.getName());

@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hildan.livedoc.core.pojo.ApiBodyObjectDoc;
-import org.hildan.livedoc.core.util.JSONDocType;
-import org.hildan.livedoc.core.util.JSONDocTypeBuilder;
-import org.hildan.livedoc.core.util.JSONDocUtils;
+import org.hildan.livedoc.core.util.LivedocType;
+import org.hildan.livedoc.core.util.LivedocTypeBuilder;
+import org.hildan.livedoc.core.util.LivedocUtils;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -37,7 +37,7 @@ public class SpringRequestBodyBuilder {
         }
         final Class<?> bodyParamClass = method.getParameterTypes()[index];
         final Type bodyParamType = method.getGenericParameterTypes()[index];
-        return new ApiBodyObjectDoc(JSONDocTypeBuilder.build(new JSONDocType(), bodyParamClass, bodyParamType));
+        return new ApiBodyObjectDoc(LivedocTypeBuilder.build(new LivedocType(), bodyParamClass, bodyParamType));
     }
 
     public static int getIndexOfBodyParam(Method method) {
@@ -51,7 +51,7 @@ public class SpringRequestBodyBuilder {
     }
 
     private static int getIndexOfBodyParamForRequestMapping(Method method) {
-        return JSONDocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
+        return LivedocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
     }
 
     private static int getIndexOfBodyParamForMessageMapping(Method method) {

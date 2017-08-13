@@ -19,14 +19,14 @@ import org.hildan.livedoc.core.pojo.ApiErrorDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.scanner.DefaultJSONDocScanner;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.hildan.livedoc.core.util.pojo.Pizza;
 import org.hildan.livedoc.core.annotation.Api;
 import org.hildan.livedoc.core.annotation.ApiBodyObject;
 import org.hildan.livedoc.core.annotation.ApiMethod;
 import org.hildan.livedoc.core.annotation.ApiParams;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.util.controller.Test3Controller;
 import org.hildan.livedoc.core.util.pojo.Child;
 import org.junit.Assert;
@@ -36,7 +36,7 @@ import com.google.common.collect.Sets;
 
 public class ApiDocTest {
 
-    private JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
+    private DocAnnotationScanner scanner = new DefaultDocAnnotationScanner();
 
     @Api(description = "An interface controller", name = "interface-controller")
     private interface InterfaceController {
@@ -309,7 +309,7 @@ public class ApiDocTest {
     @Test
     public void testApiErrorsDoc() throws Exception {
 
-        final ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(Test3Controller.class),
+        final ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(Test3Controller.class),
                 MethodDisplay.URI).iterator().next();
 
         final Set<ApiMethodDoc> methods = apiDoc.getMethods();
@@ -330,13 +330,13 @@ public class ApiDocTest {
     public void testApiDoc() {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         classes.add(TestController.class);
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        ApiDoc apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("test-controller", apiDoc.getName());
         Assert.assertEquals("a-test-controller", apiDoc.getDescription());
         Assert.assertEquals("1.0", apiDoc.getSupportedversions().getSince());
         Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
         Assert.assertEquals(ApiAuthType.NONE.name(), apiDoc.getAuth().getType());
-        Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
+        Assert.assertEquals(DefaultDocAnnotationScanner.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 
@@ -460,7 +460,7 @@ public class ApiDocTest {
 
         classes.clear();
         classes.add(TestControllerWithBasicAuth.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("test-controller-with-basic-auth", apiDoc.getName());
         Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiDoc.getAuth().getType());
         Assert.assertEquals("ROLE_USER", apiDoc.getAuth().getRoles().get(0));
@@ -476,7 +476,7 @@ public class ApiDocTest {
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
                 Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
-                Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+                Assert.assertEquals(DefaultDocAnnotationScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
             }
 
             if (apiMethodDoc.getPath().contains("/undefinedAuthWithAuthOnClass")) {
@@ -489,7 +489,7 @@ public class ApiDocTest {
 
         classes.clear();
         classes.add(TestControllerWithNoAuthAnnotation.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("test-controller-with-no-auth-annotation", apiDoc.getName());
         Assert.assertNull(apiDoc.getAuth());
 
@@ -502,7 +502,7 @@ public class ApiDocTest {
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
                 Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
-                Assert.assertEquals(DefaultJSONDocScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+                Assert.assertEquals(DefaultDocAnnotationScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
             }
 
             if (apiMethodDoc.getPath().contains("/undefinedAuthWithoutAuthOnClass")) {
@@ -513,7 +513,7 @@ public class ApiDocTest {
 
         classes.clear();
         classes.add(TestOldStyleServlets.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("test-old-style-servlets", apiDoc.getName());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -546,7 +546,7 @@ public class ApiDocTest {
 
         classes.clear();
         classes.add(TestErrorsAndWarningsAndHints.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("test-errors-warnings-hints", apiDoc.getName());
         ApiMethodDoc apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
@@ -555,7 +555,7 @@ public class ApiDocTest {
 
         classes.clear();
         classes.add(TestErrorsAndWarningsAndHintsMethodSummary.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.SUMMARY).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.SUMMARY).iterator().next();
         apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
         Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
@@ -563,7 +563,7 @@ public class ApiDocTest {
 
         classes.clear();
         classes.add(InterfaceController.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("interface-controller", apiDoc.getName());
         apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertNotNull(apiMethodDoc);
@@ -571,13 +571,13 @@ public class ApiDocTest {
 
         classes.clear();
         classes.add(TestDeclaredMethods.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("test-declared-methods", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
 
         classes.clear();
         classes.add(TestMultipleParamsWithSameMethod.class);
-        apiDoc = jsondocScanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals(3, apiDoc.getMethods().size());
 
     }

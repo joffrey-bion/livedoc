@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.TYPE)
 @Documented
-@Import(JSONDocConfig.class)
+@Import(LivedocConfig.class)
 public @interface EnableJSONDoc {
 
 }

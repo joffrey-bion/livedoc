@@ -7,14 +7,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/jquery.min.js"></script>
-    <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/handlebars.min.js"></script>
-    <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/prettify.js"></script>
-    <script type="text/javascript" src="webjars/jsondoc-ui-webjar/js/jsondoc.js"></script>
+    <script type="text/javascript" src="webjars/livedoc-ui-webjar/js/jquery.min.js"></script>
+    <script type="text/javascript" src="webjars/livedoc-ui-webjar/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/livedoc-ui-webjar/js/handlebars.min.js"></script>
+    <script type="text/javascript" src="webjars/livedoc-ui-webjar/js/prettify.js"></script>
+    <script type="text/javascript" src="webjars/livedoc-ui-webjar/js/livedoc.js"></script>
 
-    <link rel="stylesheet" href="webjars/jsondoc-ui-webjar/css/bootstrap.min.css">
-    <link rel="stylesheet" href="webjars/jsondoc-ui-webjar/css/jsondoc.css">
+    <link rel="stylesheet" href="webjars/livedoc-ui-webjar/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/livedoc-ui-webjar/css/livedoc.css">
 
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -26,12 +26,12 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">JSONDoc</a>
+            <a class="navbar-brand" href="#">Livedoc</a>
         </div>
         <form class="navbar-form navbar-left col-md-8" role="search">
             <div class="form-group">
-                <input id="jsondocfetch" type="text" class="form-control" style="width:350px"
-                       placeholder="Insert here the JSONDoc URL" autocomplete="off">
+                <input id="livedocfetch" type="text" class="form-control" style="width:350px"
+                       placeholder="Insert here the Livedoc URL" autocomplete="off">
             </div>
             <button id="getDocButton" class="btn btn-default">Get documentation</button>
         </form>
@@ -111,7 +111,7 @@
                 <li style="text-transform: uppercase;">{{key}}</li>
                 {{/if}}
                 {{#each value}}
-                <li><a href="#" id="{{jsondocId}}" rel="api">{{name}}</a></li>
+                <li><a href="#" id="{{livedocId}}" rel="api">{{name}}</a></li>
                 {{/each}}
             </ul>
             {{/eachInMap}}
@@ -136,7 +136,7 @@
                 <li style="text-transform: uppercase;">{{key}}</li>
                 {{/if}}
                 {{#each value}}
-                <li><a href="#" id="{{jsondocId}}" rel="object">{{name}}</a></li>
+                <li><a href="#" id="{{livedocId}}" rel="object">{{name}}</a></li>
                 {{/each}}
             </ul>
             {{/eachInMap}}
@@ -161,7 +161,7 @@
                 <li style="text-transform: uppercase;">{{key}}</li>
                 {{/if}}
                 {{#each value}}
-                <li><a href="#" id="{{jsondocId}}" rel="flow">{{name}}</a></li>
+                <li><a href="#" id="{{livedocId}}" rel="flow">{{name}}</a></li>
                 {{/each}}
             </ul>
             {{/eachInMap}}
@@ -181,14 +181,14 @@
         {{#if this}}
         {{#eachInMap this.sections}}
         <div class="panel panel-default">
-            <div class="panel-heading" id="_{{value.jsondocId}}">
+            <div class="panel-heading" id="_{{value.livedocId}}">
                 <h4 class="panel-title">
-                    <a id="_{{value.jsondocId}}" href="#__{{value.jsondocId}}" rel="method" data-toggle="collapse"
-                       data-parent="#accordion" aria-controls="__{{value.jsondocId}}" aria-expanded="true">{{value.title}}</a><br/>
+                    <a id="_{{value.livedocId}}" href="#__{{value.livedocId}}" rel="method" data-toggle="collapse"
+                       data-parent="#accordion" aria-controls="__{{value.livedocId}}" aria-expanded="true">{{value.title}}</a><br/>
                 </h4>
             </div>
-            <div id="__{{value.jsondocId}}" class="panel-collapse collapse" role="tabpanel"
-                 aria-labelledby="_{{value.jsondocId}}">
+            <div id="__{{value.livedocId}}" class="panel-collapse collapse" role="tabpanel"
+                 aria-labelledby="_{{value.livedocId}}">
                 <div class="panel-body" rel="overviewpanel">
                     {{#if value.paragraphs}}
                     {{#each value.paragraphs}}
@@ -213,14 +213,14 @@
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         {{#changelogs}}
         <div class="panel panel-default">
-            <div class="panel-heading" id="{{jsondocId}}">
+            <div class="panel-heading" id="{{livedocId}}">
                 <h4 class="panel-title">
-                    <a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse"
-                       data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">Version
+                    <a id="{{livedocId}}" href="#_{{livedocId}}" rel="method" data-toggle="collapse"
+                       data-parent="#accordion" aria-controls="_{{livedocId}}" aria-expanded="true">Version
                         {{version}}</a><br/>
                 </h4>
             </div>
-            <div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
+            <div id="_{{livedocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{livedocId}}">
                 <div class="panel-body">
                     <ul style="padding-left: 20px;">
                         {{#each changes}}
@@ -243,14 +243,14 @@
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         {{#migrations}}
         <div class="panel panel-default">
-            <div class="panel-heading" id="{{jsondocId}}">
+            <div class="panel-heading" id="{{livedocId}}">
                 <h4 class="panel-title">
-                    <a id="{{jsondocId}}" href="#_{{jsondocId}}" rel="method" data-toggle="collapse"
-                       data-parent="#accordion" aria-controls="_{{jsondocId}}" aria-expanded="true">From version
+                    <a id="{{livedocId}}" href="#_{{livedocId}}" rel="method" data-toggle="collapse"
+                       data-parent="#accordion" aria-controls="_{{livedocId}}" aria-expanded="true">From version
                         {{fromVersion}} to version {{toVersion}}</a><br/>
                 </h4>
             </div>
-            <div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
+            <div id="_{{livedocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{livedocId}}">
                 <div class="panel-body">
                     <ul style="padding-left: 20px;">
                         {{#each steps}}
@@ -285,25 +285,25 @@
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         {{#methods}}
         <div class="panel panel-default">
-            <div class="panel-heading" id="{{jsondocId}}">
+            <div class="panel-heading" id="{{livedocId}}">
                 <h4 class="panel-title">
                     {{#each verb}}
                     <span class="label pull-right verb {{this}}">{{this}}</span>
                     {{/each}}
                     {{#each path}}
-                    <a id="{{../jsondocId}}" href="#_{{../jsondocId}}" rel="method" data-toggle="collapse"
-                       data-parent="#accordion" aria-controls="_{{../jsondocId}}" aria-expanded="true">{{../displayedMethodString}}</a><br/>
+                    <a id="{{../livedocId}}" href="#_{{../livedocId}}" rel="method" data-toggle="collapse"
+                       data-parent="#accordion" aria-controls="_{{../livedocId}}" aria-expanded="true">{{../displayedMethodString}}</a><br/>
                     {{/each}}
                 </h4>
             </div>
-            <div id="_{{jsondocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{jsondocId}}">
+            <div id="_{{livedocId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{livedocId}}">
                 <div class="panel-body">
-                    {{#if jsondocerrors}}
+                    {{#if livedocerrors}}
                     <div class="alert alert-danger border-radius-none">
                         <p><strong>The following errors prevent a correct functionality of the playground and do not
                             provide enough documentation data for API users:</strong></p>
                         <ul class="list-unstyled">
-                            {{#each jsondocerrors}}
+                            {{#each livedocerrors}}
                             <li>- {{this}}</li>
                             {{/each}}
                         </ul>
@@ -434,7 +434,7 @@
                         {{/if}}
                         <tr>
                             <td></td>
-                            <td>Type: <code>{{this.jsondocType.oneLineText}}</code></td>
+                            <td>Type: <code>{{this.livedocType.oneLineText}}</code></td>
                         </tr>
                         {{#if this.allowedvalues}}
                         <tr>
@@ -467,7 +467,7 @@
                         {{/if}}
                         <tr>
                             <td></td>
-                            <td>Type: <code>{{this.jsondocType.oneLineText}}</code></td>
+                            <td>Type: <code>{{this.livedocType.oneLineText}}</code></td>
                         </tr>
                         {{#if this.allowedvalues}}
                         <tr>
@@ -494,7 +494,7 @@
                             <th colspan=2>Body object</th>
                         </tr>
                         <tr>
-                            <td colspan=2><code>{{bodyobject.jsondocType.oneLineText}}</code></td>
+                            <td colspan=2><code>{{bodyobject.livedocType.oneLineText}}</code></td>
                         </tr>
                         {{/if}}
                         {{#if responsestatuscode}}
@@ -510,7 +510,7 @@
                             <th colspan=2>Response object</th>
                         </tr>
                         <tr>
-                            <td colspan=2><code>{{response.jsondocType.oneLineText}}</code></td>
+                            <td colspan=2><code>{{response.livedocType.oneLineText}}</code></td>
                         </tr>
                         {{/if}}
                         {{#if apierrors}}
@@ -525,25 +525,25 @@
                         {{/each}}
                         {{/if}}
                     </table>
-                    {{#if jsondocwarnings}}
+                    {{#if livedocwarnings}}
                     <div class="alert alert-warning alert-dismissible border-radius-none">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
                         <p><strong>Warnings that may prevent a correct playground functionality:</strong></p>
                         <ul class="list-unstyled">
-                            {{#each jsondocwarnings}}
+                            {{#each livedocwarnings}}
                             <li>- {{this}}</li>
                             {{/each}}
                         </ul>
                     </div>
                     {{/if}}
-                    {{#if jsondochints}}
+                    {{#if livedochints}}
                     <div class="alert alert-info alert-dismissible border-radius-none">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
                         <p><strong>Hints to provide a better understanding of your API:</strong></p>
                         <ul class="list-unstyled">
-                            {{#each jsondochints}}
+                            {{#each livedochints}}
                             <li>- {{this}}</li>
                             {{/each}}
                         </ul>
@@ -839,12 +839,12 @@
         </tr>
         <tr>
             <td></td>
-            <td>Type: <code>{{jsondocType.oneLineText}}</code></td>
+            <td>Type: <code>{{livedocType.oneLineText}}</code></td>
         </tr>
         {{else}}
         <tr>
             <td><code>{{name}}</code></td>
-            <td>Type: <code>{{jsondocType.oneLineText}}</code></td>
+            <td>Type: <code>{{livedocType.oneLineText}}</code></td>
         </tr>
         {{/if}}
         {{#equal required "UNDEFINED"}}
@@ -881,13 +881,13 @@
         {{/each}}
         {{/if}}
     </table>
-    {{#if jsondochints}}
+    {{#if livedochints}}
     <div class="alert alert-info alert-dismissible border-radius-none">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                 aria-hidden="true">&times;</span></button>
         <p><strong>Hints to provide a better understanding of your API:</strong></p>
         <ul class="list-unstyled">
-            {{#each jsondochints}}
+            {{#each livedochints}}
             <li>- {{this}}</li>
             {{/each}}
         </ul>
@@ -897,26 +897,26 @@
 
 <script id="objecttemplate" type="text/x-handlebars-template">
     <pre class="prettyprint">
-{{#json jsondocTemplate}}
+{{#json livedocTemplate}}
 {{/json}}
 </pre>
 </script>
 
 <script>
   var model;
-  var jsondoc = JSON.stringify('_JSONDOC_OFFLINE_PLACEHOLDER_');
+  var livedoc = JSON.stringify('_JSONDOC_OFFLINE_PLACEHOLDER_');
 
   $(document).ready(function () {
     // This is to check if the _JSONDOC_OFFLINE_PLACEHOLDER_ has been replaced with content coming from
-    // the result of the jsondoc-maven-plugin
-    if (jsondoc != '"_JSONDOC_OFFLINE_PLACEHOLDER_"') {
-      $('#jsondocfetch').hide();
+    // the result of the livedoc-maven-plugin
+    if (livedoc != '"_JSONDOC_OFFLINE_PLACEHOLDER_"') {
+      $('#livedocfetch').hide();
       $('#getDocButton').hide();
-      buildFromJSONDoc($.parseJSON(jsondoc));
+      buildFromJSONDoc($.parseJSON(livedoc));
     }
 
     if ($.urlParam('url') != null) {
-      $('#jsondocfetch').val($.urlParam('url'));
+      $('#livedocfetch').val($.urlParam('url'));
       checkURLExistence();
     }
   });
@@ -1001,7 +1001,7 @@
   });
 
   function checkURLExistence() {
-    var value = $('#jsondocfetch').val();
+    var value = $('#livedocfetch').val();
     if (value.trim() == '') {
       alert('Please insert a valid URL');
       return false;
@@ -1010,7 +1010,7 @@
     }
   }
 
-  $('#jsondocfetch').keypress(function (event) {
+  $('#livedocfetch').keypress(function (event) {
     if (event.which == 13) {
       checkURLExistence();
       return false;
@@ -1107,7 +1107,7 @@
 
           var method = null;
           for (i = 0; i < items.length; i++) {
-            if (items[i].jsondocId == this.id) {
+            if (items[i].livedocId == this.id) {
               method = items[i];
             }
           }
@@ -1117,9 +1117,9 @@
           $('#testContent').html(testHTML);
           $('#testContent').show();
 
-          // if bodyobject is not empty then put jsondocTemplate into textarea
+          // if bodyobject is not empty then put livedocTemplate into textarea
           if (method.bodyobject) {
-            $('#inputJson').text(JSON.stringify(method.bodyobject.jsondocTemplate, undefined, 2));
+            $('#inputJson').text(JSON.stringify(method.bodyobject.livedocTemplate, undefined, 2));
           }
 
           $('#produces input:first').attr('checked', 'checked');
@@ -1290,7 +1290,7 @@
 
           var api = null;
           for (i = 0; i < plainApis.length; i++) {
-            if (plainApis[i].jsondocId == this.id) {
+            if (plainApis[i].livedocId == this.id) {
               api = plainApis[i];
             }
           }
@@ -1331,7 +1331,7 @@
 
           var o = null;
           for (i = 0; i < plainObjects.length; i++) {
-            if (plainObjects[i].jsondocId == this.id) {
+            if (plainObjects[i].livedocId == this.id) {
               o = plainObjects[i];
             }
           }
@@ -1359,7 +1359,7 @@
 
           var flow = null;
           for (i = 0; i < plainFlows.length; i++) {
-            if (plainFlows[i].jsondocId == this.id) {
+            if (plainFlows[i].livedocId == this.id) {
               flow = plainFlows[i];
             }
           }
@@ -1394,9 +1394,9 @@
     $('#content').parent().addClass('col-md-5');
   }
 
-  function fetchdoc(jsondocurl) {
+  function fetchdoc(livedocurl) {
     $.ajax({
-      url: jsondocurl,
+      url: livedocurl,
       type: 'GET',
       dataType: 'json',
       contentType: 'application/json; charset=utf-8',

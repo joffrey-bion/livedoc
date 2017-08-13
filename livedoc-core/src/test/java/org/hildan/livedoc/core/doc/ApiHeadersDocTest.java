@@ -6,9 +6,9 @@ import org.hildan.livedoc.core.annotation.ApiHeaders;
 import org.hildan.livedoc.core.annotation.ApiMethod;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DefaultJSONDocScanner;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ import com.google.common.collect.Sets;
 
 public class ApiHeadersDocTest {
 
-    private JSONDocScanner jsondocScanner = new DefaultJSONDocScanner();
+    private DocAnnotationScanner scanner = new DefaultDocAnnotationScanner();
 
     @Api(description = "ApiHeadersController", name = "ApiHeadersController")
     @ApiHeaders(headers = {@ApiHeader(name = "H1", description = "h1-description"),
@@ -42,7 +42,7 @@ public class ApiHeadersDocTest {
 
     @Test
     public void testApiHeadersOnClass() {
-        final ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(ApiHeadersController.class),
+        final ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(ApiHeadersController.class),
                 MethodDisplay.URI).iterator().next();
         Assert.assertEquals("ApiHeadersController", apiDoc.getName());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

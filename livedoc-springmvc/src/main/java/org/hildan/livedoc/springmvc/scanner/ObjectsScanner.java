@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.pojo.JSONDoc;
+import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
 import org.reflections.Reflections;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -57,7 +57,7 @@ public class ObjectsScanner {
 
     private void addReturnType(Set<Class<?>> candidates, Method method) {
         Class<?> returnValueClass = method.getReturnType();
-        if (returnValueClass.isPrimitive() || returnValueClass.equals(JSONDoc.class)) {
+        if (returnValueClass.isPrimitive() || returnValueClass.equals(Livedoc.class)) {
             return;
         }
         buildJSONDocObjectsCandidates(candidates, returnValueClass, method.getGenericReturnType(), reflections);

@@ -3,8 +3,8 @@ package org.hildan.livedoc.springmvc.scanner;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import com.google.common.collect.Sets;
 
 public class SpringApiVerbDocTest {
 
-    private JSONDocScanner jsondocScanner = new Spring3JSONDocScanner();
+    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
 
     @Controller
     @RequestMapping(value = "/api-verb")
@@ -47,7 +47,7 @@ public class SpringApiVerbDocTest {
 
     @Test
     public void testApiVerb() {
-        ApiDoc apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiVerbController.class),
+        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiVerbController.class),
                 MethodDisplay.URI).iterator().next();
         Assert.assertEquals("SpringApiVerbController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
@@ -61,7 +61,7 @@ public class SpringApiVerbDocTest {
             }
         }
 
-        apiDoc = jsondocScanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiVerbController2.class), MethodDisplay.URI)
+        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiVerbController2.class), MethodDisplay.URI)
                                .iterator()
                                .next();
         Assert.assertEquals("SpringApiVerbController2", apiDoc.getName());

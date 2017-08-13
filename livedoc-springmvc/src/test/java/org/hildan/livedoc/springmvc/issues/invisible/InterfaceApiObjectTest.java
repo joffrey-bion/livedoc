@@ -2,10 +2,10 @@ package org.hildan.livedoc.springmvc.issues.invisible;
 
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc;
-import org.hildan.livedoc.core.pojo.JSONDoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.JSONDocScanner;
-import org.hildan.livedoc.springmvc.scanner.Spring4JSONDocScanner;
+import org.hildan.livedoc.core.pojo.Livedoc;
+import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.scanner.Spring4DocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,17 +13,17 @@ import com.google.common.collect.Lists;
 
 public class InterfaceApiObjectTest {
 
-    JSONDocScanner jsondocScanner = new Spring4JSONDocScanner();
+    DocAnnotationScanner scanner = new Spring4DocAnnotationScanner();
 
     @Test
     public void testInvisible() {
-        JSONDoc jsonDoc = jsondocScanner.getJSONDoc("version", "basePath",
+        Livedoc livedoc = scanner.getLivedoc("version", "basePath",
                 Lists.newArrayList("org.hildan.livedoc.springmvc.issues.invisible"), true, MethodDisplay.URI);
-        Assert.assertEquals(1, jsonDoc.getObjects().keySet().size());
-        for (String string : jsonDoc.getObjects().keySet()) {
-            Assert.assertEquals(2, jsonDoc.getObjects().get(string).size());
+        Assert.assertEquals(1, livedoc.getObjects().keySet().size());
+        for (String string : livedoc.getObjects().keySet()) {
+            Assert.assertEquals(2, livedoc.getObjects().get(string).size());
         }
-        for (ApiDoc apiDoc : jsonDoc.getApis().get("")) {
+        for (ApiDoc apiDoc : livedoc.getApis().get("")) {
             for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
                 Assert.assertEquals("Resource Interface", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
             }

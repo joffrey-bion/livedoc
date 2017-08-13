@@ -3,7 +3,7 @@ package org.hildan.livedoc.core.pojo;
 import java.util.UUID;
 
 public class ApiHeaderDoc {
-    public final String jsondocId = UUID.randomUUID().toString();
+    public final String livedocId = UUID.randomUUID().toString();
 
     private String name;
 
