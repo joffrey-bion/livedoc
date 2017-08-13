@@ -1,6 +1,7 @@
 package org.hildan.livedoc.core.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +20,7 @@ import org.slf4j.LoggerFactory;
 public class JSONDocTemplateBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(JSONDocTemplateBuilder.class);
-
-    private static final Map<Class<?>, Class<?>> primitives = new HashMap<Class<?>, Class<?>>();
+    private static final Map<Class<?>, Class<?>> primitives = new HashMap<>();
 
     static {
         primitives.put(boolean.class, Boolean.class);
@@ -37,7 +37,7 @@ public class JSONDocTemplateBuilder {
     public static JSONDocTemplate build(Class<?> clazz, Set<Class<?>> jsondocObjects) {
         final JSONDocTemplate jsonDocTemplate = new JSONDocTemplate();
 
-        if (jsondocObjects.contains(clazz)) {
+        if(jsondocObjects.contains(clazz)) {
             try {
                 Set<JSONDocFieldWrapper> fields = getAllDeclaredFields(clazz);
 
@@ -52,8 +52,7 @@ public class JSONDocTemplateBuilder {
                     Object value;
                     // This condition is to avoid StackOverflow in case class "A"
                     // contains a field of type "A"
-                    if (field.getType().equals(clazz) || (apiObjectField != null
-                            && !apiObjectField.processtemplate())) {
+                    if (field.getType().equals(clazz) || (apiObjectField != null && !apiObjectField.processtemplate())) {
                         value = getValue(Object.class, field.getGenericType(), fieldName, jsondocObjects);
                     } else {
                         value = getValue(field.getType(), field.getGenericType(), fieldName, jsondocObjects);
@@ -70,26 +69,25 @@ public class JSONDocTemplateBuilder {
         return jsonDocTemplate;
     }
 
-    private static Object getValue(Class<?> fieldClass, Type fieldGenericType, String fieldName,
-            Set<Class<?>> jsondocObjects) {
+    private static Object getValue(Class<?> fieldClass, Type fieldGenericType, String fieldName, Set<Class<?>> jsondocObjects) {
 
         if (fieldClass.isPrimitive()) {
             return getValue(wrap(fieldClass), null, fieldName, jsondocObjects);
 
         } else if (Map.class.isAssignableFrom(fieldClass)) {
-            return new HashMap<Object, Object>();
+            return new HashMap<>();
 
         } else if (Number.class.isAssignableFrom(fieldClass)) {
-            return new Integer(0);
+            return 0;
 
         } else if (String.class.isAssignableFrom(fieldClass) || fieldClass.isEnum()) {
-            return new String("");
+            return "";
 
         } else if (Boolean.class.isAssignableFrom(fieldClass)) {
-            return new Boolean("true");
+            return Boolean.TRUE;
 
         } else if (fieldClass.isArray() || Collection.class.isAssignableFrom(fieldClass)) {
-            return new ArrayList<Object>();
+            return new ArrayList<>();
 
         } else {
             return build(fieldClass, jsondocObjects);
@@ -98,9 +96,9 @@ public class JSONDocTemplateBuilder {
     }
 
     private static Set<JSONDocFieldWrapper> getAllDeclaredFields(Class<?> clazz) {
-        Set<JSONDocFieldWrapper> fields = new TreeSet<JSONDocFieldWrapper>();
+        Set<JSONDocFieldWrapper> fields = new TreeSet<>();
 
-        List<Field> declaredFields = new ArrayList<Field>();
+        List<Field> declaredFields = new ArrayList<>();
         if (clazz.isEnum()) {
             return fields;
         } else {
@@ -108,6 +106,9 @@ public class JSONDocTemplateBuilder {
         }
 
         for (Field field : declaredFields) {
+            if (!shouldBeSerialized(field)) {
+                continue;
+            }
             if (field.isAnnotationPresent(ApiObjectField.class)) {
                 ApiObjectField annotation = field.getAnnotation(ApiObjectField.class);
                 fields.add(new JSONDocFieldWrapper(field, annotation.order()));
@@ -123,9 +124,12 @@ public class JSONDocTemplateBuilder {
         return fields;
     }
 
+    private static boolean shouldBeSerialized(Field field) {
+        return !field.isSynthetic() && !Modifier.isTransient(field.getModifiers());
+    }
+
     @SuppressWarnings("unchecked")
     private static <T> Class<T> wrap(Class<T> clazz) {
         return clazz.isPrimitive() ? (Class<T>) primitives.get(clazz) : clazz;
     }
-
 }
