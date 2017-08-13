@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.2.0](https://bintray.com/joffrey-bion/maven/livedoc/0.2.0) (2017-08-13)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.1.1...v0.2.0)
+
+**Implemented enhancements:**
+
+- Allow custom scanner in JsonDocController [\#2](https://github.com/joffrey-bion/livedoc/issues/2)
+
+**Closed issues:**
+
+- Type names shouldn't be forced to lowercase [\#5](https://github.com/joffrey-bion/livedoc/issues/5)
+- Livedoc ignores transient modifier \(leading to StackOverflowError\) [\#4](https://github.com/joffrey-bion/livedoc/issues/4)
+
 ## [v0.1.1](https://bintray.com/joffrey-bion/maven/livedoc/0.1.1) (2017-08-13)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.1.0...v0.1.1)
 
