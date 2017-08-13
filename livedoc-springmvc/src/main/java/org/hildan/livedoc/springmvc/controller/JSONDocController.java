@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class JSONDocController {
+
     private String version;
 
     private String basePath;
@@ -30,28 +31,43 @@ public class JSONDocController {
 
     public final static String JSONDOC_DEFAULT_PATH = "/jsondoc";
 
-    private final static Integer SPRING_VERSION_3_X = 3;
+    private final static Integer SPRING_MAJOR_VERSION_3 = 3;
 
     public JSONDocController(String version, String basePath, List<String> packages) {
+        this(version, basePath, packages, getSpringJsonDocScanner());
+    }
+
+    public JSONDocController(String version, String basePath, List<String> packages, JSONDocScanner jsonDocScanner) {
         this.version = version;
         this.basePath = basePath;
         this.packages = packages;
+        this.jsondocScanner = jsonDocScanner;
+    }
+
+    private static JSONDocScanner getSpringJsonDocScanner() {
+        if (isSpring4OrMoreOnClasspath()) {
+            return new Spring4JSONDocScanner();
+        } else {
+            return new Spring3JSONDocScanner();
+        }
+    }
+
+    private static boolean isSpring4OrMoreOnClasspath() {
         String springVersion = SpringVersion.getVersion();
         if (springVersion != null && !springVersion.isEmpty()) {
             Integer majorSpringVersion = Integer.parseInt(springVersion.split("\\.")[0]);
-            if (majorSpringVersion > SPRING_VERSION_3_X) {
-                this.jsondocScanner = new Spring4JSONDocScanner();
-            } else {
-                this.jsondocScanner = new Spring3JSONDocScanner();
-            }
+            return majorSpringVersion > SPRING_MAJOR_VERSION_3;
         } else {
-            try {
-                Class.forName("org.springframework.web.bind.annotation.RestController");
-                this.jsondocScanner = new Spring4JSONDocScanner();
+            return isRestControllerAnnotationOnClassPath();
+        }
+    }
 
-            } catch (ClassNotFoundException e) {
-                this.jsondocScanner = new Spring3JSONDocScanner();
-            }
+    private static boolean isRestControllerAnnotationOnClassPath() {
+        try {
+            Class.forName("org.springframework.web.bind.annotation.RestController");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
     }
 
