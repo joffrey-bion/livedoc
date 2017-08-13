@@ -35,7 +35,7 @@ public class JSONDocTypeBuilder {
                 jsondocType.setMapValue(new JSONDocType());
 
                 if (mapKeyType instanceof Class) {
-                    jsondocType.setMapKey(new JSONDocType(((Class<?>) mapKeyType).getSimpleName().toLowerCase()));
+                    jsondocType.setMapKey(new JSONDocType(((Class<?>) mapKeyType).getSimpleName()));
                 } else if (mapKeyType instanceof WildcardType) {
                     jsondocType.setMapKey(new JSONDocType(WILDCARD));
                 } else if (mapKeyType instanceof TypeVariable<?>) {
@@ -47,7 +47,7 @@ public class JSONDocTypeBuilder {
                 }
 
                 if (mapValueType instanceof Class) {
-                    jsondocType.setMapValue(new JSONDocType(((Class<?>) mapValueType).getSimpleName().toLowerCase()));
+                    jsondocType.setMapValue(new JSONDocType(((Class<?>) mapValueType).getSimpleName()));
                 } else if (mapValueType instanceof WildcardType) {
                     jsondocType.setMapValue(new JSONDocType(WILDCARD));
                 } else if (mapValueType instanceof TypeVariable<?>) {
@@ -57,9 +57,7 @@ public class JSONDocTypeBuilder {
                             build(jsondocType.getMapValue(), (Class<?>) ((ParameterizedType) mapValueType).getRawType(),
                                     mapValueType));
                 }
-
             }
-
         } else if (Collection.class.isAssignableFrom(clazz)) {
             if (type instanceof ParameterizedType) {
                 Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
@@ -80,12 +78,10 @@ public class JSONDocTypeBuilder {
             } else {
                 jsondocType.addItemToType(getCustomClassName(clazz));
             }
-
         } else if (clazz.isArray()) {
             jsondocType.addItemToType(ARRAY);
             Class<?> componentType = clazz.getComponentType();
             return build(jsondocType, componentType, type);
-
         } else {
             jsondocType.addItemToType(getCustomClassName(clazz));
             if (type instanceof ParameterizedType) {
@@ -111,13 +107,12 @@ public class JSONDocTypeBuilder {
         if (clazz.isAnnotationPresent(ApiObject.class)) {
             ApiObject annotation = clazz.getAnnotation(ApiObject.class);
             if (annotation.name().isEmpty()) {
-                return clazz.getSimpleName().toLowerCase();
+                return clazz.getSimpleName();
             } else {
                 return annotation.name();
             }
         } else {
-            return clazz.getSimpleName().toLowerCase();
+            return clazz.getSimpleName();
         }
     }
-
 }

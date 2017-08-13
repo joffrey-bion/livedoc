@@ -39,7 +39,7 @@ public class JSONDocApiObjectDocBuilder {
         }
 
         if (apiObject.name().trim().isEmpty()) {
-            apiObjectDoc.setName(clazz.getSimpleName().toLowerCase());
+            apiObjectDoc.setName(clazz.getSimpleName());
         } else {
             apiObjectDoc.setName(apiObject.name());
         }
@@ -53,5 +53,4 @@ public class JSONDocApiObjectDocBuilder {
 
         return apiObjectDoc;
     }
-
 }

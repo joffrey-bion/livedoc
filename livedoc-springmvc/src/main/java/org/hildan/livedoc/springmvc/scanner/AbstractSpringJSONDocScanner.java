@@ -46,8 +46,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.collect.Sets;
-
 public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanner {
 
     @Override
@@ -71,7 +69,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
      *
      * @return
      */
-    public static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type,
+    private static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type,
             Reflections reflections) {
 
         if (Map.class.isAssignableFrom(clazz)) {
@@ -192,43 +190,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
 
     @Override
     public Set<Class<?>> jsondocObjects(List<String> packages) {
-        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
-        Set<Class<?>> candidates = Sets.newHashSet();
-        Set<Class<?>> subCandidates = Sets.newHashSet();
-        Set<Class<?>> elected = Sets.newHashSet();
-
-        for (Method method : methodsAnnotatedWith) {
-            buildJSONDocObjectsCandidates(candidates, method.getReturnType(), method.getGenericReturnType(),
-                    reflections);
-            Integer requestBodyParameterIndex = JSONDocUtils.getIndexOfParameterWithAnnotation(method,
-                    RequestBody.class);
-            if (requestBodyParameterIndex != -1) {
-                candidates.addAll(
-                        buildJSONDocObjectsCandidates(candidates, method.getParameterTypes()[requestBodyParameterIndex],
-                                method.getGenericParameterTypes()[requestBodyParameterIndex], reflections));
-            }
-        }
-
-        // This is to get objects' fields that are not returned nor part of the body request of a method, but that
-        // are a field
-        // of an object returned or a body  of a request of a method
-        for (Class<?> clazz : candidates) {
-            appendSubCandidates(clazz, subCandidates, reflections);
-        }
-
-        candidates.addAll(subCandidates);
-
-        for (Class<?> clazz : candidates) {
-            if (clazz.getPackage() != null) {
-                for (String pkg : packages) {
-                    if (clazz.getPackage().getName().contains(pkg)) {
-                        elected.add(clazz);
-                    }
-                }
-            }
-        }
-
-        return elected;
+        return new ObjectsScanner(reflections).findJsondocObjects(packages);
     }
 
     @Override
@@ -254,7 +216,7 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
     @Override
     public ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc) {
         ApiDoc jsondocApiDoc = JSONDocApiDocBuilder.build(controller);
-        BeanUtils.copyProperties(jsondocApiDoc, apiDoc, new String[] {"methods", "supportedversions", "auth"});
+        BeanUtils.copyProperties(jsondocApiDoc, apiDoc, "methods", "supportedversions", "auth");
         return apiDoc;
     }
 
@@ -285,10 +247,9 @@ public abstract class AbstractSpringJSONDocScanner extends AbstractJSONDocScanne
     public ApiMethodDoc mergeApiMethodDoc(Method method, ApiMethodDoc apiMethodDoc) {
         if (method.isAnnotationPresent(ApiMethod.class) && method.getDeclaringClass().isAnnotationPresent(Api.class)) {
             ApiMethodDoc jsondocApiMethodDoc = JSONDocApiMethodDocBuilder.build(method);
-            BeanUtils.copyProperties(jsondocApiMethodDoc, apiMethodDoc,
-                    new String[] {"path", "verb", "produces", "consumes", "headers", "pathparameters",
-                            "queryparameters", "bodyobject", "response", "responsestatuscode", "apierrors",
-                            "supportedversions", "auth", "displayMethodAs"});
+            BeanUtils.copyProperties(jsondocApiMethodDoc, apiMethodDoc, "path", "verb", "produces", "consumes",
+                    "headers", "pathparameters", "queryparameters", "bodyobject", "response", "responsestatuscode",
+                    "apierrors", "supportedversions", "auth", "displayMethodAs");
         }
         return apiMethodDoc;
     }

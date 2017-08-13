@@ -15,8 +15,9 @@ public class SpringResponseBuilder {
      * important to the documentation user.
      *
      * @param method
+     *         the method to create the response object for
      *
-     * @return
+     * @return the created {@link ApiResponseObjectDoc}
      */
     public static ApiResponseObjectDoc buildResponse(Method method) {
         ApiResponseObjectDoc apiResponseObjectDoc = new ApiResponseObjectDoc(
@@ -28,5 +29,4 @@ public class SpringResponseBuilder {
 
         return apiResponseObjectDoc;
     }
-
 }

@@ -48,13 +48,13 @@ public class SpringResponseBuilderTest {
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/response-one")) {
-                Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+                Assert.assertEquals("String", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
             }
             if (apiMethodDoc.getPath().contains("/response-two")) {
-                Assert.assertEquals("string", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
+                Assert.assertEquals("String", apiMethodDoc.getResponse().getJsondocType().getOneLineText());
             }
             if (apiMethodDoc.getPath().contains("/response-three")) {
-                Assert.assertEquals("map[string, integer]",
+                Assert.assertEquals("Map[String, Integer]",
                         apiMethodDoc.getResponse().getJsondocType().getOneLineText());
             }
         }
