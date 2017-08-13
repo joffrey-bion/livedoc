@@ -1,82 +1,99 @@
 package org.hildan.livedoc.springmvc.scanner.builder;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.google.common.collect.ObjectArrays;
 
 public class SpringPathBuilder {
 
-    /**
-     * From Spring's documentation: Supported at the type level as well as at the method level! When used at the type
-     * level, all method-level mappings inherit this primary mapping, narrowing it for a specific handler method.
-     *
-     * @param method
-     *
-     * @return
-     */
     public static Set<String> buildPath(Method method) {
-        Class<?> controller = method.getDeclaringClass();
-
         Set<String> paths = new HashSet<String>();
-        Set<String> controllerMapping = new HashSet<String>();
-        Set<String> methodMapping = new HashSet<String>();
 
-        if (controller.isAnnotationPresent(RequestMapping.class)) {
-            RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
-            if (valueMapping(requestMapping).length > 0 || pathMapping(requestMapping).length > 0) {
-                controllerMapping = new HashSet<String>(Arrays.asList(
-                        ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
-            }
+        if (method.isAnnotationPresent(MessageMapping.class)) {
+            paths.addAll(getMappings(method, MessageMapping.class));
         }
-
+        if (method.isAnnotationPresent(SubscribeMapping.class)) {
+            paths.addAll(getMappings(method, SubscribeMapping.class));
+        }
         if (method.isAnnotationPresent(RequestMapping.class)) {
-            RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-            if (requestMapping.value().length > 0 || pathMapping(requestMapping).length > 0) {
-                methodMapping = new HashSet<String>(Arrays.asList(
-                        ObjectArrays.concat(requestMapping.value(), pathMapping(requestMapping), String.class)));
-            }
-        }
-
-        // if no path has been specified then adds an empty path to enter the following loop
-        if (controllerMapping.isEmpty()) {
-            controllerMapping.add("");
-        }
-        if (methodMapping.isEmpty()) {
-            methodMapping.add("");
-        }
-
-        for (String controllerPath : controllerMapping) {
-            for (String methodPath : methodMapping) {
-                paths.add(controllerPath + methodPath);
-            }
-        }
-
-        for (String path : paths) {
-            if (path.equals("")) {
-                paths.remove(path);
-                paths.add("/");
-            }
+            paths.addAll(getMappings(method, RequestMapping.class));
         }
 
         return paths;
     }
 
-    //Handle the fact that this method is only in Spring 4, not available in Spring 3
-    private static String[] pathMapping(RequestMapping requestMapping) {
+    private static Set<String> getMappings(Method method, Class<? extends Annotation> annotationClass) {
+        Set<String> controllerMappings = getControllerMappings(method, annotationClass);
+        Set<String> methodMappings = getMappedPaths(method.getAnnotation(annotationClass));
+
+        Set<String> mappings = new HashSet<>();
+        for (String controllerPath : controllerMappings) {
+            for (String methodPath : methodMappings) {
+                mappings.add(join(controllerPath, methodPath));
+            }
+        }
+        return mappings;
+    }
+
+    private static String join(String path1, String path2) {
+        boolean path1HasSep = path1.endsWith("/");
+        boolean path2HasSep = path2.startsWith("/");
+        if (path1HasSep && path2HasSep) {
+            return path1 + path2.substring(1);
+        }
+        if (!path1HasSep && !path2HasSep && (path1.isEmpty() || !path2.isEmpty())) {
+            return path1 + '/' + path2;
+        }
+        return path1 + path2;
+    }
+
+    private static Set<String> getControllerMappings(Method method, Class<? extends Annotation> annotationClass) {
+        Class<?> controller = method.getDeclaringClass();
+        if (controller.isAnnotationPresent(annotationClass)) {
+            return getMappedPaths(controller.getAnnotation(annotationClass));
+        }
+        return Collections.singleton("");
+    }
+
+    private static Set<String> getMappedPaths(Annotation mapping) {
+        Set<String> paths = new HashSet<>();
+        paths.addAll(Arrays.asList(valueMapping(mapping)));
+        paths.addAll(Arrays.asList(pathMapping(mapping)));
+        if (paths.isEmpty()) {
+            paths.add("");
+        }
+        return paths;
+    }
+
+    private static String[] pathMapping(Annotation mapping) {
         try {
-            return requestMapping.path();
+            if (mapping instanceof RequestMapping) {
+                return ((RequestMapping) mapping).path();
+            }
+            return new String[0];
         } catch (NoSuchMethodError e) {
+            //Handle the fact that this method is only in Spring 4, not available in Spring 3
             return new String[0];
         }
     }
 
-    private static String[] valueMapping(RequestMapping requestMapping) {
-        return requestMapping.value();
+    private static String[] valueMapping(Annotation mapping) {
+        if (mapping instanceof RequestMapping) {
+            return ((RequestMapping) mapping).value();
+        }
+        if (mapping instanceof MessageMapping) {
+            return ((MessageMapping) mapping).value();
+        }
+        if (mapping instanceof SubscribeMapping) {
+            return ((SubscribeMapping) mapping).value();
+        }
+        return new String[0];
     }
-
 }
