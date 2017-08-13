@@ -4,11 +4,6 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.hildan.livedoc.core.annotation.Api;
-import org.hildan.livedoc.core.annotation.ApiMethod;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.scanner.builder.JSONDocApiMethodDocBuilder;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -22,30 +17,23 @@ public class Spring4JSONDocScanner extends AbstractSpringJSONDocScanner {
     public Set<Class<?>> jsondocControllers() {
         Set<Class<?>> jsondocControllers = reflections.getTypesAnnotatedWith(Controller.class, true);
         jsondocControllers.addAll(reflections.getTypesAnnotatedWith(RestController.class, true));
-
-        try {
-            Class.forName("org.springframework.data.rest.webmvc.RepositoryRestController");
+        if (isSpringDataRestOnClassPath()) {
             jsondocControllers.addAll(reflections.getTypesAnnotatedWith(RepositoryRestController.class, true));
-
-        } catch (ClassNotFoundException e) {
-            log.debug(e.getMessage() + ".class not found");
         }
-
         return jsondocControllers;
     }
 
-    @Override
-    public Set<Method> jsondocMethods(Class<?> controller) {
-        Set<Method> annotatedMethods = new LinkedHashSet<>();
-        for (Method method : controller.getDeclaredMethods()) {
-            if (shouldDocument(method)) {
-                annotatedMethods.add(method);
-            }
+    private static boolean isSpringDataRestOnClassPath() {
+        try {
+            Class.forName("org.springframework.data.rest.webmvc.RepositoryRestController");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
-        return annotatedMethods;
     }
 
-    private boolean shouldDocument(Method method) {
+    @Override
+    protected boolean shouldDocumentMethod(Method method) {
         return method.isAnnotationPresent(RequestMapping.class) || method.isAnnotationPresent(MessageMapping.class)
                 || method.isAnnotationPresent(SubscribeMapping.class);
     }

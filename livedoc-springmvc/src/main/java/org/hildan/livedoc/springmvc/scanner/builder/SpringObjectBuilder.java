@@ -18,7 +18,7 @@ public class SpringObjectBuilder {
         ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
         apiObjectDoc.setName(clazz.getSimpleName());
 
-        Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<ApiObjectFieldDoc>();
+        Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<>();
 
         for (Field field : clazz.getDeclaredFields()) {
             ApiObjectFieldDoc fieldDoc = new ApiObjectFieldDoc();
@@ -50,5 +50,4 @@ public class SpringObjectBuilder {
 
         return apiObjectDoc;
     }
-
 }

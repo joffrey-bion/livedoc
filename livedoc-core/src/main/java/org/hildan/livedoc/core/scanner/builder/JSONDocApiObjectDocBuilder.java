@@ -16,7 +16,7 @@ public class JSONDocApiObjectDocBuilder {
         ApiObject apiObject = clazz.getAnnotation(ApiObject.class);
         ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
 
-        Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<ApiObjectFieldDoc>();
+        Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<>();
         for (Field field : clazz.getDeclaredFields()) {
             if (field.getAnnotation(ApiObjectField.class) != null) {
                 ApiObjectFieldDoc fieldDoc = JSONDocApiObjectFieldDocBuilder.build(
