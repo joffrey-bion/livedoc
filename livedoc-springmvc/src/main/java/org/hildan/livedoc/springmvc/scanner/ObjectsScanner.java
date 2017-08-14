@@ -55,6 +55,13 @@ public class ObjectsScanner {
         return candidates;
     }
 
+    private Set<Method> getMethodsToDocument() {
+        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
+        methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(SubscribeMapping.class));
+        methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(MessageMapping.class));
+        return methodsAnnotatedWith;
+    }
+
     private void addReturnType(Set<Class<?>> candidates, Method method) {
         Class<?> returnValueClass = method.getReturnType();
         if (returnValueClass.isPrimitive() || returnValueClass.equals(Livedoc.class)) {
@@ -70,13 +77,6 @@ public class ObjectsScanner {
             Type bodyParamType = method.getGenericParameterTypes()[bodyParamIndex];
             buildJSONDocObjectsCandidates(candidates, bodyParamClass, bodyParamType, reflections);
         }
-    }
-
-    private Set<Method> getMethodsToDocument() {
-        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
-        methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(SubscribeMapping.class));
-        methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(MessageMapping.class));
-        return methodsAnnotatedWith;
     }
 
     private boolean inWhiteListedPackages(List<String> packages, Class<?> clazz) {

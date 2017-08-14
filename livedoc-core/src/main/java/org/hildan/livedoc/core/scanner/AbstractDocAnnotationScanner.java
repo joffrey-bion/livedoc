@@ -162,14 +162,14 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
         Set<ApiMethodDoc> apiMethodDocs = new TreeSet<>();
         Set<Method> methods = jsondocMethods(controller);
         for (Method method : methods) {
-            ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller, displayMethodAs);
+            ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, displayMethodAs);
             apiMethodDocs.add(apiMethodDoc);
         }
         allApiMethodDocs.addAll(apiMethodDocs);
         return apiMethodDocs;
     }
 
-    private ApiMethodDoc getApiMethodDoc(Method method, Class<?> controller, MethodDisplay displayMethodAs) {
+    private ApiMethodDoc getApiMethodDoc(Method method, MethodDisplay displayMethodAs) {
         ApiMethodDoc apiMethodDoc = initApiMethodDoc(method, jsondocTemplates);
 
         apiMethodDoc.setDisplayMethodAs(displayMethodAs);
