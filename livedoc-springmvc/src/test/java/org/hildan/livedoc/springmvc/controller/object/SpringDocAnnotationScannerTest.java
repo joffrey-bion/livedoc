@@ -10,12 +10,12 @@ import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
-import org.hildan.livedoc.springmvc.scanner.Spring3DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.scanner.SpringDocAnnotationScanner;
 import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-public class Spring3DocAnnotationScannerTest {
+public class SpringDocAnnotationScannerTest {
 
     private static final String VERSION = "1.0";
 
@@ -25,7 +25,7 @@ public class Spring3DocAnnotationScannerTest {
 
     @Test
     public void getJSONDoc() throws IOException {
-        DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+        DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
         Livedoc doc = scanner.getLivedoc(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = doc.getObjects();
@@ -39,7 +39,7 @@ public class Spring3DocAnnotationScannerTest {
 
     @Test
     public void findsNestedObject() throws Exception {
-        DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+        DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
         Livedoc jsondoc = scanner.getLivedoc(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();
@@ -50,7 +50,7 @@ public class Spring3DocAnnotationScannerTest {
 
     @Test
     public void findsDeeplyNestedObjects() throws Exception {
-        DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+        DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
         Livedoc jsondoc = scanner.getLivedoc(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();

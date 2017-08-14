@@ -15,7 +15,7 @@ import com.google.common.collect.Sets;
 
 public class SpringApiVerbDocTest {
 
-    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
 
     @Controller
     @RequestMapping(value = "/api-verb")

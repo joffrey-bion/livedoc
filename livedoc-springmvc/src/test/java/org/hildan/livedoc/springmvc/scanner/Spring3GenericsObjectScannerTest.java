@@ -16,7 +16,7 @@ public class Spring3GenericsObjectScannerTest {
 
     @Test
     public void getLivedoc() throws IOException {
-        DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+        DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
         String version = "1.0";
         String basePath = "http://localhost:8080/api";
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.issue174");

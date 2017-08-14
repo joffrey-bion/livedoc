@@ -3,7 +3,7 @@ package org.hildan.livedoc.springmvc.issues.issue151;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
-import org.hildan.livedoc.springmvc.scanner.Spring3DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.scanner.SpringDocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 // https://github.com/fabiomaffioletti/jsondoc/issues/151
 public class Issue151Test {
 
-    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
 
     @Test
     public void testIssue151() {

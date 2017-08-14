@@ -5,7 +5,7 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
-import org.hildan.livedoc.springmvc.scanner.Spring4DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.scanner.SpringDocAnnotationScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 
 public class InterfaceApiObjectTest {
 
-    DocAnnotationScanner scanner = new Spring4DocAnnotationScanner();
+    DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
 
     @Test
     public void testInvisible() {

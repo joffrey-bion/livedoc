@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class Spring3DocAnnotationScannerTest {
+public class SpringDocAnnotationScannerTest {
 
-    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
 
     @Api(description = "A spring controller", name = "Spring controller")
     @RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})

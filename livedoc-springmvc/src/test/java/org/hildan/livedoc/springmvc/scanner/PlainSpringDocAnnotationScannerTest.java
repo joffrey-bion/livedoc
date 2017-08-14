@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class PlainSpringDocAnnotationScannerTest {
 
-    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
 
     @Controller
     @RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -16,7 +16,7 @@ import com.google.common.collect.Sets;
 
 public class SpringConsumesBuilderTest {
 
-    private DocAnnotationScanner scanner = new Spring3DocAnnotationScanner();
+    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
 
     @Controller
     @RequestMapping
