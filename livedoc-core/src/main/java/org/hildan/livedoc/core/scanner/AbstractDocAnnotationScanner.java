@@ -16,6 +16,7 @@ import org.hildan.livedoc.core.annotation.flow.ApiFlow;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
+import org.hildan.livedoc.core.pojo.Groupable;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.pojo.LivedocTemplate;
@@ -77,6 +78,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
      *
      * @return An <code>ApiDoc</code> object
      */
+    @Override
     public Livedoc getLivedoc(String version, String basePath, List<String> packages, boolean playgroundEnabled,
             MethodDisplay displayMethodAs) {
         Set<URL> urls = new HashSet<>();
@@ -108,14 +110,15 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
             jsondocTemplates.put(clazz, LivedocTemplateBuilder.build(clazz, jsondocObjects));
         }
 
-        livedoc.setApis(getApiDocsMap(jsondocControllers, displayMethodAs));
-        livedoc.setObjects(getApiObjectsMap(jsondocObjects));
-        livedoc.setFlows(getApiFlowDocsMap(jsondocFlows, allApiMethodDocs));
+        livedoc.setApis(group(getApiDocs(jsondocControllers, displayMethodAs)));
+        livedoc.setObjects(group(getApiObjectDocs(jsondocObjects)));
+        livedoc.setFlows(group(getApiFlowDocs(jsondocFlows, allApiMethodDocs)));
         livedoc.setGlobal(getApiGlobalDoc(jsondocGlobal, jsondocChangelogs, jsondocMigrations));
 
         return livedoc;
     }
 
+    @Override
     public ApiGlobalDoc getApiGlobalDoc(Set<Class<?>> global, Set<Class<?>> changelogs, Set<Class<?>> migrations) {
         return ApiGlobalDocReader.read(global, changelogs, migrations);
     }
@@ -123,6 +126,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     /**
      * Gets the API documentation for the set of classes passed as argument
      */
+    @Override
     public Set<ApiDoc> getApiDocs(Set<Class<?>> classes, MethodDisplay displayMethodAs) {
         Set<ApiDoc> apiDocs = new TreeSet<>();
         for (Class<?> controller : classes) {
@@ -182,6 +186,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     /**
      * Gets the API flow documentation for the set of classes passed as argument
      */
+    @Override
     public Set<ApiFlowDoc> getApiFlowDocs(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs) {
         Set<ApiFlowDoc> apiFlowDocs = new TreeSet<>();
         for (Class<?> clazz : classes) {
@@ -201,6 +206,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
         return ApiFlowDoc.buildFromAnnotation(method.getAnnotation(ApiFlow.class), apiMethodDocs);
     }
 
+    @Override
     public Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
         Set<ApiObjectDoc> apiObjectDocs = new TreeSet<>();
 
@@ -222,49 +228,15 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
         return apiObjectDocs;
     }
 
-    private Map<String, Set<ApiDoc>> getApiDocsMap(Set<Class<?>> classes, MethodDisplay displayMethodAs) {
-        Map<String, Set<ApiDoc>> apiDocsMap = new TreeMap<>();
-        Set<ApiDoc> apiDocSet = getApiDocs(classes, displayMethodAs);
-        for (ApiDoc apiDoc : apiDocSet) {
-            if (apiDocsMap.containsKey(apiDoc.getGroup())) {
-                apiDocsMap.get(apiDoc.getGroup()).add(apiDoc);
-            } else {
-                Set<ApiDoc> groupedPojoDocs = new TreeSet<>();
-                groupedPojoDocs.add(apiDoc);
-                apiDocsMap.put(apiDoc.getGroup(), groupedPojoDocs);
-            }
+    private static <T extends Groupable> Map<String, Set<T>> group(Iterable<T> elements) {
+        Map<String, Set<T>> groupedElements = new TreeMap<>();
+        for (T e : elements) {
+            String groupName = e.getGroup();
+            groupedElements.putIfAbsent(groupName, new TreeSet<>());
+            Set<T> group = groupedElements.get(groupName);
+            group.add(e);
         }
-        return apiDocsMap;
-    }
-
-    private Map<String, Set<ApiObjectDoc>> getApiObjectsMap(Set<Class<?>> classes) {
-        Map<String, Set<ApiObjectDoc>> objectsMap = new TreeMap<>();
-        Set<ApiObjectDoc> apiObjectDocSet = getApiObjectDocs(classes);
-        for (ApiObjectDoc apiObjectDoc : apiObjectDocSet) {
-            if (objectsMap.containsKey(apiObjectDoc.getGroup())) {
-                objectsMap.get(apiObjectDoc.getGroup()).add(apiObjectDoc);
-            } else {
-                Set<ApiObjectDoc> groupedPojoDocs = new TreeSet<>();
-                groupedPojoDocs.add(apiObjectDoc);
-                objectsMap.put(apiObjectDoc.getGroup(), groupedPojoDocs);
-            }
-        }
-        return objectsMap;
-    }
-
-    private Map<String, Set<ApiFlowDoc>> getApiFlowDocsMap(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs) {
-        Map<String, Set<ApiFlowDoc>> apiFlowDocsMap = new TreeMap<>();
-        Set<ApiFlowDoc> apiFlowDocSet = getApiFlowDocs(classes, apiMethodDocs);
-        for (ApiFlowDoc apiFlowDoc : apiFlowDocSet) {
-            if (apiFlowDocsMap.containsKey(apiFlowDoc.getGroup())) {
-                apiFlowDocsMap.get(apiFlowDoc.getGroup()).add(apiFlowDoc);
-            } else {
-                Set<ApiFlowDoc> groupedFlowDocs = new TreeSet<>();
-                groupedFlowDocs.add(apiFlowDoc);
-                apiFlowDocsMap.put(apiFlowDoc.getGroup(), groupedFlowDocs);
-            }
-        }
-        return apiFlowDocsMap;
+        return groupedElements;
     }
 
     public static String[] enumConstantsToStringArray(Object[] enumConstants) {

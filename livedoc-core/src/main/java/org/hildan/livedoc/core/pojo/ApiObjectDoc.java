@@ -4,7 +4,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc> {
+public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc>, Groupable {
+
     public final String livedocId = UUID.randomUUID().toString();
 
     private String name;
@@ -80,6 +81,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.allowedvalues = allowedvalues;
     }
 
+    @Override
     public String getGroup() {
         return group;
     }

@@ -4,7 +4,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-public class ApiDoc implements Comparable<ApiDoc> {
+public class ApiDoc implements Comparable<ApiDoc>, Groupable {
+
     public final String livedocId = UUID.randomUUID().toString();
 
     // properties that can be overridden by the values specified in the @Api annotation
@@ -80,6 +81,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
         this.auth = auth;
     }
 
+    @Override
     public String getGroup() {
         return group;
     }

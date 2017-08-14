@@ -7,8 +7,10 @@ import java.util.UUID;
 import org.hildan.livedoc.core.annotation.flow.ApiFlow;
 import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
+import org.hildan.livedoc.core.pojo.Groupable;
 
-public class ApiFlowDoc implements Comparable<ApiFlowDoc> {
+public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
+
     public final String livedocId = UUID.randomUUID().toString();
 
     private String name;
@@ -61,6 +63,7 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc> {
         this.description = description;
     }
 
+    @Override
     public String getGroup() {
         return group;
     }
