@@ -40,9 +40,9 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc> {
     }
 
     public ApiFlowDoc() {
-        this.preconditions = new LinkedList<String>();
-        this.steps = new LinkedList<ApiFlowStepDoc>();
-        this.methods = new LinkedList<ApiMethodDoc>();
+        this.preconditions = new LinkedList<>();
+        this.steps = new LinkedList<>();
+        this.methods = new LinkedList<>();
     }
 
     public String getName() {

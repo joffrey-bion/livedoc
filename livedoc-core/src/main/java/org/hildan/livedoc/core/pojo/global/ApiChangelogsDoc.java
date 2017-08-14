@@ -10,7 +10,7 @@ public class ApiChangelogsDoc {
     private Set<ApiChangelogDoc> changelogs;
 
     public ApiChangelogsDoc() {
-        this.changelogs = new LinkedHashSet<ApiChangelogDoc>();
+        this.changelogs = new LinkedHashSet<>();
     }
 
     public Set<ApiChangelogDoc> getChangelogs() {

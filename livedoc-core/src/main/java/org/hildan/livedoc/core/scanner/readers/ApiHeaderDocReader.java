@@ -11,7 +11,7 @@ import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
 public class ApiHeaderDocReader {
 
     public static Set<ApiHeaderDoc> read(Method method) {
-        Set<ApiHeaderDoc> docs = new LinkedHashSet<ApiHeaderDoc>();
+        Set<ApiHeaderDoc> docs = new LinkedHashSet<>();
 
         ApiHeaders methodAnnotation = method.getAnnotation(ApiHeaders.class);
         ApiHeaders typeAnnotation = method.getDeclaringClass().getAnnotation(ApiHeaders.class);

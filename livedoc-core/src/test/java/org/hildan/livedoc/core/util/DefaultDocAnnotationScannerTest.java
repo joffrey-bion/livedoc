@@ -66,7 +66,7 @@ public class DefaultDocAnnotationScannerTest {
     }
 
     private Set<ApiVerb> getAllTestedApiVerbs(Livedoc livedoc) {
-        Set<ApiVerb> apiVerbs = new HashSet<ApiVerb>();
+        Set<ApiVerb> apiVerbs = new HashSet<>();
 
         for (String string : livedoc.getObjects().keySet()) {
             Set<ApiDoc> apiDocs = livedoc.getApis().get(string);

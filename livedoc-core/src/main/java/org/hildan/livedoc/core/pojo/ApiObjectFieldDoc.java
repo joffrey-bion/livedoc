@@ -28,7 +28,7 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
     private Integer order;
 
     public ApiObjectFieldDoc() {
-        this.format = new LinkedHashSet<String>();
+        this.format = new LinkedHashSet<>();
     }
 
     public String[] getAllowedvalues() {

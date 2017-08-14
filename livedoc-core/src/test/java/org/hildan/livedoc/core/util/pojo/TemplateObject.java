@@ -51,7 +51,7 @@ public class TemplateObject {
     private TemplateSubObject subObj = new TemplateSubObject();
 
     @ApiObjectField
-    private List<TemplateSubObject> subobjlist = new ArrayList<TemplateSubObject>();
+    private List<TemplateSubObject> subobjlist = new ArrayList<>();
 
     @ApiObjectField
     private int[] intarr;

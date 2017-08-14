@@ -19,7 +19,7 @@ public class SpringVerbBuilder {
      * @return
      */
     public static Set<ApiVerb> buildVerb(Method method) {
-        Set<ApiVerb> apiVerbs = new LinkedHashSet<ApiVerb>();
+        Set<ApiVerb> apiVerbs = new LinkedHashSet<>();
         Class<?> controller = method.getDeclaringClass();
 
         if (controller.isAnnotationPresent(RequestMapping.class)) {

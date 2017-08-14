@@ -12,7 +12,7 @@ public class ApiGlobalSectionDoc {
     private Set<String> paragraphs;
 
     public ApiGlobalSectionDoc() {
-        this.paragraphs = new LinkedHashSet<String>();
+        this.paragraphs = new LinkedHashSet<>();
     }
 
     public String getTitle() {

@@ -59,19 +59,19 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
         this.id = null;
         this.description = "";
         this.summary = "";
-        this.path = new LinkedHashSet<String>();
-        this.verb = new LinkedHashSet<ApiVerb>();
-        this.produces = new LinkedHashSet<String>();
-        this.consumes = new LinkedHashSet<String>();
-        this.headers = new LinkedHashSet<ApiHeaderDoc>();
-        this.pathparameters = new LinkedHashSet<ApiParamDoc>();
-        this.queryparameters = new LinkedHashSet<ApiParamDoc>();
+        this.path = new LinkedHashSet<>();
+        this.verb = new LinkedHashSet<>();
+        this.produces = new LinkedHashSet<>();
+        this.consumes = new LinkedHashSet<>();
+        this.headers = new LinkedHashSet<>();
+        this.pathparameters = new LinkedHashSet<>();
+        this.queryparameters = new LinkedHashSet<>();
         this.bodyobject = null;
         this.response = null;
         this.responsestatuscode = "";
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;
-        this.apierrors = new ArrayList<ApiErrorDoc>();
+        this.apierrors = new ArrayList<>();
         this.supportedversions = null;
         this.auth = null;
         this.displayMethodAs = MethodDisplay.URI;
@@ -275,7 +275,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
         }
 
         if (this.queryparameters.size() == o.getQueryparameters().size()) {
-            Set<ApiParamDoc> bothQueryParameters = new HashSet<ApiParamDoc>();
+            Set<ApiParamDoc> bothQueryParameters = new HashSet<>();
             bothQueryParameters.addAll(this.queryparameters);
             bothQueryParameters.addAll(o.getQueryparameters());
             if (bothQueryParameters.size() > this.queryparameters.size()) {

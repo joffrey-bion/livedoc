@@ -328,7 +328,7 @@ public class ApiDocTest {
 
     @Test
     public void testApiDoc() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(TestController.class);
         ApiDoc apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
         Assert.assertEquals("test-controller", apiDoc.getName());

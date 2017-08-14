@@ -24,7 +24,7 @@ public class SpringHeaderBuilder {
      * @return
      */
     public static Set<ApiHeaderDoc> buildHeaders(Method method) {
-        Set<ApiHeaderDoc> headers = new LinkedHashSet<ApiHeaderDoc>();
+        Set<ApiHeaderDoc> headers = new LinkedHashSet<>();
         Class<?> controller = method.getDeclaringClass();
 
         RequestMapping typeAnnotation = controller.getAnnotation(RequestMapping.class);

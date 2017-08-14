@@ -19,13 +19,13 @@ public class ApiMethodDocReader {
 
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
         apiMethodDoc.setId(methodAnnotation.id());
-        apiMethodDoc.setPath(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.path())));
+        apiMethodDoc.setPath(new LinkedHashSet<>(Arrays.asList(methodAnnotation.path())));
         apiMethodDoc.setMethod(method.getName());
         apiMethodDoc.setSummary(methodAnnotation.summary());
         apiMethodDoc.setDescription(methodAnnotation.description());
-        apiMethodDoc.setVerb(new LinkedHashSet<ApiVerb>(Arrays.asList(methodAnnotation.verb())));
-        apiMethodDoc.setConsumes(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.consumes())));
-        apiMethodDoc.setProduces(new LinkedHashSet<String>(Arrays.asList(methodAnnotation.produces())));
+        apiMethodDoc.setVerb(new LinkedHashSet<>(Arrays.asList(methodAnnotation.verb())));
+        apiMethodDoc.setConsumes(new LinkedHashSet<>(Arrays.asList(methodAnnotation.consumes())));
+        apiMethodDoc.setProduces(new LinkedHashSet<>(Arrays.asList(methodAnnotation.produces())));
         apiMethodDoc.setResponsestatuscode(methodAnnotation.responsestatuscode());
 
         if (methodAnnotation.visibility().equals(ApiVisibility.UNDEFINED)) {

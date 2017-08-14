@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,9 +16,9 @@ import org.hildan.livedoc.core.annotation.flow.ApiFlow;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
-import org.hildan.livedoc.core.pojo.LivedocTemplate;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.pojo.LivedocTemplate;
 import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.scanner.readers.ApiAuthDocReader;
@@ -69,9 +68,9 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
 
     public abstract ApiObjectDoc mergeApiObjectDoc(Class<?> clazz, ApiObjectDoc apiObjectDoc);
 
-    private List<ApiMethodDoc> allApiMethodDocs = new ArrayList<ApiMethodDoc>();
+    private List<ApiMethodDoc> allApiMethodDocs = new ArrayList<>();
 
-    private Map<Class<?>, LivedocTemplate> jsondocTemplates = new HashMap<Class<?>, LivedocTemplate>();
+    private Map<Class<?>, LivedocTemplate> jsondocTemplates = new HashMap<>();
 
     /**
      * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
@@ -80,7 +79,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
      */
     public Livedoc getLivedoc(String version, String basePath, List<String> packages, boolean playgroundEnabled,
             MethodDisplay displayMethodAs) {
-        Set<URL> urls = new HashSet<URL>();
+        Set<URL> urls = new HashSet<>();
         FilterBuilder filter = new FilterBuilder();
 
         log.debug("Found " + packages.size() + " package(s) to scan...");
@@ -125,7 +124,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
      * Gets the API documentation for the set of classes passed as argument
      */
     public Set<ApiDoc> getApiDocs(Set<Class<?>> classes, MethodDisplay displayMethodAs) {
-        Set<ApiDoc> apiDocs = new TreeSet<ApiDoc>();
+        Set<ApiDoc> apiDocs = new TreeSet<>();
         for (Class<?> controller : classes) {
             ApiDoc apiDoc = getApiDoc(controller, displayMethodAs);
             apiDocs.add(apiDoc);
@@ -156,7 +155,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     }
 
     private Set<ApiMethodDoc> getApiMethodDocs(Class<?> controller, MethodDisplay displayMethodAs) {
-        Set<ApiMethodDoc> apiMethodDocs = new TreeSet<ApiMethodDoc>();
+        Set<ApiMethodDoc> apiMethodDocs = new TreeSet<>();
         Set<Method> methods = jsondocMethods(controller);
         for (Method method : methods) {
             ApiMethodDoc apiMethodDoc = getApiMethodDoc(method, controller, displayMethodAs);
@@ -184,7 +183,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
      * Gets the API flow documentation for the set of classes passed as argument
      */
     public Set<ApiFlowDoc> getApiFlowDocs(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs) {
-        Set<ApiFlowDoc> apiFlowDocs = new TreeSet<ApiFlowDoc>();
+        Set<ApiFlowDoc> apiFlowDocs = new TreeSet<>();
         for (Class<?> clazz : classes) {
             log.debug("Getting flow doc for class: " + clazz.getName());
             Method[] methods = clazz.getMethods();
@@ -199,12 +198,11 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     }
 
     private ApiFlowDoc getApiFlowDoc(Method method, List<ApiMethodDoc> apiMethodDocs) {
-        ApiFlowDoc apiFlowDoc = ApiFlowDoc.buildFromAnnotation(method.getAnnotation(ApiFlow.class), apiMethodDocs);
-        return apiFlowDoc;
+        return ApiFlowDoc.buildFromAnnotation(method.getAnnotation(ApiFlow.class), apiMethodDocs);
     }
 
     public Set<ApiObjectDoc> getApiObjectDocs(Set<Class<?>> classes) {
-        Set<ApiObjectDoc> apiObjectDocs = new TreeSet<ApiObjectDoc>();
+        Set<ApiObjectDoc> apiObjectDocs = new TreeSet<>();
 
         for (Class<?> clazz : classes) {
             log.debug("Getting object doc for class: " + clazz.getName());
@@ -225,13 +223,13 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     }
 
     private Map<String, Set<ApiDoc>> getApiDocsMap(Set<Class<?>> classes, MethodDisplay displayMethodAs) {
-        Map<String, Set<ApiDoc>> apiDocsMap = new TreeMap<String, Set<ApiDoc>>();
+        Map<String, Set<ApiDoc>> apiDocsMap = new TreeMap<>();
         Set<ApiDoc> apiDocSet = getApiDocs(classes, displayMethodAs);
         for (ApiDoc apiDoc : apiDocSet) {
             if (apiDocsMap.containsKey(apiDoc.getGroup())) {
                 apiDocsMap.get(apiDoc.getGroup()).add(apiDoc);
             } else {
-                Set<ApiDoc> groupedPojoDocs = new TreeSet<ApiDoc>();
+                Set<ApiDoc> groupedPojoDocs = new TreeSet<>();
                 groupedPojoDocs.add(apiDoc);
                 apiDocsMap.put(apiDoc.getGroup(), groupedPojoDocs);
             }
@@ -240,13 +238,13 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     }
 
     private Map<String, Set<ApiObjectDoc>> getApiObjectsMap(Set<Class<?>> classes) {
-        Map<String, Set<ApiObjectDoc>> objectsMap = new TreeMap<String, Set<ApiObjectDoc>>();
+        Map<String, Set<ApiObjectDoc>> objectsMap = new TreeMap<>();
         Set<ApiObjectDoc> apiObjectDocSet = getApiObjectDocs(classes);
         for (ApiObjectDoc apiObjectDoc : apiObjectDocSet) {
             if (objectsMap.containsKey(apiObjectDoc.getGroup())) {
                 objectsMap.get(apiObjectDoc.getGroup()).add(apiObjectDoc);
             } else {
-                Set<ApiObjectDoc> groupedPojoDocs = new TreeSet<ApiObjectDoc>();
+                Set<ApiObjectDoc> groupedPojoDocs = new TreeSet<>();
                 groupedPojoDocs.add(apiObjectDoc);
                 objectsMap.put(apiObjectDoc.getGroup(), groupedPojoDocs);
             }
@@ -255,13 +253,13 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     }
 
     private Map<String, Set<ApiFlowDoc>> getApiFlowDocsMap(Set<Class<?>> classes, List<ApiMethodDoc> apiMethodDocs) {
-        Map<String, Set<ApiFlowDoc>> apiFlowDocsMap = new TreeMap<String, Set<ApiFlowDoc>>();
+        Map<String, Set<ApiFlowDoc>> apiFlowDocsMap = new TreeMap<>();
         Set<ApiFlowDoc> apiFlowDocSet = getApiFlowDocs(classes, apiMethodDocs);
         for (ApiFlowDoc apiFlowDoc : apiFlowDocSet) {
             if (apiFlowDocsMap.containsKey(apiFlowDoc.getGroup())) {
                 apiFlowDocsMap.get(apiFlowDoc.getGroup()).add(apiFlowDoc);
             } else {
-                Set<ApiFlowDoc> groupedFlowDocs = new TreeSet<ApiFlowDoc>();
+                Set<ApiFlowDoc> groupedFlowDocs = new TreeSet<>();
                 groupedFlowDocs.add(apiFlowDoc);
                 apiFlowDocsMap.put(apiFlowDoc.getGroup(), groupedFlowDocs);
             }

@@ -25,7 +25,7 @@ public class SpringQueryParamBuilder {
      * @return
      */
     public static Set<ApiParamDoc> buildQueryParams(Method method) {
-        Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<ApiParamDoc>();
+        Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
         Class<?> controller = method.getDeclaringClass();
 
         if (controller.isAnnotationPresent(RequestMapping.class)) {

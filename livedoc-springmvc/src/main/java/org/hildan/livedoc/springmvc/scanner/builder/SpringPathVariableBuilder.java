@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class SpringPathVariableBuilder {
 
     public static Set<ApiParamDoc> buildPathVariable(Method method) {
-        Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<ApiParamDoc>();
+        Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
 
         Annotation[][] parametersAnnotations = method.getParameterAnnotations();
         for (int i = 0; i < parametersAnnotations.length; i++) {

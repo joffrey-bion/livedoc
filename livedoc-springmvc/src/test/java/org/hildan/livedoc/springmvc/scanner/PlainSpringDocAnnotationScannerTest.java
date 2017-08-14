@@ -47,7 +47,7 @@ public class PlainSpringDocAnnotationScannerTest {
 
     @Test
     public void testMergeApiDoc() {
-        Set<Class<?>> controllers = new LinkedHashSet<Class<?>>();
+        Set<Class<?>> controllers = new LinkedHashSet<>();
         controllers.add(SpringController.class);
         Set<ApiDoc> apiDocs = scanner.getApiDocs(controllers, MethodDisplay.URI);
 

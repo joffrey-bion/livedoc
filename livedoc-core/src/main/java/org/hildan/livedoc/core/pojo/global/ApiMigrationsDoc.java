@@ -10,7 +10,7 @@ public class ApiMigrationsDoc {
     private Set<ApiMigrationDoc> migrations;
 
     public ApiMigrationsDoc() {
-        this.migrations = new LinkedHashSet<ApiMigrationDoc>();
+        this.migrations = new LinkedHashSet<>();
     }
 
     public Set<ApiMigrationDoc> getMigrations() {

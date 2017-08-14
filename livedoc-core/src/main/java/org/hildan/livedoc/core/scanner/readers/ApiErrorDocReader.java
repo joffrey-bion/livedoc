@@ -8,13 +8,10 @@ import org.hildan.livedoc.core.annotation.ApiError;
 import org.hildan.livedoc.core.annotation.ApiErrors;
 import org.hildan.livedoc.core.pojo.ApiErrorDoc;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-
 public class ApiErrorDocReader {
 
     public static List<ApiErrorDoc> build(Method method) {
-        List<ApiErrorDoc> apiMethodDocs = new ArrayList<ApiErrorDoc>();
+        List<ApiErrorDoc> apiMethodDocs = new ArrayList<>();
 
         ApiErrors methodAnnotation = method.getAnnotation(ApiErrors.class);
         ApiErrors typeAnnotation = method.getDeclaringClass().getAnnotation(ApiErrors.class);
@@ -28,15 +25,9 @@ public class ApiErrorDocReader {
         if (typeAnnotation != null) {
             for (final ApiError apiError : typeAnnotation.apierrors()) {
 
-                boolean isAlreadyDefined = FluentIterable.from(apiMethodDocs).anyMatch(new Predicate<ApiErrorDoc>() {
-                    @Override
-                    public boolean apply(ApiErrorDoc apiErrorDoc) {
-                        return apiError.code().equals(apiErrorDoc.getCode());
-                    }
-
-                    ;
-                });
-
+                boolean isAlreadyDefined = apiMethodDocs.stream()
+                                                        .anyMatch(apiErrorDoc -> apiError.code()
+                                                                                         .equals(apiErrorDoc.getCode()));
                 if (!isAlreadyDefined) {
                     apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
                 }

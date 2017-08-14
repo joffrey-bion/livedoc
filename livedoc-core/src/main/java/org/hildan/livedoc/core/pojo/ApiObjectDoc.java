@@ -32,7 +32,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.description = "";
         this.supportedversions = null;
         this.allowedvalues = new String[] {};
-        this.fields = new TreeSet<ApiObjectFieldDoc>();
+        this.fields = new TreeSet<>();
         this.group = "";
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;

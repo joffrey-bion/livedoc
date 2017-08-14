@@ -40,10 +40,10 @@ public class ApiFlowDocTest {
 
     @Test
     public void testApiDoc() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(TestFlow.class);
 
-        List<ApiMethodDoc> apiMethodDocs = new ArrayList<ApiMethodDoc>();
+        List<ApiMethodDoc> apiMethodDocs = new ArrayList<>();
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
         apiMethodDoc.setId("F1");
         apiMethodDocs.add(apiMethodDoc);

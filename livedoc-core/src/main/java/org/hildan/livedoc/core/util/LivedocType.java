@@ -5,7 +5,7 @@ import java.util.List;
 
 public class LivedocType {
 
-    private List<String> type = new LinkedList<String>();
+    private List<String> type = new LinkedList<>();
 
     private LivedocType mapKey;
 

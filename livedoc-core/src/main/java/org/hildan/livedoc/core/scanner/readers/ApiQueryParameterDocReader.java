@@ -15,7 +15,7 @@ import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 public class ApiQueryParameterDocReader {
 
     public static Set<ApiParamDoc> read(Method method) {
-        Set<ApiParamDoc> docs = new LinkedHashSet<ApiParamDoc>();
+        Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
         if (method.isAnnotationPresent(ApiParams.class)) {
             for (ApiQueryParam apiParam : method.getAnnotation(ApiParams.class).queryparams()) {

@@ -104,7 +104,7 @@ public class ApiObjectDocTest {
 
     @Test
     public void testUndefinedVisibilityAndStageDoc() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(UndefinedVisibilityAndStage.class);
         ApiObjectDoc apiObjectDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("UndefinedVisibilityAndStage", apiObjectDoc.getName());
@@ -114,7 +114,7 @@ public class ApiObjectDocTest {
 
     @Test
     public void testTemplateApiObjectDoc() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(TemplateApiObject.class);
         ApiObjectDoc apiObjectDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("TemplateApiObject", apiObjectDoc.getName());
@@ -125,7 +125,7 @@ public class ApiObjectDocTest {
 
     @Test
     public void testNoNameApiObjectDoc() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(NoNameApiObject.class);
         ApiObjectDoc apiObjectDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("NoNameApiObject", apiObjectDoc.getName());
@@ -135,7 +135,7 @@ public class ApiObjectDocTest {
 
     @Test
     public void testEnumObjectDoc() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(TestEnum.class);
         ApiObjectDoc childDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("test-enum", childDoc.getName());
@@ -147,7 +147,7 @@ public class ApiObjectDocTest {
 
     @Test
     public void testApiObjectDoc() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         classes.add(TestObject.class);
         ApiObjectDoc childDoc = scanner.getApiObjectDocs(classes).iterator().next();
         Assert.assertEquals("test-object", childDoc.getName());

@@ -22,7 +22,7 @@ public class LivedocTemplateBuilderTest {
     public void testTemplate()
             throws IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
         ObjectMapper mapper = new ObjectMapper();
-        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(TemplateObject.class);
+        Set<Class<?>> classes = Sets.newHashSet(TemplateObject.class);
 
         Map<String, Object> template = LivedocTemplateBuilder.build(TemplateObject.class, classes);
 
@@ -58,7 +58,7 @@ public class LivedocTemplateBuilderTest {
     public void testEnum()
             throws IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
         ObjectMapper mapper = new ObjectMapper();
-        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(MyEnum.class);
+        Set<Class<?>> classes = Sets.newHashSet(MyEnum.class);
 
         Map<String, Object> template = LivedocTemplateBuilder.build(MyEnum.class, classes);
         System.out.println(mapper.writeValueAsString(template));
@@ -68,7 +68,7 @@ public class LivedocTemplateBuilderTest {
     public void testNoAnnotation()
             throws IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
         ObjectMapper mapper = new ObjectMapper();
-        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(NoAnnotationPojo.class);
+        Set<Class<?>> classes = Sets.newHashSet(NoAnnotationPojo.class);
 
         Map<String, Object> template = LivedocTemplateBuilder.build(NoAnnotationPojo.class, classes);
         System.out.println(mapper.writeValueAsString(template));

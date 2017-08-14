@@ -19,7 +19,7 @@ public class SpringProducesBuilder {
      * @return
      */
     public static Set<String> buildProduces(Method method) {
-        Set<String> produces = new LinkedHashSet<String>();
+        Set<String> produces = new LinkedHashSet<>();
         Class<?> controller = method.getDeclaringClass();
 
         if (controller.isAnnotationPresent(RequestMapping.class)) {

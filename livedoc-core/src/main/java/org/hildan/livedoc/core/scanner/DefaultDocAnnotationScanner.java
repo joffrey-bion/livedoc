@@ -36,7 +36,7 @@ public class DefaultDocAnnotationScanner extends AbstractDocAnnotationScanner {
 
     @Override
     public Set<Method> jsondocMethods(Class<?> controller) {
-        Set<Method> annotatedMethods = new LinkedHashSet<Method>();
+        Set<Method> annotatedMethods = new LinkedHashSet<>();
         for (Method method : controller.getDeclaredMethods()) {
             if (method.isAnnotationPresent(ApiMethod.class)) {
                 annotatedMethods.add(method);

@@ -31,7 +31,7 @@ public class ApiDoc implements Comparable<ApiDoc> {
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;
         this.group = "";
-        this.methods = new TreeSet<ApiMethodDoc>();
+        this.methods = new TreeSet<>();
         this.supportedversions = null;
         this.auth = null;
     }

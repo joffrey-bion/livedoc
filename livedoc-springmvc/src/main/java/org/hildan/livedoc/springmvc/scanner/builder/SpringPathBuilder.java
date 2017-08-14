@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SpringPathBuilder {
 
     public static Set<String> buildPath(Method method) {
-        Set<String> paths = new HashSet<String>();
+        Set<String> paths = new HashSet<>();
 
         if (method.isAnnotationPresent(MessageMapping.class)) {
             paths.addAll(getMappings(method, MessageMapping.class));
