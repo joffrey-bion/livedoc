@@ -1,21 +1,16 @@
 package org.hildan.livedoc.springmvc.scanner;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
+import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
+import org.hildan.livedoc.springmvc.scanner.utils.GenericTypeExplorer;
 import org.reflections.Reflections;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -57,8 +52,12 @@ public class ObjectsScanner {
 
     private Set<Method> getMethodsToDocument() {
         Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RequestMapping.class);
-        methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(SubscribeMapping.class));
-        methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(MessageMapping.class));
+        if (ClasspathUtils.isSubscribeMappingOnClasspath()) {
+            methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(SubscribeMapping.class));
+        }
+        if (ClasspathUtils.isMessageMappingOnClasspath()) {
+            methodsAnnotatedWith.addAll(reflections.getMethodsAnnotatedWith(MessageMapping.class));
+        }
         return methodsAnnotatedWith;
     }
 
@@ -67,15 +66,14 @@ public class ObjectsScanner {
         if (returnValueClass.isPrimitive() || returnValueClass.equals(Livedoc.class)) {
             return;
         }
-        buildJSONDocObjectsCandidates(candidates, returnValueClass, method.getGenericReturnType(), reflections);
+        candidates.addAll(GenericTypeExplorer.getTypesInDeclaration(method.getGenericReturnType(), reflections));
     }
 
     private void addBodyParam(Set<Class<?>> candidates, Method method) {
         int bodyParamIndex = SpringRequestBodyBuilder.getIndexOfBodyParam(method);
         if (bodyParamIndex >= 0) {
-            Class<?> bodyParamClass = method.getParameterTypes()[bodyParamIndex];
             Type bodyParamType = method.getGenericParameterTypes()[bodyParamIndex];
-            buildJSONDocObjectsCandidates(candidates, bodyParamClass, bodyParamType, reflections);
+            candidates.addAll(GenericTypeExplorer.getTypesInDeclaration(bodyParamType, reflections));
         }
     }
 
@@ -94,9 +92,7 @@ public class ObjectsScanner {
                 continue;
             }
 
-            Class<?> fieldClass = field.getType();
-            Set<Class<?>> fieldCandidates = new HashSet<>();
-            buildJSONDocObjectsCandidates(fieldCandidates, fieldClass, field.getGenericType(), reflections);
+            Set<Class<?>> fieldCandidates = GenericTypeExplorer.getTypesInDeclaration(field.getGenericType(), reflections);
 
             for (Class<?> candidate : fieldCandidates) {
                 if (!subCandidates.contains(candidate)) {
@@ -114,97 +110,4 @@ public class ObjectsScanner {
         return true;
     }
 
-    public static Set<Class<?>> buildJSONDocObjectsCandidates(Set<Class<?>> candidates, Class<?> clazz, Type type,
-                                                              Reflections reflections) {
-
-        if (Map.class.isAssignableFrom(clazz)) {
-
-            if (type instanceof ParameterizedType) {
-                Type mapKeyType = ((ParameterizedType) type).getActualTypeArguments()[0];
-                Type mapValueType = ((ParameterizedType) type).getActualTypeArguments()[1];
-
-                if (mapKeyType instanceof Class) {
-                    candidates.add((Class<?>) mapKeyType);
-                } else if (mapKeyType instanceof WildcardType) {
-                    candidates.add(Void.class);
-                } else {
-                    if (mapKeyType instanceof ParameterizedType) {
-                        candidates.addAll(buildJSONDocObjectsCandidates(candidates,
-                                (Class<?>) ((ParameterizedType) mapKeyType).getRawType(), mapKeyType, reflections));
-                    }
-                }
-
-                if (mapValueType instanceof Class) {
-                    candidates.add((Class<?>) mapValueType);
-                } else if (mapValueType instanceof WildcardType) {
-                    candidates.add(Void.class);
-                } else {
-                    if (mapValueType instanceof ParameterizedType) {
-                        candidates.addAll(buildJSONDocObjectsCandidates(candidates,
-                                (Class<?>) ((ParameterizedType) mapValueType).getRawType(), mapValueType, reflections));
-                    }
-                }
-            }
-        } else if (Collection.class.isAssignableFrom(clazz)) {
-            if (type instanceof ParameterizedType) {
-                Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
-                candidates.add(clazz);
-
-                if (parametrizedType instanceof Class) {
-                    candidates.add((Class<?>) parametrizedType);
-                } else if (parametrizedType instanceof WildcardType) {
-                    candidates.add(Void.class);
-                } else {
-                    candidates.addAll(buildJSONDocObjectsCandidates(candidates,
-                            (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType,
-                            reflections));
-                }
-            } else if (type instanceof GenericArrayType) {
-                candidates.addAll(buildJSONDocObjectsCandidates(candidates, clazz,
-                        ((GenericArrayType) type).getGenericComponentType(), reflections));
-            } else {
-                candidates.add(clazz);
-            }
-        } else if (clazz.isArray()) {
-            Class<?> componentType = clazz.getComponentType();
-            candidates.addAll(buildJSONDocObjectsCandidates(candidates, componentType, type, reflections));
-        } else {
-            if (type instanceof ParameterizedType) {
-                Type parametrizedType = ((ParameterizedType) type).getActualTypeArguments()[0];
-
-                if (parametrizedType instanceof Class) {
-                    Class<?> candidate = (Class<?>) parametrizedType;
-                    if (candidate.isInterface()) {
-                        for (Class<?> implementation : reflections.getSubTypesOf(candidate)) {
-                            buildJSONDocObjectsCandidates(candidates, implementation, parametrizedType, reflections);
-                        }
-                    } else {
-                        candidates.add(candidate);
-                        candidates.addAll(buildJSONDocObjectsCandidates(candidates,
-                                (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType, reflections));
-                    }
-                } else if (parametrizedType instanceof WildcardType) {
-                    candidates.add(Void.class);
-                    candidates.addAll(buildJSONDocObjectsCandidates(candidates,
-                            (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType, reflections));
-                } else if (parametrizedType instanceof TypeVariable<?>) {
-                    candidates.add(Void.class);
-                    candidates.addAll(buildJSONDocObjectsCandidates(candidates,
-                            (Class<?>) ((ParameterizedType) type).getRawType(), parametrizedType, reflections));
-                } else {
-                    candidates.addAll(buildJSONDocObjectsCandidates(candidates,
-                            (Class<?>) ((ParameterizedType) parametrizedType).getRawType(), parametrizedType,
-                            reflections));
-                }
-            } else if (clazz.isInterface()) {
-                for (Class<?> implementation : reflections.getSubTypesOf(clazz)) {
-                    candidates.addAll(buildJSONDocObjectsCandidates(candidates, implementation, type, reflections));
-                }
-            } else {
-                candidates.add(clazz);
-            }
-        }
-
-        return candidates;
-    }
 }
