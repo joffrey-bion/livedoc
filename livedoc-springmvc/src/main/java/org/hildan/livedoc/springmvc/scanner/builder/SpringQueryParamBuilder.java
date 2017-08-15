@@ -83,7 +83,8 @@ public class SpringQueryParamBuilder {
                 }
 
                 if (requestParam != null) {
-                    apiParamDoc = new ApiParamDoc(requestParam.value(), "",
+                    String name = requestParam.value().isEmpty() ? requestParam.name() : requestParam.value();
+                    apiParamDoc = new ApiParamDoc(name, "",
                             LivedocTypeBuilder.build(new LivedocType(), method.getParameterTypes()[i],
                                     method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()),
                             new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ?

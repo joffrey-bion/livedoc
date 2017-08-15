@@ -68,7 +68,7 @@ public class SpringQueryParamBuilderTest {
         }
 
         @RequestMapping(value = "/param-two")
-        public void paramTwo(@RequestParam(value = "name", defaultValue = "test", required = false) String name) {
+        public void paramTwo(@RequestParam(name = "otherName", defaultValue = "test", required = false) String name) {
 
         }
 
@@ -173,7 +173,7 @@ public class SpringQueryParamBuilderTest {
                 Iterator<ApiParamDoc> iterator = apiMethodDoc.getQueryparameters().iterator();
                 ApiParamDoc param = iterator.next();
                 ApiParamDoc queryParam = iterator.next();
-                Assert.assertEquals("name", queryParam.getName());
+                Assert.assertEquals("otherName", queryParam.getName());
                 Assert.assertEquals("false", queryParam.getRequired());
                 Assert.assertEquals("String", queryParam.getJsondocType().getOneLineText());
                 Assert.assertEquals("test", queryParam.getDefaultvalue());
