@@ -48,10 +48,10 @@ public class SpringPathBuilderTest {
     }
 
     @Controller
-    @RequestMapping(value = {"/path1", "/path2"})
+    @RequestMapping(value = {"/path1", "/path2/"})
     public class SpringController3 {
 
-        @RequestMapping(value = {"/path3", "/path4"})
+        @RequestMapping(value = {"/path3", "path4"})
         public void none() {
         }
     }
