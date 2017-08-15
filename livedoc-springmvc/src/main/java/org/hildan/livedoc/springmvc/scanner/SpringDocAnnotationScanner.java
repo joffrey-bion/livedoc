@@ -33,6 +33,7 @@ import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringResponseBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringVerbBuilder;
+import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -47,21 +48,13 @@ public class SpringDocAnnotationScanner extends AbstractDocAnnotationScanner {
     @Override
     public Set<Class<?>> jsondocControllers() {
         Set<Class<?>> jsondocControllers = reflections.getTypesAnnotatedWith(Controller.class, true);
-        if (isRestControllerOnClassPath()) {
+        if (ClasspathUtils.isRestControllerOnClasspath()) {
             jsondocControllers.addAll(reflections.getTypesAnnotatedWith(RestController.class, true));
         }
-        if (isRepositoryRestControllerOnClassPath()) {
+        if (ClasspathUtils.isRepositoryRestControllerOnClassPath()) {
             jsondocControllers.addAll(reflections.getTypesAnnotatedWith(RepositoryRestController.class, true));
         }
         return jsondocControllers;
-    }
-
-    private static boolean isRestControllerOnClassPath() {
-        return isOnClassPath("org.springframework.web.bind.annotation.RestController");
-    }
-
-    private static boolean isRepositoryRestControllerOnClassPath() {
-        return isOnClassPath("org.springframework.data.rest.webmvc.RepositoryRestController");
     }
 
     @Override
@@ -79,30 +72,13 @@ public class SpringDocAnnotationScanner extends AbstractDocAnnotationScanner {
         if (method.isAnnotationPresent(RequestMapping.class)) {
             return true;
         }
-        if (isMessageMappingOnClasspath() && method.isAnnotationPresent(MessageMapping.class)) {
+        if (ClasspathUtils.isMessageMappingOnClasspath() && method.isAnnotationPresent(MessageMapping.class)) {
             return true;
         }
-        if (isSubscribeMappingOnClasspath() && method.isAnnotationPresent(SubscribeMapping.class)) {
+        if (ClasspathUtils.isSubscribeMappingOnClasspath() && method.isAnnotationPresent(SubscribeMapping.class)) {
             return true;
         }
         return false;
-    }
-
-    private static boolean isMessageMappingOnClasspath() {
-        return isOnClassPath("org.springframework.messaging.handler.annotation.MessageMapping");
-    }
-
-    private static boolean isSubscribeMappingOnClasspath() {
-        return isOnClassPath("org.springframework.messaging.simp.annotation.SubscribeMapping");
-    }
-
-    private static boolean isOnClassPath(String fullyQualifiedClassName) {
-        try {
-            Class.forName(fullyQualifiedClassName);
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
     }
 
     @Override
