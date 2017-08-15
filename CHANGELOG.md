@@ -1,5 +1,21 @@
 # Change Log
 
+## [v0.3.0](https://bintray.com/joffrey-bion/maven/livedoc/0.3.0) (2017-08-15)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.2.0...v0.3.0)
+
+**Implemented enhancements:**
+
+- Support MessageMapping implicit Spring payload parameter [\#11](https://github.com/joffrey-bion/livedoc/issues/11)
+
+**Fixed bugs:**
+
+- RequestParam\#name\(\) ignored [\#9](https://github.com/joffrey-bion/livedoc/issues/9)
+
+**Closed issues:**
+
+- Broken generic types exploration [\#13](https://github.com/joffrey-bion/livedoc/issues/13)
+- Incorrect path joining between controller and methods [\#7](https://github.com/joffrey-bion/livedoc/issues/7)
+
 ## [v0.2.0](https://bintray.com/joffrey-bion/maven/livedoc/0.2.0) (2017-08-13)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.1.1...v0.2.0)
 
