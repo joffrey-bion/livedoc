@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner.utils;
+package org.hildan.livedoc.core.scanner.types;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -9,18 +9,32 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GenericTypeExplorer {
+/**
+ * A utility class allowing to extract all classes involved in a generic type declaration.
+ */
+class GenericTypeExplorer {
 
-    public static Set<Class<?>> getTypesInDeclaration(Type type) {
-        if (type instanceof Class) {
-            return getTypesFromClass((Class<?>) type);
+    /**
+     * Returns all classes/interfaces appearing in the given type declaration. This method recursively explores type
+     * parameters and array components to find the involved types.
+     * <p>
+     * For instance, for the type {@code Map<Custom, List<Integer>[]>}, we get [Map, Custom, List, Integer].
+     *
+     * @param type
+     *         the type to explore
+     *
+     * @return a non-null set of all classes involved in the given type declaration
+     */
+    static Set<Class<?>> getClassesInDeclaration(Type type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type declaration may not be null");
         }
         if (type instanceof WildcardType) {
-            return Collections.singleton(Void.class);
+            return Collections.emptySet();
         }
         if (type instanceof GenericArrayType) {
             Type componentType = ((GenericArrayType) type).getGenericComponentType();
-            return getTypesInDeclaration(componentType);
+            return getClassesInDeclaration(componentType);
         }
         if (type instanceof TypeVariable) {
             return getTypesFromTypeVariable((TypeVariable) type);
@@ -28,12 +42,13 @@ public class GenericTypeExplorer {
         if (type instanceof ParameterizedType) {
             return getTypesFromParameterizedType(((ParameterizedType) type));
         }
-        throw new IllegalArgumentException("Unknown type category " + type.getClass());
+        assert type instanceof Class : "Unknown type category " + type.getClass();
+        return getTypesFromClassOrArray((Class<?>) type);
     }
 
-    private static Set<Class<?>> getTypesFromClass(Class<?> clazz) {
+    private static Set<Class<?>> getTypesFromClassOrArray(Class<?> clazz) {
         if (clazz.isArray()) {
-            return getTypesInDeclaration(clazz.getComponentType());
+            return getClassesInDeclaration(clazz.getComponentType());
         }
         return Collections.singleton(clazz);
     }
@@ -55,7 +70,7 @@ public class GenericTypeExplorer {
     private static Set<Class<?>> getTypesInDeclarations(Type... types) {
         Set<Class<?>> candidates = new HashSet<>();
         for (Type typeParam : types) {
-            candidates.addAll(getTypesInDeclaration(typeParam));
+            candidates.addAll(getClassesInDeclaration(typeParam));
         }
         return candidates;
     }
