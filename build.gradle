@@ -67,6 +67,11 @@ subprojects {
         testCompile 'junit:junit:4.11'
     }
 
+    tasks.withType(JavaCompile) {
+        // detailed messages for unchecked operations
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
+
     afterEvaluate {
         task sourcesJar(type: Jar, dependsOn: classes) {
             classifier = 'sources'
