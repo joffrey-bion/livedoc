@@ -3,9 +3,13 @@ package org.hildan.livedoc.springmvc.scanner;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
@@ -19,6 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.common.collect.Sets;
 
 public class ObjectsScanner {
+
+    /**
+     * Subtypes of these types should not appear in the doc, even if they fall under the white-listed packages. This
+     * applies in particular to container types like collections and maps, which don't need to have a documented
+     * implementation.
+     * <p>
+     * Note: this is to preserve the original behaviour of JsonDoc, but might very well be reconsidered later on.
+     */
+    private static final Class<?>[] IGNORED_PARENT_TYPES = {Map.class, Collection.class};
 
     private final Reflections reflections;
 
@@ -66,14 +79,14 @@ public class ObjectsScanner {
         if (returnValueClass.isPrimitive() || returnValueClass.equals(Livedoc.class)) {
             return;
         }
-        candidates.addAll(GenericTypeExplorer.getTypesInDeclaration(method.getGenericReturnType(), reflections));
+        candidates.addAll(getTypesToDocument(method.getGenericReturnType()));
     }
 
     private void addBodyParam(Set<Class<?>> candidates, Method method) {
         int bodyParamIndex = SpringRequestBodyBuilder.getIndexOfBodyParam(method);
         if (bodyParamIndex >= 0) {
             Type bodyParamType = method.getGenericParameterTypes()[bodyParamIndex];
-            candidates.addAll(GenericTypeExplorer.getTypesInDeclaration(bodyParamType, reflections));
+            candidates.addAll(getTypesToDocument(bodyParamType));
         }
     }
 
@@ -92,7 +105,7 @@ public class ObjectsScanner {
                 continue;
             }
 
-            Set<Class<?>> fieldCandidates = GenericTypeExplorer.getTypesInDeclaration(field.getGenericType(), reflections);
+            Set<Class<?>> fieldCandidates = getTypesToDocument(field.getGenericType());
 
             for (Class<?> candidate : fieldCandidates) {
                 if (!subCandidates.contains(candidate)) {
@@ -102,6 +115,33 @@ public class ObjectsScanner {
                 }
             }
         }
+    }
+
+    private Set<Class<?>> getTypesToDocument(Type typeDeclaration) {
+        Set<Class<?>> typesInDeclaration = GenericTypeExplorer.getTypesInDeclaration(typeDeclaration);
+        Set<Class<?>> types = new HashSet<>(typesInDeclaration);
+        types.removeIf(ObjectsScanner::shouldIgnore);
+
+        Set<Class<?>> interfaces = types.stream().filter(Class::isInterface).collect(Collectors.toSet());
+        types.removeAll(interfaces);
+        types.addAll(interfaces.stream().flatMap(this::getSubTypes).collect(Collectors.toSet()));
+        return types;
+    }
+
+    private static boolean shouldIgnore(Class<?> clazz) {
+        if (clazz.isPrimitive()) {
+            return true;
+        }
+        for (Class<?> ignored : IGNORED_PARENT_TYPES) {
+            if (ignored.isAssignableFrom(clazz)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private <T> Stream<Class<? extends T>> getSubTypes(Class<T> interfaceType) {
+        return reflections.getSubTypesOf(interfaceType).stream();
     }
 
     private static boolean isValidForRecursion(Field field) {
