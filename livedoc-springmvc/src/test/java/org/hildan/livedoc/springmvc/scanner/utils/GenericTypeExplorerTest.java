@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.reflections.Reflections;
 
@@ -17,6 +18,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class GenericTypeExplorerTest {
+
+    private static Reflections reflections;
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+        reflections = new Reflections();
+    }
 
     interface MyInterface {
     }
@@ -376,10 +384,9 @@ public class GenericTypeExplorerTest {
 
     private static void check(String methodName, Collection<Class<?>> expectedPresent,
             Collection<Class<?>> expectedAbsent) throws NoSuchMethodException {
-        Reflections reflections = new Reflections();
+
         Class<?> thisTestClass = GenericTypeExplorerTest.class;
         Method testMethod = thisTestClass.getMethod(methodName);
-
         Type genReturnType = testMethod.getGenericReturnType();
 
         Set<Class<?>> candidates = GenericTypeExplorer.getTypesInDeclaration(genReturnType, reflections);
