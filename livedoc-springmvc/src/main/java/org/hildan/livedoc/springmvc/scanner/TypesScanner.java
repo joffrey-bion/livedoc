@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
 import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
 import org.hildan.livedoc.springmvc.scanner.utils.GenericTypeExplorer;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.Sets;
 
-public class ObjectsScanner {
+public class TypesScanner {
 
     /**
      * Subtypes of these types should not appear in the doc, even if they fall under the white-listed packages. This
@@ -35,12 +34,12 @@ public class ObjectsScanner {
 
     private final Reflections reflections;
 
-    public ObjectsScanner(Reflections reflections) {
+    public TypesScanner(Reflections reflections) {
         this.reflections = reflections;
     }
 
     public Set<Class<?>> findJsondocObjects(List<String> packages) {
-        Set<Class<?>> candidates = getRootApiObjects();
+        Set<Class<?>> candidates = getRootApiTypes();
         Set<Class<?>> subCandidates = Sets.newHashSet();
 
         // This is to get objects' fields that are not returned nor part of the body request of a method, but that
@@ -53,7 +52,7 @@ public class ObjectsScanner {
         return candidates.stream().filter(clazz -> inWhiteListedPackages(packages, clazz)).collect(Collectors.toSet());
     }
 
-    private Set<Class<?>> getRootApiObjects() {
+    private Set<Class<?>> getRootApiTypes() {
         Set<Class<?>> candidates = Sets.newHashSet();
         Set<Method> methodsToDocument = getMethodsToDocument();
         for (Method method : methodsToDocument) {
@@ -75,10 +74,6 @@ public class ObjectsScanner {
     }
 
     private void addReturnType(Set<Class<?>> candidates, Method method) {
-        Class<?> returnValueClass = method.getReturnType();
-        if (returnValueClass.isPrimitive() || returnValueClass.equals(Livedoc.class)) {
-            return;
-        }
         candidates.addAll(getTypesToDocument(method.getGenericReturnType()));
     }
 
@@ -120,7 +115,7 @@ public class ObjectsScanner {
     private Set<Class<?>> getTypesToDocument(Type typeDeclaration) {
         Set<Class<?>> typesInDeclaration = GenericTypeExplorer.getTypesInDeclaration(typeDeclaration);
         Set<Class<?>> types = new HashSet<>(typesInDeclaration);
-        types.removeIf(ObjectsScanner::shouldIgnore);
+        types.removeIf(TypesScanner::shouldIgnore);
 
         Set<Class<?>> interfaces = types.stream().filter(Class::isInterface).collect(Collectors.toSet());
         types.removeAll(interfaces);

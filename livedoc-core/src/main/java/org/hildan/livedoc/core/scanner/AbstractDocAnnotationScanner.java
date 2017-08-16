@@ -81,19 +81,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     @Override
     public Livedoc getLivedoc(String version, String basePath, List<String> packages, boolean playgroundEnabled,
             MethodDisplay displayMethodAs) {
-        Set<URL> urls = new HashSet<>();
-        FilterBuilder filter = new FilterBuilder();
-
-        log.debug("Found " + packages.size() + " package(s) to scan...");
-        for (String pkg : packages) {
-            log.debug("Adding package to Livedoc recursive scan: " + pkg);
-            urls.addAll(ClasspathHelper.forPackage(pkg));
-            filter.includePackage(pkg);
-        }
-
-        reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
-                                                                .setUrls(urls)
-                                                                .addScanners(new MethodAnnotationsScanner()));
+        reflections = newReflections(packages);
 
         Livedoc livedoc = new Livedoc(version, basePath);
         livedoc.setPlaygroundEnabled(playgroundEnabled);
@@ -116,6 +104,22 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
         livedoc.setGlobal(getApiGlobalDoc(jsondocGlobal, jsondocChangelogs, jsondocMigrations));
 
         return livedoc;
+    }
+
+    private static Reflections newReflections(List<String> packages) {
+        Set<URL> urls = new HashSet<>();
+        FilterBuilder filter = new FilterBuilder();
+
+        log.debug("Found " + packages.size() + " package(s) to scan...");
+        for (String pkg : packages) {
+            log.debug("Adding package to Livedoc recursive scan: " + pkg);
+            urls.addAll(ClasspathHelper.forPackage(pkg));
+            filter.includePackage(pkg);
+        }
+
+        return new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
+                                                         .setUrls(urls)
+                                                         .addScanners(new MethodAnnotationsScanner()));
     }
 
     @Override
