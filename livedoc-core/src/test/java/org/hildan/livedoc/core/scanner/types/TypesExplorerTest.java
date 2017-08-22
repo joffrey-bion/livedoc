@@ -4,13 +4,14 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-import org.hildan.livedoc.core.scanner.types.records.FieldTypesScanner;
-import org.hildan.livedoc.core.scanner.types.records.RecordTypesScanner;
+import org.hildan.livedoc.core.scanner.properties.FieldPropertyScanner;
+import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.reflections.Reflections;
 
-import static org.junit.Assert.assertTrue;
+import com.google.common.collect.Sets;
+import static org.junit.Assert.assertEquals;
 
 public class TypesExplorerTest {
 
@@ -71,15 +72,9 @@ public class TypesExplorerTest {
     }
 
     private static void check(Set<Type> rootTypes, Class<?>... expectedFoundClasses) {
-        RecordTypesScanner scanner = new FieldTypesScanner();
+        PropertyScanner scanner = new FieldPropertyScanner();
         TypesExplorer explorer = new TypesExplorer(reflections, scanner, clazz -> true);
         Set<Class<?>> classes = explorer.findTypes(rootTypes);
-        assertContainsAll(classes, expectedFoundClasses);
-    }
-
-    private static void assertContainsAll(Set<Class<?>> classes, Class<?>... expectedClasses) {
-        for (Class<?> expectedClass : expectedClasses) {
-            assertTrue("Should find class " + expectedClass.getName(), classes.contains(expectedClass));
-        }
+        assertEquals(Sets.newHashSet(expectedFoundClasses), classes);
     }
 }

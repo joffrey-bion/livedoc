@@ -3,22 +3,24 @@ package org.hildan.livedoc.core.scanner.types;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hildan.livedoc.core.scanner.properties.Property;
+import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanner.types.filters.TypeFilter;
-import org.hildan.livedoc.core.scanner.types.records.RecordTypesScanner;
 import org.reflections.Reflections;
+
+import static java.util.stream.Collectors.toSet;
 
 public class TypesExplorer {
 
     private final Reflections reflections;
 
-    private final RecordTypesScanner scanner;
+    private final PropertyScanner scanner;
 
     private final TypeFilter filter;
 
-    public TypesExplorer(Reflections reflections, RecordTypesScanner scanner, TypeFilter filter) {
+    public TypesExplorer(Reflections reflections, PropertyScanner scanner, TypeFilter filter) {
         this.reflections = reflections;
         this.scanner = scanner;
         this.filter = filter;
@@ -43,7 +45,9 @@ public class TypesExplorer {
             return; // already explored
         }
         exploredClasses.add(clazz);
-        for (Type propType : scanner.getFieldTypes(clazz)) {
+
+        Set<Type> propertyTypes = scanner.getProperties(clazz).stream().map(Property::getType).collect(toSet());
+        for (Type propType : propertyTypes) {
             exploreType(propType, exploredClasses);
         }
     }
@@ -52,15 +56,15 @@ public class TypesExplorer {
         Set<Class<?>> types = GenericTypeExplorer.getClassesInDeclaration(typeDeclaration)
                                                  .stream()
                                                  .filter(filter)
-                                                 .collect(Collectors.toSet());
+                                                 .collect(toSet());
         replaceInterfacesByImpl(types);
         return types;
     }
 
     private void replaceInterfacesByImpl(Set<Class<?>> types) {
-        Set<Class<?>> interfaces = types.stream().filter(Class::isInterface).collect(Collectors.toSet());
+        Set<Class<?>> interfaces = types.stream().filter(Class::isInterface).collect(toSet());
         types.removeAll(interfaces);
-        types.addAll(interfaces.stream().flatMap(this::getSubTypes).collect(Collectors.toSet()));
+        types.addAll(interfaces.stream().flatMap(this::getSubTypes).collect(toSet()));
     }
 
     private <T> Stream<Class<? extends T>> getSubTypes(Class<T> interfaceType) {
