@@ -83,7 +83,7 @@ public class SpringDocAnnotationScanner extends AbstractDocAnnotationScanner {
 
     @Override
     public Set<Class<?>> jsondocObjects(List<String> packages) {
-        return new TypesScanner(reflections).findJsondocObjects(packages);
+        return new SpringTypesScanner(reflections).findJsondocObjects(packages);
     }
 
     @Override

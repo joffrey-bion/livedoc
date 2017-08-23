@@ -6,29 +6,34 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.scanner.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanner.types.TypesExplorer;
+import org.hildan.livedoc.core.scanner.types.mappers.InterfaceSubTypesMapper;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
+import org.hildan.livedoc.springmvc.scanner.properties.JacksonPropertyScanner;
 import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
 import org.reflections.Reflections;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 
-class TypesScanner {
+class SpringTypesScanner {
 
     private final Reflections reflections;
 
-    TypesScanner(Reflections reflections) {
+    SpringTypesScanner(Reflections reflections) {
         this.reflections = reflections;
     }
 
     Set<Class<?>> findJsondocObjects(List<String> packages) {
         Set<Type> rootTypes = getRootApiTypes();
-
-        TypesExplorer explorer = new TypesExplorer(new FieldPropertyScanner(), reflections);
+        // to match the spring config without accessing the actual bean containing it
+        ObjectMapper jacksonObjectMapper = Jackson2ObjectMapperBuilder.json().build();
+        TypesExplorer explorer = new TypesExplorer(new JacksonPropertyScanner(jacksonObjectMapper));
+        explorer.setMapper(new InterfaceSubTypesMapper(reflections));
         Set<Class<?>> classes = explorer.findTypes(rootTypes);
 
         return classes.stream().filter(clazz -> inWhiteListedPackages(packages, clazz)).collect(Collectors.toSet());

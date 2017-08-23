@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.scanner.types;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,9 +11,7 @@ import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanner.types.filters.PrimitiveTypesExcludingFilter;
 import org.hildan.livedoc.core.scanner.types.filters.ContainerTypesExcludingFilter;
 import org.hildan.livedoc.core.scanner.types.filters.TypeFilter;
-import org.hildan.livedoc.core.scanner.types.mappers.InterfaceSubTypesMapper;
 import org.hildan.livedoc.core.scanner.types.mappers.TypeMapper;
-import org.reflections.Reflections;
 
 public class TypesExplorer {
 
@@ -24,11 +23,11 @@ public class TypesExplorer {
 
     private TypeMapper mapper;
 
-    public TypesExplorer(PropertyScanner scanner, Reflections reflections) {
+    public TypesExplorer(PropertyScanner scanner) {
         this.scanner = scanner;
         this.filter = new ContainerTypesExcludingFilter();
         this.explorationFilter = new PrimitiveTypesExcludingFilter();
-        this.mapper = new InterfaceSubTypesMapper(reflections);
+        this.mapper = Collections::singleton;
     }
 
     public void setFilter(TypeFilter filter) {
@@ -43,7 +42,7 @@ public class TypesExplorer {
         this.mapper = mapper;
     }
 
-    public Set<Class<?>> findTypes(Set<Type> rootTypes) {
+    public Set<Class<?>> findTypes(Collection<? extends Type> rootTypes) {
         Set<Class<?>> allTypes = new HashSet<>();
         for (Type type : rootTypes) {
             exploreType(type, allTypes);

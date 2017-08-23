@@ -79,7 +79,7 @@ public class TypesExplorerTest {
 
     private static void check(Set<Type> rootTypes, Class<?>... expectedFoundClasses) {
         PropertyScanner scanner = new FieldPropertyScanner();
-        TypesExplorer explorer = new TypesExplorer(scanner, reflections);
+        TypesExplorer explorer = new TypesExplorer(scanner);
         Set<Class<?>> classes = explorer.findTypes(rootTypes);
         assertEquals(Sets.newHashSet(expectedFoundClasses), classes);
     }
