@@ -5,18 +5,17 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 
 public class FieldPropertyScanner implements PropertyScanner {
 
     @Override
-    public Set<Property> getProperties(Class<?> clazz) {
+    public List<Property> getProperties(Class<?> clazz) {
         return getAllFields(clazz).stream()
                                   .filter(FieldPropertyScanner::isRelevantWhenSerialized)
                                   .map(FieldPropertyScanner::toProperty)
-                                  .collect(toSet());
+                                  .collect(toList());
     }
 
     private static List<Field> getAllFields(final Class<?> clazz) {

@@ -8,7 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.reflect.TypeToken;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FieldPropertyScannerTest {
 
@@ -21,7 +22,7 @@ public class FieldPropertyScannerTest {
 
     @Test
     public void getFieldTypes_primitive() {
-        Set<Property> props = scanner.getProperties(int.class);
+        List<Property> props = scanner.getProperties(int.class);
         assertTrue(props.isEmpty());
     }
 
@@ -51,7 +52,7 @@ public class FieldPropertyScannerTest {
         props.add(new Property("intField", int.class));
         props.add(new Property("objField", Object.class));
         props.add(new Property("genericField", new TypeToken<List<Integer>>(){}.getType()));
-        assertEquals(props, scanner.getProperties(CustomObject.class));
+        assertEquals(props, new HashSet<>(scanner.getProperties(CustomObject.class)));
     }
 
     private static class Parent {
@@ -64,10 +65,10 @@ public class FieldPropertyScannerTest {
 
     @Test
     public void getFieldTypes_inheritedFields() {
-        Set<Property> childProps = new HashSet<>();
-        childProps.add(new Property("parentField", Float.class));
-        childProps.add(new Property("childField", Double.class));
-        assertEquals(childProps, scanner.getProperties(Child.class));
+        Set<Property> props = new HashSet<>();
+        props.add(new Property("parentField", Float.class));
+        props.add(new Property("childField", Double.class));
+        assertEquals(props, new HashSet<>(scanner.getProperties(Child.class)));
     }
 
     enum MyEnum {
@@ -86,7 +87,7 @@ public class FieldPropertyScannerTest {
         props.add(new Property("ordinal", int.class));
         props.add(new Property("intField", int.class));
         props.add(new Property("doubleField", Double.class));
-        assertEquals(props, scanner.getProperties(MyEnum.class));
+        assertEquals(props, new HashSet<>(scanner.getProperties(MyEnum.class)));
     }
 
 }

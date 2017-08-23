@@ -1,8 +1,8 @@
 package org.hildan.livedoc.core.scanner.properties;
 
-import java.util.Set;
+import java.util.List;
 
 public interface PropertyScanner {
 
-    Set<Property> getProperties(Class<?> clazz);
+    List<Property> getProperties(Class<?> clazz);
 }
