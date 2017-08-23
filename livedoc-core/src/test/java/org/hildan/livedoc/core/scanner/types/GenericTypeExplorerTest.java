@@ -15,23 +15,18 @@ import static org.junit.Assert.assertEquals;
 
 public class GenericTypeExplorerTest {
 
-    private interface MyInterface {
-    }
+    private interface MyInterface {}
 
-    private static class Custom {
-    }
+    private static class Custom {}
 
     @SuppressWarnings("unused")
-    private static class Custom1P<T> {
-    }
+    private static class Custom1P<T> {}
 
     @SuppressWarnings("unused")
-    private static class Custom2P<T, U> {
-    }
+    private static class Custom2P<T, U> {}
 
     @SuppressWarnings("unused")
-    private static class Custom3P<T, U, V> {
-    }
+    private static class Custom3P<T, U, V> {}
 
     @Test(expected = IllegalArgumentException.class)
     public void getClassesInDeclaration_failsOnNull() throws NoSuchMethodException {
@@ -70,31 +65,31 @@ public class GenericTypeExplorerTest {
 
     @Test
     public void getClassesInDeclaration_simpleList() throws NoSuchMethodException {
-        Type listOfIntegers = new TypeToken<List<Integer>>(){}.getType();
+        Type listOfIntegers = new TypeToken<List<Integer>>() {}.getType();
         check(listOfIntegers, List.class, Integer.class);
     }
 
     @Test
     public void getClassesInDeclaration_listOfInterface() throws NoSuchMethodException {
-        Type listOfInterface = new TypeToken<List<MyInterface>>(){}.getType();
+        Type listOfInterface = new TypeToken<List<MyInterface>>() {}.getType();
         check(listOfInterface, List.class, MyInterface.class);
     }
 
     @Test
     public void getClassesInDeclaration_listWildcard() throws NoSuchMethodException {
-        Type listOfWildcard = new TypeToken<List<?>>(){}.getType();
+        Type listOfWildcard = new TypeToken<List<?>>() {}.getType();
         check(listOfWildcard, List.class);
     }
 
     @Test
     public void getClassesInDeclaration_nestedList() throws NoSuchMethodException {
-        Type nestedList = new TypeToken<List<Set<Integer>>>(){}.getType();
+        Type nestedList = new TypeToken<List<Set<Integer>>>() {}.getType();
         check(nestedList, List.class, Set.class, Integer.class);
     }
 
     @Test
     public void getClassesInDeclaration_nestedWildcard() throws NoSuchMethodException {
-        Type nestedWildcard = new TypeToken<List<Set<?>>>(){}.getType();
+        Type nestedWildcard = new TypeToken<List<Set<?>>>() {}.getType();
         check(nestedWildcard, List.class, Set.class);
     }
 
@@ -105,55 +100,55 @@ public class GenericTypeExplorerTest {
 
     @Test
     public void getClassesInDeclaration_simpleMap() throws NoSuchMethodException {
-        Type simpleMap = new TypeToken<Map<String, Custom>>(){}.getType();
+        Type simpleMap = new TypeToken<Map<String, Custom>>() {}.getType();
         check(simpleMap, Map.class, String.class, Custom.class);
     }
 
     @Test
     public void getClassesInDeclaration_mapWildcardKey() throws NoSuchMethodException {
-        Type mapWildcardKey = new TypeToken<Map<?, Custom>>(){}.getType();
+        Type mapWildcardKey = new TypeToken<Map<?, Custom>>() {}.getType();
         check(mapWildcardKey, Map.class, Custom.class);
     }
 
     @Test
     public void getClassesInDeclaration_mapWildcardValue() throws NoSuchMethodException {
-        Type mapWildcardValue = new TypeToken<Map<String, ?>>(){}.getType();
+        Type mapWildcardValue = new TypeToken<Map<String, ?>>() {}.getType();
         check(mapWildcardValue, Map.class, String.class);
     }
 
     @Test
     public void getClassesInDeclaration_nestedMapKey() throws NoSuchMethodException {
-        Type nestedMapKey = new TypeToken<Map<List<String>, Custom>>(){}.getType();
+        Type nestedMapKey = new TypeToken<Map<List<String>, Custom>>() {}.getType();
         check(nestedMapKey, Map.class, List.class, String.class, Custom.class);
     }
 
     @Test
     public void getClassesInDeclaration_nestedMapValue() throws NoSuchMethodException {
-        Type nestedMapValue = new TypeToken<Map<String, Set<Custom>>>(){}.getType();
+        Type nestedMapValue = new TypeToken<Map<String, Set<Custom>>>() {}.getType();
         check(nestedMapValue, Map.class, String.class, Set.class, Custom.class);
     }
 
     @Test
     public void getClassesInDeclaration_customGeneric1P() throws NoSuchMethodException {
-        Type customGeneric1P = new TypeToken<Custom1P<String>>(){}.getType();
+        Type customGeneric1P = new TypeToken<Custom1P<String>>() {}.getType();
         check(customGeneric1P, Custom1P.class, String.class);
     }
 
     @Test
     public void getClassesInDeclaration_customGeneric2P() throws NoSuchMethodException {
-        Type customGeneric2P = new TypeToken<Custom2P<String, Integer>>(){}.getType();
+        Type customGeneric2P = new TypeToken<Custom2P<String, Integer>>() {}.getType();
         check(customGeneric2P, Custom2P.class, String.class, Integer.class);
     }
 
     @Test
     public void getClassesInDeclaration_customGeneric1PInterface() throws NoSuchMethodException {
-        Type customGeneric1PInterface = new TypeToken<Custom1P<MyInterface>>(){}.getType();
+        Type customGeneric1PInterface = new TypeToken<Custom1P<MyInterface>>() {}.getType();
         check(customGeneric1PInterface, Custom1P.class, MyInterface.class);
     }
 
     @Test
     public void getClassesInDeclaration_customGeneric1PWildcard() throws NoSuchMethodException {
-        Type customGeneric1PWildcard = new TypeToken<Custom1P<?>>(){}.getType();
+        Type customGeneric1PWildcard = new TypeToken<Custom1P<?>>() {}.getType();
         check(customGeneric1PWildcard, Custom1P.class);
     }
 
@@ -218,6 +213,15 @@ public class GenericTypeExplorerTest {
     @Test
     public void getClassesInDeclaration_listBoundGenericArray() throws NoSuchMethodException {
         check("listBoundGenericArray", List.class, Custom.class);
+    }
+
+    public <T extends Enum<T>> T enumBound() {
+        return null;
+    }
+
+    @Test
+    public void getClassesInDeclaration_classOfT() throws NoSuchMethodException {
+        check("enumBound", Enum.class);
     }
 
     public Map<List<String>, Custom2P<Set<Integer>, Custom3P<Map<Custom2P<Long, Boolean>, Custom>, Float, Short>>>
