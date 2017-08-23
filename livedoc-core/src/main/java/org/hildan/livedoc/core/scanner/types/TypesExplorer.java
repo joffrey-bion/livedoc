@@ -1,29 +1,46 @@
 package org.hildan.livedoc.core.scanner.types;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.hildan.livedoc.core.scanner.properties.Property;
 import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanner.types.filters.PrimitiveTypesExcludingFilter;
+import org.hildan.livedoc.core.scanner.types.filters.ContainerTypesExcludingFilter;
 import org.hildan.livedoc.core.scanner.types.filters.TypeFilter;
+import org.hildan.livedoc.core.scanner.types.mappers.InterfaceSubTypesMapper;
+import org.hildan.livedoc.core.scanner.types.mappers.TypeMapper;
 import org.reflections.Reflections;
-
-import static java.util.stream.Collectors.toSet;
 
 public class TypesExplorer {
 
-    private final Reflections reflections;
-
     private final PropertyScanner scanner;
 
-    private final TypeFilter filter;
+    private TypeFilter filter;
 
-    public TypesExplorer(Reflections reflections, PropertyScanner scanner, TypeFilter filter) {
-        this.reflections = reflections;
+    private TypeFilter explorationFilter;
+
+    private TypeMapper mapper;
+
+    public TypesExplorer(PropertyScanner scanner, Reflections reflections) {
         this.scanner = scanner;
+        this.filter = new ContainerTypesExcludingFilter();
+        this.explorationFilter = new PrimitiveTypesExcludingFilter();
+        this.mapper = new InterfaceSubTypesMapper(reflections);
+    }
+
+    public void setFilter(TypeFilter filter) {
         this.filter = filter;
+    }
+
+    public void setExplorationFilter(TypeFilter explorationFilter) {
+        this.explorationFilter = explorationFilter;
+    }
+
+    public void setMapper(TypeMapper mapper) {
+        this.mapper = mapper;
     }
 
     public Set<Class<?>> findTypes(Set<Type> rootTypes) {
@@ -35,9 +52,12 @@ public class TypesExplorer {
     }
 
     private void exploreType(Type type, Set<Class<?>> exploredClasses) {
-        for (Class<?> c : getClassesToExplore(type)) {
-            exploreClass(c, exploredClasses);
-        }
+        GenericTypeExplorer.getClassesInDeclaration(type)
+                           .stream()
+                           .filter(filter)
+                           .flatMap(mapper.andThen(Collection::stream))
+                           .distinct()
+                           .forEach(c -> exploreClass(c, exploredClasses));
     }
 
     private void exploreClass(Class<?> clazz, Set<Class<?>> exploredClasses) {
@@ -45,29 +65,14 @@ public class TypesExplorer {
             return; // already explored
         }
         exploredClasses.add(clazz);
-
-        Set<Type> propertyTypes = scanner.getProperties(clazz).stream().map(Property::getType).collect(toSet());
-        for (Type propType : propertyTypes) {
-            exploreType(propType, exploredClasses);
+        if (!explorationFilter.test(clazz)) {
+            return; // exploration of the inner properties is disabled for the current type
         }
+        scanner.getProperties(clazz)
+               .stream()
+               .map(Property::getType)
+               .distinct()
+               .forEach(propType -> exploreType(propType, exploredClasses));
     }
 
-    private Set<Class<?>> getClassesToExplore(Type typeDeclaration) {
-        Set<Class<?>> types = GenericTypeExplorer.getClassesInDeclaration(typeDeclaration)
-                                                 .stream()
-                                                 .filter(filter)
-                                                 .collect(toSet());
-        replaceInterfacesByImpl(types);
-        return types;
-    }
-
-    private void replaceInterfacesByImpl(Set<Class<?>> types) {
-        Set<Class<?>> interfaces = types.stream().filter(Class::isInterface).collect(toSet());
-        types.removeAll(interfaces);
-        types.addAll(interfaces.stream().flatMap(this::getSubTypes).collect(toSet()));
-    }
-
-    private <T> Stream<Class<? extends T>> getSubTypes(Class<T> interfaceType) {
-        return reflections.getSubTypesOf(interfaceType).stream();
-    }
 }

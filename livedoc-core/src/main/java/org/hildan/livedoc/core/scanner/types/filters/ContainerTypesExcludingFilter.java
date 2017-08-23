@@ -6,7 +6,12 @@ import java.util.Map;
 
 import org.hildan.livedoc.core.pojo.Livedoc;
 
-public class DefaultTypeFilter implements TypeFilter {
+/**
+ * A filter that excludes collections and other basic classes that we don't want to document as independent types. For
+ * instance, for collections, we will just describe the type as "a list of X", where only X matters (we all know what a
+ * list is, and the exact implementation of the list doesn't matter once serialized).
+ */
+public class ContainerTypesExcludingFilter implements TypeFilter {
 
     /**
      * Types that should not appear in the doc and that won't be explored to discover more types either.

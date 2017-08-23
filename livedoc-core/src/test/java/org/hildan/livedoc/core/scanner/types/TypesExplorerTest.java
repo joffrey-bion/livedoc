@@ -23,9 +23,15 @@ public class TypesExplorerTest {
     }
 
     @Test
-    public void findTypes_simpleType() {
+    public void findTypes_simpleString() {
         Set<Type> rootTypes = Collections.singleton(String.class);
         check(rootTypes, String.class);
+    }
+
+    @Test
+    public void findTypes_simpleCharacter() {
+        Set<Type> rootTypes = Collections.singleton(Character.class);
+        check(rootTypes, Character.class);
     }
 
     private static class Custom {
@@ -73,7 +79,7 @@ public class TypesExplorerTest {
 
     private static void check(Set<Type> rootTypes, Class<?>... expectedFoundClasses) {
         PropertyScanner scanner = new FieldPropertyScanner();
-        TypesExplorer explorer = new TypesExplorer(reflections, scanner, clazz -> true);
+        TypesExplorer explorer = new TypesExplorer(scanner, reflections);
         Set<Class<?>> classes = explorer.findTypes(rootTypes);
         assertEquals(Sets.newHashSet(expectedFoundClasses), classes);
     }

@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class DefaultTypeFilterTest {
+public class ContainerTypesExcludingFilterTest {
 
     private static class Custom {
     }
@@ -30,7 +30,7 @@ public class DefaultTypeFilterTest {
 
     @Before
     public void setUp() throws Exception {
-        typeFilter = new DefaultTypeFilter();
+        typeFilter = new ContainerTypesExcludingFilter();
     }
 
     @Test

@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.scanner.properties.FieldPropertyScanner;
-import org.hildan.livedoc.core.scanner.types.filters.DefaultTypeFilter;
 import org.hildan.livedoc.core.scanner.types.TypesExplorer;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
 import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
@@ -18,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.Sets;
 
-public class TypesScanner {
+class TypesScanner {
 
     private final Reflections reflections;
 
-    public TypesScanner(Reflections reflections) {
+    TypesScanner(Reflections reflections) {
         this.reflections = reflections;
     }
 
-    public Set<Class<?>> findJsondocObjects(List<String> packages) {
+    Set<Class<?>> findJsondocObjects(List<String> packages) {
         Set<Type> rootTypes = getRootApiTypes();
 
-        TypesExplorer explorer = new TypesExplorer(reflections, new FieldPropertyScanner(), new DefaultTypeFilter());
+        TypesExplorer explorer = new TypesExplorer(new FieldPropertyScanner(), reflections);
         Set<Class<?>> classes = explorer.findTypes(rootTypes);
 
         return classes.stream().filter(clazz -> inWhiteListedPackages(packages, clazz)).collect(Collectors.toSet());
