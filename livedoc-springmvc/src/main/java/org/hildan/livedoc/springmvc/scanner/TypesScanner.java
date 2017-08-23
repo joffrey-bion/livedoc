@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.scanner.types.records.FieldTypesScanner;
+import org.hildan.livedoc.core.scanner.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanner.types.filters.DefaultTypeFilter;
 import org.hildan.livedoc.core.scanner.types.TypesExplorer;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
@@ -29,8 +29,7 @@ public class TypesScanner {
     public Set<Class<?>> findJsondocObjects(List<String> packages) {
         Set<Type> rootTypes = getRootApiTypes();
 
-        TypesExplorer explorer = new TypesExplorer(reflections, new FieldTypesScanner(),
-                new DefaultTypeFilter());
+        TypesExplorer explorer = new TypesExplorer(reflections, new FieldPropertyScanner(), new DefaultTypeFilter());
         Set<Class<?>> classes = explorer.findTypes(rootTypes);
 
         return classes.stream().filter(clazz -> inWhiteListedPackages(packages, clazz)).collect(Collectors.toSet());
