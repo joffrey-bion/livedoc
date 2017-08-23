@@ -5,9 +5,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A utility class allowing to extract all classes involved in a generic type declaration.
@@ -16,9 +18,8 @@ class GenericTypeExplorer {
 
     /**
      * Returns all classes/interfaces appearing in the given type declaration. This method recursively explores type
-     * parameters and array components to find the involved types.
-     * <p>
-     * For instance, for the type {@code Map<Custom, List<Integer>[]>}, we get [Map, Custom, List, Integer].
+     * parameters and array components to find the involved types. <p> For instance, for the type {@code Map<Custom,
+     * List<Integer>[]>}, we get [Map, Custom, List, Integer].
      *
      * @param type
      *         the type to explore
@@ -64,14 +65,19 @@ class GenericTypeExplorer {
     }
 
     private static Set<Class<?>> getTypesFromTypeVariable(TypeVariable type) {
+        if (!hasBounds(type)) {
+            return Collections.emptySet();
+        }
         return getTypesInDeclarations(type.getBounds());
     }
 
+    private static boolean hasBounds(TypeVariable type) {
+        Type[] bounds = type.getBounds();
+        // unbounded variables have one bound of type Object
+        return bounds.length != 1 || !bounds[0].equals(Object.class);
+    }
+
     private static Set<Class<?>> getTypesInDeclarations(Type... types) {
-        Set<Class<?>> candidates = new HashSet<>();
-        for (Type typeParam : types) {
-            candidates.addAll(getClassesInDeclaration(typeParam));
-        }
-        return candidates;
+        return Arrays.stream(types).flatMap(t -> getClassesInDeclaration(t).stream()).collect(Collectors.toSet());
     }
 }
