@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import static java.util.stream.Collectors.toList;
@@ -67,7 +66,7 @@ public class JacksonPropertyScanner implements PropertyScanner {
 
     private Type getType(BeanPropertyDefinition property) {
         AnnotatedMember member = property.getAccessor();
-        assert member != null : "only readable properties should go through this method";
+        assert member != null : "the given property is not readable: " + property.getName();
         AnnotationIntrospector introspector = mapper.getSerializationConfig().getAnnotationIntrospector();
         Type overridenSerializationType = introspector.findSerializationType(member);
         if (overridenSerializationType != null) {

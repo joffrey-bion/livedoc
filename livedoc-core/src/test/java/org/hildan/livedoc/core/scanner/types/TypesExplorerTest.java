@@ -1,37 +1,38 @@
 package org.hildan.livedoc.core.scanner.types;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hildan.livedoc.core.scanner.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
-import org.reflections.Reflections;
 
-import com.google.common.collect.Sets;
 import static org.junit.Assert.assertEquals;
 
 public class TypesExplorerTest {
 
-    private static Reflections reflections;
+    private TypesExplorer explorer;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        reflections = new Reflections(TypesExplorerTest.class.getPackage().getName());
+    @Before
+    public void setUp() {
+        PropertyScanner scanner = new FieldPropertyScanner();
+        explorer = new TypesExplorer(scanner);
     }
 
     @Test
     public void findTypes_simpleString() {
         Set<Type> rootTypes = Collections.singleton(String.class);
-        check(rootTypes, String.class);
+        assertSetEquals(explorer.findTypes(rootTypes), String.class);
     }
 
     @Test
     public void findTypes_simpleCharacter() {
         Set<Type> rootTypes = Collections.singleton(Character.class);
-        check(rootTypes, Character.class);
+        assertSetEquals(explorer.findTypes(rootTypes), Character.class);
     }
 
     private static class Custom {
@@ -41,7 +42,7 @@ public class TypesExplorerTest {
     @Test
     public void findTypes_customType() {
         Set<Type> rootTypes = Collections.singleton(Custom.class);
-        check(rootTypes, Custom.class, Long.class);
+        assertSetEquals(explorer.findTypes(rootTypes), Custom.class, Long.class);
     }
 
     private static class Child extends Custom {
@@ -51,7 +52,7 @@ public class TypesExplorerTest {
     @Test
     public void findTypes_inheritedFields() {
         Set<Type> rootTypes = Collections.singleton(Child.class);
-        check(rootTypes, Child.class, Double.class, Long.class);
+        assertSetEquals(explorer.findTypes(rootTypes), Child.class, Double.class, Long.class);
     }
 
     private static class TestRoot {
@@ -73,14 +74,12 @@ public class TypesExplorerTest {
     @Test
     public void findTypes_complexHierarchy() {
         Set<Type> rootTypes = Collections.singleton(TestRoot.class);
-        check(rootTypes, TestRoot.class, WithCustomObject.class, WithPrimitives.class, Custom.class, Long.class,
-                String.class, int.class);
+        assertSetEquals(explorer.findTypes(rootTypes), TestRoot.class, WithCustomObject.class, WithPrimitives.class,
+                Custom.class, Long.class, String.class, int.class);
+
     }
 
-    private static void check(Set<Type> rootTypes, Class<?>... expectedFoundClasses) {
-        PropertyScanner scanner = new FieldPropertyScanner();
-        TypesExplorer explorer = new TypesExplorer(scanner);
-        Set<Class<?>> classes = explorer.findTypes(rootTypes);
-        assertEquals(Sets.newHashSet(expectedFoundClasses), classes);
+    private static void assertSetEquals(Set<Class<?>> actual, Class<?>... expected) {
+        assertEquals(new HashSet<>(Arrays.asList(expected)), actual);
     }
 }
