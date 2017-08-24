@@ -1,6 +1,13 @@
 # Change Log
 
-## [v0.4.0](https://bintray.com/joffrey-bion/maven/livedoc/0.4.0) (2017-08-24)
+## [v0.4.1](https://bintray.com/joffrey-bion/maven/livedoc/0.4.1) (2017-08-25)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.0...v0.4.1)
+
+**Fixed bugs:**
+
+- Livedoc UI webjar is empty [\#17](https://github.com/joffrey-bion/livedoc/issues/17)
+
+## [v0.4.0](https://bintray.com/joffrey-bion/maven/livedoc/0.4.0) (2017-08-23)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.3.0...v0.4.0)
 
 **Implemented enhancements:**
