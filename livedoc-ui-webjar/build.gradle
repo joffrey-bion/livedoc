@@ -1,7 +1,14 @@
 description = 'The interface webjar of the Livedoc project'
 
+dependencies {
+    compile 'org.webjars:jquery:1.11.1'
+    compile 'org.webjars:bootstrap:3.3.1'
+    compile 'org.webjars:handlebars:2.0.0'
+    compile 'org.webjars:prettify:4-Mar-2013'
+}
+
 jar {
     from("src") {
-        into "META-INF/resources"
+        into "META-INF/resources/webjars/${project.name}/${project.version}"
     }
 }
