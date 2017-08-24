@@ -1,1 +1,7 @@
 description = 'The interface webjar of the Livedoc project'
+
+jar {
+    from("src") {
+        into "META-INF/resources"
+    }
+}
