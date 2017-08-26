@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.4.2](https://bintray.com/joffrey-bion/maven/livedoc/0.4.2) (2017-08-25)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.1...v0.4.2)
+
 ## [v0.4.1](https://bintray.com/joffrey-bion/maven/livedoc/0.4.1) (2017-08-24)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.0...v0.4.1)
 
