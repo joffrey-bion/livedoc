@@ -15,6 +15,7 @@ jar {
     from('src') {
         include '**/*.js'
         include '**/*.css'
-        into "META-INF/resources/webjars/${project.name}/${project.version}"
+        include '**/*.map'
+        into "META-INF/resources/webjars/${project.name}"
     }
 }
