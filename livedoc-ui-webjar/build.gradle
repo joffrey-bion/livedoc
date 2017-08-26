@@ -8,7 +8,13 @@ dependencies {
 }
 
 jar {
-    from("src") {
+    from('src') {
+        include '**/*.html'
+        into 'META-INF/resources'
+    }
+    from('src') {
+        include '**/*.js'
+        include '**/*.css'
         into "META-INF/resources/webjars/${project.name}/${project.version}"
     }
 }
