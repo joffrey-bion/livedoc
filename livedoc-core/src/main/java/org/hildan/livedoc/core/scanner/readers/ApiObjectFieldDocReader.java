@@ -1,44 +1,54 @@
 package org.hildan.livedoc.core.scanner.readers;
 
-import java.lang.reflect.Field;
-
 import org.hildan.livedoc.core.annotation.ApiObjectField;
 import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
 import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
+import org.hildan.livedoc.core.scanner.properties.Property;
+import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.HibernateValidationProcessor;
 import org.hildan.livedoc.core.util.LivedocType;
 import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 
 public class ApiObjectFieldDocReader {
 
-    public static ApiObjectFieldDoc read(ApiObjectField annotation, Field field) {
-        ApiObjectFieldDoc apiPojoFieldDoc = new ApiObjectFieldDoc();
-        if (!annotation.name().trim().isEmpty()) {
-            apiPojoFieldDoc.setName(annotation.name());
-        } else {
-            apiPojoFieldDoc.setName(field.getName());
-        }
-        apiPojoFieldDoc.setDescription(annotation.description());
-        apiPojoFieldDoc.setType(
-                LivedocTypeBuilder.build(new LivedocType(), field.getType(), field.getGenericType()));
-        // if allowedvalues property is populated on an enum field, then the enum values are overridden with the
-        // allowedvalues ones
-        if (field.getType().isEnum() && annotation.allowedvalues().length == 0) {
-            apiPojoFieldDoc.setAllowedvalues(
-                    DefaultDocAnnotationScanner.enumConstantsToStringArray(field.getType().getEnumConstants()));
-        } else {
-            apiPojoFieldDoc.setAllowedvalues(annotation.allowedvalues());
-        }
-        apiPojoFieldDoc.setRequired(String.valueOf(annotation.required()));
-        apiPojoFieldDoc.setOrder(annotation.order());
+    public static ApiObjectFieldDoc read(Property property) {
+        ApiObjectFieldDoc apiFieldDoc = new ApiObjectFieldDoc();
+        apiFieldDoc.setName(property.getName());
+        apiFieldDoc.setType(getLivedocType(property));
+        apiFieldDoc.setRequired(String.valueOf(property.isRequired()));
+        apiFieldDoc.setOrder(property.getOrder());
 
-        if (!annotation.format().isEmpty()) {
-            apiPojoFieldDoc.addFormat(annotation.format());
+        String[] allowedvalues = getAllowedValues(property);
+        apiFieldDoc.setAllowedvalues(allowedvalues);
+
+        ApiObjectField annotation = property.getAccessibleObject().getAnnotation(ApiObjectField.class);
+        if (annotation != null) {
+            apiFieldDoc.setName(BeanUtils.maybeOverridden(annotation.name(), property.getName()));
+            apiFieldDoc.setDescription(annotation.description());
+            apiFieldDoc.setAllowedvalues(BeanUtils.maybeOverridden(annotation.allowedvalues(), allowedvalues));
+            apiFieldDoc.setRequired(String.valueOf(annotation.required() || property.isRequired()));
+            apiFieldDoc.setOrder(BeanUtils.maybeOverridden(annotation.order(), property.getOrder(), Integer.MAX_VALUE));
+
+            if (!annotation.format().isEmpty()) {
+                apiFieldDoc.addFormat(annotation.format());
+            }
         }
 
-        HibernateValidationProcessor.addConstraintMessages(field, apiPojoFieldDoc);
+        HibernateValidationProcessor.addConstraintMessages(property.getAccessibleObject(), apiFieldDoc);
 
-        return apiPojoFieldDoc;
+        return apiFieldDoc;
+    }
+
+    private static String[] getAllowedValues(Property property) {
+        if (property.getType().isEnum()) {
+            Object[] enumConstants = property.getType().getEnumConstants();
+            return DefaultDocAnnotationScanner.enumConstantsToStringArray(enumConstants);
+        }
+        return null;
+    }
+
+    private static LivedocType getLivedocType(Property property) {
+        return LivedocTypeBuilder.build(new LivedocType(), property.getType(), property.getGenericType());
     }
 
 }

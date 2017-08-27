@@ -1,7 +1,6 @@
 package org.hildan.livedoc.core.scanner.readers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
 
 import org.hildan.livedoc.core.annotation.ApiVersion;
 import org.hildan.livedoc.core.pojo.ApiVersionDoc;
@@ -20,28 +19,18 @@ public class ApiVersionDocReader {
      * In case this annotation is present at type and method level, then the method annotation will override the type
      * one.
      */
-    public static ApiVersionDoc read(Method method) {
-        ApiVersionDoc apiVersionDoc = null;
-        ApiVersion methodAnnotation = method.getAnnotation(ApiVersion.class);
-        ApiVersion typeAnnotation = method.getDeclaringClass().getAnnotation(ApiVersion.class);
+    public static ApiVersionDoc read(AnnotatedElement element, Class<?> declaringClass) {
+        ApiVersion elementAnnotation = element.getAnnotation(ApiVersion.class);
+        if (elementAnnotation != null) {
+            return buildFromAnnotation(element.getAnnotation(ApiVersion.class));
+        }
 
+        ApiVersion typeAnnotation = declaringClass.getAnnotation(ApiVersion.class);
         if (typeAnnotation != null) {
-            apiVersionDoc = buildFromAnnotation(typeAnnotation);
+            return buildFromAnnotation(typeAnnotation);
         }
 
-        if (methodAnnotation != null) {
-            apiVersionDoc = buildFromAnnotation(method.getAnnotation(ApiVersion.class));
-        }
-
-        return apiVersionDoc;
-    }
-
-    public static ApiVersionDoc read(Field field) {
-        ApiVersionDoc apiVersionDoc = null;
-        if (field.isAnnotationPresent(ApiVersion.class)) {
-            apiVersionDoc = buildFromAnnotation(field.getAnnotation(ApiVersion.class));
-        }
-        return apiVersionDoc;
+        return null;
     }
 
     private static ApiVersionDoc buildFromAnnotation(ApiVersion annotation) {

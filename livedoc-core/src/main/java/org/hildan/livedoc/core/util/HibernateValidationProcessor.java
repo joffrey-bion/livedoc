@@ -1,6 +1,6 @@
 package org.hildan.livedoc.core.util;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.AnnotatedElement;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.DecimalMax;
@@ -68,98 +68,98 @@ public class HibernateValidationProcessor {
 
     private final static String ScriptAssert_message = "script expression %s didn't evaluate to true";
 
-    public static void addConstraintMessages(Field field, ApiObjectFieldDoc apiPojoFieldDoc) {
+    public static void addConstraintMessages(AnnotatedElement property, ApiObjectFieldDoc apiPojoFieldDoc) {
         try {
             Class.forName("org.hibernate.validator.constraints.NotBlank");
 
-            if (field.isAnnotationPresent(AssertFalse.class)) {
+            if (property.isAnnotationPresent(AssertFalse.class)) {
                 apiPojoFieldDoc.addFormat(AssertFalse_message);
             }
 
-            if (field.isAnnotationPresent(AssertTrue.class)) {
+            if (property.isAnnotationPresent(AssertTrue.class)) {
                 apiPojoFieldDoc.addFormat(AssertTrue_message);
             }
 
-            if (field.isAnnotationPresent(NotNull.class)) {
+            if (property.isAnnotationPresent(NotNull.class)) {
                 apiPojoFieldDoc.addFormat(NotNull_message);
             }
 
-            if (field.isAnnotationPresent(Null.class)) {
+            if (property.isAnnotationPresent(Null.class)) {
                 apiPojoFieldDoc.addFormat(Null_message);
             }
 
-            if (field.isAnnotationPresent(Size.class)) {
-                Size annotation = field.getAnnotation(Size.class);
+            if (property.isAnnotationPresent(Size.class)) {
+                Size annotation = property.getAnnotation(Size.class);
                 apiPojoFieldDoc.addFormat(String.format(Size_message, annotation.min(), annotation.max()));
             }
 
-            if (field.isAnnotationPresent(NotBlank.class)) {
+            if (property.isAnnotationPresent(NotBlank.class)) {
                 apiPojoFieldDoc.addFormat(NotBlank_message);
             }
 
-            if (field.isAnnotationPresent(NotEmpty.class)) {
+            if (property.isAnnotationPresent(NotEmpty.class)) {
                 apiPojoFieldDoc.addFormat(NotEmpty_message);
             }
 
-            if (field.isAnnotationPresent(Length.class)) {
-                Length annotation = field.getAnnotation(Length.class);
+            if (property.isAnnotationPresent(Length.class)) {
+                Length annotation = property.getAnnotation(Length.class);
                 apiPojoFieldDoc.addFormat(String.format(Length_message, annotation.min(), annotation.max()));
             }
 
-            if (field.isAnnotationPresent(Range.class)) {
-                Range annotation = field.getAnnotation(Range.class);
+            if (property.isAnnotationPresent(Range.class)) {
+                Range annotation = property.getAnnotation(Range.class);
                 apiPojoFieldDoc.addFormat(String.format(Range_message, annotation.min(), annotation.max()));
             }
 
-            if (field.isAnnotationPresent(DecimalMax.class)) {
-                DecimalMax annotation = field.getAnnotation(DecimalMax.class);
+            if (property.isAnnotationPresent(DecimalMax.class)) {
+                DecimalMax annotation = property.getAnnotation(DecimalMax.class);
                 apiPojoFieldDoc.addFormat(String.format(DecimalMax_message, annotation.inclusive() ? "or equal to" : "",
                         annotation.value()));
             }
 
-            if (field.isAnnotationPresent(DecimalMin.class)) {
-                DecimalMin annotation = field.getAnnotation(DecimalMin.class);
+            if (property.isAnnotationPresent(DecimalMin.class)) {
+                DecimalMin annotation = property.getAnnotation(DecimalMin.class);
                 apiPojoFieldDoc.addFormat(String.format(DecimalMin_message, annotation.inclusive() ? "or equal to" : "",
                         annotation.value()));
             }
 
-            if (field.isAnnotationPresent(Future.class)) {
+            if (property.isAnnotationPresent(Future.class)) {
                 apiPojoFieldDoc.addFormat(Future_message);
             }
 
-            if (field.isAnnotationPresent(Past.class)) {
+            if (property.isAnnotationPresent(Past.class)) {
                 apiPojoFieldDoc.addFormat(Past_message);
             }
 
-            if (field.isAnnotationPresent(Digits.class)) {
-                Digits annotation = field.getAnnotation(Digits.class);
+            if (property.isAnnotationPresent(Digits.class)) {
+                Digits annotation = property.getAnnotation(Digits.class);
                 apiPojoFieldDoc.addFormat(String.format(Digits_message, annotation.integer(), annotation.fraction()));
             }
 
-            if (field.isAnnotationPresent(Max.class)) {
-                Max annotation = field.getAnnotation(Max.class);
+            if (property.isAnnotationPresent(Max.class)) {
+                Max annotation = property.getAnnotation(Max.class);
                 apiPojoFieldDoc.addFormat(String.format(Max_message, annotation.value()));
             }
 
-            if (field.isAnnotationPresent(Min.class)) {
-                Min annotation = field.getAnnotation(Min.class);
+            if (property.isAnnotationPresent(Min.class)) {
+                Min annotation = property.getAnnotation(Min.class);
                 apiPojoFieldDoc.addFormat(String.format(Min_message, annotation.value()));
             }
 
-            if (field.isAnnotationPresent(Pattern.class)) {
-                Pattern annotation = field.getAnnotation(Pattern.class);
+            if (property.isAnnotationPresent(Pattern.class)) {
+                Pattern annotation = property.getAnnotation(Pattern.class);
                 apiPojoFieldDoc.addFormat(String.format(Pattern_message, annotation.regexp()));
             }
 
-            if (field.isAnnotationPresent(Email.class)) {
+            if (property.isAnnotationPresent(Email.class)) {
                 apiPojoFieldDoc.addFormat(Email_message);
             }
 
-            if (field.isAnnotationPresent(URL.class)) {
+            if (property.isAnnotationPresent(URL.class)) {
                 apiPojoFieldDoc.addFormat(URL_message);
             }
 
-            if (field.isAnnotationPresent(CreditCardNumber.class)) {
+            if (property.isAnnotationPresent(CreditCardNumber.class)) {
                 apiPojoFieldDoc.addFormat(CreditCardNumber_message);
             }
 

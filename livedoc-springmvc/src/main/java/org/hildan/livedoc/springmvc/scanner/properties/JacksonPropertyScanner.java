@@ -1,5 +1,7 @@
 package org.hildan.livedoc.springmvc.scanner.properties;
 
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,13 +64,19 @@ public class JacksonPropertyScanner implements PropertyScanner {
         String name = propDef.getName();
         AnnotatedMember member = propDef.getAccessor();
         assert member != null : "the given property '" + name + "' must be readable";
+
         Class<?> type = getType(member);
         Type genericType = getGenericType(member);
+        AccessibleObject accessibleObject = getAccessibleObject(member);
 
-        Property property = new Property(name, type, genericType);
+        Property property = new Property(name, type, genericType, accessibleObject);
         property.setRequired(propDef.isRequired());
-        property.setOrder(propDef.getMetadata().getIndex());
-        property.setDefaultValue(propDef.getMetadata().getDefaultValue());
+        if (propDef.getMetadata().getIndex() != null) {
+            property.setOrder(propDef.getMetadata().getIndex());
+        }
+        if (propDef.getMetadata().getDefaultValue() != null) {
+            property.setDefaultValue(propDef.getMetadata().getDefaultValue());
+        }
         return property;
     }
 
@@ -85,5 +93,11 @@ public class JacksonPropertyScanner implements PropertyScanner {
     private Class<?> getOverriddenType(AnnotatedMember member) {
         AnnotationIntrospector introspector = mapper.getSerializationConfig().getAnnotationIntrospector();
         return introspector.findSerializationType(member);
+    }
+
+    private AccessibleObject getAccessibleObject(AnnotatedMember member) {
+        Member fieldOrMethod = member.getMember();
+        assert (fieldOrMethod instanceof AccessibleObject) : member.getName() + " is not an AccessibleObject";
+        return (AccessibleObject) fieldOrMethod;
     }
 }

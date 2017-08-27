@@ -17,6 +17,7 @@ import org.hildan.livedoc.core.annotation.global.ApiMigrationSet;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
+import org.hildan.livedoc.core.scanner.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
 import org.hildan.livedoc.core.scanner.readers.ApiDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiMethodDocReader;
@@ -88,7 +89,7 @@ public class DefaultDocAnnotationScanner extends AbstractDocAnnotationScanner {
 
     @Override
     public ApiObjectDoc initApiObjectDoc(Class<?> clazz) {
-        return ApiObjectDocReader.read(clazz);
+        return new ApiObjectDocReader(new FieldPropertyScanner()).read(clazz);
     }
 
     @Override

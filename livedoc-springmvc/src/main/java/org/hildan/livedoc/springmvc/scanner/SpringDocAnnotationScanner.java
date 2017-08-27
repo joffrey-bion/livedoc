@@ -16,11 +16,12 @@ import org.hildan.livedoc.core.annotation.global.ApiMigrationSet;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
 import org.hildan.livedoc.core.scanner.AbstractDocAnnotationScanner;
+import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanner.readers.ApiDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiMethodDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiObjectDocReader;
+import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringConsumesBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringHeaderBuilder;
@@ -33,9 +34,11 @@ import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringResponseBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringVerbBuilder;
+import org.hildan.livedoc.springmvc.scanner.properties.JacksonPropertyScanner;
 import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
@@ -43,7 +46,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class SpringDocAnnotationScanner extends AbstractDocAnnotationScanner {
+
+    private PropertyScanner scanner;
+
+    private ApiObjectDocReader apiObjectDocReader;
+
+    public SpringDocAnnotationScanner() {
+        // to match the spring config without accessing the actual bean containing it
+        ObjectMapper jacksonObjectMapper = Jackson2ObjectMapperBuilder.json().build();
+        scanner = new JacksonPropertyScanner(jacksonObjectMapper);
+        apiObjectDocReader = new ApiObjectDocReader(scanner);
+    }
 
     @Override
     public Set<Class<?>> jsondocControllers() {
@@ -83,7 +99,8 @@ public class SpringDocAnnotationScanner extends AbstractDocAnnotationScanner {
 
     @Override
     public Set<Class<?>> jsondocObjects(List<String> packages) {
-        return new SpringTypesScanner(reflections).findJsondocObjects(packages);
+        SpringTypesScanner springTypesScanner = new SpringTypesScanner(reflections, scanner);
+        return springTypesScanner.findJsondocObjects(packages);
     }
 
     @Override
@@ -155,7 +172,7 @@ public class SpringDocAnnotationScanner extends AbstractDocAnnotationScanner {
     @Override
     public ApiObjectDoc mergeApiObjectDoc(Class<?> clazz, ApiObjectDoc apiObjectDoc) {
         if (clazz.isAnnotationPresent(ApiObject.class)) {
-            ApiObjectDoc jsondocApiObjectDoc = ApiObjectDocReader.read(clazz);
+            ApiObjectDoc jsondocApiObjectDoc = apiObjectDocReader.read(clazz);
             BeanUtils.copyProperties(jsondocApiObjectDoc, apiObjectDoc);
         }
         return apiObjectDoc;

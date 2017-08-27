@@ -35,6 +35,6 @@ public class FieldPropertyScanner implements PropertyScanner {
     }
 
     private static Property toProperty(Field field) {
-        return new Property(field.getName(), field.getType(), field.getGenericType());
+        return new Property(field.getName(), field.getType(), field.getGenericType(), field);
     }
 }

@@ -79,10 +79,10 @@ public class JacksonPropertyScannerTest {
     public void getProperties() throws Exception {
         List<Property> properties = scanner.getProperties(MyDto.class);
         List<Property> expectedProps = new ArrayList<>();
-        expectedProps.add(new Property("fieldWithGetter", int.class));
-        expectedProps.add(new Property("interfaceField", MyImpl.class));
-        expectedProps.add(new Property("computedValue", String.class));
-        expectedProps.add(new Property("publicFieldRenamed", String.class));
+        expectedProps.add(new Property("fieldWithGetter", int.class, MyDto.class.getDeclaredMethod("getFieldWithGetter")));
+        expectedProps.add(new Property("interfaceField", MyImpl.class, MyDto.class.getDeclaredField("interfaceField")));
+        expectedProps.add(new Property("computedValue", String.class, MyDto.class.getDeclaredMethod("getComputedValue")));
+        expectedProps.add(new Property("publicFieldRenamed", String.class, MyDto.class.getDeclaredField("publicField")));
         assertEquals(expectedProps, properties);
     }
 }

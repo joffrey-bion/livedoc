@@ -46,12 +46,13 @@ public class FieldPropertyScannerTest {
     }
 
     @Test
-    public void getFieldTypes_excludesTransient() {
+    public void getFieldTypes_excludesTransient() throws NoSuchFieldException {
         Set<Property> props = new HashSet<>();
-        props.add(new Property("stringField", String.class));
-        props.add(new Property("intField", int.class));
-        props.add(new Property("objField", Object.class));
-        props.add(new Property("genericField", new TypeToken<List<Integer>>(){}.getType()));
+        props.add(createFieldProperty("stringField", String.class, CustomObject.class));
+        props.add(createFieldProperty("intField", int.class, CustomObject.class));
+        props.add(createFieldProperty("objField", Object.class, CustomObject.class));
+        props.add(new Property("genericField", List.class, new TypeToken<List<Integer>>() {}.getType(),
+                CustomObject.class.getDeclaredField("genericField")));
         assertEquals(props, new HashSet<>(scanner.getProperties(CustomObject.class)));
     }
 
@@ -64,10 +65,10 @@ public class FieldPropertyScannerTest {
     }
 
     @Test
-    public void getFieldTypes_inheritedFields() {
+    public void getFieldTypes_inheritedFields() throws NoSuchFieldException {
         Set<Property> props = new HashSet<>();
-        props.add(new Property("parentField", Float.class));
-        props.add(new Property("childField", Double.class));
+        props.add(createFieldProperty("parentField", Float.class, Parent.class));
+        props.add(createFieldProperty("childField", Double.class, Child.class));
         assertEquals(props, new HashSet<>(scanner.getProperties(Child.class)));
     }
 
@@ -81,13 +82,17 @@ public class FieldPropertyScannerTest {
     }
 
     @Test
-    public void getFieldTypes_enum() {
+    public void getFieldTypes_enum() throws NoSuchFieldException {
         Set<Property> props = new HashSet<>();
-        props.add(new Property("name", String.class));
-        props.add(new Property("ordinal", int.class));
-        props.add(new Property("intField", int.class));
-        props.add(new Property("doubleField", Double.class));
+        props.add(createFieldProperty("name", String.class, Enum.class));
+        props.add(createFieldProperty("ordinal", int.class, Enum.class));
+        props.add(createFieldProperty("intField", int.class, MyEnum.class));
+        props.add(createFieldProperty("doubleField", Double.class, MyEnum.class));
         assertEquals(props, new HashSet<>(scanner.getProperties(MyEnum.class)));
     }
 
+    private static Property createFieldProperty(String name, Class<?> type, Class<?> containingClass)
+            throws NoSuchFieldException {
+        return new Property(name, type, containingClass.getDeclaredField(name));
+    }
 }

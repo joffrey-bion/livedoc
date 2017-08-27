@@ -178,7 +178,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
 
         apiMethodDoc.setDisplayMethodAs(displayMethodAs);
         apiMethodDoc.setApierrors(ApiErrorDocReader.build(method));
-        apiMethodDoc.setSupportedversions(ApiVersionDocReader.read(method));
+        apiMethodDoc.setSupportedversions(ApiVersionDocReader.read(method, method.getDeclaringClass()));
         apiMethodDoc.setAuth(ApiAuthDocReader.read(method));
 
         apiMethodDoc = mergeApiMethodDoc(method, apiMethodDoc);
@@ -217,8 +217,6 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
         for (Class<?> clazz : classes) {
             log.debug("Getting object doc for class: " + clazz.getName());
             ApiObjectDoc apiObjectDoc = initApiObjectDoc(clazz);
-
-            apiObjectDoc.setSupportedversions(ApiVersionDocReader.read(clazz));
 
             apiObjectDoc = mergeApiObjectDoc(clazz, apiObjectDoc);
             if (apiObjectDoc.isShow()) {

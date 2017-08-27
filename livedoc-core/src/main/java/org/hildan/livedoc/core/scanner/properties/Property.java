@@ -1,5 +1,6 @@
 package org.hildan.livedoc.core.scanner.properties;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
@@ -11,20 +12,23 @@ public class Property implements Comparable<Property> {
 
     private final Type genericType;
 
-    private boolean required;
+    private final AccessibleObject accessibleObject;
+
+    private boolean required = false;
 
     private int order = Integer.MAX_VALUE;
 
     private Object defaultValue;
 
-    public Property(String name, Class<?> type) {
-        this(name, type, type);
+    public Property(String name, Class<?> type, AccessibleObject accessibleObject) {
+        this(name, type, type, accessibleObject);
     }
 
-    public Property(String name, Class<?> type, Type genericType) {
+    public Property(String name, Class<?> type, Type genericType, AccessibleObject accessibleObject) {
         this.name = name;
         this.type = type;
         this.genericType = genericType;
+        this.accessibleObject = accessibleObject;
     }
 
     public String getName() {
@@ -63,6 +67,10 @@ public class Property implements Comparable<Property> {
         this.defaultValue = defaultValue;
     }
 
+    public AccessibleObject getAccessibleObject() {
+        return accessibleObject;
+    }
+
     /**
      * This comparison is the same as the one in ApiObjectFieldDoc class
      */
@@ -84,12 +92,13 @@ public class Property implements Comparable<Property> {
             return false;
         }
         Property property = (Property) o;
-        return Objects.equals(name, property.name) && Objects.equals(genericType, property.genericType);
+        return Objects.equals(name, property.name) && Objects.equals(type, property.type) && Objects.equals(genericType,
+                property.genericType) && Objects.equals(accessibleObject, property.accessibleObject);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, genericType);
+        return Objects.hash(name, type, genericType, accessibleObject);
     }
 
     @Override
