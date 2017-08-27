@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.pojo.ObjectTemplate;
+import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
+import org.hildan.livedoc.core.scanner.templates.ObjectTemplateBuilder;
 import org.hildan.livedoc.core.util.pojo.MyEnum;
 import org.hildan.livedoc.core.util.pojo.NoAnnotationPojo;
 import org.hildan.livedoc.core.util.pojo.TemplateObject;

@@ -4,6 +4,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
+
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc>, Groupable {
 
     public final String livedocId = UUID.randomUUID().toString();

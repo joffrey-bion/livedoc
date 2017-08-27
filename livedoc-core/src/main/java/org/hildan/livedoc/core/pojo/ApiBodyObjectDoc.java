@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.pojo;
 
 import java.util.UUID;
 
+import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
 import org.hildan.livedoc.core.util.LivedocType;
 
 public class ApiBodyObjectDoc {

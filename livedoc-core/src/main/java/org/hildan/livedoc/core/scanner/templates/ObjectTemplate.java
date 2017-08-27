@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.pojo;
+package org.hildan.livedoc.core.scanner.templates;
 
 import java.util.LinkedHashMap;
 

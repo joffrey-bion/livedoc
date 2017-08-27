@@ -1,13 +1,13 @@
-package org.hildan.livedoc.core.util;
+package org.hildan.livedoc.core.scanner.templates;
 
 import java.lang.reflect.Field;
 
-public class LivedocFieldWrapper implements Comparable<LivedocFieldWrapper> {
+public class OrderedField implements Comparable<OrderedField> {
     private Field field;
 
     private Integer order;
 
-    public LivedocFieldWrapper(Field field, Integer order) {
+    public OrderedField(Field field, Integer order) {
         this.field = field;
         this.order = order;
     }
@@ -32,7 +32,7 @@ public class LivedocFieldWrapper implements Comparable<LivedocFieldWrapper> {
      * This comparison is the same as the one in ApiObjectFieldDoc class
      */
     @Override
-    public int compareTo(LivedocFieldWrapper o) {
+    public int compareTo(OrderedField o) {
         if (this.getOrder().equals(o.getOrder())) {
             return this.getField().getName().compareTo(o.getField().getName());
         } else {

@@ -1,8 +1,7 @@
-package org.hildan.livedoc.core.util;
+package org.hildan.livedoc.core.scanner.templates;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,7 +12,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.hildan.livedoc.core.annotation.ApiObjectField;
-import org.hildan.livedoc.core.pojo.ObjectTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +38,9 @@ public class ObjectTemplateBuilder {
 
         if (jsondocObjects.contains(clazz)) {
             try {
-                Set<LivedocFieldWrapper> fields = getAllDeclaredFields(clazz);
+                Set<OrderedField> fields = getAllDeclaredFields(clazz);
 
-                for (LivedocFieldWrapper jsondocFieldWrapper : fields) {
+                for (OrderedField jsondocFieldWrapper : fields) {
                     Field field = jsondocFieldWrapper.getField();
                     String fieldName = field.getName();
                     ApiObjectField apiObjectField = field.getAnnotation(ApiObjectField.class);
@@ -55,9 +53,9 @@ public class ObjectTemplateBuilder {
                     // contains a field of type "A"
                     if (field.getType().equals(clazz) || (apiObjectField != null
                             && !apiObjectField.processtemplate())) {
-                        value = getValue(Object.class, field.getGenericType(), fieldName, jsondocObjects);
+                        value = getValue(Object.class, jsondocObjects);
                     } else {
-                        value = getValue(field.getType(), field.getGenericType(), fieldName, jsondocObjects);
+                        value = getValue(field.getType(), jsondocObjects);
                     }
 
                     objectTemplate.put(fieldName, value);
@@ -70,11 +68,10 @@ public class ObjectTemplateBuilder {
         return objectTemplate;
     }
 
-    private static Object getValue(Class<?> fieldClass, Type fieldGenericType, String fieldName,
-            Set<Class<?>> jsondocObjects) {
+    private static Object getValue(Class<?> fieldClass, Set<Class<?>> jsondocObjects) {
 
         if (fieldClass.isPrimitive()) {
-            return getValue(wrap(fieldClass), null, fieldName, jsondocObjects);
+            return getValue(wrap(fieldClass), jsondocObjects);
         } else if (Map.class.isAssignableFrom(fieldClass)) {
             return new HashMap<>();
         } else if (Number.class.isAssignableFrom(fieldClass)) {
@@ -90,8 +87,8 @@ public class ObjectTemplateBuilder {
         }
     }
 
-    private static Set<LivedocFieldWrapper> getAllDeclaredFields(Class<?> clazz) {
-        Set<LivedocFieldWrapper> fields = new TreeSet<>();
+    private static Set<OrderedField> getAllDeclaredFields(Class<?> clazz) {
+        Set<OrderedField> fields = new TreeSet<>();
 
         List<Field> declaredFields = new ArrayList<>();
         if (clazz.isEnum()) {
@@ -106,9 +103,9 @@ public class ObjectTemplateBuilder {
             }
             if (field.isAnnotationPresent(ApiObjectField.class)) {
                 ApiObjectField annotation = field.getAnnotation(ApiObjectField.class);
-                fields.add(new LivedocFieldWrapper(field, annotation.order()));
+                fields.add(new OrderedField(field, annotation.order()));
             } else {
-                fields.add(new LivedocFieldWrapper(field, Integer.MAX_VALUE));
+                fields.add(new OrderedField(field, Integer.MAX_VALUE));
             }
         }
 

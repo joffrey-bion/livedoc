@@ -17,7 +17,7 @@ import org.hildan.livedoc.core.annotation.global.ApiMigrationSet;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
-import org.hildan.livedoc.core.pojo.ObjectTemplate;
+import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
 import org.hildan.livedoc.core.scanner.readers.ApiDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiMethodDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiObjectDocReader;

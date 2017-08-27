@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotation.ApiObject;
 import org.hildan.livedoc.core.annotation.ApiObjectField;
+import org.hildan.livedoc.core.scanner.templates.ObjectTemplateBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
