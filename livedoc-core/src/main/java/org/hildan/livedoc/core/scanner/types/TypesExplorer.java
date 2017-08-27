@@ -69,7 +69,7 @@ public class TypesExplorer {
         }
         scanner.getProperties(clazz)
                .stream()
-               .map(Property::getType)
+               .map(Property::getGenericType)
                .distinct()
                .forEach(propType -> exploreType(propType, exploredClasses));
     }

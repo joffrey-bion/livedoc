@@ -3,34 +3,76 @@ package org.hildan.livedoc.core.scanner.properties;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-public class Property {
+public class Property implements Comparable<Property> {
 
     private final String name;
 
-    private final Type type;
+    private final Class<?> type;
 
-    private final Boolean required;
+    private final Type genericType;
 
-    public Property(String name, Type type) {
-        this(name, type, null);
+    private boolean required;
+
+    private int order = Integer.MAX_VALUE;
+
+    private Object defaultValue;
+
+    public Property(String name, Class<?> type) {
+        this(name, type, type);
     }
 
-    public Property(String name, Type type, Boolean required) {
+    public Property(String name, Class<?> type, Type genericType) {
         this.name = name;
         this.type = type;
-        this.required = required;
+        this.genericType = genericType;
     }
 
     public String getName() {
         return name;
     }
 
-    public Type getType() {
+    public Class<?> getType() {
         return type;
     }
 
-    public Boolean isRequired() {
+    public Type getGenericType() {
+        return genericType;
+    }
+
+    public boolean isRequired() {
         return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public Object getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(Object defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    /**
+     * This comparison is the same as the one in ApiObjectFieldDoc class
+     */
+    @Override
+    public int compareTo(Property o) {
+        if (order == o.order) {
+            return name.compareTo(o.name);
+        } else {
+            return order - o.order;
+        }
     }
 
     @Override
@@ -42,16 +84,16 @@ public class Property {
             return false;
         }
         Property property = (Property) o;
-        return Objects.equals(name, property.name) && Objects.equals(type, property.type);
+        return Objects.equals(name, property.name) && Objects.equals(genericType, property.genericType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, type);
+        return Objects.hash(name, genericType);
     }
 
     @Override
     public String toString() {
-        return name + " (" + type + ')';
+        return name + " (" + genericType + ')';
     }
 }

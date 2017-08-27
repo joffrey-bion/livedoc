@@ -60,19 +60,30 @@ public class JacksonPropertyScanner implements PropertyScanner {
 
     private Property convertProp(BeanPropertyDefinition propDef) {
         String name = propDef.getName();
-        boolean required = propDef.isRequired();
-        Type type = getType(propDef);
-        return new Property(name, type, required);
+        AnnotatedMember member = propDef.getAccessor();
+        assert member != null : "the given property '" + name + "' must be readable";
+        Class<?> type = getType(member);
+        Type genericType = getGenericType(member);
+
+        Property property = new Property(name, type, genericType);
+        property.setRequired(propDef.isRequired());
+        property.setOrder(propDef.getMetadata().getIndex());
+        property.setDefaultValue(propDef.getMetadata().getDefaultValue());
+        return property;
     }
 
-    private Type getType(BeanPropertyDefinition property) {
-        AnnotatedMember member = property.getAccessor();
-        assert member != null : "the given property is not readable: " + property.getName();
+    private Class<?> getType(AnnotatedMember member) {
+        Class<?> overridden = getOverriddenType(member);
+        return overridden != null ? overridden : member.getRawType();
+    }
+
+    private Type getGenericType(AnnotatedMember member) {
+        Class<?> overridden = getOverriddenType(member);
+        return overridden != null ? overridden : member.getGenericType();
+    }
+
+    private Class<?> getOverriddenType(AnnotatedMember member) {
         AnnotationIntrospector introspector = mapper.getSerializationConfig().getAnnotationIntrospector();
-        Type overridenSerializationType = introspector.findSerializationType(member);
-        if (overridenSerializationType != null) {
-            return overridenSerializationType;
-        }
-        return member.getGenericType();
+        return introspector.findSerializationType(member);
     }
 }
