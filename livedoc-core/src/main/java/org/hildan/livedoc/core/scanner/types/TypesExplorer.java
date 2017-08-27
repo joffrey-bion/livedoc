@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.scanner.properties.Property;
 import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
-import org.hildan.livedoc.core.scanner.types.filters.PrimitiveTypesExcludingFilter;
+import org.hildan.livedoc.core.scanner.types.filters.BasicTypesExcludingFilter;
 import org.hildan.livedoc.core.scanner.types.filters.ContainerTypesExcludingFilter;
 import org.hildan.livedoc.core.scanner.types.filters.TypeFilter;
 import org.hildan.livedoc.core.scanner.types.mappers.TypeMapper;
@@ -26,7 +26,7 @@ public class TypesExplorer {
     public TypesExplorer(PropertyScanner scanner) {
         this.scanner = scanner;
         this.filter = new ContainerTypesExcludingFilter();
-        this.explorationFilter = new PrimitiveTypesExcludingFilter();
+        this.explorationFilter = new BasicTypesExcludingFilter();
         this.mapper = Collections::singleton;
     }
 
