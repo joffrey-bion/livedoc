@@ -2,17 +2,24 @@ package org.hildan.livedoc.core.scanner.readers;
 
 import org.hildan.livedoc.core.annotation.Api;
 import org.hildan.livedoc.core.pojo.ApiDoc;
+import org.hildan.livedoc.core.util.BeanUtils;
 
 public class ApiDocReader {
 
     public static ApiDoc read(Class<?> controller) {
-        Api api = controller.getAnnotation(Api.class);
         ApiDoc apiDoc = new ApiDoc();
-        apiDoc.setDescription(api.description());
-        apiDoc.setName(api.name());
-        apiDoc.setGroup(api.group());
-        apiDoc.setVisibility(api.visibility());
-        apiDoc.setStage(api.stage());
+        apiDoc.setName(controller.getSimpleName());
+        apiDoc.setSupportedversions(ApiVersionDocReader.read(controller));
+        apiDoc.setAuth(ApiAuthDocReader.read(controller));
+
+        Api api = controller.getAnnotation(Api.class);
+        if (api != null) {
+            apiDoc.setName(BeanUtils.maybeOverridden(api.name(), apiDoc.getName()));
+            apiDoc.setDescription(api.description());
+            apiDoc.setGroup(api.group());
+            apiDoc.setVisibility(api.visibility());
+            apiDoc.setStage(api.stage());
+        }
         return apiDoc;
     }
 

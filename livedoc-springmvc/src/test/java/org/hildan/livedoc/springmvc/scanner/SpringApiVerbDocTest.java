@@ -1,22 +1,23 @@
 package org.hildan.livedoc.springmvc.scanner;
 
+import java.util.Collections;
+import java.util.HashMap;
+
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.common.collect.Sets;
-
 public class SpringApiVerbDocTest {
 
-    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping(value = "/api-verb")
     public class SpringApiVerbController {
@@ -34,6 +35,24 @@ public class SpringApiVerbDocTest {
 
     }
 
+    @Test
+    public void testApiVerb() {
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        ApiDoc apiDoc = builder.readApiDoc(SpringApiVerbController.class, MethodDisplay.URI, new HashMap<>());
+        Assert.assertEquals("SpringApiVerbController", apiDoc.getName());
+        Assert.assertEquals(2, apiDoc.getMethods().size());
+        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+            if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-one")) {
+                Assert.assertEquals(1, apiMethodDoc.getVerb().size());
+                Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb().iterator().next());
+            }
+            if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-two")) {
+                Assert.assertEquals(2, apiMethodDoc.getVerb().size());
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping(value = "/api-verb-2", method = {RequestMethod.POST, RequestMethod.PUT})
     public class SpringApiVerbController2 {
@@ -46,24 +65,9 @@ public class SpringApiVerbDocTest {
     }
 
     @Test
-    public void testApiVerb() {
-        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiVerbController.class),
-                MethodDisplay.URI).iterator().next();
-        Assert.assertEquals("SpringApiVerbController", apiDoc.getName());
-        Assert.assertEquals(2, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-one")) {
-                Assert.assertEquals(1, apiMethodDoc.getVerb().size());
-                Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb().iterator().next());
-            }
-            if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getVerb().size());
-            }
-        }
-
-        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiVerbController2.class), MethodDisplay.URI)
-                               .iterator()
-                               .next();
+    public void testApiVerb2() {
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        ApiDoc apiDoc = builder.readApiDoc(SpringApiVerbController2.class, MethodDisplay.URI, new HashMap<>());
         Assert.assertEquals("SpringApiVerbController2", apiDoc.getName());
         Assert.assertEquals(1, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

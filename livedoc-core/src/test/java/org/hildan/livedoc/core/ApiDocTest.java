@@ -1,14 +1,21 @@
-package org.hildan.livedoc.core.doc;
+package org.hildan.livedoc.core;
 
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.hildan.livedoc.core.annotation.Api;
 import org.hildan.livedoc.core.annotation.ApiAuthBasic;
 import org.hildan.livedoc.core.annotation.ApiAuthBasicUser;
 import org.hildan.livedoc.core.annotation.ApiAuthNone;
+import org.hildan.livedoc.core.annotation.ApiAuthToken;
+import org.hildan.livedoc.core.annotation.ApiBodyObject;
+import org.hildan.livedoc.core.annotation.ApiHeader;
+import org.hildan.livedoc.core.annotation.ApiHeaders;
+import org.hildan.livedoc.core.annotation.ApiMethod;
+import org.hildan.livedoc.core.annotation.ApiParams;
 import org.hildan.livedoc.core.annotation.ApiPathParam;
 import org.hildan.livedoc.core.annotation.ApiQueryParam;
 import org.hildan.livedoc.core.annotation.ApiResponseObject;
@@ -18,42 +25,18 @@ import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiErrorDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
+import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
-import org.hildan.livedoc.core.util.pojo.Pizza;
-import org.hildan.livedoc.core.annotation.Api;
-import org.hildan.livedoc.core.annotation.ApiBodyObject;
-import org.hildan.livedoc.core.annotation.ApiMethod;
-import org.hildan.livedoc.core.annotation.ApiParams;
+import org.hildan.livedoc.core.pojo.ApiVisibility;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanner.readers.ApiAuthDocReader;
 import org.hildan.livedoc.core.util.controller.Test3Controller;
 import org.hildan.livedoc.core.util.pojo.Child;
+import org.hildan.livedoc.core.util.pojo.Pizza;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.collect.Sets;
-
 public class ApiDocTest {
-
-    private DocAnnotationScanner scanner = new DefaultDocAnnotationScanner();
-
-    @Api(description = "An interface controller", name = "interface-controller")
-    private interface InterfaceController {
-
-        @ApiMethod(path = "/interface", verb = ApiVerb.GET)
-        public String inter();
-    }
-
-    @SuppressWarnings("unused")
-    private class InterfaceControllerImpl implements InterfaceController {
-
-        @Override
-        public String inter() {
-            return null;
-        }
-
-    }
 
     @Api(name = "test-controller", description = "a-test-controller")
     @ApiVersion(since = "1.0", until = "2.12")
@@ -149,171 +132,17 @@ public class ApiDocTest {
 
     }
 
-    @Api(name = "test-controller-with-basic-auth", description = "a-test-controller with basic auth annotation")
-    @ApiAuthBasic(roles = {"ROLE_USER", "ROLE_ADMIN"},
-            testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
-    private class TestControllerWithBasicAuth {
-
-        @ApiMethod(path = "/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
-        @ApiAuthBasic(roles = {"ROLE_USER"},
-                testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
-        public String basicAuth() {
-            return null;
-        }
-
-        @ApiMethod(path = "/noAuth", description = "A method with no auth", verb = ApiVerb.GET)
-        @ApiAuthNone
-        public String noAuth() {
-            return null;
-        }
-
-        @ApiMethod(path = "/undefinedAuthWithAuthOnClass",
-                description = "A method with undefined auth but with auth info on class declaration",
-                verb = ApiVerb.GET)
-        public String undefinedAuthWithAuthOnClass() {
-            return null;
-        }
-
-    }
-
-    @Api(name = "test-controller-with-no-auth-annotation", description = "a-test-controller with no auth annotation")
-    private class TestControllerWithNoAuthAnnotation {
-
-        @ApiMethod(path = "/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
-        @ApiAuthBasic(roles = {"ROLE_USER"},
-                testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
-        public String basicAuth() {
-            return null;
-        }
-
-        @ApiMethod(path = "/noAuth", description = "A method with no auth", verb = ApiVerb.GET)
-        @ApiAuthNone
-        public String noAuth() {
-            return null;
-        }
-
-        @ApiMethod(path = "/undefinedAuthWithoutAuthOnClass",
-                description = "A method with undefined auth and without auth info on class declaration",
-                verb = ApiVerb.GET)
-        public String undefinedAuthWithoutAuthOnClass() {
-            return null;
-        }
-
-    }
-
-    @Api(name = "test-old-style-servlets", description = "a-test-old-style-servlet")
-    private class TestOldStyleServlets {
-
-        @ApiMethod(path = "/oldStyle", description = "A method params on method level", verb = ApiVerb.GET)
-        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = String.class)})
-        public String oldStyle() {
-            return null;
-        }
-
-        @ApiMethod(path = "/oldStyleWithList", description = "A method params on method level", verb = ApiVerb.GET)
-        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = List.class)})
-        public String oldStyleWithList() {
-            return null;
-        }
-
-        @ApiMethod(path = "/oldStyleWithMap", description = "A method params on method level", verb = ApiVerb.GET)
-        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = Map.class)})
-        public String oldStyleWithMap() {
-            return null;
-        }
-
-        @ApiMethod(path = "/oldStyleMixed", description = "A method params on method level", verb = ApiVerb.GET)
-        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = String.class),
-                @ApiPathParam(name = "age", clazz = Integer.class), @ApiPathParam(name = "undefined")},
-                queryparams = {@ApiQueryParam(name = "q", clazz = String.class, defaultvalue = "qTest")})
-        public String oldStyleMixed(@ApiPathParam(name = "age") Integer age) {
-            return null;
-        }
-
-        @ApiMethod(path = "/oldStyleResponseObject",
-                description = "A method with populated ApiResponseObject annotation", verb = ApiVerb.GET)
-        @ApiResponseObject(clazz = List.class)
-        public void oldStyleResponseObject() {
-            return;
-        }
-
-        @ApiMethod(path = "/oldStyleBodyObject", description = "A method with populated ApiBodyObject annotation",
-                verb = ApiVerb.GET)
-        @ApiBodyObject(clazz = List.class)
-        public void oldStyleBodyObject() {
-            return;
-        }
-
-    }
-
-    @Api(name = "test-errors-warnings-hints", description = "a-test-for-incomplete-documentation")
-    private class TestErrorsAndWarningsAndHints {
-
-        @ApiMethod
-        public String oldStyle() {
-            return null;
-        }
-
-    }
-
-    @Api(name = "test-errors-warnings-hints-method-display-as-summary",
-            description = "a-test-for-incomplete-documentation-for-method-display-summary")
-    private class TestErrorsAndWarningsAndHintsMethodSummary {
-
-        @ApiMethod
-        public String summary() {
-            return null;
-        }
-
-    }
-
-    @Api(name = "test-declared-methods", description = "a-test-for-declared-methods")
-    private class TestDeclaredMethods {
-
-        @ApiMethod(path = "/protectedMethod")
-        protected String protectedMethod() {
-            return null;
-        }
-
-        @ApiMethod(path = "/privateMethod")
-        private String privateMethod() {
-            return null;
-        }
-
-    }
-
-    @Api(name = "ISSUE-110", description = "ISSUE-110")
-    private class TestMultipleParamsWithSameMethod {
-
-        @ApiMethod(path = "/search", description = "search one by title")
-        public @ApiResponseObject
-        List findByTitle(@ApiQueryParam(name = "title") String title) {
-            return null;
-        }
-
-        @ApiMethod(path = "/search", description = "search one by content")
-        public @ApiResponseObject
-        List findByContent(@ApiQueryParam(name = "content") String content) {
-            return null;
-        }
-
-        @ApiMethod(path = "/search", description = "search one by content and field")
-        public @ApiResponseObject
-        List findByContent(@ApiQueryParam(name = "content") String content,
-                @ApiQueryParam(name = "field") String field) {
-            return null;
-        }
-
+    private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
+        LivedocBuilder builder = LivedocBuilder.basicAnnotationBuilder(Collections.emptyList());
+        return builder.readApiDoc(controller, methodDisplay, new HashMap<>());
     }
 
     @Test
-    public void testApiErrorsDoc() throws Exception {
+    public void testApiErrorsDoc() {
+        ApiDoc apiDoc = buildDocFor(Test3Controller.class, MethodDisplay.URI);
 
-        final ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(Test3Controller.class),
-                MethodDisplay.URI).iterator().next();
-
-        final Set<ApiMethodDoc> methods = apiDoc.getMethods();
-        final ApiMethodDoc apiMethodDoc = methods.iterator().next();
+        final List<ApiMethodDoc> methods = apiDoc.getMethods();
+        final ApiMethodDoc apiMethodDoc = methods.get(0);
         final List<ApiErrorDoc> apiErrors = apiMethodDoc.getApierrors();
 
         Assert.assertEquals(1, methods.size());
@@ -327,16 +156,14 @@ public class ApiDocTest {
     }
 
     @Test
-    public void testApiDoc() {
-        Set<Class<?>> classes = new HashSet<>();
-        classes.add(TestController.class);
-        ApiDoc apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+    public void testGeneral() {
+        ApiDoc apiDoc = buildDocFor(TestController.class, MethodDisplay.URI);
         Assert.assertEquals("test-controller", apiDoc.getName());
         Assert.assertEquals("a-test-controller", apiDoc.getDescription());
         Assert.assertEquals("1.0", apiDoc.getSupportedversions().getSince());
         Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
         Assert.assertEquals(ApiAuthType.NONE.name(), apiDoc.getAuth().getType());
-        Assert.assertEquals(DefaultDocAnnotationScanner.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
+        Assert.assertEquals(ApiAuthDocReader.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
 
@@ -379,8 +206,7 @@ public class ApiDocTest {
                 Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb().iterator().next());
                 Assert.assertEquals("Map[String, Integer]",
                         apiMethodDoc.getResponse().getLivedocType().getOneLineText());
-                Assert.assertEquals("Map[String, Integer]",
-                        apiMethodDoc.getBodyobject().getType().getOneLineText());
+                Assert.assertEquals("Map[String, Integer]", apiMethodDoc.getBodyobject().getType().getOneLineText());
                 for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
                     if (apiParamDoc.getName().equals("Map")) {
                         Assert.assertEquals("Map[String, Integer]", apiParamDoc.getLivedocType().getOneLineText());
@@ -457,10 +283,38 @@ public class ApiDocTest {
             }
 
         }
+    }
 
-        classes.clear();
-        classes.add(TestControllerWithBasicAuth.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+    @Api(name = "test-controller-with-basic-auth", description = "a-test-controller with basic auth annotation")
+    @ApiAuthBasic(roles = {"ROLE_USER", "ROLE_ADMIN"},
+            testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
+    private class TestControllerWithBasicAuth {
+
+        @ApiMethod(path = "/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
+        @ApiAuthBasic(roles = {"ROLE_USER"},
+                testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
+        public String basicAuth() {
+            return null;
+        }
+
+        @ApiMethod(path = "/noAuth", description = "A method with no auth", verb = ApiVerb.GET)
+        @ApiAuthNone
+        public String noAuth() {
+            return null;
+        }
+
+        @ApiMethod(path = "/undefinedAuthWithAuthOnClass",
+                description = "A method with undefined auth but with auth info on class declaration",
+                verb = ApiVerb.GET)
+        public String undefinedAuthWithAuthOnClass() {
+            return null;
+        }
+
+    }
+
+    @Test
+    public void testControllerWithBasicAuth() {
+        ApiDoc apiDoc = buildDocFor(TestControllerWithBasicAuth.class, MethodDisplay.URI);
         Assert.assertEquals("test-controller-with-basic-auth", apiDoc.getName());
         Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiDoc.getAuth().getType());
         Assert.assertEquals("ROLE_USER", apiDoc.getAuth().getRoles().get(0));
@@ -476,7 +330,7 @@ public class ApiDocTest {
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
                 Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
-                Assert.assertEquals(DefaultDocAnnotationScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+                Assert.assertEquals(ApiAuthDocReader.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
             }
 
             if (apiMethodDoc.getPath().contains("/undefinedAuthWithAuthOnClass")) {
@@ -486,10 +340,75 @@ public class ApiDocTest {
             }
 
         }
+    }
 
-        classes.clear();
-        classes.add(TestControllerWithNoAuthAnnotation.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+    @Api(name = "test-token-auth", description = "Test token auth")
+    @ApiAuthToken(roles = {""}, testtokens = {"abc", "cde"})
+    private class TestControllerWithAuthToken {
+
+        @ApiMethod(path = "/inherit")
+        public void inherit() {
+
+        }
+
+        @ApiMethod(path = "/override")
+        @ApiAuthToken(roles = {""}, scheme = "Bearer", testtokens = {"xyz"})
+        public void override() {
+
+        }
+
+    }
+
+    @Test
+    public void testApiAuthToken() {
+        ApiDoc apiDoc = buildDocFor(TestControllerWithAuthToken.class, MethodDisplay.URI);
+        Assert.assertEquals("TOKEN", apiDoc.getAuth().getType());
+        Assert.assertEquals("", apiDoc.getAuth().getScheme());
+        Assert.assertEquals("abc", apiDoc.getAuth().getTesttokens().iterator().next());
+
+        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+            if (apiMethodDoc.getPath().contains("/inherit")) {
+                Assert.assertEquals("TOKEN", apiMethodDoc.getAuth().getType());
+                Assert.assertEquals("", apiMethodDoc.getAuth().getScheme());
+                Assert.assertEquals("abc", apiMethodDoc.getAuth().getTesttokens().iterator().next());
+            }
+            if (apiMethodDoc.getPath().contains("/override")) {
+                Assert.assertEquals("TOKEN", apiMethodDoc.getAuth().getType());
+                Assert.assertEquals("Bearer", apiMethodDoc.getAuth().getScheme());
+                Assert.assertEquals("xyz", apiMethodDoc.getAuth().getTesttokens().iterator().next());
+            }
+        }
+
+    }
+
+    @Api(name = "test-controller-with-no-auth-annotation", description = "a-test-controller with no auth annotation")
+    private class TestControllerWithNoAuthAnnotation {
+
+        @ApiMethod(path = "/basicAuth", description = "A method with basic auth", verb = ApiVerb.GET)
+        @ApiAuthBasic(roles = {"ROLE_USER"},
+                testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
+        public String basicAuth() {
+            return null;
+        }
+
+        @ApiMethod(path = "/noAuth", description = "A method with no auth", verb = ApiVerb.GET)
+        @ApiAuthNone
+        public String noAuth() {
+            return null;
+        }
+
+        @ApiMethod(path = "/undefinedAuthWithoutAuthOnClass",
+                description = "A method with undefined auth and without auth info on class declaration",
+                verb = ApiVerb.GET)
+        public String undefinedAuthWithoutAuthOnClass() {
+            return null;
+        }
+
+    }
+
+    @Test
+    public void testControllerWithNoAuthAnnotation() {
+        ApiDoc apiDoc = buildDocFor(TestControllerWithNoAuthAnnotation.class, MethodDisplay.URI);
         Assert.assertEquals("test-controller-with-no-auth-annotation", apiDoc.getName());
         Assert.assertNull(apiDoc.getAuth());
 
@@ -502,7 +421,7 @@ public class ApiDocTest {
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
                 Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
-                Assert.assertEquals(DefaultDocAnnotationScanner.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
+                Assert.assertEquals(ApiAuthDocReader.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
             }
 
             if (apiMethodDoc.getPath().contains("/undefinedAuthWithoutAuthOnClass")) {
@@ -510,10 +429,56 @@ public class ApiDocTest {
             }
 
         }
+    }
 
-        classes.clear();
-        classes.add(TestOldStyleServlets.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+    @Api(name = "test-old-style-servlets", description = "a-test-old-style-servlet")
+    private class TestOldStyleServlets {
+
+        @ApiMethod(path = "/oldStyle", description = "A method params on method level", verb = ApiVerb.GET)
+        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = String.class)})
+        public String oldStyle() {
+            return null;
+        }
+
+        @ApiMethod(path = "/oldStyleWithList", description = "A method params on method level", verb = ApiVerb.GET)
+        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = List.class)})
+        public String oldStyleWithList() {
+            return null;
+        }
+
+        @ApiMethod(path = "/oldStyleWithMap", description = "A method params on method level", verb = ApiVerb.GET)
+        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = Map.class)})
+        public String oldStyleWithMap() {
+            return null;
+        }
+
+        @ApiMethod(path = "/oldStyleMixed", description = "A method params on method level", verb = ApiVerb.GET)
+        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = String.class),
+                @ApiPathParam(name = "age", clazz = Integer.class), @ApiPathParam(name = "undefined")},
+                queryparams = {@ApiQueryParam(name = "q", clazz = String.class, defaultvalue = "qTest")})
+        public String oldStyleMixed(@ApiPathParam(name = "age") Integer age) {
+            return null;
+        }
+
+        @ApiMethod(path = "/oldStyleResponseObject",
+                description = "A method with populated ApiResponseObject annotation", verb = ApiVerb.GET)
+        @ApiResponseObject(clazz = List.class)
+        public void oldStyleResponseObject() {
+            return;
+        }
+
+        @ApiMethod(path = "/oldStyleBodyObject", description = "A method with populated ApiBodyObject annotation",
+                verb = ApiVerb.GET)
+        @ApiBodyObject(clazz = List.class)
+        public void oldStyleBodyObject() {
+            return;
+        }
+
+    }
+
+    @Test
+    public void testOldStyleServlets() {
+        ApiDoc apiDoc = buildDocFor(TestOldStyleServlets.class, MethodDisplay.URI);
         Assert.assertEquals("test-old-style-servlets", apiDoc.getName());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -543,43 +508,255 @@ public class ApiDocTest {
                 Assert.assertEquals("List", apiMethodDoc.getBodyobject().getType().getOneLineText());
             }
         }
+    }
 
-        classes.clear();
-        classes.add(TestErrorsAndWarningsAndHints.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+    @Api(name = "test-errors-warnings-hints", description = "a-test-for-incomplete-documentation")
+    private class TestErrorsAndWarningsAndHints {
+
+        @ApiMethod
+        public String oldStyle() {
+            return null;
+        }
+
+    }
+
+    @Test
+    public void testErrorsAndWarningsAndHints() {
+        ApiDoc apiDoc = buildDocFor(TestErrorsAndWarningsAndHints.class, MethodDisplay.URI);
         Assert.assertEquals("test-errors-warnings-hints", apiDoc.getName());
         ApiMethodDoc apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
         Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
         Assert.assertEquals(2, apiMethodDoc.getJsondochints().size());
+    }
 
-        classes.clear();
-        classes.add(TestErrorsAndWarningsAndHintsMethodSummary.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.SUMMARY).iterator().next();
-        apiMethodDoc = apiDoc.getMethods().iterator().next();
+    @Api(name = "test-errors-warnings-hints-method-display-as-summary",
+            description = "a-test-for-incomplete-documentation-for-method-display-summary")
+    private class TestErrorsAndWarningsAndHintsMethodSummary {
+
+        @ApiMethod
+        public String summary() {
+            return null;
+        }
+
+    }
+
+    @Test
+    public void testErrorsAndWarningsAnsHintsSummary() {
+        ApiDoc apiDoc = buildDocFor(TestErrorsAndWarningsAndHintsMethodSummary.class, MethodDisplay.SUMMARY);
+        ApiMethodDoc apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
         Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
         Assert.assertEquals(3, apiMethodDoc.getJsondochints().size());
+    }
 
-        classes.clear();
-        classes.add(InterfaceController.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
+    @Api(description = "An interface controller", name = "interface-controller")
+    private interface InterfaceController {
+
+        @ApiMethod(path = "/interface", verb = ApiVerb.GET)
+        public String inter();
+    }
+
+    @SuppressWarnings("unused")
+    private class InterfaceControllerImpl implements InterfaceController {
+
+        @Override
+        public String inter() {
+            return null;
+        }
+
+    }
+
+    @Test
+    public void testInterfaceController() {
+        ApiDoc apiDoc;
+        ApiMethodDoc apiMethodDoc;
+        apiDoc = buildDocFor(InterfaceController.class, MethodDisplay.URI);
         Assert.assertEquals("interface-controller", apiDoc.getName());
         apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertNotNull(apiMethodDoc);
         Assert.assertEquals("/interface", apiMethodDoc.getPath().iterator().next());
+    }
 
-        classes.clear();
-        classes.add(TestDeclaredMethods.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
-        Assert.assertEquals("test-declared-methods", apiDoc.getName());
-        Assert.assertEquals(2, apiDoc.getMethods().size());
+    @Api(name = "test-declared-methods", description = "a-test-for-declared-methods")
+    private class TestDeclaredMethods {
 
-        classes.clear();
-        classes.add(TestMultipleParamsWithSameMethod.class);
-        apiDoc = scanner.getApiDocs(classes, MethodDisplay.URI).iterator().next();
-        Assert.assertEquals(3, apiDoc.getMethods().size());
+        @ApiMethod(path = "/protectedMethod")
+        protected String protectedMethod() {
+            return null;
+        }
+
+        @ApiMethod(path = "/privateMethod")
+        private String privateMethod() {
+            return null;
+        }
 
     }
 
+    @Test
+    public void testDeclaredMethods() {
+        ApiDoc apiDoc;
+        apiDoc = buildDocFor(TestDeclaredMethods.class, MethodDisplay.URI);
+        Assert.assertEquals("test-declared-methods", apiDoc.getName());
+        Assert.assertEquals(2, apiDoc.getMethods().size());
+    }
+
+    @Api(name = "ISSUE-110", description = "ISSUE-110")
+    private class TestMultipleParamsWithSameMethod {
+
+        @ApiMethod(path = "/search", description = "search one by title")
+        public @ApiResponseObject
+        List findByTitle(@ApiQueryParam(name = "title") String title) {
+            return null;
+        }
+
+        @ApiMethod(path = "/search", description = "search one by content")
+        public @ApiResponseObject
+        List findByContent(@ApiQueryParam(name = "content") String content) {
+            return null;
+        }
+
+        @ApiMethod(path = "/search", description = "search one by content and field")
+        public @ApiResponseObject
+        List findByContent(@ApiQueryParam(name = "content") String content,
+                @ApiQueryParam(name = "field") String field) {
+            return null;
+        }
+
+    }
+
+    @Test
+    public void testMultipleParamsSameMethod() {
+        ApiDoc apiDoc = buildDocFor(TestMultipleParamsWithSameMethod.class, MethodDisplay.URI);
+        Assert.assertEquals(3, apiDoc.getMethods().size());
+    }
+
+    @Api(description = "ApiHeadersController", name = "ApiHeadersController")
+    @ApiHeaders(headers = {@ApiHeader(name = "H1", description = "h1-description"),
+            @ApiHeader(name = "H2", description = "h2-description")})
+    private class ApiHeadersController {
+
+        @ApiMethod(path = "/api-headers-controller-method-one")
+        public void apiHeadersMethodOne() {
+
+        }
+
+        @ApiMethod(path = "/api-headers-controller-method-two")
+        @ApiHeaders(headers = {@ApiHeader(name = "H4", description = "h4-description"),
+                @ApiHeader(name = "H1", description = "h1-description")
+                // this is a duplicate of the one at the class level, it will not be taken into account when building
+                // the doc
+        })
+        public void apiHeadersMethodTwo() {
+
+        }
+
+    }
+
+    @Test
+    public void testApiHeadersOnClass() {
+        ApiDoc apiDoc = buildDocFor(ApiHeadersController.class, MethodDisplay.URI);
+        Assert.assertEquals("ApiHeadersController", apiDoc.getName());
+        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+            if (apiMethodDoc.getPath().contains("/api-headers-controller-method-one")) {
+                Assert.assertEquals(2, apiMethodDoc.getHeaders().size());
+            }
+            if (apiMethodDoc.getPath().contains("/api-headers-controller-method-two")) {
+                Assert.assertEquals(3, apiMethodDoc.getHeaders().size());
+            }
+        }
+    }
+
+    @Api(name = "test-path", description = "test-path")
+    private class ControllerWithMethodPaths {
+
+        @ApiMethod(path = {"/path1", "/path2"})
+        public void path() {
+
+        }
+
+    }
+
+    @Test
+    public void testPath_methodDisplayURI() {
+        ApiDoc apiDoc = buildDocFor(ControllerWithMethodPaths.class, MethodDisplay.URI);
+
+        boolean allRight = apiDoc.getMethods()
+                                 .stream()
+                                 .anyMatch(input -> input.getPath().contains("/path1") && input.getPath()
+                                                                                               .contains("/path2")
+                                         && input.getDisplayedMethodString().contains("/path1")
+                                         && input.getDisplayedMethodString().contains("/path2"));
+
+        Assert.assertTrue(allRight);
+    }
+
+    @Test
+    public void testPath_methodDisplayMethod() {
+        ApiDoc apiDoc = buildDocFor(ControllerWithMethodPaths.class, MethodDisplay.METHOD);
+
+        boolean allRight = apiDoc.getMethods()
+                                 .stream()
+                                 .anyMatch(input -> input.getPath().contains("/path1") && input.getPath()
+                                                                                               .contains("/path2")
+                                         && input.getDisplayedMethodString().contains("path")
+                                         && !input.getDisplayedMethodString().contains("/path1"));
+
+        Assert.assertTrue(allRight);
+    }
+
+    @Api(name = "test-type-level-visibility-and-stage", description = "Test type level visibility and stage attributes",
+            visibility = ApiVisibility.PUBLIC, stage = ApiStage.BETA)
+    private class ControllerWithTypeVisibility {
+
+        @ApiMethod(path = "/inherit")
+        public void inherit() {
+        }
+
+        @ApiMethod(path = "/override", visibility = ApiVisibility.PRIVATE, stage = ApiStage.GA)
+        public void override() {
+        }
+    }
+
+    @Test
+    public void testApiVisibility_typeLevel() {
+        ApiDoc apiDoc = buildDocFor(ControllerWithTypeVisibility.class, MethodDisplay.URI);
+        Assert.assertEquals(ApiVisibility.PUBLIC, apiDoc.getVisibility());
+        Assert.assertEquals(ApiStage.BETA, apiDoc.getStage());
+
+        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+            if (apiMethodDoc.getPath().contains("/inherit")) {
+                Assert.assertEquals(ApiVisibility.PUBLIC, apiMethodDoc.getVisibility());
+                Assert.assertEquals(ApiStage.BETA, apiMethodDoc.getStage());
+            }
+            if (apiMethodDoc.getPath().contains("/override")) {
+                Assert.assertEquals(ApiVisibility.PRIVATE, apiMethodDoc.getVisibility());
+                Assert.assertEquals(ApiStage.GA, apiMethodDoc.getStage());
+            }
+        }
+    }
+
+    @Api(name = "test-method-level-visibility-and-stage",
+            description = "Test method level visibility and stage attributes")
+    private class ControllerWithMethodVisibility {
+
+        @ApiMethod(path = "/only-method", visibility = ApiVisibility.PRIVATE, stage = ApiStage.DEPRECATED)
+        public void testVisibilityAndStage() {
+        }
+    }
+
+    @Test
+    public void testApiVisibility_methodLevel() {
+        ApiDoc apiDoc = buildDocFor(ControllerWithMethodVisibility.class, MethodDisplay.URI);
+        Assert.assertEquals(ApiVisibility.UNDEFINED, apiDoc.getVisibility());
+        Assert.assertEquals(ApiStage.UNDEFINED, apiDoc.getStage());
+
+        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+            if (apiMethodDoc.getPath().contains("/only-method")) {
+                Assert.assertEquals(ApiVisibility.PRIVATE, apiMethodDoc.getVisibility());
+                Assert.assertEquals(ApiStage.DEPRECATED, apiMethodDoc.getStage());
+            }
+        }
+
+    }
 }

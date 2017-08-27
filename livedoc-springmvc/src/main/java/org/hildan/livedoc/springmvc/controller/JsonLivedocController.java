@@ -2,10 +2,10 @@ package org.hildan.livedoc.springmvc.controller;
 
 import java.util.List;
 
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
-import org.hildan.livedoc.springmvc.scanner.SpringDocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,21 +23,21 @@ public class JsonLivedocController {
 
     private List<String> packages;
 
-    private DocAnnotationScanner docAnnotationScanner;
+    private LivedocBuilder livedocBuilder;
 
     private boolean playgroundEnabled = true;
 
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
     public JsonLivedocController(String version, String basePath, List<String> packages) {
-        this(version, basePath, packages, new SpringDocAnnotationScanner());
+        this(version, basePath, packages, SpringLivedocBuilderFactory.springLivedocBuilder(packages));
     }
 
-    public JsonLivedocController(String version, String basePath, List<String> packages, DocAnnotationScanner scanner) {
+    public JsonLivedocController(String version, String basePath, List<String> packages, LivedocBuilder livedocBuilder) {
         this.version = version;
         this.basePath = basePath;
         this.packages = packages;
-        this.docAnnotationScanner = scanner;
+        this.livedocBuilder = livedocBuilder;
     }
 
     public boolean isPlaygroundEnabled() {
@@ -60,6 +60,6 @@ public class JsonLivedocController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Livedoc getApi() {
-        return docAnnotationScanner.getLivedoc(version, basePath, packages, playgroundEnabled, displayMethodAs);
+        return livedocBuilder.build(version, basePath, packages, playgroundEnabled, displayMethodAs);
     }
 }

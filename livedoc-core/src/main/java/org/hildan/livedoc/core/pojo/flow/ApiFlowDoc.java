@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.pojo.flow;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.hildan.livedoc.core.annotation.flow.ApiFlow;
@@ -25,7 +26,8 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
 
     private String group;
 
-    public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation, List<ApiMethodDoc> apiMethodDocs) {
+    public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation,
+            Map<String, ? extends ApiMethodDoc> apiMethodDocsById) {
         ApiFlowDoc apiFlowDoc = new ApiFlowDoc();
         apiFlowDoc.setDescription(annotation.description());
         apiFlowDoc.setName(annotation.name());
@@ -34,7 +36,7 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
             apiFlowDoc.addPrecondition(precondition);
         }
         for (ApiFlowStep apiFlowStep : annotation.steps()) {
-            ApiFlowStepDoc apiFlowStepDoc = ApiFlowStepDoc.buildFromAnnotation(apiFlowStep, apiMethodDocs);
+            ApiFlowStepDoc apiFlowStepDoc = ApiFlowStepDoc.buildFromAnnotation(apiFlowStep, apiMethodDocsById);
             apiFlowDoc.addStep(apiFlowStepDoc);
             apiFlowDoc.addMethod(apiFlowStepDoc.getApimethoddoc());
         }

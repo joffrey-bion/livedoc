@@ -1,7 +1,6 @@
 package org.hildan.livedoc.core.util;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 public class BeanUtils {
@@ -48,7 +47,8 @@ public class BeanUtils {
         try {
             copyNonNullFieldsUnsafe(source, target);
         } catch (IllegalAccessException e) {
-            throw new FieldCopyException("Could not copy the fields of the given object of type " + source.getClass() , e);
+            throw new FieldCopyException("Could not copy the fields of the given object of type " + source.getClass(),
+                    e);
         }
     }
 
@@ -67,10 +67,16 @@ public class BeanUtils {
     }
 
     private static <T> void setField(Field field, T target, Object value) throws IllegalAccessException {
-        if (!Modifier.isPublic(field.getModifiers())) {
-            field.setAccessible(true);
-        }
+        field.setAccessible(true);
         field.set(target, value);
+    }
+
+    public static String[] enumConstantsToStringArray(Object[] enumConstants) {
+        String[] sarr = new String[enumConstants.length];
+        for (int i = 0; i < enumConstants.length; i++) {
+            sarr[i] = String.valueOf(enumConstants[i]);
+        }
+        return sarr;
     }
 
     public static class FieldCopyException extends RuntimeException {

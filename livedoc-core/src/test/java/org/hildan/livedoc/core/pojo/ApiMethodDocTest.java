@@ -1,7 +1,5 @@
-package org.hildan.livedoc.core.doc;
+package org.hildan.livedoc.core.pojo;
 
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,16 +7,12 @@ import com.google.common.collect.Sets;
 
 public class ApiMethodDocTest {
 
-    private ApiMethodDoc first;
-
-    private ApiMethodDoc second;
-
     @Test
     public void testNotEqual() {
-        first = new ApiMethodDoc();
+        ApiMethodDoc first = new ApiMethodDoc();
         first.setPath(Sets.newHashSet("/first"));
         first.setVerb(Sets.newHashSet(ApiVerb.GET));
-        second = new ApiMethodDoc();
+        ApiMethodDoc second = new ApiMethodDoc();
         second.setPath(Sets.newHashSet("/second"));
         second.setVerb(Sets.newHashSet(ApiVerb.GET));
         Assert.assertNotEquals(0, first.compareTo(second));
@@ -26,10 +20,10 @@ public class ApiMethodDocTest {
 
     @Test
     public void testEqual() {
-        first = new ApiMethodDoc();
+        ApiMethodDoc first = new ApiMethodDoc();
         first.setPath(Sets.newHashSet("/test"));
         first.setVerb(Sets.newHashSet(ApiVerb.GET));
-        second = new ApiMethodDoc();
+        ApiMethodDoc second = new ApiMethodDoc();
         second.setPath(Sets.newHashSet("/test"));
         second.setVerb(Sets.newHashSet(ApiVerb.GET));
         Assert.assertEquals(0, first.compareTo(second));
@@ -37,10 +31,10 @@ public class ApiMethodDocTest {
 
     @Test
     public void testNotEqualMultipleVerbs() {
-        first = new ApiMethodDoc();
+        ApiMethodDoc first = new ApiMethodDoc();
         first.setPath(Sets.newHashSet("/first"));
         first.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
-        second = new ApiMethodDoc();
+        ApiMethodDoc second = new ApiMethodDoc();
         second.setPath(Sets.newHashSet("/second"));
         second.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
         Assert.assertNotEquals(0, first.compareTo(second));
@@ -52,10 +46,10 @@ public class ApiMethodDocTest {
 
     @Test
     public void testEqualMultipleVerbs() {
-        first = new ApiMethodDoc();
+        ApiMethodDoc first = new ApiMethodDoc();
         first.setPath(Sets.newHashSet("/test"));
         first.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
-        second = new ApiMethodDoc();
+        ApiMethodDoc second = new ApiMethodDoc();
         second.setPath(Sets.newHashSet("/test"));
         second.setVerb(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
         Assert.assertEquals(0, first.compareTo(second));

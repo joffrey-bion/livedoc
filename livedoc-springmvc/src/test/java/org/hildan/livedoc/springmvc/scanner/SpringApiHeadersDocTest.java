@@ -1,24 +1,24 @@
 package org.hildan.livedoc.springmvc.scanner;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.collect.Sets;
-
 public class SpringApiHeadersDocTest {
 
-    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping(headers = {"h1", "h2"})
     public class SpringApiHeadersController {
@@ -43,8 +43,8 @@ public class SpringApiHeadersDocTest {
     @SuppressWarnings("unused")
     @Test
     public void testApiHeadersOnClass() {
-        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringApiHeadersController.class),
-                MethodDisplay.URI).iterator().next();
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        ApiDoc apiDoc = builder.readApiDoc(SpringApiHeadersController.class, MethodDisplay.URI, new HashMap<>());
         Assert.assertEquals("SpringApiHeadersController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

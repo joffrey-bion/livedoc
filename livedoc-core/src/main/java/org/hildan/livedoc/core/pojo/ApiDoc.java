@@ -1,7 +1,7 @@
 package org.hildan.livedoc.core.pojo;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ApiDoc implements Comparable<ApiDoc>, Groupable {
@@ -20,7 +20,7 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable {
     private String group;
 
     // properties that cannot be overridden in the mergeApiDoc method
-    private Set<ApiMethodDoc> methods;
+    private List<ApiMethodDoc> methods;
 
     private ApiVersionDoc supportedversions;
 
@@ -32,7 +32,7 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable {
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;
         this.group = "";
-        this.methods = new TreeSet<>();
+        this.methods = new ArrayList<>();
         this.supportedversions = null;
         this.auth = null;
     }
@@ -53,11 +53,11 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable {
         this.description = description;
     }
 
-    public Set<ApiMethodDoc> getMethods() {
+    public List<ApiMethodDoc> getMethods() {
         return methods;
     }
 
-    public void setMethods(Set<ApiMethodDoc> methods) {
+    public void setMethods(List<ApiMethodDoc> methods) {
         this.methods = methods;
     }
 

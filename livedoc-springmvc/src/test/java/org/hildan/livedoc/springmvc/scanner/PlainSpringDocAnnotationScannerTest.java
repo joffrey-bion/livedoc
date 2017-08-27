@@ -1,15 +1,17 @@
 package org.hildan.livedoc.springmvc.scanner;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -26,8 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class PlainSpringDocAnnotationScannerTest {
 
-    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
     private class SpringController {
@@ -45,14 +46,14 @@ public class PlainSpringDocAnnotationScannerTest {
 
     }
 
+    private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        return builder.readApiDoc(controller, methodDisplay, new HashMap<>());
+    }
+
     @Test
     public void testMergeApiDoc() {
-        Set<Class<?>> controllers = new LinkedHashSet<>();
-        controllers.add(SpringController.class);
-        Set<ApiDoc> apiDocs = scanner.getApiDocs(controllers, MethodDisplay.URI);
-
-        ApiDoc apiDoc = apiDocs.iterator().next();
-        Assert.assertEquals("SpringController", apiDoc.getDescription());
+        ApiDoc apiDoc = buildDocFor(SpringController.class, MethodDisplay.URI);
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertNotNull(apiDoc.getGroup());
 
@@ -102,7 +103,7 @@ public class PlainSpringDocAnnotationScannerTest {
 
                 Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
                 Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
-                apiParamDoc = ppIterator.next();
+                ppIterator.next();
                 apiParamDoc = apiMethodDoc.getPathparameters().iterator().next();
                 Assert.assertEquals("test", apiParamDoc.getName());
             }

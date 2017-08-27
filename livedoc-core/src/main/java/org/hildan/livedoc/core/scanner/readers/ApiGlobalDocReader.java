@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Set;
+import java.util.Collection;
 
 import org.hildan.livedoc.core.annotation.global.ApiChangelog;
 import org.hildan.livedoc.core.annotation.global.ApiChangelogSet;
@@ -21,8 +21,8 @@ import org.hildan.livedoc.core.pojo.global.ApiMigrationsDoc;
 
 public class ApiGlobalDocReader {
 
-    public static ApiGlobalDoc read(Set<Class<?>> globalClasses, Set<Class<?>> changelogClasses,
-            Set<Class<?>> migrationClasses) {
+    public static ApiGlobalDoc read(Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
+            Collection<Class<?>> migrationClasses) {
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
         apiGlobalDoc = buildGlobalDoc(apiGlobalDoc, globalClasses);
         apiGlobalDoc = buildChangelogDoc(apiGlobalDoc, changelogClasses);
@@ -35,7 +35,7 @@ public class ApiGlobalDocReader {
         }
     }
 
-    private static ApiGlobalDoc buildGlobalDoc(ApiGlobalDoc apiGlobalDoc, Set<Class<?>> globalClasses) {
+    private static ApiGlobalDoc buildGlobalDoc(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> globalClasses) {
         if (!globalClasses.isEmpty()) {
             Class<?> clazz = globalClasses.iterator().next();
             ApiGlobal apiGlobal = clazz.getAnnotation(ApiGlobal.class);
@@ -71,7 +71,7 @@ public class ApiGlobalDocReader {
         return apiGlobalDoc;
     }
 
-    private static ApiGlobalDoc buildChangelogDoc(ApiGlobalDoc apiGlobalDoc, Set<Class<?>> changelogClasses) {
+    private static ApiGlobalDoc buildChangelogDoc(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> changelogClasses) {
         if (!changelogClasses.isEmpty()) {
             Class<?> clazz = changelogClasses.iterator().next();
             ApiChangelogSet apiChangelogSet = clazz.getAnnotation(ApiChangelogSet.class);
@@ -87,7 +87,7 @@ public class ApiGlobalDocReader {
         return apiGlobalDoc;
     }
 
-    private static ApiGlobalDoc buildMigrationDoc(ApiGlobalDoc apiGlobalDoc, Set<Class<?>> migrationClasses) {
+    private static ApiGlobalDoc buildMigrationDoc(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> migrationClasses) {
         if (!migrationClasses.isEmpty()) {
             Class<?> clazz = migrationClasses.iterator().next();
             ApiMigrationSet apiMigrationSet = clazz.getAnnotation(ApiMigrationSet.class);

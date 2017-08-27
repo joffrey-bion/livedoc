@@ -9,9 +9,10 @@ import org.hildan.livedoc.core.annotation.ApiAuthNone;
 import org.hildan.livedoc.core.annotation.ApiAuthToken;
 import org.hildan.livedoc.core.pojo.ApiAuthDoc;
 import org.hildan.livedoc.core.pojo.ApiAuthType;
-import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
 
 public class ApiAuthDocReader {
+
+    public static final String ANONYMOUS = "anonymous";
 
     public static ApiAuthDoc read(Class<?> controller) {
         if (controller.isAnnotationPresent(ApiAuthNone.class)) {
@@ -42,7 +43,7 @@ public class ApiAuthDocReader {
     private static ApiAuthDoc readFromApiAuthNoneAnnotation(ApiAuthNone annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
         apiAuthDoc.setType(ApiAuthType.NONE.name());
-        apiAuthDoc.addRole(DefaultDocAnnotationScanner.ANONYMOUS);
+        apiAuthDoc.addRole(ANONYMOUS);
         return apiAuthDoc;
     }
 

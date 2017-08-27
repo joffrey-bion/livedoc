@@ -8,29 +8,19 @@ import org.hildan.livedoc.core.pojo.ApiVersionDoc;
 public class ApiVersionDocReader {
 
     public static ApiVersionDoc read(Class<?> clazz) {
-        ApiVersionDoc apiVersionDoc = null;
-        if (clazz.isAnnotationPresent(ApiVersion.class)) {
-            apiVersionDoc = buildFromAnnotation(clazz.getAnnotation(ApiVersion.class));
-        }
-        return apiVersionDoc;
+        return read(clazz, null);
     }
 
     /**
      * In case this annotation is present at type and method level, then the method annotation will override the type
      * one.
      */
-    public static ApiVersionDoc read(AnnotatedElement element, Class<?> declaringClass) {
+    public static ApiVersionDoc read(AnnotatedElement element, ApiVersionDoc defaultDoc) {
         ApiVersion elementAnnotation = element.getAnnotation(ApiVersion.class);
         if (elementAnnotation != null) {
             return buildFromAnnotation(element.getAnnotation(ApiVersion.class));
         }
-
-        ApiVersion typeAnnotation = declaringClass.getAnnotation(ApiVersion.class);
-        if (typeAnnotation != null) {
-            return buildFromAnnotation(typeAnnotation);
-        }
-
-        return null;
+        return defaultDoc;
     }
 
     private static ApiVersionDoc buildFromAnnotation(ApiVersion annotation) {

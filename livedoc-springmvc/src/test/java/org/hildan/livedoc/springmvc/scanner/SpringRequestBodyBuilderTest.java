@@ -1,23 +1,23 @@
 package org.hildan.livedoc.springmvc.scanner;
 
+import java.util.Collections;
+
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.annotation.ApiObject;
 import org.hildan.livedoc.core.annotation.ApiObjectField;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.collect.Sets;
-
 public class SpringRequestBodyBuilderTest {
 
-    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping
     public class SpringController {
@@ -34,6 +34,7 @@ public class SpringRequestBodyBuilderTest {
 
     }
 
+    @SuppressWarnings("unused")
     @ApiObject
     private class Body {
         @ApiObjectField
@@ -45,9 +46,8 @@ public class SpringRequestBodyBuilderTest {
 
     @Test
     public void testBodyOne() {
-        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
-                                      .iterator()
-                                      .next();
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        ApiDoc apiDoc = builder.readApiDoc(SpringController.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

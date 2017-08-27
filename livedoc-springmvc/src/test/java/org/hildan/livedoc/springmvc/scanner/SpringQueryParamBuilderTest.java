@@ -1,13 +1,15 @@
 package org.hildan.livedoc.springmvc.scanner;
 
+import java.util.Collections;
 import java.util.Iterator;
 
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.annotation.ApiQueryParam;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -15,12 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.common.collect.Sets;
-
 public class SpringQueryParamBuilderTest {
 
-    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping
     public class SpringController {
@@ -42,6 +41,7 @@ public class SpringQueryParamBuilderTest {
 
     }
 
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping(params = {"param", "param2=value2"})
     public class SpringController2 {
@@ -58,6 +58,7 @@ public class SpringQueryParamBuilderTest {
 
     }
 
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping(params = "param")
     public class SpringController3 {
@@ -79,6 +80,7 @@ public class SpringQueryParamBuilderTest {
 
     }
 
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping
     public class SpringController4 {
@@ -96,6 +98,7 @@ public class SpringQueryParamBuilderTest {
 
     }
 
+    @SuppressWarnings("unused")
     @Controller
     @RequestMapping
     public class SpringController5 {
@@ -105,18 +108,15 @@ public class SpringQueryParamBuilderTest {
 
         }
 
-        public class ModelAttributePojo {
-
-        }
-
+        @SuppressWarnings("WeakerAccess")
+        public class ModelAttributePojo {}
     }
 
     @SuppressWarnings("unused")
     @Test
     public void testQueryParam() {
-        ApiDoc apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController.class), MethodDisplay.URI)
-                                      .iterator()
-                                      .next();
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        ApiDoc apiDoc = builder.readApiDoc(SpringController.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -138,9 +138,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController2.class), MethodDisplay.URI)
-                               .iterator()
-                               .next();
+        apiDoc = builder.readApiDoc(SpringController2.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("SpringController2", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -152,9 +150,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController3.class), MethodDisplay.URI)
-                               .iterator()
-                               .next();
+        apiDoc = builder.readApiDoc(SpringController3.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("SpringController3", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -190,9 +186,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController4.class), MethodDisplay.URI)
-                               .iterator()
-                               .next();
+        apiDoc = builder.readApiDoc(SpringController4.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("SpringController4", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -206,9 +200,7 @@ public class SpringQueryParamBuilderTest {
             }
         }
 
-        apiDoc = scanner.getApiDocs(Sets.<Class<?>>newHashSet(SpringController5.class), MethodDisplay.URI)
-                               .iterator()
-                               .next();
+        apiDoc = builder.readApiDoc(SpringController5.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("SpringController5", apiDoc.getName());
         Assert.assertEquals(1, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

@@ -1,9 +1,10 @@
 package org.hildan.livedoc.springmvc.scanner;
 
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.annotation.Api;
 import org.hildan.livedoc.core.annotation.ApiAuthNone;
 import org.hildan.livedoc.core.annotation.ApiBodyObject;
@@ -20,7 +21,7 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class SpringDocAnnotationScannerTest {
 
-    private DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-
+    @SuppressWarnings("unused")
     @Api(description = "A spring controller", name = "Spring controller")
     @RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiAuthNone
@@ -60,11 +60,8 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void testMergeApiDoc() {
-        Set<Class<?>> controllers = new LinkedHashSet<>();
-        controllers.add(SpringController.class);
-        Set<ApiDoc> apiDocs = scanner.getApiDocs(controllers, MethodDisplay.URI);
-
-        ApiDoc apiDoc = apiDocs.iterator().next();
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        ApiDoc apiDoc = builder.readApiDoc(SpringController.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("A spring controller", apiDoc.getDescription());
         Assert.assertEquals("Spring controller", apiDoc.getName());
 
@@ -106,7 +103,7 @@ public class SpringDocAnnotationScannerTest {
 
                 Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
                 Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
-                apiParamDoc = ppIterator.next();
+                ppIterator.next();
                 apiParamDoc = apiMethodDoc.getPathparameters().iterator().next();
                 Assert.assertEquals("test", apiParamDoc.getName());
             }

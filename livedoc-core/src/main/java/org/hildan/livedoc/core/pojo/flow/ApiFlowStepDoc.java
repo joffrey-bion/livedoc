@@ -1,6 +1,6 @@
 package org.hildan.livedoc.core.pojo.flow;
 
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
@@ -9,33 +9,35 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import com.google.common.collect.Sets;
 
 public class ApiFlowStepDoc {
+
+    private static final String ERROR_MISSING_METHOD_ID = "No method found with id: %s";
+
+    private static final String HINT_MISSING_METHOD_ID = "Add the same id to both ApiMethod and ApiFlowStep";
+
     public final String livedocId = UUID.randomUUID().toString();
 
     private String apimethodid;
 
     private ApiMethodDoc apimethoddoc;
 
-    public static ApiFlowStepDoc buildFromAnnotation(ApiFlowStep annotation, List<ApiMethodDoc> apiMethodDocs) {
-        final String ERROR_MISSING_METHOD_ID = "No method found with id: %s";
-        final String HINT_MISSING_METHOD_ID = "Add the same id to both ApiMethod and ApiFlowStep";
-
+    static ApiFlowStepDoc buildFromAnnotation(ApiFlowStep annotation,
+            Map<String, ? extends ApiMethodDoc> apiMethodDocsById) {
         ApiFlowStepDoc apiFlowStepDoc = new ApiFlowStepDoc();
         apiFlowStepDoc.setApimethodid(annotation.apimethodid());
-        for (ApiMethodDoc apiMethodDoc : apiMethodDocs) {
-            if (apiMethodDoc.getId() != null && apiMethodDoc.getId().equals(annotation.apimethodid())) {
-                apiFlowStepDoc.setApimethoddoc(apiMethodDoc);
-            }
-        }
+        apiFlowStepDoc.setApimethoddoc(getApiMethodDoc(annotation, apiMethodDocsById));
+        return apiFlowStepDoc;
+    }
 
-        if (apiFlowStepDoc.getApimethoddoc() == null) {
-            ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
+    private static ApiMethodDoc getApiMethodDoc(ApiFlowStep annotation,
+            Map<String, ? extends ApiMethodDoc> apiMethodDocsById) {
+        ApiMethodDoc apiMethodDoc = apiMethodDocsById.get(annotation.apimethodid());
+        if (apiMethodDoc == null) {
+            apiMethodDoc = new ApiMethodDoc();
             apiMethodDoc.setPath(Sets.newHashSet(String.format(ERROR_MISSING_METHOD_ID, annotation.apimethodid())));
             apiMethodDoc.addJsondocerror(String.format(ERROR_MISSING_METHOD_ID, annotation.apimethodid()));
             apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_ID);
-            apiFlowStepDoc.setApimethoddoc(apiMethodDoc);
         }
-
-        return apiFlowStepDoc;
+        return apiMethodDoc;
     }
 
     public String getApimethodid() {

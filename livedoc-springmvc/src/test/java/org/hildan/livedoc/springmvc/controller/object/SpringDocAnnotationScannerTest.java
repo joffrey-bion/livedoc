@@ -1,16 +1,15 @@
 package org.hildan.livedoc.springmvc.controller.object;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hildan.livedoc.core.LivedocBuilder;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
-import org.hildan.livedoc.springmvc.scanner.SpringDocAnnotationScanner;
+import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.fail;
@@ -24,25 +23,11 @@ public class SpringDocAnnotationScannerTest {
     private static final List<String> PACKAGES = Collections.singletonList("org.hildan.livedoc.springmvc.controller");
 
     @Test
-    public void getJSONDoc() throws IOException {
-        DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-        Livedoc doc = scanner.getLivedoc(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
+    public void findsNestedObject() throws Exception {
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        Livedoc doc = builder.build(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = doc.getObjects();
-        for (Set<ApiObjectDoc> values : objects.values()) {
-            for (ApiObjectDoc apiObjectDoc : values) {
-                System.out.println(apiObjectDoc.getName());
-            }
-        }
-
-    }
-
-    @Test
-    public void findsNestedObject() throws Exception {
-        DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-        Livedoc jsondoc = scanner.getLivedoc(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
-
-        Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {
             assertContainsDoc(values, "NestedObject1");
         }
@@ -50,10 +35,10 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void findsDeeplyNestedObjects() throws Exception {
-        DocAnnotationScanner scanner = new SpringDocAnnotationScanner();
-        Livedoc jsondoc = scanner.getLivedoc(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
+        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        Livedoc doc = builder.build(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
 
-        Map<String, Set<ApiObjectDoc>> objects = jsondoc.getObjects();
+        Map<String, Set<ApiObjectDoc>> objects = doc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {
             assertContainsDoc(values, "NestedObject2");
             assertContainsDoc(values, "NestedObject3");

@@ -1,8 +1,6 @@
-package org.hildan.livedoc.core.util;
+package org.hildan.livedoc.core;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -13,30 +11,27 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.DefaultDocAnnotationScanner;
-import org.hildan.livedoc.core.scanner.DocAnnotationScanner;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import static org.junit.Assert.assertEquals;
 
-public class DefaultDocAnnotationScannerTest {
+public class LivedocBuilderTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private static Logger log = LoggerFactory.getLogger(DefaultDocAnnotationScannerTest.class);
+    private static Logger log = LoggerFactory.getLogger(LivedocBuilderTest.class);
 
     @Test
     public void getLivedoc() throws IOException {
-        DocAnnotationScanner scanner = new DefaultDocAnnotationScanner();
         String version = "1.0";
         String basePath = "http://localhost:8080/api";
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.util");
-        Livedoc livedoc = scanner.getLivedoc(version, basePath, packages, true, MethodDisplay.URI);
+        LivedocBuilder livedocBuilder = LivedocBuilder.basicAnnotationBuilder(packages);
+        Livedoc livedoc = livedocBuilder.build(version, basePath, packages, true, MethodDisplay.URI);
         assertEquals(1, livedoc.getApis().size());
 
         int countApis = 0;
@@ -60,7 +55,8 @@ public class DefaultDocAnnotationScannerTest {
         assertEquals(10, countObjects);
 
         Set<ApiVerb> apiVerbs = getAllTestedApiVerbs(livedoc);
-        assertEquals(ApiVerb.values().length, apiVerbs.size());
+        // -1 because UNDEFINED should never be in the output
+        assertEquals(ApiVerb.values().length - 1, apiVerbs.size());
 
         log.debug(objectMapper.writeValueAsString(livedoc));
     }
