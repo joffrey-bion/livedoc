@@ -53,11 +53,11 @@ public class SpringRequestBodyBuilderTest {
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/body-one")) {
                 Assert.assertNotNull(apiMethodDoc.getBodyobject());
-                Assert.assertEquals("String", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
+                Assert.assertEquals("String", apiMethodDoc.getBodyobject().getLivedocType().getOneLineText());
             }
             if (apiMethodDoc.getPath().contains("/body-two")) {
                 Assert.assertNotNull(apiMethodDoc.getBodyobject());
-                Assert.assertEquals("Body", apiMethodDoc.getBodyobject().getJsondocType().getOneLineText());
+                Assert.assertEquals("Body", apiMethodDoc.getBodyobject().getLivedocType().getOneLineText());
             }
         }
     }

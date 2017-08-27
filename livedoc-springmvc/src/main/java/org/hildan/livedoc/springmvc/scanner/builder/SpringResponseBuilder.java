@@ -24,7 +24,7 @@ public class SpringResponseBuilder {
                 LivedocTypeBuilder.build(new LivedocType(), method.getReturnType(), method.getGenericReturnType()));
 
         if (method.getReturnType().isAssignableFrom(ResponseEntity.class)) {
-            apiResponseObjectDoc.getJsondocType().getType().remove(0);
+            apiResponseObjectDoc.getLivedocType().getType().remove(0);
         }
 
         return apiResponseObjectDoc;

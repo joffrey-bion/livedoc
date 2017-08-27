@@ -48,7 +48,7 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
                 annotation.defaultvalue());
     }
 
-    public LivedocType getJsondocType() {
+    public LivedocType getLivedocType() {
         return livedocType;
     }
 

@@ -62,10 +62,10 @@ public class SpringPathVariableBuilderTest {
                 Iterator<ApiParamDoc> iterator = apiMethodDoc.getPathparameters().iterator();
                 ApiParamDoc id = iterator.next();
                 Assert.assertEquals("", id.getName());
-                Assert.assertEquals("Long", id.getJsondocType().getOneLineText());
+                Assert.assertEquals("Long", id.getLivedocType().getOneLineText());
                 ApiParamDoc name = iterator.next();
                 Assert.assertEquals("name", name.getName());
-                Assert.assertEquals("String", name.getJsondocType().getOneLineText());
+                Assert.assertEquals("String", name.getLivedocType().getOneLineText());
             }
 
             if (apiMethodDoc.getPath().contains("/param-one/{id}/{string}/{test}")) {
@@ -73,13 +73,13 @@ public class SpringPathVariableBuilderTest {
                 Iterator<ApiParamDoc> iterator = apiMethodDoc.getPathparameters().iterator();
                 ApiParamDoc id = iterator.next();
                 Assert.assertEquals("id", id.getName());
-                Assert.assertEquals("Long", id.getJsondocType().getOneLineText());
+                Assert.assertEquals("Long", id.getLivedocType().getOneLineText());
                 ApiParamDoc name = iterator.next();
                 Assert.assertEquals("name", name.getName());
-                Assert.assertEquals("String", name.getJsondocType().getOneLineText());
+                Assert.assertEquals("String", name.getLivedocType().getOneLineText());
                 ApiParamDoc test = iterator.next();
                 Assert.assertEquals("", test.getName());
-                Assert.assertEquals("Long", test.getJsondocType().getOneLineText());
+                Assert.assertEquals("Long", test.getLivedocType().getOneLineText());
             }
         }
 
@@ -98,11 +98,11 @@ public class SpringPathVariableBuilderTest {
                 Iterator<ApiParamDoc> iterator = apiMethodDoc.getPathparameters().iterator();
                 ApiParamDoc id = iterator.next();
                 Assert.assertEquals("", id.getName());
-                Assert.assertEquals("Long", id.getJsondocType().getOneLineText());
+                Assert.assertEquals("Long", id.getLivedocType().getOneLineText());
                 Assert.assertEquals("description for id", id.getDescription());
                 ApiParamDoc name = iterator.next();
                 Assert.assertEquals("name", name.getName());
-                Assert.assertEquals("String", name.getJsondocType().getOneLineText());
+                Assert.assertEquals("String", name.getLivedocType().getOneLineText());
             }
         }
 

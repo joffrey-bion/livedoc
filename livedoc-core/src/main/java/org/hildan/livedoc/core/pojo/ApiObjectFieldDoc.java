@@ -87,11 +87,11 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
         this.supportedversions = supportedversions;
     }
 
-    public LivedocType getJsondocType() {
+    public LivedocType getLivedocType() {
         return livedocType;
     }
 
-    public void setJsondocType(LivedocType livedocType) {
+    public void setLivedocType(LivedocType livedocType) {
         this.livedocType = livedocType;
     }
 

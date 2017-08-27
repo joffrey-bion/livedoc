@@ -13,7 +13,7 @@ public class ApiResponseObjectDoc {
         this.livedocType = livedocType;
     }
 
-    public LivedocType getJsondocType() {
+    public LivedocType getLivedocType() {
         return livedocType;
     }
 

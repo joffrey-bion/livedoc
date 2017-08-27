@@ -15,8 +15,12 @@ public class ApiBodyObjectDoc {
         this.livedocType = livedocType;
     }
 
-    public LivedocType getJsondocType() {
+    public LivedocType getLivedocType() {
         return livedocType;
+    }
+
+    public void setLivedocType(LivedocType livedocType) {
+        this.livedocType = livedocType;
     }
 
     public LivedocTemplate getJsondocTemplate() {
@@ -25,10 +29,6 @@ public class ApiBodyObjectDoc {
 
     public void setJsondocTemplate(LivedocTemplate jsondocTemplate) {
         this.jsondocTemplate = jsondocTemplate;
-    }
-
-    public void setJsondocType(LivedocType livedocType) {
-        this.livedocType = livedocType;
     }
 
 }
