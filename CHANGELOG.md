@@ -1,16 +1,14 @@
 # Change Log
 
+## [v0.4.5](https://bintray.com/joffrey-bion/maven/livedoc/0.4.5) (2017-08-27)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.4...v0.4.5)
+
+**Fixed bugs:**
+
+- Broken type info in livedoc UI [\#18](https://github.com/joffrey-bion/livedoc/issues/18)
+
 ## [v0.4.4](https://bintray.com/joffrey-bion/maven/livedoc/0.4.4) (2017-08-26)
-[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.3...v0.4.4)
-
-## [v0.4.3](https://bintray.com/joffrey-bion/maven/livedoc/0.4.3) (2017-08-26)
-[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.2...v0.4.3)
-
-## [v0.4.2](https://bintray.com/joffrey-bion/maven/livedoc/0.4.2) (2017-08-25)
-[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.1...v0.4.2)
-
-## [v0.4.1](https://bintray.com/joffrey-bion/maven/livedoc/0.4.1) (2017-08-24)
-[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.0...v0.4.1)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.0...v0.4.4)
 
 **Fixed bugs:**
 
