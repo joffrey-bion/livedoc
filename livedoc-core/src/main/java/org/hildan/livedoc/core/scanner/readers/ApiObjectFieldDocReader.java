@@ -19,7 +19,7 @@ public class ApiObjectFieldDocReader {
             apiPojoFieldDoc.setName(field.getName());
         }
         apiPojoFieldDoc.setDescription(annotation.description());
-        apiPojoFieldDoc.setLivedocType(
+        apiPojoFieldDoc.setType(
                 LivedocTypeBuilder.build(new LivedocType(), field.getType(), field.getGenericType()));
         // if allowedvalues property is populated on an enum field, then the enum values are overridden with the
         // allowedvalues ones

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.pojo.LivedocTemplate;
+import org.hildan.livedoc.core.pojo.ObjectTemplate;
 import org.hildan.livedoc.core.util.pojo.MyEnum;
 import org.hildan.livedoc.core.util.pojo.NoAnnotationPojo;
 import org.hildan.livedoc.core.util.pojo.TemplateObject;
@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 
-public class LivedocTemplateBuilderTest {
+public class ObjectTemplateBuilderTest {
 
     @Test
     public void testTemplate()
@@ -24,7 +24,7 @@ public class LivedocTemplateBuilderTest {
         ObjectMapper mapper = new ObjectMapper();
         Set<Class<?>> classes = Sets.newHashSet(TemplateObject.class);
 
-        Map<String, Object> template = LivedocTemplateBuilder.build(TemplateObject.class, classes);
+        Map<String, Object> template = ObjectTemplateBuilder.build(TemplateObject.class, classes);
 
         Assert.assertEquals(0, template.get("my_id"));
         Assert.assertEquals(0, template.get("idint"));
@@ -33,7 +33,7 @@ public class LivedocTemplateBuilderTest {
         Assert.assertEquals("", template.get("gender"));
         Assert.assertEquals(true, template.get("bool"));
         Assert.assertEquals(new ArrayList(), template.get("intarrarr"));
-        Assert.assertEquals(new LivedocTemplate(), template.get("sub_obj"));
+        Assert.assertEquals(new ObjectTemplate(), template.get("sub_obj"));
         Assert.assertEquals(new ArrayList(), template.get("untypedlist"));
         Assert.assertEquals(new ArrayList(), template.get("subsubobjarr"));
         Assert.assertEquals(new ArrayList(), template.get("stringlist"));
@@ -60,7 +60,7 @@ public class LivedocTemplateBuilderTest {
         ObjectMapper mapper = new ObjectMapper();
         Set<Class<?>> classes = Sets.newHashSet(MyEnum.class);
 
-        Map<String, Object> template = LivedocTemplateBuilder.build(MyEnum.class, classes);
+        Map<String, Object> template = ObjectTemplateBuilder.build(MyEnum.class, classes);
         System.out.println(mapper.writeValueAsString(template));
     }
 
@@ -70,7 +70,7 @@ public class LivedocTemplateBuilderTest {
         ObjectMapper mapper = new ObjectMapper();
         Set<Class<?>> classes = Sets.newHashSet(NoAnnotationPojo.class);
 
-        Map<String, Object> template = LivedocTemplateBuilder.build(NoAnnotationPojo.class, classes);
+        Map<String, Object> template = ObjectTemplateBuilder.build(NoAnnotationPojo.class, classes);
         System.out.println(mapper.writeValueAsString(template));
     }
 }

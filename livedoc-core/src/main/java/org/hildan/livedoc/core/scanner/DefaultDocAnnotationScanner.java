@@ -17,7 +17,7 @@ import org.hildan.livedoc.core.annotation.global.ApiMigrationSet;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
-import org.hildan.livedoc.core.pojo.LivedocTemplate;
+import org.hildan.livedoc.core.pojo.ObjectTemplate;
 import org.hildan.livedoc.core.scanner.readers.ApiDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiMethodDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiObjectDocReader;
@@ -66,16 +66,16 @@ public class DefaultDocAnnotationScanner extends AbstractDocAnnotationScanner {
     }
 
     @Override
-    public ApiMethodDoc initApiMethodDoc(Method method, Map<Class<?>, LivedocTemplate> jsondocTemplates) {
+    public ApiMethodDoc initApiMethodDoc(Method method, Map<Class<?>, ObjectTemplate> objectTemplates) {
         ApiMethodDoc apiMethodDoc = ApiMethodDocReader.read(method);
 
         if (method.isAnnotationPresent(ApiBodyObject.class)) {
             apiMethodDoc.getBodyobject()
-                        .setJsondocTemplate(jsondocTemplates.get(method.getAnnotation(ApiBodyObject.class).clazz()));
+                        .setTemplate(objectTemplates.get(method.getAnnotation(ApiBodyObject.class).clazz()));
         }
         Integer index = LivedocUtils.getIndexOfParameterWithAnnotation(method, ApiBodyObject.class);
         if (index != -1) {
-            apiMethodDoc.getBodyobject().setJsondocTemplate(jsondocTemplates.get(method.getParameterTypes()[index]));
+            apiMethodDoc.getBodyobject().setTemplate(objectTemplates.get(method.getParameterTypes()[index]));
         }
 
         return apiMethodDoc;

@@ -159,61 +159,61 @@ public class ApiObjectDocTest {
 
         for (ApiObjectFieldDoc fieldDoc : childDoc.getFields()) {
             if (fieldDoc.getName().equals("wildcardParametrized")) {
-                Assert.assertEquals("List", fieldDoc.getLivedocType().getType().get(0));
+                Assert.assertEquals("List", fieldDoc.getType().getType().get(0));
             }
 
             if (fieldDoc.getName().equals("unparametrizedList")) {
-                Assert.assertEquals("List", fieldDoc.getLivedocType().getType().get(0));
+                Assert.assertEquals("List", fieldDoc.getType().getType().get(0));
             }
 
             if (fieldDoc.getName().equals("parametrizedList")) {
-                Assert.assertEquals("List of String", fieldDoc.getLivedocType().getOneLineText());
+                Assert.assertEquals("List of String", fieldDoc.getType().getOneLineText());
             }
 
             if (fieldDoc.getName().equals("name")) {
-                Assert.assertEquals("String", fieldDoc.getLivedocType().getType().get(0));
+                Assert.assertEquals("String", fieldDoc.getType().getType().get(0));
                 Assert.assertEquals("name", fieldDoc.getName());
                 Assert.assertEquals("true", fieldDoc.getRequired());
             }
 
             if (fieldDoc.getName().equals("age")) {
-                Assert.assertEquals("Integer", fieldDoc.getLivedocType().getType().get(0));
+                Assert.assertEquals("Integer", fieldDoc.getType().getType().get(0));
                 Assert.assertEquals("age", fieldDoc.getName());
                 Assert.assertEquals("false", fieldDoc.getRequired());
             }
 
             if (fieldDoc.getName().equals("avg")) {
-                Assert.assertEquals("Long", fieldDoc.getLivedocType().getType().get(0));
+                Assert.assertEquals("Long", fieldDoc.getType().getType().get(0));
                 Assert.assertEquals("avg", fieldDoc.getName());
                 Assert.assertEquals("false", fieldDoc.getRequired());
             }
 
             if (fieldDoc.getName().equals("map")) {
-                Assert.assertEquals("Map", fieldDoc.getLivedocType().getType().get(0));
-                Assert.assertEquals("String", fieldDoc.getLivedocType().getMapKey().getType().get(0));
-                Assert.assertEquals("Integer", fieldDoc.getLivedocType().getMapValue().getType().get(0));
+                Assert.assertEquals("Map", fieldDoc.getType().getType().get(0));
+                Assert.assertEquals("String", fieldDoc.getType().getMapKey().getType().get(0));
+                Assert.assertEquals("Integer", fieldDoc.getType().getMapValue().getType().get(0));
             }
 
             if (fieldDoc.getName().equals("LongArray")) {
-                Assert.assertEquals("array of Long", fieldDoc.getLivedocType().getOneLineText());
+                Assert.assertEquals("array of Long", fieldDoc.getType().getOneLineText());
                 Assert.assertEquals("LongArray", fieldDoc.getName());
                 Assert.assertEquals("false", fieldDoc.getRequired());
             }
 
             if (fieldDoc.getName().equals("longArray")) {
-                Assert.assertEquals("array of long", fieldDoc.getLivedocType().getOneLineText());
+                Assert.assertEquals("array of long", fieldDoc.getType().getOneLineText());
                 Assert.assertEquals("longArray", fieldDoc.getName());
                 Assert.assertEquals("false", fieldDoc.getRequired());
             }
 
             if (fieldDoc.getName().equals("fooBar")) {
-                Assert.assertEquals("String", fieldDoc.getLivedocType().getOneLineText());
+                Assert.assertEquals("String", fieldDoc.getType().getOneLineText());
                 Assert.assertEquals("foo_bar", fieldDoc.getName());
                 Assert.assertEquals("false", fieldDoc.getRequired());
             }
 
             if (fieldDoc.getName().equals("version")) {
-                Assert.assertEquals("String", fieldDoc.getLivedocType().getOneLineText());
+                Assert.assertEquals("String", fieldDoc.getType().getOneLineText());
                 Assert.assertEquals("1.0", fieldDoc.getSupportedversions().getSince());
                 Assert.assertEquals("2.12", fieldDoc.getSupportedversions().getUntil());
             }

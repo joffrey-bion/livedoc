@@ -25,7 +25,7 @@ public class SpringObjectBuilder {
             fieldDoc.setName(field.getName());
             fieldDoc.setOrder(Integer.MAX_VALUE);
             fieldDoc.setRequired(DefaultDocAnnotationScanner.UNDEFINED.toUpperCase());
-            fieldDoc.setLivedocType(
+            fieldDoc.setType(
                     LivedocTypeBuilder.build(new LivedocType(), field.getType(), field.getGenericType()));
 
             HibernateValidationProcessor.addConstraintMessages(field, fieldDoc);

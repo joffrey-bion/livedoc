@@ -19,7 +19,7 @@ import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.Groupable;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.pojo.LivedocTemplate;
+import org.hildan.livedoc.core.pojo.ObjectTemplate;
 import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.scanner.readers.ApiAuthDocReader;
@@ -28,7 +28,7 @@ import org.hildan.livedoc.core.scanner.readers.ApiGlobalDocReader;
 import org.hildan.livedoc.core.scanner.readers.ApiVersionDocReader;
 import org.hildan.livedoc.core.scanner.validators.ApiMethodDocValidator;
 import org.hildan.livedoc.core.scanner.validators.ApiObjectDocValidator;
-import org.hildan.livedoc.core.util.LivedocTemplateBuilder;
+import org.hildan.livedoc.core.util.ObjectTemplateBuilder;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
@@ -61,7 +61,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
 
     public abstract ApiDoc mergeApiDoc(Class<?> controller, ApiDoc apiDoc);
 
-    public abstract ApiMethodDoc initApiMethodDoc(Method method, Map<Class<?>, LivedocTemplate> jsondocTemplates);
+    public abstract ApiMethodDoc initApiMethodDoc(Method method, Map<Class<?>, ObjectTemplate> objectTemplates);
 
     public abstract ApiMethodDoc mergeApiMethodDoc(Method method, ApiMethodDoc apiMethodDoc);
 
@@ -71,7 +71,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
 
     private List<ApiMethodDoc> allApiMethodDocs = new ArrayList<>();
 
-    private Map<Class<?>, LivedocTemplate> jsondocTemplates = new HashMap<>();
+    private Map<Class<?>, ObjectTemplate> templates = new HashMap<>();
 
     /**
      * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
@@ -95,7 +95,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
         Set<Class<?>> jsondocMigrations = jsondocMigrations();
 
         for (Class<?> clazz : jsondocObjects) {
-            jsondocTemplates.put(clazz, LivedocTemplateBuilder.build(clazz, jsondocObjects));
+            templates.put(clazz, ObjectTemplateBuilder.build(clazz, jsondocObjects));
         }
 
         livedoc.setApis(group(getApiDocs(jsondocControllers, displayMethodAs)));
@@ -174,7 +174,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
     }
 
     private ApiMethodDoc getApiMethodDoc(Method method, MethodDisplay displayMethodAs) {
-        ApiMethodDoc apiMethodDoc = initApiMethodDoc(method, jsondocTemplates);
+        ApiMethodDoc apiMethodDoc = initApiMethodDoc(method, templates);
 
         apiMethodDoc.setDisplayMethodAs(displayMethodAs);
         apiMethodDoc.setApierrors(ApiErrorDocReader.build(method));
@@ -226,7 +226,7 @@ public abstract class AbstractDocAnnotationScanner implements DocAnnotationScann
                 apiObjectDocs.add(apiObjectDoc);
             }
 
-            apiObjectDoc.setJsondocTemplate(jsondocTemplates.get(clazz));
+            apiObjectDoc.setTemplate(templates.get(clazz));
         }
 
         return apiObjectDocs;

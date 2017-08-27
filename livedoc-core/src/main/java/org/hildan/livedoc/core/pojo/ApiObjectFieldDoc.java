@@ -11,7 +11,7 @@ import com.google.common.base.Joiner;
 public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObjectFieldDoc> {
     public final String livedocId = UUID.randomUUID().toString();
 
-    private LivedocType livedocType;
+    private LivedocType type;
 
     private String name;
 
@@ -87,12 +87,12 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
         this.supportedversions = supportedversions;
     }
 
-    public LivedocType getLivedocType() {
-        return livedocType;
+    public LivedocType getType() {
+        return type;
     }
 
-    public void setLivedocType(LivedocType livedocType) {
-        this.livedocType = livedocType;
+    public void setType(LivedocType type) {
+        this.type = type;
     }
 
     public void setOrder(int order) {

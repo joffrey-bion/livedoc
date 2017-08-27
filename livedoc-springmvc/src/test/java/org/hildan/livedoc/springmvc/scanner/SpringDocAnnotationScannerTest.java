@@ -74,7 +74,7 @@ public class SpringDocAnnotationScannerTest {
                 Assert.assertNotNull(apiMethodDoc.getSupportedversions());
                 Assert.assertFalse(apiMethodDoc.getApierrors().isEmpty());
 
-                Assert.assertEquals("String", apiMethodDoc.getBodyobject().getLivedocType().getOneLineText());
+                Assert.assertEquals("String", apiMethodDoc.getBodyobject().getType().getOneLineText());
                 Assert.assertEquals("String", apiMethodDoc.getResponse().getLivedocType().getOneLineText());
                 Assert.assertEquals("/api/string/{name}", apiMethodDoc.getPath().iterator().next());
                 Assert.assertEquals("POST", apiMethodDoc.getVerb().iterator().next().name());

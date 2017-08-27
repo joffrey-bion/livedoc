@@ -13,13 +13,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.hildan.livedoc.core.annotation.ApiObjectField;
-import org.hildan.livedoc.core.pojo.LivedocTemplate;
+import org.hildan.livedoc.core.pojo.ObjectTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LivedocTemplateBuilder {
+public class ObjectTemplateBuilder {
 
-    private static final Logger log = LoggerFactory.getLogger(LivedocTemplateBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(ObjectTemplateBuilder.class);
 
     private static final Map<Class<?>, Class<?>> primitives = new HashMap<>();
 
@@ -35,8 +35,8 @@ public class LivedocTemplateBuilder {
         primitives.put(void.class, Void.class);
     }
 
-    public static LivedocTemplate build(Class<?> clazz, Set<Class<?>> jsondocObjects) {
-        final LivedocTemplate livedocTemplate = new LivedocTemplate();
+    public static ObjectTemplate build(Class<?> clazz, Set<Class<?>> jsondocObjects) {
+        final ObjectTemplate objectTemplate = new ObjectTemplate();
 
         if (jsondocObjects.contains(clazz)) {
             try {
@@ -60,14 +60,14 @@ public class LivedocTemplateBuilder {
                         value = getValue(field.getType(), field.getGenericType(), fieldName, jsondocObjects);
                     }
 
-                    livedocTemplate.put(fieldName, value);
+                    objectTemplate.put(fieldName, value);
                 }
             } catch (Exception e) {
-                log.error("Error in LivedocTemplate creation for class [" + clazz.getCanonicalName() + "]", e);
+                log.error("Error in ObjectTemplate creation for class [" + clazz.getCanonicalName() + "]", e);
             }
         }
 
-        return livedocTemplate;
+        return objectTemplate;
     }
 
     private static Object getValue(Class<?> fieldClass, Type fieldGenericType, String fieldName,

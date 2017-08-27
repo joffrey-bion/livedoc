@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 
-public class LivedocTemplateBuilderWithOrderTest {
+public class ObjectTemplateBuilderWithOrderTest {
 
     @ApiObject(name = "unordered")
     static class Unordered {
@@ -42,10 +42,10 @@ public class LivedocTemplateBuilderWithOrderTest {
         final ObjectMapper mapper = new ObjectMapper();
         Set<Class<?>> classes = Sets.<Class<?>>newHashSet(Unordered.class, Ordered.class);
 
-        Map<String, Object> unorderedTemplate = LivedocTemplateBuilder.build(Unordered.class, classes);
+        Map<String, Object> unorderedTemplate = ObjectTemplateBuilder.build(Unordered.class, classes);
         Assert.assertEquals("{\"aField\":\"\",\"xField\":\"\"}", mapper.writeValueAsString(unorderedTemplate));
 
-        Map<String, Object> orderedTemplate = LivedocTemplateBuilder.build(Ordered.class, classes);
+        Map<String, Object> orderedTemplate = ObjectTemplateBuilder.build(Ordered.class, classes);
         Assert.assertEquals("{\"xField\":\"\",\"aField\":\"\",\"bField\":\"\"}",
                 mapper.writeValueAsString(orderedTemplate));
     }

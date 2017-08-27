@@ -494,7 +494,7 @@
                             <th colspan=2>Body object</th>
                         </tr>
                         <tr>
-                            <td colspan=2><code>{{bodyobject.livedocType.oneLineText}}</code></td>
+                            <td colspan=2><code>{{bodyobject.type.oneLineText}}</code></td>
                         </tr>
                         {{/if}}
                         {{#if responsestatuscode}}
@@ -510,7 +510,7 @@
                             <th colspan=2>Response object</th>
                         </tr>
                         <tr>
-                            <td colspan=2><code>{{response.livedocType.oneLineText}}</code></td>
+                            <td colspan=2><code>{{response.type.oneLineText}}</code></td>
                         </tr>
                         {{/if}}
                         {{#if apierrors}}
@@ -897,7 +897,7 @@
 
 <script id="objecttemplate" type="text/x-handlebars-template">
     <pre class="prettyprint">
-{{#json livedocTemplate}}
+{{#json objectTemplate}}
 {{/json}}
 </pre>
 </script>
@@ -1117,9 +1117,9 @@
           $('#testContent').html(testHTML);
           $('#testContent').show();
 
-          // if bodyobject is not empty then put livedocTemplate into textarea
+          // if bodyobject is not empty then put the template into textarea
           if (method.bodyobject) {
-            $('#inputJson').text(JSON.stringify(method.bodyobject.livedocTemplate, undefined, 2));
+            $('#inputJson').text(JSON.stringify(method.bodyobject.template, undefined, 2));
           }
 
           $('#produces input:first').attr('checked', 'checked');

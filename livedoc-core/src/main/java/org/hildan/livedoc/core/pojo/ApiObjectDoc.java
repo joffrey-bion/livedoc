@@ -24,7 +24,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 
     private ApiStage stage;
 
-    private LivedocTemplate jsondocTemplate;
+    private ObjectTemplate template;
 
     private boolean show;
 
@@ -37,7 +37,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.group = "";
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;
-        this.jsondocTemplate = null;
+        this.template = null;
         this.show = true;
     }
 
@@ -90,12 +90,12 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.group = group;
     }
 
-    public LivedocTemplate getJsondocTemplate() {
-        return jsondocTemplate;
+    public ObjectTemplate getTemplate() {
+        return template;
     }
 
-    public void setJsondocTemplate(LivedocTemplate jsondocTemplate) {
-        this.jsondocTemplate = jsondocTemplate;
+    public void setTemplate(ObjectTemplate template) {
+        this.template = template;
     }
 
     public ApiVisibility getVisibility() {

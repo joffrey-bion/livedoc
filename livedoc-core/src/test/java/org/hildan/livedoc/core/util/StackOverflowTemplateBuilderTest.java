@@ -11,8 +11,6 @@ import org.hildan.livedoc.core.util.pojo.StackOverflowTemplateObjectTwo;
 import org.hildan.livedoc.core.util.pojo.StackOverflowTemplateSelf;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 
@@ -22,31 +20,30 @@ public class StackOverflowTemplateBuilderTest {
 
     @Test
     public void testTemplate()
-            throws JsonGenerationException, JsonMappingException, IOException, IllegalArgumentException,
-            IllegalAccessException, InstantiationException {
-        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(StackOverflowTemplateSelf.class,
-                StackOverflowTemplateObjectOne.class, StackOverflowTemplateObjectTwo.class);
+            throws IOException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+        Set<Class<?>> classes = Sets.newHashSet(StackOverflowTemplateSelf.class, StackOverflowTemplateObjectOne.class,
+                StackOverflowTemplateObjectTwo.class);
 
         StackOverflowTemplateSelf objectSelf = new StackOverflowTemplateSelf();
-        Map<String, Object> template = LivedocTemplateBuilder.build(objectSelf.getClass(), classes);
+        Map<String, Object> template = ObjectTemplateBuilder.build(objectSelf.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
 
         StackOverflowTemplateObjectOne objectOne = new StackOverflowTemplateObjectOne();
-        template = LivedocTemplateBuilder.build(objectOne.getClass(), classes);
+        template = ObjectTemplateBuilder.build(objectOne.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
 
         StackOverflowTemplateObjectTwo objectTwo = new StackOverflowTemplateObjectTwo();
-        template = LivedocTemplateBuilder.build(objectTwo.getClass(), classes);
+        template = ObjectTemplateBuilder.build(objectTwo.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
     }
 
     @Test
-    public void typeOneTwo() throws JsonGenerationException, JsonMappingException, IOException {
-        Set<Class<?>> classes = Sets.<Class<?>>newHashSet(NotAnnotatedStackOverflowObjectOne.class,
+    public void typeOneTwo() throws IOException {
+        Set<Class<?>> classes = Sets.newHashSet(NotAnnotatedStackOverflowObjectOne.class,
                 NotAnnotatedStackOverflowObjectTwo.class);
 
         NotAnnotatedStackOverflowObjectOne typeOne = new NotAnnotatedStackOverflowObjectOne();
-        Map<String, Object> template = LivedocTemplateBuilder.build(typeOne.getClass(), classes);
+        Map<String, Object> template = ObjectTemplateBuilder.build(typeOne.getClass(), classes);
         System.out.println(mapper.writeValueAsString(template));
     }
 

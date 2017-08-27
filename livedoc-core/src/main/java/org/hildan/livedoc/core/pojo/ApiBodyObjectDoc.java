@@ -7,28 +7,28 @@ import org.hildan.livedoc.core.util.LivedocType;
 public class ApiBodyObjectDoc {
     public final String livedocId = UUID.randomUUID().toString();
 
-    private LivedocType livedocType;
+    private LivedocType type;
 
-    private LivedocTemplate jsondocTemplate;
+    private ObjectTemplate template;
 
-    public ApiBodyObjectDoc(LivedocType livedocType) {
-        this.livedocType = livedocType;
+    public ApiBodyObjectDoc(LivedocType type) {
+        this.type = type;
     }
 
-    public LivedocType getLivedocType() {
-        return livedocType;
+    public LivedocType getType() {
+        return type;
     }
 
-    public void setLivedocType(LivedocType livedocType) {
-        this.livedocType = livedocType;
+    public void setType(LivedocType type) {
+        this.type = type;
     }
 
-    public LivedocTemplate getJsondocTemplate() {
-        return jsondocTemplate;
+    public ObjectTemplate getTemplate() {
+        return template;
     }
 
-    public void setJsondocTemplate(LivedocTemplate jsondocTemplate) {
-        this.jsondocTemplate = jsondocTemplate;
+    public void setTemplate(ObjectTemplate template) {
+        this.template = template;
     }
 
 }
