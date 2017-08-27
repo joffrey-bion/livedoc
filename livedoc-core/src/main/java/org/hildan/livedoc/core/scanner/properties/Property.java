@@ -9,9 +9,16 @@ public class Property {
 
     private final Type type;
 
+    private final Boolean required;
+
     public Property(String name, Type type) {
+        this(name, type, null);
+    }
+
+    public Property(String name, Type type, Boolean required) {
         this.name = name;
         this.type = type;
+        this.required = required;
     }
 
     public String getName() {
@@ -20,6 +27,10 @@ public class Property {
 
     public Type getType() {
         return type;
+    }
+
+    public Boolean isRequired() {
+        return required;
     }
 
     @Override

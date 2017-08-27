@@ -60,8 +60,9 @@ public class JacksonPropertyScanner implements PropertyScanner {
 
     private Property convertProp(BeanPropertyDefinition propDef) {
         String name = propDef.getName();
+        boolean required = propDef.isRequired();
         Type type = getType(propDef);
-        return new Property(name, type);
+        return new Property(name, type, required);
     }
 
     private Type getType(BeanPropertyDefinition property) {
