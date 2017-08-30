@@ -2,9 +2,9 @@ package org.hildan.livedoc.core.util.pojo;
 
 import java.util.Map;
 
-import org.hildan.livedoc.core.annotation.ApiObject;
-import org.hildan.livedoc.core.annotation.ApiObjectField;
-import org.hildan.livedoc.core.annotation.ApiVersion;
+import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiVersion;
 
 @ApiObject(name = "child")
 public class Child extends Parent {

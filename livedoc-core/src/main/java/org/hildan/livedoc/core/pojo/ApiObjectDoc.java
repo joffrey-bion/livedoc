@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
+import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc>, Groupable {
 

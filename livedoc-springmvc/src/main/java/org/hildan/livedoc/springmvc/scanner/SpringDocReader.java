@@ -8,11 +8,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hildan.livedoc.core.AnnotatedTypesFinder;
+import org.hildan.livedoc.core.DocReader;
+import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.scanner.AnnotatedTypesFinder;
-import org.hildan.livedoc.core.scanner.DocReader;
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringConsumesBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringHeaderBuilder;

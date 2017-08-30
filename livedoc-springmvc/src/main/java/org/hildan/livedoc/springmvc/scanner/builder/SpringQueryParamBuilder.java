@@ -5,10 +5,10 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.hildan.livedoc.core.annotation.ApiQueryParam;
+import org.hildan.livedoc.core.annotations.ApiQueryParam;
+import org.hildan.livedoc.core.builders.types.LivedocType;
+import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.util.LivedocType;
-import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -3,7 +3,7 @@ package org.hildan.livedoc.core.pojo.flow;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
+import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 
 import com.google.common.collect.Sets;

@@ -2,8 +2,8 @@ package org.hildan.livedoc.core.pojo;
 
 import java.util.UUID;
 
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
-import org.hildan.livedoc.core.util.LivedocType;
+import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
+import org.hildan.livedoc.core.builders.types.LivedocType;
 
 public class ApiBodyObjectDoc {
     public final String livedocId = UUID.randomUUID().toString();

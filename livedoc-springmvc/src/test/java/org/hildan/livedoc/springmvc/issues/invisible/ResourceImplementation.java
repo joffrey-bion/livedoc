@@ -1,7 +1,7 @@
 package org.hildan.livedoc.springmvc.issues.invisible;
 
-import org.hildan.livedoc.core.annotation.ApiObject;
-import org.hildan.livedoc.core.annotation.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
 
 @ApiObject(name = "resource implementation")
 public class ResourceImplementation implements ResourceInterface {

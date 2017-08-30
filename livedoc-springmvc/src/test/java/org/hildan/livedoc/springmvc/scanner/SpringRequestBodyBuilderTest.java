@@ -3,8 +3,8 @@ package org.hildan.livedoc.springmvc.scanner;
 import java.util.Collections;
 
 import org.hildan.livedoc.core.LivedocBuilder;
-import org.hildan.livedoc.core.annotation.ApiObject;
-import org.hildan.livedoc.core.annotation.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;

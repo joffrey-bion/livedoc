@@ -13,25 +13,21 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
+import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
+import org.hildan.livedoc.core.builders.templates.ObjectTemplateBuilder;
+import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
+import org.hildan.livedoc.core.builders.validators.ApiObjectDocValidator;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanner.AnnotatedTypesFinder;
-import org.hildan.livedoc.core.scanner.DocReader;
-import org.hildan.livedoc.core.scanner.GlobalDocReader;
-import org.hildan.livedoc.core.scanner.LivedocAnnotationDocReader;
-import org.hildan.livedoc.core.scanner.properties.FieldPropertyScanner;
-import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
-import org.hildan.livedoc.core.scanner.readers.ApiObjectDocReader;
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplate;
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplateBuilder;
-import org.hildan.livedoc.core.scanner.types.RecursivePropertyTypesScanner;
-import org.hildan.livedoc.core.scanner.types.TypesScanner;
-import org.hildan.livedoc.core.scanner.types.mappers.ConcreteTypesMapper;
-import org.hildan.livedoc.core.scanner.validators.ApiMethodDocValidator;
-import org.hildan.livedoc.core.scanner.validators.ApiObjectDocValidator;
+import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
+import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.types.RecursivePropertyTypeScanner;
+import org.hildan.livedoc.core.scanners.types.TypeScanner;
+import org.hildan.livedoc.core.scanners.types.mappers.ConcreteTypesMapper;
 import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.reflections.Reflections;
@@ -42,12 +38,12 @@ public class LivedocBuilder {
 
     private final List<DocReader> docReaders;
 
-    private TypesScanner typesScanner;
+    private TypeScanner typeScanner;
 
     private ApiObjectDocReader apiObjectDocReader;
 
     public LivedocBuilder(PropertyScanner propertyScanner, GlobalDocReader globalDocReader, DocReader... readers) {
-        this.typesScanner = new RecursivePropertyTypesScanner(propertyScanner);
+        this.typeScanner = new RecursivePropertyTypeScanner(propertyScanner);
         this.apiObjectDocReader = new ApiObjectDocReader(propertyScanner);
         this.globalDocReader = globalDocReader;
         this.docReaders = Arrays.asList(readers);
@@ -59,20 +55,20 @@ public class LivedocBuilder {
 
         PropertyScanner propertyScanner = new FieldPropertyScanner();
         LivedocAnnotationDocReader docReader = new LivedocAnnotationDocReader(annotatedTypesFinder);
-        RecursivePropertyTypesScanner typesScanner = new RecursivePropertyTypesScanner(propertyScanner);
+        RecursivePropertyTypeScanner typesScanner = new RecursivePropertyTypeScanner(propertyScanner);
         typesScanner.setMapper(new ConcreteTypesMapper(reflections));
 
         LivedocBuilder builder = new LivedocBuilder(propertyScanner, docReader, docReader);
-        builder.setTypesScanner(typesScanner);
+        builder.setTypeScanner(typesScanner);
         return builder;
     }
 
-    public TypesScanner getTypesScanner() {
-        return typesScanner;
+    public TypeScanner getTypeScanner() {
+        return typeScanner;
     }
 
-    public void setTypesScanner(TypesScanner typesScanner) {
-        this.typesScanner = typesScanner;
+    public void setTypeScanner(TypeScanner typeScanner) {
+        this.typeScanner = typeScanner;
     }
 
     public ApiObjectDocReader getApiObjectDocReader() {
@@ -130,7 +126,7 @@ public class LivedocBuilder {
 
     private Set<Class<?>> getClassesToDocument(Set<Class<?>> controllers, List<String> packages) {
         Set<Type> rootTypes = getRootTypesToDocument(controllers);
-        Set<Class<?>> exploredTypes = typesScanner.findTypes(rootTypes);
+        Set<Class<?>> exploredTypes = typeScanner.findTypes(rootTypes);
         return exploredTypes.stream().filter(c -> isInWhiteListedPackage(c, packages)).collect(Collectors.toSet());
     }
 

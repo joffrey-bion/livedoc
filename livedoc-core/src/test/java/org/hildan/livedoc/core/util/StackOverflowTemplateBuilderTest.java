@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplateBuilder;
+import org.hildan.livedoc.core.builders.templates.ObjectTemplateBuilder;
 import org.hildan.livedoc.core.util.pojo.NotAnnotatedStackOverflowObjectOne;
 import org.hildan.livedoc.core.util.pojo.NotAnnotatedStackOverflowObjectTwo;
 import org.hildan.livedoc.core.util.pojo.StackOverflowTemplateObjectOne;

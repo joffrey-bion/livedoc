@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.hildan.livedoc.core.LivedocBuilder;
-import org.hildan.livedoc.core.annotation.ApiPathParam;
+import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;

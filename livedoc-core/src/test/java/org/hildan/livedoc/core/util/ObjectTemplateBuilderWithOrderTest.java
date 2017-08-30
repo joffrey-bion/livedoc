@@ -3,9 +3,9 @@ package org.hildan.livedoc.core.util;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.annotation.ApiObject;
-import org.hildan.livedoc.core.annotation.ApiObjectField;
-import org.hildan.livedoc.core.scanner.templates.ObjectTemplateBuilder;
+import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.builders.templates.ObjectTemplateBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 

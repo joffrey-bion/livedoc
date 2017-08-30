@@ -2,9 +2,9 @@ package org.hildan.livedoc.core.pojo;
 
 import java.util.UUID;
 
-import org.hildan.livedoc.core.annotation.ApiPathParam;
-import org.hildan.livedoc.core.annotation.ApiQueryParam;
-import org.hildan.livedoc.core.util.LivedocType;
+import org.hildan.livedoc.core.annotations.ApiPathParam;
+import org.hildan.livedoc.core.annotations.ApiQueryParam;
+import org.hildan.livedoc.core.builders.types.LivedocType;
 
 public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {
     public final String livedocId = UUID.randomUUID().toString();

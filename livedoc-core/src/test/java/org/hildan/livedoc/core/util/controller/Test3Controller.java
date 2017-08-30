@@ -2,17 +2,17 @@ package org.hildan.livedoc.core.util.controller;
 
 import java.util.List;
 
-import org.hildan.livedoc.core.annotation.Api;
-import org.hildan.livedoc.core.annotation.ApiAuthNone;
-import org.hildan.livedoc.core.annotation.ApiBodyObject;
-import org.hildan.livedoc.core.annotation.ApiError;
-import org.hildan.livedoc.core.annotation.ApiErrors;
-import org.hildan.livedoc.core.annotation.ApiHeader;
-import org.hildan.livedoc.core.annotation.ApiHeaders;
-import org.hildan.livedoc.core.annotation.ApiMethod;
-import org.hildan.livedoc.core.annotation.ApiPathParam;
-import org.hildan.livedoc.core.annotation.ApiResponseObject;
-import org.hildan.livedoc.core.annotation.ApiVersion;
+import org.hildan.livedoc.core.annotations.Api;
+import org.hildan.livedoc.core.annotations.ApiAuthNone;
+import org.hildan.livedoc.core.annotations.ApiBodyObject;
+import org.hildan.livedoc.core.annotations.ApiError;
+import org.hildan.livedoc.core.annotations.ApiErrors;
+import org.hildan.livedoc.core.annotations.ApiHeader;
+import org.hildan.livedoc.core.annotations.ApiHeaders;
+import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiPathParam;
+import org.hildan.livedoc.core.annotations.ApiResponseObject;
+import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 
 @Api(name = "Test3Controller", description = "My test controller #3")

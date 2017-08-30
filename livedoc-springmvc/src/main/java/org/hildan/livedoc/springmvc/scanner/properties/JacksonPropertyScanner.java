@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.hildan.livedoc.core.scanner.properties.Property;
-import org.hildan.livedoc.core.scanner.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.properties.Property;
+import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.BeanDescription;

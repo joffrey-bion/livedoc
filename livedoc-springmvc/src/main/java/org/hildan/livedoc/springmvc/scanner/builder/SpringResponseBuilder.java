@@ -2,9 +2,9 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 
 import java.lang.reflect.Method;
 
+import org.hildan.livedoc.core.builders.types.LivedocType;
+import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiResponseObjectDoc;
-import org.hildan.livedoc.core.util.LivedocType;
-import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 import org.springframework.http.ResponseEntity;
 
 public class SpringResponseBuilder {

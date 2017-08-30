@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hildan.livedoc.core.annotation.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
 
 public class TemplateObject {
 

@@ -3,14 +3,14 @@ package org.hildan.livedoc.core.util.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.hildan.livedoc.core.annotation.Api;
-import org.hildan.livedoc.core.annotation.ApiAuthBasic;
-import org.hildan.livedoc.core.annotation.ApiAuthBasicUser;
-import org.hildan.livedoc.core.annotation.ApiBodyObject;
-import org.hildan.livedoc.core.annotation.ApiMethod;
-import org.hildan.livedoc.core.annotation.ApiPathParam;
-import org.hildan.livedoc.core.annotation.ApiResponseObject;
-import org.hildan.livedoc.core.annotation.ApiVersion;
+import org.hildan.livedoc.core.annotations.Api;
+import org.hildan.livedoc.core.annotations.ApiAuthBasic;
+import org.hildan.livedoc.core.annotations.ApiAuthBasicUser;
+import org.hildan.livedoc.core.annotations.ApiBodyObject;
+import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiPathParam;
+import org.hildan.livedoc.core.annotations.ApiResponseObject;
+import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.util.pojo.Parent;
 

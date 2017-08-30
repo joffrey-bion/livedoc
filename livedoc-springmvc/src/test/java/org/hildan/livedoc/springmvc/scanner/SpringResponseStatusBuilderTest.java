@@ -14,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.google.common.collect.Sets;
-
 public class SpringResponseStatusBuilderTest {
 
     @SuppressWarnings("unused")

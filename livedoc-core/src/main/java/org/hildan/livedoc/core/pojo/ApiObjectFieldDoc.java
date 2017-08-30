@@ -4,7 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.util.LivedocType;
+import org.hildan.livedoc.core.builders.types.LivedocType;
 
 import com.google.common.base.Joiner;
 

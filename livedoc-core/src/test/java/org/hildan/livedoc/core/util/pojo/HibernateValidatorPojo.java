@@ -3,8 +3,8 @@ package org.hildan.livedoc.core.util.pojo;
 import javax.validation.constraints.Max;
 
 import org.hibernate.validator.constraints.Length;
-import org.hildan.livedoc.core.annotation.ApiObject;
-import org.hildan.livedoc.core.annotation.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
 
 @ApiObject
 public class HibernateValidatorPojo {

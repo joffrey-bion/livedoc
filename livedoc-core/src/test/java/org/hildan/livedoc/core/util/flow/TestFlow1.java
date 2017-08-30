@@ -1,8 +1,8 @@
 package org.hildan.livedoc.core.util.flow;
 
-import org.hildan.livedoc.core.annotation.flow.ApiFlow;
-import org.hildan.livedoc.core.annotation.flow.ApiFlowSet;
-import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
+import org.hildan.livedoc.core.annotations.flow.ApiFlow;
+import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
+import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 
 @ApiFlowSet
 public class TestFlow1 {

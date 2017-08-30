@@ -1,9 +1,9 @@
 package org.hildan.livedoc.core.util.controller;
 
-import org.hildan.livedoc.core.annotation.Api;
-import org.hildan.livedoc.core.annotation.ApiMethod;
-import org.hildan.livedoc.core.annotation.ApiPathParam;
-import org.hildan.livedoc.core.annotation.ApiResponseObject;
+import org.hildan.livedoc.core.annotations.Api;
+import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiPathParam;
+import org.hildan.livedoc.core.annotations.ApiResponseObject;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.util.pojo.Pizza;
 

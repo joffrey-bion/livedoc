@@ -1,6 +1,6 @@
 package org.hildan.livedoc.core.util.pojo;
 
-import org.hildan.livedoc.core.annotation.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
 
 public class StackOverflowTemplateObjectOne {
 

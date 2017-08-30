@@ -7,9 +7,9 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hildan.livedoc.core.builders.types.LivedocType;
+import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiBodyObjectDoc;
-import org.hildan.livedoc.core.util.LivedocType;
-import org.hildan.livedoc.core.util.LivedocTypeBuilder;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;

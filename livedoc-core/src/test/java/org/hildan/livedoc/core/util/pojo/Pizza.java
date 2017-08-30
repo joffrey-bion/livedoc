@@ -1,7 +1,7 @@
 package org.hildan.livedoc.core.util.pojo;
 
-import org.hildan.livedoc.core.annotation.ApiObject;
-import org.hildan.livedoc.core.annotation.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.ApiObjectField;
 
 @ApiObject(name = "customPizzaObject", group = "Restaurant")
 public class Pizza extends Parent {

@@ -1,8 +1,8 @@
 package org.hildan.livedoc.core.issues.issue151;
 
-import org.hildan.livedoc.core.annotation.Api;
-import org.hildan.livedoc.core.annotation.ApiMethod;
-import org.hildan.livedoc.core.annotation.ApiResponseObject;
+import org.hildan.livedoc.core.annotations.Api;
+import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiResponseObject;
 
 @Api(name = "Foo Services", description = "bla, bla, bla ...", group = "foogroup")
 public class FooController {

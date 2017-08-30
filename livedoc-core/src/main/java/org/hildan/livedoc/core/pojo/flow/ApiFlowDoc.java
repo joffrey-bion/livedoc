@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.annotation.flow.ApiFlow;
-import org.hildan.livedoc.core.annotation.flow.ApiFlowStep;
+import org.hildan.livedoc.core.annotations.flow.ApiFlow;
+import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Groupable;
 
