@@ -13,7 +13,11 @@ import org.hildan.livedoc.core.scanner.types.filters.ContainerTypesExcludingFilt
 import org.hildan.livedoc.core.scanner.types.filters.TypeFilter;
 import org.hildan.livedoc.core.scanner.types.mappers.TypeMapper;
 
-public class TypesExplorer {
+/**
+ * An implementation of {@link TypesScanner} that reads the types of the properties of the classes, and recursively
+ * inspect those types. The definition of a "property" is defined by the given {@link PropertyScanner}.
+ */
+public class RecursivePropertyTypesScanner implements TypesScanner {
 
     private final PropertyScanner scanner;
 
@@ -23,25 +27,38 @@ public class TypesExplorer {
 
     private TypeMapper mapper;
 
-    public TypesExplorer(PropertyScanner scanner) {
+    public RecursivePropertyTypesScanner(PropertyScanner scanner) {
         this.scanner = scanner;
         this.filter = new ContainerTypesExcludingFilter();
         this.explorationFilter = new BasicTypesExcludingFilter();
         this.mapper = Collections::singleton;
     }
 
+    public TypeFilter getFilter() {
+        return filter;
+    }
+
     public void setFilter(TypeFilter filter) {
         this.filter = filter;
+    }
+
+    public TypeFilter getExplorationFilter() {
+        return explorationFilter;
     }
 
     public void setExplorationFilter(TypeFilter explorationFilter) {
         this.explorationFilter = explorationFilter;
     }
 
+    public TypeMapper getMapper() {
+        return mapper;
+    }
+
     public void setMapper(TypeMapper mapper) {
         this.mapper = mapper;
     }
 
+    @Override
     public Set<Class<?>> findTypes(Collection<? extends Type> rootTypes) {
         Set<Class<?>> allTypes = new HashSet<>();
         for (Type type : rootTypes) {

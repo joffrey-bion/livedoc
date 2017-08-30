@@ -13,14 +13,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TypesExplorerTest {
+public class RecursivePropertyTypesScannerTest {
 
-    private TypesExplorer explorer;
+    private TypesScanner explorer;
 
     @Before
     public void setUp() {
         PropertyScanner scanner = new FieldPropertyScanner();
-        explorer = new TypesExplorer(scanner);
+        explorer = new RecursivePropertyTypesScanner(scanner);
     }
 
     @Test
