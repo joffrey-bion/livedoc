@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.GlobalDocReader;
-import org.hildan.livedoc.core.LivedocAnnotationDocReader;
+import org.hildan.livedoc.core.LivedocAnnotationGlobalDocReader;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
@@ -27,7 +27,7 @@ import org.junit.Test;
 public class GlobalDocReaderTest {
 
     private ApiGlobalDoc buildGlobalDocFor(Class<?> global, Class<?> changelog, Class<?> migration) {
-        GlobalDocReader reader = new LivedocAnnotationDocReader(ann -> {
+        GlobalDocReader reader = new LivedocAnnotationGlobalDocReader(ann -> {
             if (ApiGlobal.class.equals(ann)) {
                 return global == null ? Collections.emptyList() : Collections.singletonList(global);
             }
@@ -146,7 +146,7 @@ public class GlobalDocReaderTest {
         apiMethodDoc.setId("F1");
         apiMethodDocsById.put("F1", apiMethodDoc);
 
-        GlobalDocReader scanner = new LivedocAnnotationDocReader(finder);
+        GlobalDocReader scanner = new LivedocAnnotationGlobalDocReader(finder);
         Set<ApiFlowDoc> apiFlowDocs = scanner.getApiFlowDocs(apiMethodDocsById);
         for (ApiFlowDoc apiFlowDoc : apiFlowDocs) {
             if (apiFlowDoc.getName().equals("flow")) {

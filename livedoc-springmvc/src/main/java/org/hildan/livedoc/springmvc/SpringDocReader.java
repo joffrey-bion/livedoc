@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner;
+package org.hildan.livedoc.springmvc;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;

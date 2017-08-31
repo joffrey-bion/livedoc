@@ -11,7 +11,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
-import org.hildan.livedoc.core.LivedocBuilder;
+import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.Groupable;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 public class LivedocUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(LivedocBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(LivedocReader.class);
 
     public static Integer getIndexOfParameterWithAnnotation(Method method, Class<?> a) {
         Annotation[][] parametersAnnotations = method.getParameterAnnotations();

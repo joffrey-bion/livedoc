@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.hildan.livedoc.core.LivedocBuilder;
+import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
+import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -47,7 +47,7 @@ public class PlainSpringDocAnnotationScannerTest {
     }
 
     private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
-        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         return builder.readApiDoc(controller, methodDisplay, new HashMap<>());
     }
 

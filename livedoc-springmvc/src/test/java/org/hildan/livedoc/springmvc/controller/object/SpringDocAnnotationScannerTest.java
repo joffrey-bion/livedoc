@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.LivedocBuilder;
+import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
+import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.fail;
@@ -24,8 +24,8 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void findsNestedObject() throws Exception {
-        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
-        Livedoc doc = builder.build(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
+        Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = doc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {
@@ -35,8 +35,8 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void findsDeeplyNestedObjects() throws Exception {
-        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
-        Livedoc doc = builder.build(VERSION, BASE_PATH, PACKAGES, true, MethodDisplay.URI);
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
+        Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
 
         Map<String, Set<ApiObjectDoc>> objects = doc.getObjects();
         for (Set<ApiObjectDoc> values : objects.values()) {

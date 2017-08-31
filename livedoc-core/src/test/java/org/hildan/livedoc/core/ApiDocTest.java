@@ -133,7 +133,7 @@ public class ApiDocTest {
     }
 
     private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
-        LivedocBuilder builder = LivedocBuilder.basicAnnotationBuilder(Collections.emptyList());
+        LivedocReader builder = LivedocReader.basicAnnotationBuilder(Collections.emptyList());
         return builder.readApiDoc(controller, methodDisplay, new HashMap<>());
     }
 

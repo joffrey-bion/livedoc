@@ -19,19 +19,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import static org.junit.Assert.assertEquals;
 
-public class LivedocBuilderTest {
+public class LivedocReaderTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private static Logger log = LoggerFactory.getLogger(LivedocBuilderTest.class);
+    private static Logger log = LoggerFactory.getLogger(LivedocReaderTest.class);
 
     @Test
     public void getLivedoc() throws IOException {
         String version = "1.0";
         String basePath = "http://localhost:8080/api";
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.util");
-        LivedocBuilder livedocBuilder = LivedocBuilder.basicAnnotationBuilder(packages);
-        Livedoc livedoc = livedocBuilder.build(version, basePath, packages, true, MethodDisplay.URI);
+        LivedocReader livedocReader = LivedocReader.basicAnnotationBuilder(packages);
+        Livedoc livedoc = livedocReader.read(version, basePath, true, MethodDisplay.URI);
         assertEquals(1, livedoc.getApis().size());
 
         int countApis = 0;

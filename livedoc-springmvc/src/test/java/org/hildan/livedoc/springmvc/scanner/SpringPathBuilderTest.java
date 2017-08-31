@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.hildan.livedoc.core.LivedocBuilder;
+import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
+import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class SpringPathBuilderTest {
 
-    private LivedocBuilder builder;
+    private LivedocReader builder;
 
     @Before
     public void setUp() {
-        builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
     }
 
     @SuppressWarnings("unused")

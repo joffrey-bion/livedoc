@@ -23,60 +23,33 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
-import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
-import org.hildan.livedoc.core.scanners.types.RecursivePropertyTypeScanner;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
-import org.hildan.livedoc.core.scanners.types.mappers.ConcreteTypesMapper;
 import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.LivedocUtils;
-import org.reflections.Reflections;
 
-public class LivedocBuilder {
+public class LivedocReader {
+
+    private final List<String> packageWhiteList;
 
     private final GlobalDocReader globalDocReader;
 
     private final List<DocReader> docReaders;
 
-    private TypeScanner typeScanner;
+    private final TypeScanner typeScanner;
 
-    private ApiObjectDocReader apiObjectDocReader;
+    private final ApiObjectDocReader apiObjectDocReader;
 
-    public LivedocBuilder(PropertyScanner propertyScanner, GlobalDocReader globalDocReader, DocReader... readers) {
-        this.typeScanner = new RecursivePropertyTypeScanner(propertyScanner);
-        this.apiObjectDocReader = new ApiObjectDocReader(propertyScanner);
-        this.globalDocReader = globalDocReader;
-        this.docReaders = Arrays.asList(readers);
-    }
-
-    public static LivedocBuilder basicAnnotationBuilder(List<String> packages) {
-        Reflections reflections = LivedocUtils.newReflections(packages);
-        AnnotatedTypesFinder annotatedTypesFinder = LivedocUtils.createAnnotatedTypesFinder(reflections);
-
-        PropertyScanner propertyScanner = new FieldPropertyScanner();
-        LivedocAnnotationDocReader docReader = new LivedocAnnotationDocReader(annotatedTypesFinder);
-        RecursivePropertyTypeScanner typesScanner = new RecursivePropertyTypeScanner(propertyScanner);
-        typesScanner.setMapper(new ConcreteTypesMapper(reflections));
-
-        LivedocBuilder builder = new LivedocBuilder(propertyScanner, docReader, docReader);
-        builder.setTypeScanner(typesScanner);
-        return builder;
-    }
-
-    public TypeScanner getTypeScanner() {
-        return typeScanner;
-    }
-
-    public void setTypeScanner(TypeScanner typeScanner) {
+    public LivedocReader(List<String> packageWhiteList, TypeScanner typeScanner, GlobalDocReader globalDocReader,
+            ApiObjectDocReader apiObjectDocReader, List<DocReader> readers) {
+        this.packageWhiteList = packageWhiteList;
         this.typeScanner = typeScanner;
-    }
-
-    public ApiObjectDocReader getApiObjectDocReader() {
-        return apiObjectDocReader;
-    }
-
-    public void setApiObjectDocReader(ApiObjectDocReader apiObjectDocReader) {
         this.apiObjectDocReader = apiObjectDocReader;
+        this.globalDocReader = globalDocReader;
+        this.docReaders = readers;
+    }
+
+    public static LivedocReader basicAnnotationBuilder(List<String> packages) {
+        return new LivedocReaderBuilder().scanningPackages(packages).build();
     }
 
     /**
@@ -84,14 +57,13 @@ public class LivedocBuilder {
      *
      * @return An <code>ApiDoc</code> object
      */
-    public Livedoc build(String version, String basePath, List<String> packages, boolean playgroundEnabled,
-            MethodDisplay displayMethodAs) {
+    public Livedoc read(String version, String basePath, boolean playgroundEnabled, MethodDisplay displayMethodAs) {
         Livedoc livedoc = new Livedoc(version, basePath);
         livedoc.setPlaygroundEnabled(playgroundEnabled);
         livedoc.setDisplayMethodAs(displayMethodAs);
 
         Set<Class<?>> controllers = findControllers();
-        Set<Class<?>> types = getClassesToDocument(controllers, packages);
+        Set<Class<?>> types = getClassesToDocument(controllers);
 
         Map<Class<?>, ObjectTemplate> templates = new HashMap<>();
         for (Class<?> clazz : types) {
@@ -124,10 +96,10 @@ public class LivedocBuilder {
         return controllers;
     }
 
-    private Set<Class<?>> getClassesToDocument(Set<Class<?>> controllers, List<String> packages) {
+    private Set<Class<?>> getClassesToDocument(Set<Class<?>> controllers) {
         Set<Type> rootTypes = getRootTypesToDocument(controllers);
         Set<Class<?>> exploredTypes = typeScanner.findTypes(rootTypes);
-        return exploredTypes.stream().filter(c -> isInWhiteListedPackage(c, packages)).collect(Collectors.toSet());
+        return exploredTypes.stream().filter(this::isInWhiteListedPackage).collect(Collectors.toSet());
     }
 
     private Set<Type> getRootTypesToDocument(Set<Class<?>> controllers) {
@@ -161,9 +133,9 @@ public class LivedocBuilder {
         return types;
     }
 
-    private boolean isInWhiteListedPackage(Class<?> clazz, List<String> packages) {
+    private boolean isInWhiteListedPackage(Class<?> clazz) {
         String packageName = clazz.getPackage().getName();
-        return packages.stream().anyMatch(packageName::startsWith);
+        return packageWhiteList.stream().anyMatch(packageName::startsWith);
     }
 
     private Collection<ApiDoc> readApiDocs(Collection<Class<?>> controllers, MethodDisplay displayMethodAs,

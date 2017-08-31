@@ -3,12 +3,12 @@ package org.hildan.livedoc.springmvc.scanner;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.hildan.livedoc.core.LivedocBuilder;
+import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
+import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -37,7 +37,7 @@ public class SpringApiVerbDocTest {
 
     @Test
     public void testApiVerb() {
-        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         ApiDoc apiDoc = builder.readApiDoc(SpringApiVerbController.class, MethodDisplay.URI, new HashMap<>());
         Assert.assertEquals("SpringApiVerbController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
@@ -66,7 +66,7 @@ public class SpringApiVerbDocTest {
 
     @Test
     public void testApiVerb2() {
-        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         ApiDoc apiDoc = builder.readApiDoc(SpringApiVerbController2.class, MethodDisplay.URI, new HashMap<>());
         Assert.assertEquals("SpringApiVerbController2", apiDoc.getName());
         Assert.assertEquals(1, apiDoc.getMethods().size());

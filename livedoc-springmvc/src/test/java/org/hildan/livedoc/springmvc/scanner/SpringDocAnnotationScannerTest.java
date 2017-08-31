@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.hildan.livedoc.core.LivedocBuilder;
+import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiAuthNone;
 import org.hildan.livedoc.core.annotations.ApiBodyObject;
@@ -21,7 +21,7 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocBuilderFactory;
+import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -60,7 +60,7 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void testMergeApiDoc() {
-        LivedocBuilder builder = SpringLivedocBuilderFactory.springLivedocBuilder(Collections.emptyList());
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         ApiDoc apiDoc = builder.readApiDoc(SpringController.class, MethodDisplay.URI, Collections.emptyMap());
         Assert.assertEquals("A spring controller", apiDoc.getDescription());
         Assert.assertEquals("Spring controller", apiDoc.getName());
