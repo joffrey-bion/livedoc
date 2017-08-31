@@ -5,13 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
-import org.hildan.livedoc.core.scanners.types.filters.BasicTypesExcludingFilter;
-import org.hildan.livedoc.core.scanners.types.filters.ContainerTypesExcludingFilter;
-import org.hildan.livedoc.core.scanners.types.filters.TypeFilter;
-import org.hildan.livedoc.core.scanners.types.mappers.TypeMapper;
 
 /**
  * An implementation of {@link TypeScanner} that reads the types of the properties of the classes, and recursively
@@ -21,41 +19,41 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
 
     private final PropertyScanner scanner;
 
-    private TypeFilter filter;
+    private Predicate<Class<?>> typeFilter;
 
-    private TypeFilter explorationFilter;
+    private Predicate<Class<?>> typeExplorationFilter;
 
-    private TypeMapper mapper;
+    private Function<Class<?>, Set<Class<?>>> typeMapper;
 
     public RecursivePropertyTypeScanner(PropertyScanner scanner) {
         this.scanner = scanner;
-        this.filter = new ContainerTypesExcludingFilter();
-        this.explorationFilter = new BasicTypesExcludingFilter();
-        this.mapper = Collections::singleton;
+        this.typeFilter = c -> true;
+        this.typeExplorationFilter = c -> true;
+        this.typeMapper = Collections::singleton;
     }
 
-    public TypeFilter getFilter() {
-        return filter;
+    public Predicate<Class<?>> getTypeFilter() {
+        return typeFilter;
     }
 
-    public void setFilter(TypeFilter filter) {
-        this.filter = filter;
+    public void setTypeFilter(Predicate<Class<?>> typeFilter) {
+        this.typeFilter = typeFilter;
     }
 
-    public TypeFilter getExplorationFilter() {
-        return explorationFilter;
+    public Predicate<Class<?>> getTypeExplorationFilter() {
+        return typeExplorationFilter;
     }
 
-    public void setExplorationFilter(TypeFilter explorationFilter) {
-        this.explorationFilter = explorationFilter;
+    public void setTypeExplorationFilter(Predicate<Class<?>> typeExplorationFilter) {
+        this.typeExplorationFilter = typeExplorationFilter;
     }
 
-    public TypeMapper getMapper() {
-        return mapper;
+    public Function<Class<?>, Set<Class<?>>> getTypeMapper() {
+        return typeMapper;
     }
 
-    public void setMapper(TypeMapper mapper) {
-        this.mapper = mapper;
+    public void setTypeMapper(Function<Class<?>, Set<Class<?>>> mapper) {
+        this.typeMapper = mapper;
     }
 
     @Override
@@ -70,8 +68,8 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
     private void exploreType(Type type, Set<Class<?>> exploredClasses) {
         GenericTypeExplorer.getClassesInDeclaration(type)
                            .stream()
-                           .filter(filter)
-                           .flatMap(mapper.andThen(Collection::stream))
+                           .filter(typeFilter)
+                           .flatMap(typeMapper.andThen(Collection::stream))
                            .distinct()
                            .forEach(c -> exploreClass(c, exploredClasses));
     }
@@ -81,7 +79,7 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
             return; // already explored
         }
         exploredClasses.add(clazz);
-        if (!explorationFilter.test(clazz)) {
+        if (!typeExplorationFilter.test(clazz)) {
             return; // exploration of the inner properties is disabled for the current type
         }
         scanner.getProperties(clazz)

@@ -6,17 +6,18 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.reflections.Reflections;
 
 /**
  * A mapper that replaces interfaces and abstract classes by their implementations, and leave other types unchanged.
  */
-public class ConcreteTypesMapper implements TypeMapper {
+public class ConcreteSubtypesMapper implements Function<Class<?>, Set<Class<?>>> {
 
     private final Reflections reflections;
 
-    public ConcreteTypesMapper(Reflections reflections) {
+    public ConcreteSubtypesMapper(Reflections reflections) {
         this.reflections = reflections;
     }
 

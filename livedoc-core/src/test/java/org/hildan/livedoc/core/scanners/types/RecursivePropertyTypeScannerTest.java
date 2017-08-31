@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,12 +16,14 @@ import static org.junit.Assert.assertEquals;
 
 public class RecursivePropertyTypeScannerTest {
 
-    private TypeScanner explorer;
+    private RecursivePropertyTypeScanner explorer;
 
     @Before
     public void setUp() {
         PropertyScanner scanner = new FieldPropertyScanner();
         explorer = new RecursivePropertyTypeScanner(scanner);
+        explorer.setTypeFilter(TypePredicates.IS_CONTAINER.negate());
+        explorer.setTypeExplorationFilter(TypePredicates.IS_BASIC_TYPE.negate());
     }
 
     @Test

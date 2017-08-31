@@ -10,7 +10,7 @@ import org.reflections.Reflections;
 
 import static org.junit.Assert.assertTrue;
 
-public class ConcreteTypesMapperTest {
+public class ConcreteSubtypesMapperTest {
 
     private interface A {}
 
@@ -24,11 +24,11 @@ public class ConcreteTypesMapperTest {
 
     private class BImpl implements B {}
 
-    private static ConcreteTypesMapper mapper;
+    private static ConcreteSubtypesMapper mapper;
 
     @BeforeClass
     public static void setUp() {
-        mapper = new ConcreteTypesMapper(new Reflections("org.hildan.livedoc.core.scanners.types.mappers"));
+        mapper = new ConcreteSubtypesMapper(new Reflections("org.hildan.livedoc.core.scanners.types.mappers"));
     }
 
     @Test

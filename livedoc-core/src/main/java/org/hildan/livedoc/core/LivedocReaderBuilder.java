@@ -9,7 +9,8 @@ import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.types.RecursivePropertyTypeScanner;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
-import org.hildan.livedoc.core.scanners.types.mappers.ConcreteTypesMapper;
+import org.hildan.livedoc.core.scanners.types.mappers.ConcreteSubtypesMapper;
+import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.reflections.Reflections;
 
@@ -92,7 +93,11 @@ public class LivedocReaderBuilder {
 
     private TypeScanner getDefaultTypeScanner(PropertyScanner propertyScanner) {
         RecursivePropertyTypeScanner scanner = new RecursivePropertyTypeScanner(propertyScanner);
-        scanner.setMapper(new ConcreteTypesMapper(getReflections()));
+        // excludes collections/maps from doc (would just be noise)
+        scanner.setTypeFilter(TypePredicates.IS_CONTAINER.negate());
+        // do not explore the fields of simple types like primitive wrappers, strings and enums
+        scanner.setTypeExplorationFilter(TypePredicates.IS_BASIC_TYPE.negate());
+        scanner.setTypeMapper(new ConcreteSubtypesMapper(getReflections()));
         return scanner;
     }
 
