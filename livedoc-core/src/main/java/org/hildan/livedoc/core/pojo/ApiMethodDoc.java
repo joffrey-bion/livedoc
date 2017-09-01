@@ -12,6 +12,9 @@ import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import com.google.common.collect.Sets;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc> {
+
+    public static final String DEFAULT_RESPONSE_STATUS = "200 - OK";
+
     public final String livedocId = UUID.randomUUID().toString();
 
     private Set<String> path;
@@ -34,6 +37,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
     private ApiResponseObjectDoc response;
 
+    @SpecialDefaultStringValue(DEFAULT_RESPONSE_STATUS)
     private String responsestatuscode;
 
     private ApiVisibility visibility;
@@ -68,7 +72,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
         this.queryparameters = new LinkedHashSet<>();
         this.bodyobject = null;
         this.response = null;
-        this.responsestatuscode = "";
+        this.responsestatuscode = DEFAULT_RESPONSE_STATUS;
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;
         this.apierrors = new ArrayList<>();

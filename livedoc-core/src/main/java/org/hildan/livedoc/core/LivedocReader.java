@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
+import org.hildan.livedoc.core.builders.merger.DocMerger;
 import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.builders.templates.ObjectTemplateBuilder;
 import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
@@ -23,8 +24,8 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
-import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.LivedocUtils;
 
 public class LivedocReader {
@@ -39,6 +40,8 @@ public class LivedocReader {
 
     private final ApiObjectDocReader apiObjectDocReader;
 
+    private final DocMerger docMerger;
+
     public LivedocReader(List<String> packageWhiteList, TypeScanner typeScanner, GlobalDocReader globalDocReader,
             ApiObjectDocReader apiObjectDocReader, List<DocReader> readers) {
         this.packageWhiteList = packageWhiteList;
@@ -46,6 +49,7 @@ public class LivedocReader {
         this.apiObjectDocReader = apiObjectDocReader;
         this.globalDocReader = globalDocReader;
         this.docReaders = readers;
+        this.docMerger = new DocMerger(new FieldPropertyScanner());
     }
 
     public static LivedocReader basicAnnotationBuilder(List<String> packages) {
@@ -189,7 +193,7 @@ public class LivedocReader {
             if (doc == null) {
                 doc = newDoc;
             } else if (newDoc != null) {
-                BeanUtils.copyNonNullFields(newDoc, doc);
+                docMerger.merge(newDoc, doc);
             }
         }
         return doc;

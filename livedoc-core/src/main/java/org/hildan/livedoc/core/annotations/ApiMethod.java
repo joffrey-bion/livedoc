@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.ApiVisibility;
@@ -74,7 +75,7 @@ public @interface ApiMethod {
     /**
      * Response status code that this method will return to the caller. Defaults to 200
      */
-    public String responsestatuscode() default "200 - OK";
+    public String responsestatuscode() default ApiMethodDoc.DEFAULT_RESPONSE_STATUS;
 
     /**
      * Indicates the visibility of the method

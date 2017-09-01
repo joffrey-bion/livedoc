@@ -25,6 +25,7 @@ public class ApiObjectFieldDoc extends AbstractDoc implements Comparable<ApiObje
 
     private ApiVersionDoc supportedversions;
 
+    @SpecialDefaultIntValue(Integer.MAX_VALUE)
     private Integer order;
 
     public ApiObjectFieldDoc() {
