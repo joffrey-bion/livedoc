@@ -1,7 +1,11 @@
-def execute = { String command ->
+def execute = { String[] command ->
     exec {
+        println command.join(' ')
+        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+            command = ['cmd', '/c'] + command
+        }
         workingDir rootProject.projectDir
-        commandLine command.split()
+        commandLine command
     }
 }
 
@@ -21,14 +25,9 @@ def getChangelogReleaseUrlBeginning = {
     }
 }
 
-task generateChangeLog(type: Exec) {
-    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-        commandLine 'cmd', '/c', 'github_changelog_generator', '--no-verbose', '--future-release', "v${project.version}"
-    } else {
-        commandLine 'github_changelog_generator', '--no-verbose', '--future-release', "v${project.version}"
-    }
-
+task generateChangeLog {
     doLast {
+        execute 'github_changelog_generator', '--no-verbose', '--future-release', "v${project.version}"
         // fix the bintray links (remove V prefix)
         String changelogFile = 'CHANGELOG.md'
         String changelogContents = new File(changelogFile).getText('UTF-8')
@@ -42,18 +41,18 @@ task generateChangeLog(type: Exec) {
 
 task commitRelease {
     doLast {
-        execute("git add build.gradle")
-        execute("git add CHANGELOG.md")
-        execute("git commit -m \"Version ${project.version}\"")
-        execute("git push")
+        execute 'git', 'add', 'build.gradle'
+        execute 'git', 'add', 'CHANGELOG.md'
+        execute 'git', 'commit', '-m', "Version ${project.version}"
+        execute 'git', 'push'
     }
 }
 commitRelease.dependsOn(generateChangeLog)
 
 task tagRelease {
     doLast {
-        execute("git tag -a v${project.version} -m \"Version ${project.version}\"")
-        execute("git push origin v${project.version}")
+        execute 'git', 'tag', '-a', "v${project.version}", '-m', "Version ${project.version}"
+        execute 'git', 'push', 'origin', "v${project.version}"
         println "Generated tag for version ${project.version}"
     }
 }
