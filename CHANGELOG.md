@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.0.0](https://bintray.com/joffrey-bion/maven/livedoc/1.0.0) (2017-09-01)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.5...v1.0.0)
+
+**Implemented enhancements:**
+
+- Make Livedoc more customizable by decoupling components [\#21](https://github.com/joffrey-bion/livedoc/issues/21)
+- Improve objects docs by using actually serialized properties [\#19](https://github.com/joffrey-bion/livedoc/issues/19)
+
 ## [v0.4.5](https://bintray.com/joffrey-bion/maven/livedoc/0.4.5) (2017-08-27)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.4...v0.4.5)
 
