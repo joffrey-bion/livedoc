@@ -1,13 +1,11 @@
 package org.hildan.livedoc.springmvc.scanner;
 
-import java.util.Collections;
 import java.util.Map;
 
-import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
+import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +38,7 @@ public class SpringResponseBuilderTest {
 
     @Test
     public void testApiVerb() {
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        ApiDoc apiDoc = builder.readApiDoc(SpringController.class, MethodDisplay.URI, Collections.emptyMap());
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class, MethodDisplay.URI);
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

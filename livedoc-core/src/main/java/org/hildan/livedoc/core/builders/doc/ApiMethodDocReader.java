@@ -13,9 +13,14 @@ import org.hildan.livedoc.core.pojo.ApiVisibility;
 public class ApiMethodDocReader {
 
     public static ApiMethodDoc read(Method method, ApiDoc parentApiDoc) {
-
+        ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
+        apiMethodDoc.setId(methodAnnotation.id());
         apiMethodDoc.setMethod(method.getName());
+        apiMethodDoc.setPath(new LinkedHashSet<>(Arrays.asList(methodAnnotation.path())));
+        apiMethodDoc.setVerb(new LinkedHashSet<>(Arrays.asList(methodAnnotation.verb())));
+        apiMethodDoc.setSummary(methodAnnotation.summary());
+        apiMethodDoc.setDescription(methodAnnotation.description());
         apiMethodDoc.setApierrors(ApiErrorDocReader.build(method));
         apiMethodDoc.setSupportedversions(ApiVersionDocReader.read(method, parentApiDoc.getSupportedversions()));
         apiMethodDoc.setAuth(ApiAuthDocReader.read(method));
@@ -24,28 +29,28 @@ public class ApiMethodDocReader {
         apiMethodDoc.setQueryparameters(ApiQueryParameterDocReader.read(method));
         apiMethodDoc.setBodyobject(ApiBodyObjectDocReader.read(method));
         apiMethodDoc.setResponse(ApiResponseObjectDocReader.build(method));
-        apiMethodDoc.setVisibility(parentApiDoc.getVisibility());
-        apiMethodDoc.setStage(parentApiDoc.getStage());
-
-        ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
-        if (methodAnnotation != null) {
-            apiMethodDoc.setId(methodAnnotation.id());
-            apiMethodDoc.setPath(new LinkedHashSet<>(Arrays.asList(methodAnnotation.path())));
-            apiMethodDoc.setSummary(methodAnnotation.summary());
-            apiMethodDoc.setDescription(methodAnnotation.description());
-            apiMethodDoc.setVerb(new LinkedHashSet<>(Arrays.asList(methodAnnotation.verb())));
-            apiMethodDoc.setConsumes(new LinkedHashSet<>(Arrays.asList(methodAnnotation.consumes())));
-            apiMethodDoc.setProduces(new LinkedHashSet<>(Arrays.asList(methodAnnotation.produces())));
-            apiMethodDoc.setResponsestatuscode(methodAnnotation.responsestatuscode());
-            if (!methodAnnotation.visibility().equals(ApiVisibility.UNDEFINED)) {
-                apiMethodDoc.setVisibility(methodAnnotation.visibility());
-            }
-            if (!methodAnnotation.stage().equals(ApiStage.UNDEFINED)) {
-                apiMethodDoc.setStage(methodAnnotation.stage());
-            }
-        }
-
+        apiMethodDoc.setConsumes(new LinkedHashSet<>(Arrays.asList(methodAnnotation.consumes())));
+        apiMethodDoc.setProduces(new LinkedHashSet<>(Arrays.asList(methodAnnotation.produces())));
+        apiMethodDoc.setResponsestatuscode(methodAnnotation.responsestatuscode());
+        apiMethodDoc.setVisibility(getApiVisibility(parentApiDoc, methodAnnotation));
+        apiMethodDoc.setStage(getApiStage(parentApiDoc, methodAnnotation));
         return apiMethodDoc;
+    }
+
+    private static ApiVisibility getApiVisibility(ApiDoc parentApiDoc, ApiMethod methodAnnotation) {
+        ApiVisibility visibility = methodAnnotation.visibility();
+        if (visibility.equals(ApiVisibility.UNDEFINED)) {
+           return parentApiDoc.getVisibility();
+        }
+        return visibility;
+    }
+
+    private static ApiStage getApiStage(ApiDoc parentApiDoc, ApiMethod methodAnnotation) {
+        ApiStage stage = methodAnnotation.stage();
+        if (stage.equals(ApiStage.UNDEFINED)) {
+           return parentApiDoc.getStage();
+        }
+        return stage;
     }
 
 }

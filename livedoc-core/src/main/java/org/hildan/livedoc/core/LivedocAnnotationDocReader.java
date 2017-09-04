@@ -5,9 +5,11 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiBodyObject;
+import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.builders.doc.ApiDocReader;
 import org.hildan.livedoc.core.builders.doc.ApiMethodDocReader;
@@ -30,14 +32,17 @@ public class LivedocAnnotationDocReader implements DocReader {
     }
 
     @Override
-    public ApiDoc buildApiDocBase(Class<?> controllerType) {
-        return ApiDocReader.read(controllerType);
+    public Optional<ApiDoc> buildApiDocBase(Class<?> controllerType) {
+        return Optional.of(ApiDocReader.read(controllerType));
     }
 
     @Override
-    public ApiMethodDoc buildApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates) {
+    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates) {
+        ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
+        if (methodAnnotation == null) {
+            return Optional.empty(); // this basic builder only supports annotated methods
+        }
         ApiMethodDoc apiMethodDoc = ApiMethodDocReader.read(method, parentApiDoc);
-
         if (method.isAnnotationPresent(ApiBodyObject.class)) {
             apiMethodDoc.getBodyobject()
                         .setTemplate(templates.get(method.getAnnotation(ApiBodyObject.class).clazz()));
@@ -46,8 +51,7 @@ public class LivedocAnnotationDocReader implements DocReader {
         if (index != -1) {
             apiMethodDoc.getBodyobject().setTemplate(templates.get(method.getParameterTypes()[index]));
         }
-
-        return apiMethodDoc;
+        return Optional.of(apiMethodDoc);
     }
 
     @Override

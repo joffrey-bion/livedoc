@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiAuthBasic;
@@ -35,6 +36,8 @@ import org.hildan.livedoc.core.util.pojo.Child;
 import org.hildan.livedoc.core.util.pojo.Pizza;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class ApiDocTest {
 
@@ -132,14 +135,9 @@ public class ApiDocTest {
 
     }
 
-    private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
-        LivedocReader builder = LivedocReader.basicAnnotationBuilder(Collections.emptyList());
-        return builder.readApiDoc(controller, methodDisplay, new HashMap<>());
-    }
-
     @Test
     public void testApiErrorsDoc() {
-        ApiDoc apiDoc = buildDocFor(Test3Controller.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(Test3Controller.class, MethodDisplay.URI);
 
         final List<ApiMethodDoc> methods = apiDoc.getMethods();
         final ApiMethodDoc apiMethodDoc = methods.get(0);
@@ -157,7 +155,7 @@ public class ApiDocTest {
 
     @Test
     public void testGeneral() {
-        ApiDoc apiDoc = buildDocFor(TestController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(TestController.class, MethodDisplay.URI);
         Assert.assertEquals("test-controller", apiDoc.getName());
         Assert.assertEquals("a-test-controller", apiDoc.getDescription());
         Assert.assertEquals("1.0", apiDoc.getSupportedversions().getSince());
@@ -314,18 +312,18 @@ public class ApiDocTest {
 
     @Test
     public void testControllerWithBasicAuth() {
-        ApiDoc apiDoc = buildDocFor(TestControllerWithBasicAuth.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(TestControllerWithBasicAuth.class, MethodDisplay.URI);
         Assert.assertEquals("test-controller-with-basic-auth", apiDoc.getName());
         Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiDoc.getAuth().getType());
         Assert.assertEquals("ROLE_USER", apiDoc.getAuth().getRoles().get(0));
         Assert.assertEquals("ROLE_ADMIN", apiDoc.getAuth().getRoles().get(1));
-        Assert.assertTrue(apiDoc.getAuth().getTestusers().size() > 0);
+        assertTrue(apiDoc.getAuth().getTestusers().size() > 0);
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/basicAuth")) {
                 Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
                 Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
-                Assert.assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
+                assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
             }
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
@@ -361,7 +359,7 @@ public class ApiDocTest {
 
     @Test
     public void testApiAuthToken() {
-        ApiDoc apiDoc = buildDocFor(TestControllerWithAuthToken.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(TestControllerWithAuthToken.class, MethodDisplay.URI);
         Assert.assertEquals("TOKEN", apiDoc.getAuth().getType());
         Assert.assertEquals("", apiDoc.getAuth().getScheme());
         Assert.assertEquals("abc", apiDoc.getAuth().getTesttokens().iterator().next());
@@ -408,7 +406,7 @@ public class ApiDocTest {
 
     @Test
     public void testControllerWithNoAuthAnnotation() {
-        ApiDoc apiDoc = buildDocFor(TestControllerWithNoAuthAnnotation.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(TestControllerWithNoAuthAnnotation.class, MethodDisplay.URI);
         Assert.assertEquals("test-controller-with-no-auth-annotation", apiDoc.getName());
         Assert.assertNull(apiDoc.getAuth());
 
@@ -416,7 +414,7 @@ public class ApiDocTest {
             if (apiMethodDoc.getPath().contains("/basicAuth")) {
                 Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
                 Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
-                Assert.assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
+                assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
             }
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
@@ -478,7 +476,7 @@ public class ApiDocTest {
 
     @Test
     public void testOldStyleServlets() {
-        ApiDoc apiDoc = buildDocFor(TestOldStyleServlets.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(TestOldStyleServlets.class, MethodDisplay.URI);
         Assert.assertEquals("test-old-style-servlets", apiDoc.getName());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -522,7 +520,7 @@ public class ApiDocTest {
 
     @Test
     public void testErrorsAndWarningsAndHints() {
-        ApiDoc apiDoc = buildDocFor(TestErrorsAndWarningsAndHints.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(TestErrorsAndWarningsAndHints.class, MethodDisplay.URI);
         Assert.assertEquals("test-errors-warnings-hints", apiDoc.getName());
         ApiMethodDoc apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
@@ -543,7 +541,7 @@ public class ApiDocTest {
 
     @Test
     public void testErrorsAndWarningsAnsHintsSummary() {
-        ApiDoc apiDoc = buildDocFor(TestErrorsAndWarningsAndHintsMethodSummary.class, MethodDisplay.SUMMARY);
+        ApiDoc apiDoc = buildDoc(TestErrorsAndWarningsAndHintsMethodSummary.class, MethodDisplay.SUMMARY);
         ApiMethodDoc apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertEquals(1, apiMethodDoc.getJsondocerrors().size());
         Assert.assertEquals(1, apiMethodDoc.getJsondocwarnings().size());
@@ -571,7 +569,7 @@ public class ApiDocTest {
     public void testInterfaceController() {
         ApiDoc apiDoc;
         ApiMethodDoc apiMethodDoc;
-        apiDoc = buildDocFor(InterfaceController.class, MethodDisplay.URI);
+        apiDoc = buildDoc(InterfaceController.class, MethodDisplay.URI);
         Assert.assertEquals("interface-controller", apiDoc.getName());
         apiMethodDoc = apiDoc.getMethods().iterator().next();
         Assert.assertNotNull(apiMethodDoc);
@@ -596,7 +594,7 @@ public class ApiDocTest {
     @Test
     public void testDeclaredMethods() {
         ApiDoc apiDoc;
-        apiDoc = buildDocFor(TestDeclaredMethods.class, MethodDisplay.URI);
+        apiDoc = buildDoc(TestDeclaredMethods.class, MethodDisplay.URI);
         Assert.assertEquals("test-declared-methods", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
     }
@@ -627,7 +625,7 @@ public class ApiDocTest {
 
     @Test
     public void testMultipleParamsSameMethod() {
-        ApiDoc apiDoc = buildDocFor(TestMultipleParamsWithSameMethod.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(TestMultipleParamsWithSameMethod.class, MethodDisplay.URI);
         Assert.assertEquals(3, apiDoc.getMethods().size());
     }
 
@@ -655,7 +653,7 @@ public class ApiDocTest {
 
     @Test
     public void testApiHeadersOnClass() {
-        ApiDoc apiDoc = buildDocFor(ApiHeadersController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(ApiHeadersController.class, MethodDisplay.URI);
         Assert.assertEquals("ApiHeadersController", apiDoc.getName());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/api-headers-controller-method-one")) {
@@ -679,7 +677,7 @@ public class ApiDocTest {
 
     @Test
     public void testPath_methodDisplayURI() {
-        ApiDoc apiDoc = buildDocFor(ControllerWithMethodPaths.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(ControllerWithMethodPaths.class, MethodDisplay.URI);
 
         boolean allRight = apiDoc.getMethods()
                                  .stream()
@@ -688,12 +686,12 @@ public class ApiDocTest {
                                          && input.getDisplayedMethodString().contains("/path1")
                                          && input.getDisplayedMethodString().contains("/path2"));
 
-        Assert.assertTrue(allRight);
+        assertTrue(allRight);
     }
 
     @Test
     public void testPath_methodDisplayMethod() {
-        ApiDoc apiDoc = buildDocFor(ControllerWithMethodPaths.class, MethodDisplay.METHOD);
+        ApiDoc apiDoc = buildDoc(ControllerWithMethodPaths.class, MethodDisplay.METHOD);
 
         boolean allRight = apiDoc.getMethods()
                                  .stream()
@@ -702,7 +700,7 @@ public class ApiDocTest {
                                          && input.getDisplayedMethodString().contains("path")
                                          && !input.getDisplayedMethodString().contains("/path1"));
 
-        Assert.assertTrue(allRight);
+        assertTrue(allRight);
     }
 
     @Api(name = "test-type-level-visibility-and-stage", description = "Test type level visibility and stage attributes",
@@ -720,7 +718,7 @@ public class ApiDocTest {
 
     @Test
     public void testApiVisibility_typeLevel() {
-        ApiDoc apiDoc = buildDocFor(ControllerWithTypeVisibility.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(ControllerWithTypeVisibility.class, MethodDisplay.URI);
         Assert.assertEquals(ApiVisibility.PUBLIC, apiDoc.getVisibility());
         Assert.assertEquals(ApiStage.BETA, apiDoc.getStage());
 
@@ -747,7 +745,7 @@ public class ApiDocTest {
 
     @Test
     public void testApiVisibility_methodLevel() {
-        ApiDoc apiDoc = buildDocFor(ControllerWithMethodVisibility.class, MethodDisplay.URI);
+        ApiDoc apiDoc = buildDoc(ControllerWithMethodVisibility.class, MethodDisplay.URI);
         Assert.assertEquals(ApiVisibility.UNDEFINED, apiDoc.getVisibility());
         Assert.assertEquals(ApiStage.UNDEFINED, apiDoc.getStage());
 
@@ -758,5 +756,12 @@ public class ApiDocTest {
             }
         }
 
+    }
+
+    private static ApiDoc buildDoc(Class<?> controller, MethodDisplay methodDisplay) {
+        LivedocReader builder = LivedocReader.basicAnnotationBuilder(Collections.emptyList());
+        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay, new HashMap<>());
+        assertTrue(apiDoc.isPresent());
+        return apiDoc.get();
     }
 }

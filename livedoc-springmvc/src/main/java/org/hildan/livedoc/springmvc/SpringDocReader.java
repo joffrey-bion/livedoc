@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
@@ -57,19 +58,19 @@ public class SpringDocReader implements DocReader {
      * ApiDoc is initialized with the Controller's simple class name.
      */
     @Override
-    public ApiDoc buildApiDocBase(Class<?> controllerType) {
+    public Optional<ApiDoc> buildApiDocBase(Class<?> controllerType) {
         ApiDoc apiDoc = new ApiDoc();
         apiDoc.setName(controllerType.getSimpleName());
-        return apiDoc;
+        return Optional.of(apiDoc);
     }
 
     @Override
-    public ApiMethodDoc buildApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates) {
+    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates) {
         // TODO maybe make this a standard interface method and extract this behaviour
         if (!canReadInfoFrom(method)) {
-            return null;
+            return Optional.empty();
         }
-        return buildApiMethodDoc(method, templates);
+        return Optional.of(buildApiMethodDoc(method, templates));
     }
 
     private boolean canReadInfoFrom(Method method) {

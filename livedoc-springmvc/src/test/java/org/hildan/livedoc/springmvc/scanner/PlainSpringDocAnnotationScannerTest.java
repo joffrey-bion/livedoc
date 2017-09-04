@@ -3,6 +3,7 @@ package org.hildan.livedoc.springmvc.scanner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 import org.hildan.livedoc.core.LivedocReader;
@@ -12,7 +13,6 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +25,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class PlainSpringDocAnnotationScannerTest {
 
@@ -44,68 +49,74 @@ public class PlainSpringDocAnnotationScannerTest {
             return "ok";
         }
 
+        private void someUtilityMethod() {
+            // should not be documented
+        }
     }
 
     private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        return builder.readApiDoc(controller, methodDisplay, new HashMap<>());
+        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay, new HashMap<>());
+        assertTrue(apiDoc.isPresent());
+        return apiDoc.get();
     }
 
     @Test
     public void testMergeApiDoc() {
         ApiDoc apiDoc = buildDocFor(SpringController.class, MethodDisplay.URI);
-        Assert.assertEquals("SpringController", apiDoc.getName());
-        Assert.assertNotNull(apiDoc.getGroup());
+        assertEquals("SpringController", apiDoc.getName());
+        assertNotNull(apiDoc.getGroup());
+        assertEquals(1, apiDoc.getMethods().size());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            Assert.assertEquals(MethodDisplay.URI, apiMethodDoc.getDisplayMethodAs());
-            Assert.assertNull(apiMethodDoc.getAuth());
-            Assert.assertNull(apiMethodDoc.getSupportedversions());
-            Assert.assertTrue(apiMethodDoc.getApierrors().isEmpty());
-            Assert.assertNull(apiMethodDoc.getId());
-            Assert.assertEquals("", apiMethodDoc.getSummary());
-            Assert.assertEquals("", apiMethodDoc.getDescription());
+            assertEquals(MethodDisplay.URI, apiMethodDoc.getDisplayMethodAs());
+            assertNull(apiMethodDoc.getAuth());
+            assertNull(apiMethodDoc.getSupportedversions());
+            assertTrue(apiMethodDoc.getApierrors().isEmpty());
+            assertNull(apiMethodDoc.getId());
+            assertEquals("", apiMethodDoc.getSummary());
+            assertEquals("", apiMethodDoc.getDescription());
 
             if (apiMethodDoc.getPath().contains("/api/string/{name}")) {
-                Assert.assertEquals(2, apiMethodDoc.getHeaders().size());
+                assertEquals(2, apiMethodDoc.getHeaders().size());
                 Set<ApiHeaderDoc> headers = apiMethodDoc.getHeaders();
                 Iterator<ApiHeaderDoc> headersIterator = headers.iterator();
                 ApiHeaderDoc headerTest = headersIterator.next();
-                Assert.assertEquals("header", headerTest.getName());
-                Assert.assertEquals("test", headerTest.getAllowedvalues()[0]);
+                assertEquals("header", headerTest.getName());
+                assertEquals("test", headerTest.getAllowedvalues()[0]);
                 ApiHeaderDoc headerTwo = headersIterator.next();
-                Assert.assertEquals("header-two", headerTwo.getName());
-                Assert.assertEquals("header-test", headerTwo.getAllowedvalues()[0]);
+                assertEquals("header-two", headerTwo.getName());
+                assertEquals("header-test", headerTwo.getAllowedvalues()[0]);
 
-                Assert.assertEquals("String", apiMethodDoc.getBodyobject().getType().getOneLineText());
-                Assert.assertEquals("String", apiMethodDoc.getResponse().getLivedocType().getOneLineText());
-                Assert.assertEquals("POST", apiMethodDoc.getVerb().iterator().next().name());
-                Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
-                Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
-                Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
+                assertEquals("String", apiMethodDoc.getBodyobject().getType().getOneLineText());
+                assertEquals("String", apiMethodDoc.getResponse().getLivedocType().getOneLineText());
+                assertEquals("POST", apiMethodDoc.getVerb().iterator().next().name());
+                assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
+                assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
+                assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
 
                 Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryparameters();
-                Assert.assertEquals(3, queryparameters.size());
+                assertEquals(3, queryparameters.size());
                 Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();
                 ApiParamDoc apiParamDoc = qpIterator.next();
-                Assert.assertEquals("delete", apiParamDoc.getName());
-                Assert.assertEquals("true", apiParamDoc.getRequired());
-                Assert.assertEquals(null, apiParamDoc.getDefaultvalue());
-                Assert.assertEquals(0, apiParamDoc.getAllowedvalues().length);
+                assertEquals("delete", apiParamDoc.getName());
+                assertEquals("true", apiParamDoc.getRequired());
+                assertEquals(null, apiParamDoc.getDefaultvalue());
+                assertEquals(0, apiParamDoc.getAllowedvalues().length);
                 apiParamDoc = qpIterator.next();
-                Assert.assertEquals("id", apiParamDoc.getName());
-                Assert.assertEquals("true", apiParamDoc.getRequired());
-                Assert.assertTrue(apiParamDoc.getDefaultvalue().isEmpty());
+                assertEquals("id", apiParamDoc.getName());
+                assertEquals("true", apiParamDoc.getRequired());
+                assertTrue(apiParamDoc.getDefaultvalue().isEmpty());
                 apiParamDoc = qpIterator.next();
-                Assert.assertEquals("", apiParamDoc.getName());
-                Assert.assertEquals("true", apiParamDoc.getRequired());
-                Assert.assertEquals("", apiParamDoc.getDefaultvalue());
+                assertEquals("", apiParamDoc.getName());
+                assertEquals("true", apiParamDoc.getRequired());
+                assertEquals("", apiParamDoc.getDefaultvalue());
 
                 Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathparameters();
                 Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
                 ppIterator.next();
                 apiParamDoc = apiMethodDoc.getPathparameters().iterator().next();
-                Assert.assertEquals("test", apiParamDoc.getName());
+                assertEquals("test", apiParamDoc.getName());
             }
         }
 

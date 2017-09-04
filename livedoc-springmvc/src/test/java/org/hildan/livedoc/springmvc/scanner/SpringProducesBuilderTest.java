@@ -1,13 +1,11 @@
 package org.hildan.livedoc.springmvc.scanner;
 
-import java.util.Collections;
 import java.util.Iterator;
 
-import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
+import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -41,8 +39,7 @@ public class SpringProducesBuilderTest {
 
     @Test
     public void testApiConsumes_methodLevel() {
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        ApiDoc apiDoc = builder.readApiDoc(SpringController.class, MethodDisplay.URI, Collections.emptyMap());
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class, MethodDisplay.URI);
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -90,8 +87,7 @@ public class SpringProducesBuilderTest {
 
     @Test
     public void testApiConsumes_typeLevel() {
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        ApiDoc apiDoc = builder.readApiDoc(SpringController2.class, MethodDisplay.URI, Collections.emptyMap());
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class, MethodDisplay.URI);
         Assert.assertEquals("SpringController2", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.pojo.ApiDoc;
@@ -14,16 +15,17 @@ public interface DocReader {
     Collection<Class<?>> findControllerTypes();
 
     /**
-     * Also called on controllers that were found by other ApiScanners. Should return null when not able to build
-     * something from the given controller. Should only fill in the top level items, not the methods docs.
+     * Also called on controllers that were found by other ApiScanners. Should return an empty optional when not able to
+     * build something from the given controller. Should only fill in the top level items, not the methods docs.
      */
     // TODO create a class without method information and make it the return type of this method to avoid confusion
-    ApiDoc buildApiDocBase(Class<?> controllerType);
+    Optional<ApiDoc> buildApiDocBase(Class<?> controllerType);
 
     /**
-     * Should return null when not able to build something from the given method.
+     * Should return an empty optional when not able to build something from the given method.
      */
-    ApiMethodDoc buildApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates);
+    Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc,
+            Map<Class<?>, ObjectTemplate> templates);
 
     /**
      * Extracts types (mentioned in the given method's signature) that are relevant for the API. Only root type

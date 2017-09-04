@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -147,12 +147,10 @@ public class LivedocReader {
         return buildDocs(controllers, c -> readApiDoc(c, displayMethodAs, templates));
     }
 
-    public ApiDoc readApiDoc(Class<?> controller, MethodDisplay displayMethodAs,
+    public Optional<ApiDoc> readApiDoc(Class<?> controller, MethodDisplay displayMethodAs,
             Map<Class<?>, ObjectTemplate> templates) {
-        ApiDoc doc = readFromAllReadersAndMerge(r -> r.buildApiDocBase(controller));
-        if (doc != null) {
-            doc.setMethods(readApiMethodDocs(controller, doc, displayMethodAs, templates));
-        }
+        Optional<ApiDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiDocBase(controller));
+        doc.ifPresent(apiDoc -> apiDoc.setMethods(readApiMethodDocs(controller, apiDoc, displayMethodAs, templates)));
         return doc;
     }
 
@@ -160,42 +158,45 @@ public class LivedocReader {
             Map<Class<?>, ObjectTemplate> templates) {
         // TODO add support for inherited controller methods
         Method[] methods = controller.getDeclaredMethods();
-        return buildDocs(Arrays.asList(methods), m -> {
-            ApiMethodDoc apiMethodDoc = readApiMethodDoc(m, doc, templates);
-            apiMethodDoc.setDisplayMethodAs(displayMethodAs);
-            ApiMethodDocValidator.validate(apiMethodDoc);
-            return apiMethodDoc;
-        });
+        return buildDocs(Arrays.asList(methods), m -> readApiMethodDoc(m, doc, displayMethodAs, templates));
     }
 
-    private ApiMethodDoc readApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates) {
-        return readFromAllReadersAndMerge(r -> r.buildApiMethodDoc(method, parentApiDoc, templates));
+    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, ApiDoc parentApiDoc, MethodDisplay displayMethodAs,
+            Map<Class<?>, ObjectTemplate> templates) {
+        Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiMethodDoc(method, parentApiDoc, templates));
+        doc.ifPresent(apiMethodDoc -> {
+            apiMethodDoc.setDisplayMethodAs(displayMethodAs);
+            ApiMethodDocValidator.validate(apiMethodDoc);
+        });
+        return doc;
     }
 
     private List<ApiObjectDoc> getApiObjectDocs(Collection<Class<?>> types) {
         return buildDocs(types, this::readApiObjectDoc);
     }
 
-    private ApiObjectDoc readApiObjectDoc(Class<?> type) {
+    private Optional<ApiObjectDoc> readApiObjectDoc(Class<?> type) {
         ApiObjectDoc doc = apiObjectDocReader.read(type);
         ApiObjectDocValidator.validate(doc);
-        return doc;
+        return Optional.of(doc);
     }
 
-    private static <T, D> List<D> buildDocs(Collection<T> objects, Function<T, D> read) {
-        return objects.stream().map(read).filter(Objects::nonNull).collect(Collectors.toList());
+    private static <T, D> List<D> buildDocs(Collection<T> objects, Function<T, Optional<D>> read) {
+        return objects.stream().map(read).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
     }
 
-    private <D> D readFromAllReadersAndMerge(Function<DocReader, D> buildDoc) {
+    private <D> Optional<D> readFromAllReadersAndMerge(Function<DocReader, Optional<D>> buildDoc) {
         D doc = null;
         for (DocReader reader : docReaders) {
-            D newDoc = buildDoc.apply(reader);
-            if (doc == null) {
-                doc = newDoc;
-            } else if (newDoc != null) {
-                docMerger.merge(newDoc, doc);
+            Optional<D> newDoc = buildDoc.apply(reader);
+            if (newDoc.isPresent()) {
+                if (doc == null) {
+                    doc = newDoc.get();
+                } else {
+                    docMerger.merge(newDoc.get(), doc);
+                }
             }
         }
-        return doc;
+        return Optional.ofNullable(doc);
     }
 }

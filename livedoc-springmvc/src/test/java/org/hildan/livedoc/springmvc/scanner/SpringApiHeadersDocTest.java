@@ -1,15 +1,12 @@
 package org.hildan.livedoc.springmvc.scanner;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 
-import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
+import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -43,8 +40,7 @@ public class SpringApiHeadersDocTest {
     @SuppressWarnings("unused")
     @Test
     public void testApiHeadersOnClass() {
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        ApiDoc apiDoc = builder.readApiDoc(SpringApiHeadersController.class, MethodDisplay.URI, new HashMap<>());
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringApiHeadersController.class, MethodDisplay.URI);
         Assert.assertEquals("SpringApiHeadersController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
