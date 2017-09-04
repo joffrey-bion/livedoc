@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.0.2](https://bintray.com/joffrey-bion/maven/livedoc/1.0.2) (2017-09-04)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.0.1...v1.0.2)
+
+**Fixed bugs:**
+
+- Broken types display [\#24](https://github.com/joffrey-bion/livedoc/issues/24)
+
 ## [v1.0.1](https://bintray.com/joffrey-bion/maven/livedoc/1.0.1) (2017-09-04)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.0.0...v1.0.1)
 
