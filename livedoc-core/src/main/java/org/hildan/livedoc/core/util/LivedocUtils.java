@@ -25,27 +25,16 @@ public class LivedocUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(LivedocReader.class);
 
-    public static Integer getIndexOfParameterWithAnnotation(Method method, Class<?> a) {
-        Annotation[][] parametersAnnotations = method.getParameterAnnotations();
-        for (int i = 0; i < parametersAnnotations.length; i++) {
-            for (int j = 0; j < parametersAnnotations[i].length; j++) {
-                if (a.equals(parametersAnnotations[i][j].annotationType())) {
+    public static int getIndexOfParameterWithAnnotation(Method method, Class<? extends Annotation> annotationClass) {
+        Annotation[][] paramsAnnotations = method.getParameterAnnotations();
+        for (int i = 0; i < paramsAnnotations.length; i++) {
+            for (Annotation ann : paramsAnnotations[i]) {
+                if (annotationClass.equals(ann.annotationType())) {
                     return i;
                 }
             }
         }
         return -1;
-    }
-
-    public static <T extends Groupable> Map<String, Set<T>> group(Iterable<T> elements) {
-        Map<String, Set<T>> groupedElements = new TreeMap<>();
-        for (T e : elements) {
-            String groupName = e.getGroup();
-            groupedElements.putIfAbsent(groupName, new TreeSet<>());
-            Set<T> group = groupedElements.get(groupName);
-            group.add(e);
-        }
-        return groupedElements;
     }
 
     public static Reflections newReflections(List<String> packages) {
@@ -62,10 +51,6 @@ public class LivedocUtils {
         return new Reflections(new ConfigurationBuilder().filterInputsBy(filter)
                                                          .setUrls(urls)
                                                          .addScanners(new MethodAnnotationsScanner()));
-    }
-
-    public static AnnotatedTypesFinder createAnnotatedTypesFinder(List<String> packages) {
-        return createAnnotatedTypesFinder(newReflections(packages));
     }
 
     public static AnnotatedTypesFinder createAnnotatedTypesFinder(Reflections reflections) {

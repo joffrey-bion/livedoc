@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,11 +24,11 @@ import org.hildan.livedoc.core.builders.validators.ApiObjectDocValidator;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
+import org.hildan.livedoc.core.pojo.Groupable;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
-import org.hildan.livedoc.core.util.LivedocUtils;
 
 public class LivedocReader {
 
@@ -75,11 +77,11 @@ public class LivedocReader {
         }
 
         Collection<ApiDoc> apiDocs = readApiDocs(controllers, displayMethodAs, templates);
-        livedoc.setApis(LivedocUtils.group(apiDocs));
-        livedoc.setObjects(LivedocUtils.group(getApiObjectDocs(types)));
+        livedoc.setApis(group(apiDocs));
+        livedoc.setObjects(group(getApiObjectDocs(types)));
 
         Map<String, ApiMethodDoc> apiMethodDocsById = getAllApiMethodDocsById(apiDocs);
-        livedoc.setFlows(LivedocUtils.group(globalDocReader.getApiFlowDocs(apiMethodDocsById)));
+        livedoc.setFlows(group(globalDocReader.getApiFlowDocs(apiMethodDocsById)));
         livedoc.setGlobal(globalDocReader.getApiGlobalDoc());
 
         return livedoc;
@@ -198,5 +200,16 @@ public class LivedocReader {
             }
         }
         return Optional.ofNullable(doc);
+    }
+
+    private static <T extends Groupable> Map<String, Set<T>> group(Iterable<T> elements) {
+        Map<String, Set<T>> groupedElements = new TreeMap<>();
+        for (T e : elements) {
+            String groupName = e.getGroup();
+            groupedElements.putIfAbsent(groupName, new TreeSet<>());
+            Set<T> group = groupedElements.get(groupName);
+            group.add(e);
+        }
+        return groupedElements;
     }
 }
