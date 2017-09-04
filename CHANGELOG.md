@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.0.1](https://bintray.com/joffrey-bion/maven/livedoc/1.0.1) (2017-09-04)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.0.0...v1.0.1)
+
+**Fixed bugs:**
+
+- Private non-annotated methods appear in the doc [\#23](https://github.com/joffrey-bion/livedoc/issues/23)
+
 ## [v1.0.0](https://bintray.com/joffrey-bion/maven/livedoc/1.0.0) (2017-09-01)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.4.5...v1.0.0)
 
