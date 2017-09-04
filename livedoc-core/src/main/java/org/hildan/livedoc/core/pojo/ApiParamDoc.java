@@ -9,7 +9,7 @@ import org.hildan.livedoc.core.builders.types.LivedocType;
 public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {
     public final String livedocId = UUID.randomUUID().toString();
 
-    private LivedocType livedocType;
+    private LivedocType type;
 
     private String name;
 
@@ -23,12 +23,12 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
 
     private String defaultvalue;
 
-    public ApiParamDoc(String name, String description, LivedocType livedocType, String required,
+    public ApiParamDoc(String name, String description, LivedocType type, String required,
             String[] allowedvalues, String format, String defaultvalue) {
         super();
         this.name = name;
         this.description = description;
-        this.livedocType = livedocType;
+        this.type = type;
         this.required = required;
         this.allowedvalues = allowedvalues;
         this.format = format;
@@ -48,8 +48,8 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
                 annotation.defaultvalue());
     }
 
-    public LivedocType getLivedocType() {
-        return livedocType;
+    public LivedocType getType() {
+        return type;
     }
 
     public String getName() {

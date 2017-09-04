@@ -434,7 +434,7 @@
                         {{/if}}
                         <tr>
                             <td></td>
-                            <td>Type: <code>{{this.livedocType.oneLineText}}</code></td>
+                            <td>Type: <code>{{this.type.oneLineText}}</code></td>
                         </tr>
                         {{#if this.allowedvalues}}
                         <tr>
@@ -467,7 +467,7 @@
                         {{/if}}
                         <tr>
                             <td></td>
-                            <td>Type: <code>{{this.livedocType.oneLineText}}</code></td>
+                            <td>Type: <code>{{this.type.oneLineText}}</code></td>
                         </tr>
                         {{#if this.allowedvalues}}
                         <tr>
@@ -839,12 +839,12 @@
         </tr>
         <tr>
             <td></td>
-            <td>Type: <code>{{livedocType.oneLineText}}</code></td>
+            <td>Type: <code>{{type.oneLineText}}</code></td>
         </tr>
         {{else}}
         <tr>
             <td><code>{{name}}</code></td>
-            <td>Type: <code>{{livedocType.oneLineText}}</code></td>
+            <td>Type: <code>{{type.oneLineText}}</code></td>
         </tr>
         {{/if}}
         {{#equal required "UNDEFINED"}}

@@ -131,7 +131,7 @@ public class SpringQueryParamBuilderTest {
                 ApiParamDoc queryParam = iterator.next();
                 Assert.assertEquals("name", queryParam.getName());
                 Assert.assertEquals("true", queryParam.getRequired());
-                Assert.assertEquals("String", queryParam.getLivedocType().getOneLineText());
+                Assert.assertEquals("String", queryParam.getType().getOneLineText());
                 Assert.assertEquals("", queryParam.getDefaultvalue());
             }
             if (apiMethodDoc.getPath().contains("/param-two")) {
@@ -141,7 +141,7 @@ public class SpringQueryParamBuilderTest {
                 ApiParamDoc queryParam = iterator.next();
                 Assert.assertEquals("otherName", queryParam.getName());
                 Assert.assertEquals("false", queryParam.getRequired());
-                Assert.assertEquals("String", queryParam.getLivedocType().getOneLineText());
+                Assert.assertEquals("String", queryParam.getType().getOneLineText());
                 Assert.assertEquals("test", queryParam.getDefaultvalue());
             }
             if (apiMethodDoc.getPath().contains("/param-three")) {
@@ -151,7 +151,7 @@ public class SpringQueryParamBuilderTest {
                 ApiParamDoc queryParam = iterator.next();
                 Assert.assertEquals("", queryParam.getName());
                 Assert.assertEquals("true", queryParam.getRequired());
-                Assert.assertEquals("String", queryParam.getLivedocType().getOneLineText());
+                Assert.assertEquals("String", queryParam.getType().getOneLineText());
                 Assert.assertEquals("", queryParam.getDefaultvalue());
             }
         }
@@ -216,7 +216,7 @@ public class SpringQueryParamBuilderTest {
                 Assert.assertEquals(1, apiMethodDoc.getQueryparameters().size());
                 ApiParamDoc param = apiMethodDoc.getQueryparameters().iterator().next();
                 Assert.assertEquals("modelAttributePojo", param.getName());
-                Assert.assertEquals("ModelAttributePojo", param.getLivedocType().getOneLineText());
+                Assert.assertEquals("ModelAttributePojo", param.getType().getOneLineText());
             }
         }
 

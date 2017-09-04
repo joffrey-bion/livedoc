@@ -89,7 +89,7 @@ public class PlainSpringDocAnnotationScannerTest {
                 assertEquals("header-test", headerTwo.getAllowedvalues()[0]);
 
                 assertEquals("String", apiMethodDoc.getBodyobject().getType().getOneLineText());
-                assertEquals("String", apiMethodDoc.getResponse().getLivedocType().getOneLineText());
+                assertEquals("String", apiMethodDoc.getResponse().getType().getOneLineText());
                 assertEquals("POST", apiMethodDoc.getVerb().iterator().next().name());
                 assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
                 assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());

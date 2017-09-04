@@ -5,16 +5,17 @@ import java.util.UUID;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 
 public class ApiResponseObjectDoc {
+
     public final String livedocId = UUID.randomUUID().toString();
 
-    private LivedocType livedocType;
+    private LivedocType type;
 
-    public ApiResponseObjectDoc(LivedocType livedocType) {
-        this.livedocType = livedocType;
+    public ApiResponseObjectDoc(LivedocType type) {
+        this.type = type;
     }
 
-    public LivedocType getLivedocType() {
-        return livedocType;
+    public LivedocType getType() {
+        return type;
     }
 
 }

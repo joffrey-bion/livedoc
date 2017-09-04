@@ -25,7 +25,7 @@ public class InterfaceApiObjectTest {
         }
         for (ApiDoc apiDoc : livedoc.getApis().get("")) {
             for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-                Assert.assertEquals("Resource Interface", apiMethodDoc.getResponse().getLivedocType().getOneLineText());
+                Assert.assertEquals("Resource Interface", apiMethodDoc.getResponse().getType().getOneLineText());
             }
         }
 
