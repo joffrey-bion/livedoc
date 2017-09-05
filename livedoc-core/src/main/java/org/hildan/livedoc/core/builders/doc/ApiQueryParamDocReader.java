@@ -18,8 +18,7 @@ public class ApiQueryParamDocReader {
 
         if (method.isAnnotationPresent(ApiParams.class)) {
             for (ApiQueryParam apiParam : method.getAnnotation(ApiParams.class).queryparams()) {
-                ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam,
-                        LivedocTypeBuilder.build(apiParam.clazz(), apiParam.clazz()));
+                ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, LivedocTypeBuilder.build(apiParam.clazz()));
                 docs.add(apiParamDoc);
             }
         }
@@ -30,8 +29,7 @@ public class ApiQueryParamDocReader {
                 if (parametersAnnotations[i][j] instanceof ApiQueryParam) {
                     ApiQueryParam annotation = (ApiQueryParam) parametersAnnotations[i][j];
                     ApiParamDoc apiParamDoc = buildFromAnnotation(annotation,
-                            LivedocTypeBuilder.build(method.getParameterTypes()[i],
-                                    method.getGenericParameterTypes()[i]));
+                            LivedocTypeBuilder.build(method.getGenericParameterTypes()[i]));
                     docs.add(apiParamDoc);
                 }
             }

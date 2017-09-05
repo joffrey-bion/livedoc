@@ -19,7 +19,7 @@ public class ApiPathParamDocReader {
 
         if (method.isAnnotationPresent(ApiParams.class)) {
             for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathparams()) {
-                LivedocType type = LivedocTypeBuilder.build(apiParam.clazz(), apiParam.clazz());
+                LivedocType type = LivedocTypeBuilder.build(apiParam.clazz());
                 ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, type);
                 docs.add(apiParamDoc);
             }
@@ -32,7 +32,7 @@ public class ApiPathParamDocReader {
                     ApiPathParam annotation = (ApiPathParam) parametersAnnotations[i][j];
                     Class<?> clazz = method.getParameterTypes()[i];
                     Type type = method.getGenericParameterTypes()[i];
-                    LivedocType livedocType = LivedocTypeBuilder.build(clazz, type);
+                    LivedocType livedocType = LivedocTypeBuilder.build(type);
                     ApiParamDoc apiParamDoc = buildFromAnnotation(annotation, livedocType);
                     docs.add(apiParamDoc);
                 }

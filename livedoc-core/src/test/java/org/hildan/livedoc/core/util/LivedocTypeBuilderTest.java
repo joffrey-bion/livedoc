@@ -53,11 +53,11 @@ public class LivedocTypeBuilderTest {
         return null;
     }
 
-    public List<String>[] getListOfStringArray() {
+    public List<String>[] getArrayOfListsOfStrings() {
         return null;
     }
 
-    public Set<String>[] getSetOfStringArray() {
+    public Set<String>[] getArrayOfSetsOfStrings() {
         return null;
     }
 
@@ -69,7 +69,7 @@ public class LivedocTypeBuilderTest {
         return null;
     }
 
-    public List<?>[] getListOfWildcardArray() {
+    public List<?>[] getArrayOfListsOfWildcard() {
         return null;
     }
 
@@ -159,165 +159,107 @@ public class LivedocTypeBuilderTest {
     @Test
     public void testReflex() throws NoSuchMethodException, SecurityException, ClassNotFoundException,
             IOException {
-        LivedocType livedocType = new LivedocType();
+        LivedocType livedocType;
 
-        Method method = LivedocTypeBuilderTest.class.getMethod("getString");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getString");
         Assert.assertEquals("String", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getInteger");
         Assert.assertEquals("Integer", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getInt");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getInt");
         Assert.assertEquals("int", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getLong");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getLong");
         Assert.assertEquals("Long", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getlong");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getlong");
         Assert.assertEquals("long", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getListString");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("List of String", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getListString");
+        Assert.assertEquals("List<String>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getListSetString");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("List of Set of String", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getListSetString");
+        Assert.assertEquals("List<Set<String>>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getStringArray");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("array of String", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getStringArray");
+        Assert.assertEquals("String[]", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getIntegerArray");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("array of Integer", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getIntegerArray");
+        Assert.assertEquals("Integer[]", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getListOfStringArray");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("array of List of String", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getArrayOfListsOfStrings");
+        Assert.assertEquals("List<String>[]", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getSetOfStringArray");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("array of Set of String", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getArrayOfSetsOfStrings");
+        Assert.assertEquals("Set<String>[]", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getList");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getList");
         Assert.assertEquals("List", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getListOfWildcard");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("List of wildcard", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getListOfWildcard");
+        Assert.assertEquals("List<?>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getListOfWildcardArray");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("array of List of wildcard", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getArrayOfListsOfWildcard");
+        Assert.assertEquals("List<?>[]", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getListArray");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("array of List", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getListArray");
+        Assert.assertEquals("List[]", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getSetArray");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("array of Set", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getSetArray");
+        Assert.assertEquals("Set[]", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMap");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getMap");
         Assert.assertEquals("Map", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getHashMap");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
+        livedocType = buildReturnTypeFor("getHashMap");
         Assert.assertEquals("HashMap", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapStringInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[String, Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapStringInteger");
+        Assert.assertEquals("Map<String, Integer>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapListOfStringInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[List of String, Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapListOfStringInteger");
+        Assert.assertEquals("Map<List<String>, Integer>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapStringSetOfInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[String, Set of Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapStringSetOfInteger");
+        Assert.assertEquals("Map<String, Set<Integer>>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapListOfStringSetOfInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[List of String, Set of Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapListOfStringSetOfInteger");
+        Assert.assertEquals("Map<List<String>, Set<Integer>>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapListOfSetOfStringSetOfInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[List of Set of String, Set of Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapListOfSetOfStringSetOfInteger");
+        Assert.assertEquals("Map<List<Set<String>>, Set<Integer>>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapWildcardInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[wildcard, Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapWildcardInteger");
+        Assert.assertEquals("Map<?, Integer>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapWildcardWildcard");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[wildcard, wildcard]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapWildcardWildcard");
+        Assert.assertEquals("Map<?, ?>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapListOfWildcardWildcard");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[List of wildcard, wildcard]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapListOfWildcardWildcard");
+        Assert.assertEquals("Map<List<?>, ?>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapMapInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[Map, Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapMapInteger");
+        Assert.assertEquals("Map<Map, Integer>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getMapMapStringLongInteger");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("Map[Map[String, Long], Integer]", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getMapMapStringLongInteger");
+        Assert.assertEquals("Map<Map<String, Long>, Integer>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getResponseEntityString");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("ResponseEntity of String", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getResponseEntityString");
+        Assert.assertEquals("ResponseEntity<String>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getResponseEntityListOfString");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("ResponseEntity of List of String", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getResponseEntityListOfString");
+        Assert.assertEquals("ResponseEntity<List<String>>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getParentPojoList");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("List of my_parent", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getParentPojoList");
+        Assert.assertEquals("List<my_parent>", livedocType.getOneLineText());
 
-        livedocType = new LivedocType();
-        method = LivedocTypeBuilderTest.class.getMethod("getSpecializedWGenericsPojo");
-        LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType());
-        Assert.assertEquals("fooPojo of T", livedocType.getOneLineText());
+        livedocType = buildReturnTypeFor("getSpecializedWGenericsPojo");
+        Assert.assertEquals("fooPojo<T>", livedocType.getOneLineText());
+    }
+
+    private static LivedocType buildReturnTypeFor(String methodName) throws NoSuchMethodException {
+        Method method = LivedocTypeBuilderTest.class.getMethod(methodName);
+        return LivedocTypeBuilder.build(method.getGenericReturnType());
     }
 }

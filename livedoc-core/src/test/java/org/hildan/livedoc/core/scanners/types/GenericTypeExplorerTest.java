@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.junit.Test;
 
 import com.google.common.reflect.TypeToken;
@@ -220,8 +221,20 @@ public class GenericTypeExplorerTest {
     }
 
     @Test
-    public void getClassesInDeclaration_classOfT() throws NoSuchMethodException {
+    public void getClassesInDeclaration_recursiveTypeVariableBound() throws NoSuchMethodException {
         check("enumBound", Enum.class);
+    }
+
+    public <T extends Comparable<T>> T comparableBound() {
+        return null;
+    }
+
+    @Test
+    public void getClassesInDeclaration_recursiveTypeVariableBound2() throws NoSuchMethodException {
+        check("comparableBound", Comparable.class);
+        Method testMethod = GenericTypeExplorerTest.class.getMethod("comparableBound");
+        Type genReturnType = testMethod.getGenericReturnType();
+        LivedocTypeBuilder.build(genReturnType).getOneLineText();
     }
 
     public Map<List<String>, Custom2P<Set<Integer>, Custom3P<Map<Custom2P<Long, Boolean>, Custom>, Float, Short>>>

@@ -49,7 +49,7 @@ public class SpringResponseBuilderTest {
                 Assert.assertEquals("String", apiMethodDoc.getResponse().getType().getOneLineText());
             }
             if (apiMethodDoc.getPath().contains("/response-three")) {
-                Assert.assertEquals("Map[String, Integer]",
+                Assert.assertEquals("Map<String, Integer>",
                         apiMethodDoc.getResponse().getType().getOneLineText());
             }
         }

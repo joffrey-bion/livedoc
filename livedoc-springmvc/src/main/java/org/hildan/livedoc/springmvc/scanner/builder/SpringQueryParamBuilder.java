@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
+import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,12 +34,11 @@ public class SpringQueryParamBuilder {
                 for (String param : requestMapping.params()) {
                     String[] splitParam = param.split("=");
                     if (splitParam.length > 1) {
-                        apiParamDocs.add(new ApiParamDoc(splitParam[0], "",
-                                LivedocTypeBuilder.build(String.class, null), "true",
-                                new String[] {splitParam[1]}, null, null));
+                        apiParamDocs.add(
+                                new ApiParamDoc(splitParam[0], "", LivedocTypeBuilder.build(String.class), "true",
+                                        new String[] {splitParam[1]}, null, null));
                     } else {
-                        apiParamDocs.add(new ApiParamDoc(param, "",
-                                LivedocTypeBuilder.build(String.class, null), "true",
+                        apiParamDocs.add(new ApiParamDoc(param, "", LivedocTypeBuilder.build(String.class), "true",
                                 new String[] {}, null, null));
                     }
                 }
@@ -51,12 +51,11 @@ public class SpringQueryParamBuilder {
                 for (String param : requestMapping.params()) {
                     String[] splitParam = param.split("=");
                     if (splitParam.length > 1) {
-                        apiParamDocs.add(new ApiParamDoc(splitParam[0], "",
-                                LivedocTypeBuilder.build(String.class, null), "true",
-                                new String[] {splitParam[1]}, null, null));
+                        apiParamDocs.add(
+                                new ApiParamDoc(splitParam[0], "", LivedocTypeBuilder.build(String.class), "true",
+                                        new String[] {splitParam[1]}, null, null));
                     } else {
-                        apiParamDocs.add(new ApiParamDoc(param, "",
-                                LivedocTypeBuilder.build(String.class, null), "true",
+                        apiParamDocs.add(new ApiParamDoc(param, "", LivedocTypeBuilder.build(String.class), "true",
                                 new String[] {}, null, null));
                     }
                 }
@@ -83,18 +82,18 @@ public class SpringQueryParamBuilder {
 
                 if (requestParam != null) {
                     String name = requestParam.value().isEmpty() ? requestParam.name() : requestParam.value();
-                    apiParamDoc = new ApiParamDoc(name, "",
-                            LivedocTypeBuilder.build(method.getParameterTypes()[i],
-                                    method.getGenericParameterTypes()[i]), String.valueOf(requestParam.required()),
-                            new String[] {}, null, requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ?
+                    LivedocType type = LivedocTypeBuilder.build(method.getGenericParameterTypes()[i]);
+                    String defaultvalue = requestParam.defaultValue().equals(ValueConstants.DEFAULT_NONE) ?
                             "" :
-                            requestParam.defaultValue());
+                            requestParam.defaultValue();
+                    apiParamDoc = new ApiParamDoc(name, "", type, String.valueOf(requestParam.required()),
+                            new String[] {}, null, defaultvalue);
                     mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
                 }
                 if (modelAttribute != null) {
                     apiParamDoc = new ApiParamDoc(modelAttribute.value(), "",
-                            LivedocTypeBuilder.build(method.getParameterTypes()[i],
-                                    method.getGenericParameterTypes()[i]), "false", new String[] {}, null, null);
+                            LivedocTypeBuilder.build(method.getGenericParameterTypes()[i]), "false", new String[] {},
+                            null, null);
                     mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
                 }
 

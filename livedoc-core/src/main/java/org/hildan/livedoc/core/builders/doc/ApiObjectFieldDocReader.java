@@ -52,7 +52,7 @@ public class ApiObjectFieldDocReader {
     }
 
     private static LivedocType getLivedocType(Property property) {
-        return LivedocTypeBuilder.build(property.getType(), property.getGenericType());
+        return LivedocTypeBuilder.build(property.getGenericType());
     }
 
     private static ApiVersionDoc getVersionDoc(Property property, ApiObjectDoc parentDoc) {

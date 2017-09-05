@@ -34,9 +34,8 @@ public class SpringRequestBodyBuilder {
         if (index < 0) {
             return null;
         }
-        final Class<?> bodyParamClass = method.getParameterTypes()[index];
         final Type bodyParamType = method.getGenericParameterTypes()[index];
-        return new ApiBodyObjectDoc(LivedocTypeBuilder.build(bodyParamClass, bodyParamType));
+        return new ApiBodyObjectDoc(LivedocTypeBuilder.build(bodyParamType));
     }
 
     public static int getIndexOfBodyParam(Method method) {
