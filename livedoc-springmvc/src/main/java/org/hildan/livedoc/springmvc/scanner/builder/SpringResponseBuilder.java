@@ -2,7 +2,6 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 
 import java.lang.reflect.Method;
 
-import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiResponseObjectDoc;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class SpringResponseBuilder {
      */
     public static ApiResponseObjectDoc buildResponse(Method method) {
         ApiResponseObjectDoc apiResponseObjectDoc = new ApiResponseObjectDoc(
-                LivedocTypeBuilder.build(new LivedocType(), method.getReturnType(), method.getGenericReturnType()));
+                LivedocTypeBuilder.build(method.getReturnType(), method.getGenericReturnType()));
 
         if (method.getReturnType().isAssignableFrom(ResponseEntity.class)) {
             apiResponseObjectDoc.getType().getType().remove(0);

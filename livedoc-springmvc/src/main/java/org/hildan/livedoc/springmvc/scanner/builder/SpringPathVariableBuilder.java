@@ -6,7 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiPathParam;
-import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,7 @@ public class SpringPathVariableBuilder {
 
                 if (pathVariable != null) {
                     apiParamDoc = new ApiParamDoc(pathVariable.value(), "",
-                            LivedocTypeBuilder.build(new LivedocType(), method.getParameterTypes()[i],
+                            LivedocTypeBuilder.build(method.getParameterTypes()[i],
                                     method.getGenericParameterTypes()[i]), "true", new String[] {}, null, "");
                     mergeApiPathParamDoc(apiPathParam, apiParamDoc);
                 }

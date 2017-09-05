@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.builders.doc;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -10,18 +11,16 @@ import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.pojo.ApiParamType;
 
-public class ApiPathParameterDocReader {
+public class ApiPathParamDocReader {
 
     public static Set<ApiParamDoc> read(Method method) {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
         if (method.isAnnotationPresent(ApiParams.class)) {
             for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathparams()) {
-                ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(apiParam,
-                        LivedocTypeBuilder.build(new LivedocType(), apiParam.clazz(), apiParam.clazz()),
-                        ApiParamType.PATH);
+                LivedocType type = LivedocTypeBuilder.build(apiParam.clazz(), apiParam.clazz());
+                ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, type);
                 docs.add(apiParamDoc);
             }
         }
@@ -31,9 +30,10 @@ public class ApiPathParameterDocReader {
             for (int j = 0; j < parametersAnnotations[i].length; j++) {
                 if (parametersAnnotations[i][j] instanceof ApiPathParam) {
                     ApiPathParam annotation = (ApiPathParam) parametersAnnotations[i][j];
-                    ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(annotation,
-                            LivedocTypeBuilder.build(new LivedocType(), method.getParameterTypes()[i],
-                                    method.getGenericParameterTypes()[i]), ApiParamType.PATH);
+                    Class<?> clazz = method.getParameterTypes()[i];
+                    Type type = method.getGenericParameterTypes()[i];
+                    LivedocType livedocType = LivedocTypeBuilder.build(clazz, type);
+                    ApiParamDoc apiParamDoc = buildFromAnnotation(annotation, livedocType);
                     docs.add(apiParamDoc);
                 }
             }
@@ -42,4 +42,8 @@ public class ApiPathParameterDocReader {
         return docs;
     }
 
+    private static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, LivedocType livedocType) {
+        return new ApiParamDoc(annotation.name(), annotation.description(), livedocType, "true",
+                annotation.allowedvalues(), annotation.format(), null);
+    }
 }

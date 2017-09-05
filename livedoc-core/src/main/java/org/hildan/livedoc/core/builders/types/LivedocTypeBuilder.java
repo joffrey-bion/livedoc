@@ -18,7 +18,11 @@ public class LivedocTypeBuilder {
 
     private static final String ARRAY = "array";
 
-    public static LivedocType build(LivedocType livedocType, Class<?> clazz, Type type) {
+    public static LivedocType build(Class<?> clazz, Type type) {
+        return build2(new LivedocType(), clazz, type);
+    }
+
+    private static LivedocType build2(LivedocType livedocType, Class<?> clazz, Type type) {
         if (clazz.isAssignableFrom(LivedocDefaultType.class)) {
             livedocType.addItemToType(UNDEFINED);
             return livedocType;
@@ -42,7 +46,7 @@ public class LivedocTypeBuilder {
                     livedocType.setMapKey(new LivedocType(((TypeVariable<?>) mapKeyType).getName()));
                 } else {
                     livedocType.setMapKey(
-                            build(livedocType.getMapKey(), (Class<?>) ((ParameterizedType) mapKeyType).getRawType(),
+                            build2(livedocType.getMapKey(), (Class<?>) ((ParameterizedType) mapKeyType).getRawType(),
                                     mapKeyType));
                 }
 
@@ -54,7 +58,7 @@ public class LivedocTypeBuilder {
                     livedocType.setMapValue(new LivedocType(((TypeVariable<?>) mapValueType).getName()));
                 } else {
                     livedocType.setMapValue(
-                            build(livedocType.getMapValue(), (Class<?>) ((ParameterizedType) mapValueType).getRawType(),
+                            build2(livedocType.getMapValue(), (Class<?>) ((ParameterizedType) mapValueType).getRawType(),
                                     mapValueType));
                 }
             }
@@ -70,18 +74,18 @@ public class LivedocTypeBuilder {
                 } else if (parametrizedType instanceof TypeVariable<?>) {
                     livedocType.addItemToType(((TypeVariable<?>) parametrizedType).getName());
                 } else {
-                    return build(livedocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(),
+                    return build2(livedocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(),
                             parametrizedType);
                 }
             } else if (type instanceof GenericArrayType) {
-                return build(livedocType, clazz, ((GenericArrayType) type).getGenericComponentType());
+                return build2(livedocType, clazz, ((GenericArrayType) type).getGenericComponentType());
             } else {
                 livedocType.addItemToType(getCustomClassName(clazz));
             }
         } else if (clazz.isArray()) {
             livedocType.addItemToType(ARRAY);
             Class<?> componentType = clazz.getComponentType();
-            return build(livedocType, componentType, type);
+            return build2(livedocType, componentType, type);
         } else {
             livedocType.addItemToType(getCustomClassName(clazz));
             if (type instanceof ParameterizedType) {
@@ -94,7 +98,7 @@ public class LivedocTypeBuilder {
                 } else if (parametrizedType instanceof TypeVariable<?>) {
                     livedocType.addItemToType(((TypeVariable<?>) parametrizedType).getName());
                 } else {
-                    return build(livedocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(),
+                    return build2(livedocType, (Class<?>) ((ParameterizedType) parametrizedType).getRawType(),
                             parametrizedType);
                 }
             }

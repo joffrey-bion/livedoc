@@ -7,7 +7,6 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiBodyObjectDoc;
 import org.hildan.livedoc.core.util.LivedocUtils;
@@ -37,7 +36,7 @@ public class SpringRequestBodyBuilder {
         }
         final Class<?> bodyParamClass = method.getParameterTypes()[index];
         final Type bodyParamType = method.getGenericParameterTypes()[index];
-        return new ApiBodyObjectDoc(LivedocTypeBuilder.build(new LivedocType(), bodyParamClass, bodyParamType));
+        return new ApiBodyObjectDoc(LivedocTypeBuilder.build(bodyParamClass, bodyParamType));
     }
 
     public static int getIndexOfBodyParam(Method method) {

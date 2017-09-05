@@ -25,8 +25,8 @@ public class ApiMethodDocReader {
         apiMethodDoc.setSupportedversions(ApiVersionDocReader.read(method, parentApiDoc.getSupportedversions()));
         apiMethodDoc.setAuth(ApiAuthDocReader.read(method));
         apiMethodDoc.setHeaders(ApiHeaderDocReader.read(method));
-        apiMethodDoc.setPathparameters(ApiPathParameterDocReader.read(method));
-        apiMethodDoc.setQueryparameters(ApiQueryParameterDocReader.read(method));
+        apiMethodDoc.setPathparameters(ApiPathParamDocReader.read(method));
+        apiMethodDoc.setQueryparameters(ApiQueryParamDocReader.read(method));
         apiMethodDoc.setBodyobject(ApiBodyObjectDocReader.read(method));
         apiMethodDoc.setResponse(ApiResponseObjectDocReader.build(method));
         apiMethodDoc.setConsumes(new LinkedHashSet<>(Arrays.asList(methodAnnotation.consumes())));

@@ -35,19 +35,6 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
         this.defaultvalue = defaultvalue;
     }
 
-    public static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, LivedocType livedocType,
-            ApiParamType paramType) {
-        return new ApiParamDoc(annotation.name(), annotation.description(), livedocType, "true",
-                annotation.allowedvalues(), annotation.format(), null);
-    }
-
-    public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType,
-            ApiParamType paramType) {
-        return new ApiParamDoc(annotation.name(), annotation.description(), livedocType,
-                String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(),
-                annotation.defaultvalue());
-    }
-
     public LivedocType getType() {
         return type;
     }

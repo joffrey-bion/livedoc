@@ -10,18 +10,16 @@ import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.pojo.ApiParamType;
 
-public class ApiQueryParameterDocReader {
+public class ApiQueryParamDocReader {
 
     public static Set<ApiParamDoc> read(Method method) {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
         if (method.isAnnotationPresent(ApiParams.class)) {
             for (ApiQueryParam apiParam : method.getAnnotation(ApiParams.class).queryparams()) {
-                ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(apiParam,
-                        LivedocTypeBuilder.build(new LivedocType(), apiParam.clazz(), apiParam.clazz()),
-                        ApiParamType.QUERY);
+                ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam,
+                        LivedocTypeBuilder.build(apiParam.clazz(), apiParam.clazz()));
                 docs.add(apiParamDoc);
             }
         }
@@ -31,9 +29,9 @@ public class ApiQueryParameterDocReader {
             for (int j = 0; j < parametersAnnotations[i].length; j++) {
                 if (parametersAnnotations[i][j] instanceof ApiQueryParam) {
                     ApiQueryParam annotation = (ApiQueryParam) parametersAnnotations[i][j];
-                    ApiParamDoc apiParamDoc = ApiParamDoc.buildFromAnnotation(annotation,
-                            LivedocTypeBuilder.build(new LivedocType(), method.getParameterTypes()[i],
-                                    method.getGenericParameterTypes()[i]), ApiParamType.QUERY);
+                    ApiParamDoc apiParamDoc = buildFromAnnotation(annotation,
+                            LivedocTypeBuilder.build(method.getParameterTypes()[i],
+                                    method.getGenericParameterTypes()[i]));
                     docs.add(apiParamDoc);
                 }
             }
@@ -42,4 +40,9 @@ public class ApiQueryParameterDocReader {
         return docs;
     }
 
+    public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType) {
+        return new ApiParamDoc(annotation.name(), annotation.description(), livedocType,
+                String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(),
+                annotation.defaultvalue());
+    }
 }
