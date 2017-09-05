@@ -8,7 +8,6 @@ import java.util.TreeSet;
 import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
-import org.hildan.livedoc.core.pojo.ApiVersionDoc;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.util.BeanUtils;
@@ -24,10 +23,8 @@ public class ApiObjectDocReader {
     public ApiObjectDoc read(Class<?> clazz) {
         ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
         apiObjectDoc.setName(clazz.getSimpleName());
-        ApiVersionDoc versionDoc = ApiVersionDocReader.read(clazz);
-        apiObjectDoc.setSupportedversions(versionDoc);
+        apiObjectDoc.setSupportedversions(ApiVersionDocReader.read(clazz));
         apiObjectDoc.setShow(Modifier.isAbstract(clazz.getModifiers()));
-        apiObjectDoc.setFields(getFieldDocs(clazz, versionDoc));
 
         ApiObject apiObject = clazz.getAnnotation(ApiObject.class);
         if (apiObject != null) {
@@ -43,23 +40,20 @@ public class ApiObjectDocReader {
             apiObjectDoc.setAllowedvalues(BeanUtils.enumConstantsToStringArray(clazz.getEnumConstants()));
         }
 
+        apiObjectDoc.setFields(getFieldDocs(clazz, apiObjectDoc));
+
         return apiObjectDoc;
     }
 
-    private Set<ApiObjectFieldDoc> getFieldDocs(Class<?> clazz, ApiVersionDoc versionDoc) {
+    private Set<ApiObjectFieldDoc> getFieldDocs(Class<?> clazz, ApiObjectDoc apiObjectDoc) {
         if (clazz.isEnum()) {
             return Collections.emptySet();
         }
         Set<ApiObjectFieldDoc> fieldDocs = new TreeSet<>();
         for (Property property : propertyScanner.getProperties(clazz)) {
-            fieldDocs.add(getApiObjectFieldDoc(property, versionDoc));
+            fieldDocs.add(ApiObjectFieldDocReader.read(property, apiObjectDoc));
         }
         return fieldDocs;
     }
 
-    private ApiObjectFieldDoc getApiObjectFieldDoc(Property property, ApiVersionDoc versionDoc) {
-        ApiObjectFieldDoc fieldDoc = ApiObjectFieldDocReader.read(property);
-        fieldDoc.setSupportedversions(ApiVersionDocReader.read(property.getAccessibleObject(), versionDoc));
-        return fieldDoc;
-    }
 }

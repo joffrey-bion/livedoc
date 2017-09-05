@@ -3,14 +3,16 @@ package org.hildan.livedoc.core.builders.doc;
 import org.hildan.livedoc.core.annotations.ApiObjectField;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
+import org.hildan.livedoc.core.pojo.ApiVersionDoc;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.HibernateValidationProcessor;
 
 public class ApiObjectFieldDocReader {
 
-    public static ApiObjectFieldDoc read(Property property) {
+    public static ApiObjectFieldDoc read(Property property, ApiObjectDoc parentDoc) {
         ApiObjectFieldDoc apiFieldDoc = new ApiObjectFieldDoc();
         apiFieldDoc.setName(property.getName());
         apiFieldDoc.setType(getLivedocType(property));
@@ -34,6 +36,7 @@ public class ApiObjectFieldDocReader {
                 apiFieldDoc.addFormat(annotation.format());
             }
         }
+        apiFieldDoc.setSupportedversions(getVersionDoc(property, parentDoc));
 
         HibernateValidationProcessor.addConstraintMessages(property.getAccessibleObject(), apiFieldDoc);
 
@@ -50,5 +53,9 @@ public class ApiObjectFieldDocReader {
 
     private static LivedocType getLivedocType(Property property) {
         return LivedocTypeBuilder.build(new LivedocType(), property.getType(), property.getGenericType());
+    }
+
+    private static ApiVersionDoc getVersionDoc(Property property, ApiObjectDoc parentDoc) {
+        return ApiVersionDocReader.read(property.getAccessibleObject(), parentDoc.getSupportedversions());
     }
 }
