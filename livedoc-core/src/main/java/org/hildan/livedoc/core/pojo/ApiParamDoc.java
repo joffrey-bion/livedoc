@@ -2,8 +2,6 @@ package org.hildan.livedoc.core.pojo;
 
 import java.util.UUID;
 
-import org.hildan.livedoc.core.annotations.ApiPathParam;
-import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 
 public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {

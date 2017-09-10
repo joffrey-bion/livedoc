@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.util.pojo;
+package org.hildan.livedoc.core.test.pojo;
 
 import javax.validation.constraints.Max;
 

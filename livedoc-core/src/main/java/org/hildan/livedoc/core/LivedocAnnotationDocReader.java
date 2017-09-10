@@ -37,15 +37,15 @@ public class LivedocAnnotationDocReader implements DocReader {
     }
 
     @Override
-    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates) {
+    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc,
+            Map<Class<?>, ObjectTemplate> templates) {
         ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
         if (methodAnnotation == null) {
             return Optional.empty(); // this basic builder only supports annotated methods
         }
         ApiMethodDoc apiMethodDoc = ApiMethodDocReader.read(method, parentApiDoc);
         if (method.isAnnotationPresent(ApiBodyObject.class)) {
-            apiMethodDoc.getBodyobject()
-                        .setTemplate(templates.get(method.getAnnotation(ApiBodyObject.class).clazz()));
+            apiMethodDoc.getBodyobject().setTemplate(templates.get(method.getAnnotation(ApiBodyObject.class).clazz()));
         }
         Integer index = LivedocUtils.getIndexOfParameterWithAnnotation(method, ApiBodyObject.class);
         if (index != -1) {

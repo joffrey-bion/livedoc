@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hildan.livedoc.core.builders.templates.ObjectTemplateBuilder;
-import org.hildan.livedoc.core.util.pojo.NotAnnotatedStackOverflowObjectOne;
-import org.hildan.livedoc.core.util.pojo.NotAnnotatedStackOverflowObjectTwo;
-import org.hildan.livedoc.core.util.pojo.StackOverflowTemplateObjectOne;
-import org.hildan.livedoc.core.util.pojo.StackOverflowTemplateObjectTwo;
-import org.hildan.livedoc.core.util.pojo.StackOverflowTemplateSelf;
+import org.hildan.livedoc.core.test.pojo.NotAnnotatedStackOverflowObjectOne;
+import org.hildan.livedoc.core.test.pojo.NotAnnotatedStackOverflowObjectTwo;
+import org.hildan.livedoc.core.test.pojo.StackOverflowTemplateObjectOne;
+import org.hildan.livedoc.core.test.pojo.StackOverflowTemplateObjectTwo;
+import org.hildan.livedoc.core.test.pojo.StackOverflowTemplateSelf;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

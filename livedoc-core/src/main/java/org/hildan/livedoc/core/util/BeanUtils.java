@@ -2,8 +2,6 @@ package org.hildan.livedoc.core.util;
 
 import java.util.Arrays;
 
-import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
-
 public class BeanUtils {
 
     public static String[] enumConstantsToStringArray(Object[] enumConstants) {

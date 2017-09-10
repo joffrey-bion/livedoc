@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.util.flow;
+package org.hildan.livedoc.core.test.flow;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;

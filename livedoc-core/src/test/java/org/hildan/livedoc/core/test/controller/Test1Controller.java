@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.util.controller;
+package org.hildan.livedoc.core.test.controller;
 
 import java.util.List;
 

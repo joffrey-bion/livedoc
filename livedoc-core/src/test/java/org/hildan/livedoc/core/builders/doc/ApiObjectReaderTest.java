@@ -13,7 +13,7 @@ import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
 import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVisibility;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
-import org.hildan.livedoc.core.util.pojo.HibernateValidatorPojo;
+import org.hildan.livedoc.core.test.pojo.HibernateValidatorPojo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

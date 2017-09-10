@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.builders.templates.ObjectTemplateBuilder;
-import org.hildan.livedoc.core.util.pojo.MyEnum;
-import org.hildan.livedoc.core.util.pojo.NoAnnotationPojo;
-import org.hildan.livedoc.core.util.pojo.TemplateObject;
+import org.hildan.livedoc.core.test.pojo.MyEnum;
+import org.hildan.livedoc.core.test.pojo.NoAnnotationPojo;
+import org.hildan.livedoc.core.test.pojo.TemplateObject;
 import org.junit.Assert;
 import org.junit.Test;
 

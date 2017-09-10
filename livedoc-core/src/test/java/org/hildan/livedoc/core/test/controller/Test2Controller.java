@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.util.controller;
+package org.hildan.livedoc.core.test.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiResponseObject;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.util.pojo.Parent;
+import org.hildan.livedoc.core.test.pojo.Parent;
 
 @Api(name = "Test2Controller", description = "My test controller #2")
 public class Test2Controller {

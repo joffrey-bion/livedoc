@@ -31,9 +31,9 @@ import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.ApiVisibility;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.util.controller.Test3Controller;
-import org.hildan.livedoc.core.util.pojo.Child;
-import org.hildan.livedoc.core.util.pojo.Pizza;
+import org.hildan.livedoc.core.test.controller.Test3Controller;
+import org.hildan.livedoc.core.test.pojo.Child;
+import org.hildan.livedoc.core.test.pojo.Pizza;
 import org.junit.Assert;
 import org.junit.Test;
 

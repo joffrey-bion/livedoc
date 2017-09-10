@@ -1,11 +1,11 @@
-package org.hildan.livedoc.core.util.controller;
+package org.hildan.livedoc.core.test.controller;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiResponseObject;
 import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.util.pojo.Pizza;
+import org.hildan.livedoc.core.test.pojo.Pizza;
 
 @Api(description = "Annotations put on an interface instead of on a concrete class", name = "interface services")
 public interface PizzaController {

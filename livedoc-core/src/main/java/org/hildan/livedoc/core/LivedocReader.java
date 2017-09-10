@@ -2,8 +2,10 @@ package org.hildan.livedoc.core;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -158,9 +160,18 @@ public class LivedocReader {
 
     private List<ApiMethodDoc> readApiMethodDocs(Class<?> controller, ApiDoc doc, MethodDisplay displayMethodAs,
             Map<Class<?>, ObjectTemplate> templates) {
-        // TODO add support for inherited controller methods
-        Method[] methods = controller.getDeclaredMethods();
-        return buildDocs(Arrays.asList(methods), m -> readApiMethodDoc(m, doc, displayMethodAs, templates));
+        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, doc, displayMethodAs, templates));
+    }
+
+    private static List<Method> getAllMethods(final Class<?> clazz) {
+        List<Method> methods = new ArrayList<>();
+        Class<?> currentClass = clazz;
+        while (currentClass != null) {
+            Method[] declaredMethods = currentClass.getDeclaredMethods();
+            Collections.addAll(methods, declaredMethods);
+            currentClass = currentClass.getSuperclass();
+        }
+        return methods;
     }
 
     private Optional<ApiMethodDoc> readApiMethodDoc(Method method, ApiDoc parentApiDoc, MethodDisplay displayMethodAs,

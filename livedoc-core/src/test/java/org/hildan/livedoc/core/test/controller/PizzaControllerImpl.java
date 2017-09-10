@@ -1,6 +1,6 @@
-package org.hildan.livedoc.core.util.controller;
+package org.hildan.livedoc.core.test.controller;
 
-import org.hildan.livedoc.core.util.pojo.Pizza;
+import org.hildan.livedoc.core.test.pojo.Pizza;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
