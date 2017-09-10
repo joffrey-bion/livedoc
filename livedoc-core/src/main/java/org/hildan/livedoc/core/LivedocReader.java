@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
 import org.hildan.livedoc.core.builders.merger.DocMerger;
+import org.hildan.livedoc.core.builders.defaults.ApiMethodDocDefaults;
 import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.builders.templates.ObjectTemplateBuilder;
 import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
@@ -179,6 +180,7 @@ public class LivedocReader {
         Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiMethodDoc(method, parentApiDoc, templates));
         doc.ifPresent(apiMethodDoc -> {
             apiMethodDoc.setDisplayMethodAs(displayMethodAs);
+            ApiMethodDocDefaults.complete(apiMethodDoc);
             ApiMethodDocValidator.validate(apiMethodDoc);
         });
         return doc;
