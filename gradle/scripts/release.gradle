@@ -2,7 +2,7 @@ def execute = { String[] command ->
     exec {
         println command.join(' ')
         if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-            command = ['cmd', '/c'] + command
+            command = ['cmd', '/c'] + (command as List)
         }
         workingDir rootProject.projectDir
         commandLine command
@@ -15,7 +15,7 @@ def getChangelogReleaseUrlBeginning = {
         props.load(new FileInputStream('.github_changelog_generator'))
         String versionUrlTemplate = props.getProperty('release-url')
         int versionIndex = versionUrlTemplate.indexOf('%s')
-        if (versionIndex == null) {
+        if (versionIndex < 0) {
             return null
         }
         return versionUrlTemplate.substring(0, versionIndex)
