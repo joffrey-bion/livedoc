@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.1.0](https://bintray.com/joffrey-bion/maven/livedoc/1.1.0) (2017-09-11)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.0.2...v1.1.0)
+
+**Implemented enhancements:**
+
+- Refactor types management [\#25](https://github.com/joffrey-bion/livedoc/issues/25)
+- Scan Controllers' inherited methods [\#6](https://github.com/joffrey-bion/livedoc/issues/6)
+
+**Fixed bugs:**
+
+- Default method verbs not set properly [\#27](https://github.com/joffrey-bion/livedoc/issues/27)
+
 ## [v1.0.2](https://bintray.com/joffrey-bion/maven/livedoc/1.0.2) (2017-09-04)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.0.1...v1.0.2)
 
