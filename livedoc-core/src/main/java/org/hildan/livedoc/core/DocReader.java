@@ -26,12 +26,6 @@ public interface DocReader {
     Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider);
 
     /**
-     * Extracts types (mentioned in the given method's signature) that are relevant for the API. Only root type
-     * declarations should be returned here, recursive exploration of types is done with these starting points.
-     */
-    Collection<? extends Type> extractTypesToDocument(Method method);
-
-    /**
      * Extracts types that are relevant for the API, but are not be referenced from the rest of the documentation. Only
      * root type declarations should be returned here, recursive exploration of types is done with these starting
      * points.

@@ -100,42 +100,6 @@ public class SpringDocReader implements DocReader {
     }
 
     @Override
-    public Collection<? extends Type> extractTypesToDocument(Method method) {
-        // TODO maybe lake this a standard interface method and extract this behaviour
-        if (!canReadInfoFrom(method)) {
-            return Collections.emptyList();
-        }
-        Set<Type> types = new HashSet<>();
-
-        Type responseBodyType = getResponseType(method);
-        if (responseBodyType != null) {
-            types.add(responseBodyType);
-        }
-
-        Type requestBodyType = getBodyParamType(method);
-        if (requestBodyType != null) {
-            types.add(requestBodyType);
-        }
-        return types;
-    }
-
-    private Type getResponseType(Method method) {
-        Type responseBodyType = method.getGenericReturnType();
-        if (void.class.equals(responseBodyType) || Void.class.equals(responseBodyType)) {
-            return null;
-        }
-        return responseBodyType;
-    }
-
-    private Type getBodyParamType(Method method) {
-        int bodyParamIndex = SpringRequestBodyBuilder.getIndexOfBodyParam(method);
-        if (bodyParamIndex < 0) {
-            return null;
-        }
-        return method.getGenericParameterTypes()[bodyParamIndex];
-    }
-
-    @Override
     public Collection<? extends Type> getAdditionalTypesToDocument() {
         return Collections.emptySet();
     }

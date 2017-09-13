@@ -3,7 +3,6 @@ package org.hildan.livedoc.core;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -74,7 +73,7 @@ public class LivedocReader {
 
         Set<Class<?>> controllers = findControllers();
         Collection<ApiDoc> apiDocs = readApiDocs(controllers, displayMethodAs);
-        Set<Class<?>> types = getClassesToDocument(controllers);
+        Set<Class<?>> types = getClassesToDocument(apiDocs);
 
         livedoc.setApis(group(apiDocs));
         livedoc.setObjects(group(getApiObjectDocs(types)));
@@ -101,31 +100,36 @@ public class LivedocReader {
         return controllers;
     }
 
-    private Set<Class<?>> getClassesToDocument(Set<Class<?>> controllers) {
-        Set<Type> rootTypes = getRootTypesToDocument(controllers);
+    private Set<Class<?>> getClassesToDocument(Collection<ApiDoc> apiDocs) {
+        Set<Type> rootTypes = getRootTypesToDocument(apiDocs);
         Set<Class<?>> exploredTypes = typeScanner.findTypes(rootTypes);
         return exploredTypes.stream().filter(this::isInWhiteListedPackage).collect(Collectors.toSet());
     }
 
-    private Set<Type> getRootTypesToDocument(Set<Class<?>> controllers) {
-        Collection<Method> methods = getAllMethods(controllers);
-        Set<Type> rootTypes = getReferencedTypesToDocument(methods);
+    private Set<Type> getRootTypesToDocument(Collection<ApiDoc> apiDocs) {
+        Set<Type> rootTypes = new HashSet<>();
+        rootTypes.addAll(getReferencedTypesToDocument(apiDocs));
         rootTypes.addAll(getOtherTypesToDocument());
         return rootTypes;
     }
 
-    private Collection<Method> getAllMethods(Set<Class<?>> controllers) {
-        return controllers.stream().flatMap(c -> Arrays.stream(c.getMethods())).collect(Collectors.toSet());
+    private Set<Type> getReferencedTypesToDocument(Collection<ApiDoc> apiDocs) {
+        Set<Type> types = new HashSet<>();
+        for (ApiDoc apiDoc : apiDocs) {
+            for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
+                types.addAll(getReferencedTypes(apiMethodDoc));
+            }
+        }
+        return types;
     }
 
-    // TODO get these types from already built docs, which makes more sense
-    // (this refac requires to deal with templates in a second phase)
-    private Set<Type> getReferencedTypesToDocument(Collection<Method> methods) {
+    private Set<Type> getReferencedTypes(ApiMethodDoc apiMethodDoc) {
         Set<Type> types = new HashSet<>();
-        for (Method method : methods) {
-            for (DocReader reader : docReaders) {
-                types.addAll(reader.extractTypesToDocument(method));
-            }
+        if (apiMethodDoc.getBodyobject() != null) {
+            types.addAll(apiMethodDoc.getBodyobject().getType().getComposingTypes());
+        }
+        if (apiMethodDoc.getResponse() != null) {
+            types.addAll(apiMethodDoc.getResponse().getType().getComposingTypes());
         }
         return types;
     }
@@ -169,7 +173,8 @@ public class LivedocReader {
     }
 
     private Optional<ApiMethodDoc> readApiMethodDoc(Method method, ApiDoc parentApiDoc, MethodDisplay displayMethodAs) {
-        Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiMethodDoc(method, parentApiDoc, templateProvider));
+        Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(
+                r -> r.buildApiMethodDoc(method, parentApiDoc, templateProvider));
         doc.ifPresent(apiMethodDoc -> {
             apiMethodDoc.setDisplayMethodAs(displayMethodAs);
             ApiMethodDocDefaults.complete(apiMethodDoc);

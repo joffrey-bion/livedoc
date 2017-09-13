@@ -45,13 +45,6 @@ public class LivedocAnnotationDocReader implements DocReader {
     }
 
     @Override
-    public Collection<? extends Type> extractTypesToDocument(Method method) {
-        // this default reader is not able to extract anything from methods
-        // this will only be useful in specialized readers like the spring one
-        return Collections.emptySet();
-    }
-
-    @Override
     public Collection<? extends Type> getAdditionalTypesToDocument() {
         return annotatedTypesFinder.apply(ApiObject.class);
     }
