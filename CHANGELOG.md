@@ -1,6 +1,13 @@
 # Change Log
 
-## [v1.1.0](https://bintray.com/joffrey-bion/maven/livedoc/1.1.0) (2017-09-11)
+## [v1.2.0](https://bintray.com/joffrey-bion/maven/livedoc/1.2.0) (2017-09-14)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.1.0...v1.2.0)
+
+**Implemented enhancements:**
+
+- Use custom properties exploration for templates generation [\#20](https://github.com/joffrey-bion/livedoc/issues/20)
+
+## [v1.1.0](https://bintray.com/joffrey-bion/maven/livedoc/1.1.0) (2017-09-10)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.0.2...v1.1.0)
 
 **Implemented enhancements:**
