@@ -61,15 +61,13 @@ public class LivedocReaderTest {
 
         Set<ApiObjectDoc> apiObjectDocs = objects.get("");
         assertTrue(apiObjectDocs != null);
-        assertEquals(5, apiObjectDocs.size());
+        assertEquals(3, apiObjectDocs.size());
 
         Set<String> objectNames = apiObjectDocs.stream().map(ApiObjectDoc::getName).collect(Collectors.toSet());
         Set<String> expectedObjectNames = new HashSet<>();
         expectedObjectNames.add("parent");
-        expectedObjectNames.add("HibernateValidatorPojo");
-        expectedObjectNames.add("gender");
-        expectedObjectNames.add("grandparent");
         expectedObjectNames.add("child");
+        expectedObjectNames.add("gender");
         assertEquals(expectedObjectNames, objectNames);
 
         Set<ApiObjectDoc> apiObjectDocsRestaurant = objects.get("Restaurant");

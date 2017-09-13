@@ -24,11 +24,4 @@ public interface DocReader {
      * Should return an empty optional when not able to build something from the given method.
      */
     Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider);
-
-    /**
-     * Extracts types that are relevant for the API, but are not be referenced from the rest of the documentation. Only
-     * root type declarations should be returned here, recursive exploration of types is done with these starting
-     * points.
-     */
-    Collection<? extends Type> getAdditionalTypesToDocument();
 }

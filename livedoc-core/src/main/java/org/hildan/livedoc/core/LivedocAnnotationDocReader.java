@@ -43,9 +43,4 @@ public class LivedocAnnotationDocReader implements DocReader {
         ApiMethodDoc apiMethodDoc = ApiMethodDocReader.read(method, parentApiDoc, templateProvider);
         return Optional.of(apiMethodDoc);
     }
-
-    @Override
-    public Collection<? extends Type> getAdditionalTypesToDocument() {
-        return annotatedTypesFinder.apply(ApiObject.class);
-    }
 }

@@ -101,19 +101,12 @@ public class LivedocReader {
     }
 
     private Set<Class<?>> getClassesToDocument(Collection<ApiDoc> apiDocs) {
-        Set<Type> rootTypes = getRootTypesToDocument(apiDocs);
+        Set<Type> rootTypes = getReferencedTypesToDocument(apiDocs);
         Set<Class<?>> exploredTypes = typeScanner.findTypes(rootTypes);
         return exploredTypes.stream().filter(this::isInWhiteListedPackage).collect(Collectors.toSet());
     }
 
-    private Set<Type> getRootTypesToDocument(Collection<ApiDoc> apiDocs) {
-        Set<Type> rootTypes = new HashSet<>();
-        rootTypes.addAll(getReferencedTypesToDocument(apiDocs));
-        rootTypes.addAll(getOtherTypesToDocument());
-        return rootTypes;
-    }
-
-    private Set<Type> getReferencedTypesToDocument(Collection<ApiDoc> apiDocs) {
+    private static Set<Type> getReferencedTypesToDocument(Collection<ApiDoc> apiDocs) {
         Set<Type> types = new HashSet<>();
         for (ApiDoc apiDoc : apiDocs) {
             for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -123,21 +116,13 @@ public class LivedocReader {
         return types;
     }
 
-    private Set<Type> getReferencedTypes(ApiMethodDoc apiMethodDoc) {
+    private static Set<Type> getReferencedTypes(ApiMethodDoc apiMethodDoc) {
         Set<Type> types = new HashSet<>();
         if (apiMethodDoc.getBodyobject() != null) {
             types.addAll(apiMethodDoc.getBodyobject().getType().getComposingTypes());
         }
         if (apiMethodDoc.getResponse() != null) {
             types.addAll(apiMethodDoc.getResponse().getType().getComposingTypes());
-        }
-        return types;
-    }
-
-    private Set<Type> getOtherTypesToDocument() {
-        Set<Type> types = new HashSet<>();
-        for (DocReader reader : docReaders) {
-            types.addAll(reader.getAdditionalTypesToDocument());
         }
         return types;
     }

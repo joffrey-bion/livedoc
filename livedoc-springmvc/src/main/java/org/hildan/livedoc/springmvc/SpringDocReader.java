@@ -1,12 +1,8 @@
 package org.hildan.livedoc.springmvc;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.DocReader;
@@ -63,7 +59,6 @@ public class SpringDocReader implements DocReader {
 
     @Override
     public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider) {
-        // TODO maybe make this a standard interface method and extract this behaviour
         if (!canReadInfoFrom(method)) {
             return Optional.empty();
         }
@@ -97,10 +92,5 @@ public class SpringDocReader implements DocReader {
         apiMethodDoc.setResponse(SpringResponseBuilder.buildResponse(method));
         apiMethodDoc.setResponsestatuscode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
         return apiMethodDoc;
-    }
-
-    @Override
-    public Collection<? extends Type> getAdditionalTypesToDocument() {
-        return Collections.emptySet();
     }
 }
