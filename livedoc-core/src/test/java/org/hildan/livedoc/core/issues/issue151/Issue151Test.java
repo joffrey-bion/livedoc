@@ -16,8 +16,8 @@ public class Issue151Test {
     @Test
     public void testIssue151() {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.issues.issue151");
-        LivedocReader builder = LivedocReader.basicAnnotationBuilder(packages);
-        Livedoc livedoc = builder.read("", "", true, MethodDisplay.URI);
+        LivedocReader reader = LivedocReader.basicAnnotationReader(packages);
+        Livedoc livedoc = reader.read("", "", true, MethodDisplay.URI);
         Assert.assertEquals(2, livedoc.getObjects().keySet().size());
         Assert.assertEquals(1, livedoc.getObjects().get("bargroup").size());
         Assert.assertEquals(1, livedoc.getObjects().get("foogroup").size());

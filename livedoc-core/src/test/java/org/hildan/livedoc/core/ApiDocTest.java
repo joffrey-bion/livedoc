@@ -1,7 +1,6 @@
 package org.hildan.livedoc.core;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -759,8 +758,8 @@ public class ApiDocTest {
     }
 
     private static ApiDoc buildDoc(Class<?> controller, MethodDisplay methodDisplay) {
-        LivedocReader builder = LivedocReader.basicAnnotationBuilder(Collections.emptyList());
-        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay);
+        LivedocReader reader = LivedocReader.basicAnnotationReader(Collections.emptyList());
+        Optional<ApiDoc> apiDoc = reader.readApiDoc(controller, methodDisplay);
         assertTrue(apiDoc.isPresent());
         return apiDoc.get();
     }

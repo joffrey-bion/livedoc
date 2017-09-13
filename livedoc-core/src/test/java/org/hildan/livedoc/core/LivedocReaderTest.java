@@ -28,7 +28,7 @@ public class LivedocReaderTest {
         String version = "1.0";
         String basePath = "http://localhost:8080/api";
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.test");
-        LivedocReader livedocReader = LivedocReader.basicAnnotationBuilder(packages);
+        LivedocReader livedocReader = LivedocReader.basicAnnotationReader(packages);
         Livedoc livedoc = livedocReader.read(version, basePath, true, MethodDisplay.URI);
 
         checkApis(livedoc);

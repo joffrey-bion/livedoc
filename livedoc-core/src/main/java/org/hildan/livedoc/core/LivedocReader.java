@@ -57,7 +57,7 @@ public class LivedocReader {
         this.docMerger = new DocMerger(new FieldPropertyScanner());
     }
 
-    public static LivedocReader basicAnnotationBuilder(List<String> packages) {
+    public static LivedocReader basicAnnotationReader(List<String> packages) {
         return new LivedocReaderBuilder().scanningPackages(packages).build();
     }
 
