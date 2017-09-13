@@ -5,16 +5,14 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.DocReader;
-import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.util.LivedocUtils;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringConsumesBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringHeaderBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringPathBuilder;
@@ -30,7 +28,6 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,12 +62,12 @@ public class SpringDocReader implements DocReader {
     }
 
     @Override
-    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, Map<Class<?>, ObjectTemplate> templates) {
+    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider) {
         // TODO maybe make this a standard interface method and extract this behaviour
         if (!canReadInfoFrom(method)) {
             return Optional.empty();
         }
-        return Optional.of(buildApiMethodDoc(method, templates));
+        return Optional.of(buildApiMethodDoc(method, templateProvider));
     }
 
     private boolean canReadInfoFrom(Method method) {
@@ -86,7 +83,7 @@ public class SpringDocReader implements DocReader {
         return false;
     }
 
-    private ApiMethodDoc buildApiMethodDoc(Method method, Map<Class<?>, ObjectTemplate> objectTemplates) {
+    private ApiMethodDoc buildApiMethodDoc(Method method, TemplateProvider templateProvider) {
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
         apiMethodDoc.setPath(SpringPathBuilder.buildPath(method));
         apiMethodDoc.setMethod(method.getName());
@@ -96,15 +93,9 @@ public class SpringDocReader implements DocReader {
         apiMethodDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method));
         apiMethodDoc.setPathparameters(SpringPathVariableBuilder.buildPathVariable(method));
         apiMethodDoc.setQueryparameters(SpringQueryParamBuilder.buildQueryParams(method));
-        apiMethodDoc.setBodyobject(SpringRequestBodyBuilder.buildRequestBody(method));
+        apiMethodDoc.setBodyobject(SpringRequestBodyBuilder.buildRequestBody(method, templateProvider));
         apiMethodDoc.setResponse(SpringResponseBuilder.buildResponse(method));
         apiMethodDoc.setResponsestatuscode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
-
-        Integer index = LivedocUtils.getIndexOfParameterWithAnnotation(method, RequestBody.class);
-        if (index != -1) {
-            apiMethodDoc.getBodyobject().setTemplate(objectTemplates.get(method.getParameterTypes()[index]));
-        }
-
         return apiMethodDoc;
     }
 

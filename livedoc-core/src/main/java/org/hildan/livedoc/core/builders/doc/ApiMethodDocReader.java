@@ -9,10 +9,11 @@ import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVisibility;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
 public class ApiMethodDocReader {
 
-    public static ApiMethodDoc read(Method method, ApiDoc parentApiDoc) {
+    public static ApiMethodDoc read(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider) {
         ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
         apiMethodDoc.setId(methodAnnotation.id());
@@ -27,7 +28,7 @@ public class ApiMethodDocReader {
         apiMethodDoc.setHeaders(ApiHeaderDocReader.read(method));
         apiMethodDoc.setPathparameters(ApiPathParamDocReader.read(method));
         apiMethodDoc.setQueryparameters(ApiQueryParamDocReader.read(method));
-        apiMethodDoc.setBodyobject(ApiBodyObjectDocReader.read(method));
+        apiMethodDoc.setBodyobject(ApiBodyObjectDocReader.read(method, templateProvider));
         apiMethodDoc.setResponse(ApiResponseObjectDocReader.build(method));
         apiMethodDoc.setConsumes(new LinkedHashSet<>(Arrays.asList(methodAnnotation.consumes())));
         apiMethodDoc.setProduces(new LinkedHashSet<>(Arrays.asList(methodAnnotation.produces())));

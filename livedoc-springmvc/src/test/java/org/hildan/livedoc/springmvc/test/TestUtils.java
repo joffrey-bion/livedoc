@@ -1,7 +1,6 @@
 package org.hildan.livedoc.springmvc.test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.LivedocReader;
@@ -15,7 +14,7 @@ public class TestUtils {
 
     public static ApiDoc buildDoc(Class<?> controller, MethodDisplay methodDisplay) {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay, new HashMap<>());
+        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay);
         assertTrue(apiDoc.isPresent());
         return apiDoc.get();
     }

@@ -7,8 +7,10 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiBodyObjectDoc;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -23,19 +25,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class SpringRequestBodyBuilder {
 
-    private static final List<Class<?>> NON_BODY_PARAM_TYPES =
-            Arrays.asList(MessageHeaders.class, MessageHeaderAccessor.class, Principal.class);
+    private static final List<Class<?>> NON_BODY_PARAM_TYPES = Arrays.asList(MessageHeaders.class,
+            MessageHeaderAccessor.class, Principal.class);
 
-    private static final List<Class<? extends Annotation>> NON_BODY_PARAM_ANNOTATIONS =
-            Arrays.asList(Header.class, Headers.class, DestinationVariable.class);
+    private static final List<Class<? extends Annotation>> NON_BODY_PARAM_ANNOTATIONS = Arrays.asList(Header.class,
+            Headers.class, DestinationVariable.class);
 
-    public static ApiBodyObjectDoc buildRequestBody(Method method) {
+    public static ApiBodyObjectDoc buildRequestBody(Method method, TemplateProvider templateProvider) {
         int index = getIndexOfBodyParam(method);
         if (index < 0) {
             return null;
         }
-        final Type bodyParamType = method.getGenericParameterTypes()[index];
-        return new ApiBodyObjectDoc(LivedocTypeBuilder.build(bodyParamType));
+        Class<?> bodyParamBaseType = method.getParameterTypes()[index];
+        Object template = templateProvider.getTemplate(bodyParamBaseType);
+
+        Type bodyParamType = method.getGenericParameterTypes()[index];
+        LivedocType livedocType = LivedocTypeBuilder.build(bodyParamType);
+
+        return new ApiBodyObjectDoc(livedocType, template);
     }
 
     public static int getIndexOfBodyParam(Method method) {

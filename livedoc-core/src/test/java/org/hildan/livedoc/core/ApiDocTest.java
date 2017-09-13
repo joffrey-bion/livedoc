@@ -760,7 +760,7 @@ public class ApiDocTest {
 
     private static ApiDoc buildDoc(Class<?> controller, MethodDisplay methodDisplay) {
         LivedocReader builder = LivedocReader.basicAnnotationBuilder(Collections.emptyList());
-        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay, new HashMap<>());
+        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay);
         assertTrue(apiDoc.isPresent());
         return apiDoc.get();
     }

@@ -1,10 +1,11 @@
-package org.hildan.livedoc.core.test.pojo;
+package org.hildan.livedoc.core.scanners.templates;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.test.pojo.Gender;
 
 public class TemplateObject {
 

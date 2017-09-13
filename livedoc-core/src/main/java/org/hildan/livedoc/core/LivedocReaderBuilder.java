@@ -7,6 +7,7 @@ import java.util.List;
 import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.RecursivePropertyTypeScanner;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
 import org.hildan.livedoc.core.scanners.types.mappers.ConcreteSubtypesMapper;
@@ -25,6 +26,8 @@ public class LivedocReaderBuilder {
     private List<DocReader> docReaders = new ArrayList<>();
 
     private ApiObjectDocReader apiObjectDocReader;
+
+    private TemplateProvider templateProvider;
 
     private TypeScanner typeScanner;
 
@@ -82,13 +85,17 @@ public class LivedocReaderBuilder {
         if (apiObjectDocReader == null) {
             apiObjectDocReader = getDefaultApiObjectDocReader(propertyScanner);
         }
+        if (templateProvider == null) {
+            templateProvider = getDefaultTemplateProvider(propertyScanner);
+        }
         if (globalDocReader == null) {
             globalDocReader = getDefaultGlobalReader();
         }
         if (docReaders.isEmpty()) {
             docReaders.add(new LivedocAnnotationDocReader(getAnnotatedTypesFinder()));
         }
-        return new LivedocReader(packages, typeScanner, globalDocReader, apiObjectDocReader, docReaders);
+        return new LivedocReader(packages, typeScanner, globalDocReader, apiObjectDocReader, docReaders,
+                templateProvider);
     }
 
     private TypeScanner getDefaultTypeScanner(PropertyScanner propertyScanner) {
@@ -103,6 +110,10 @@ public class LivedocReaderBuilder {
 
     private ApiObjectDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
         return new ApiObjectDocReader(propertyScanner);
+    }
+
+    private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
+        return new TemplateProvider(propertyScanner);
     }
 
     private GlobalDocReader getDefaultGlobalReader() {

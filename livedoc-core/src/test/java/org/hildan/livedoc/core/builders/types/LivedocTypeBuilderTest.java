@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.util;
+package org.hildan.livedoc.core.builders.types;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -9,8 +9,6 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.annotations.ApiObjectField;
-import org.hildan.livedoc.core.builders.types.LivedocType;
-import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;

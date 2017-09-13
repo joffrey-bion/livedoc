@@ -4,19 +4,16 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiBodyObject;
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.builders.doc.ApiDocReader;
 import org.hildan.livedoc.core.builders.doc.ApiMethodDocReader;
-import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.util.LivedocUtils;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
 public class LivedocAnnotationDocReader implements DocReader {
 
@@ -38,19 +35,12 @@ public class LivedocAnnotationDocReader implements DocReader {
 
     @Override
     public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc,
-            Map<Class<?>, ObjectTemplate> templates) {
+            TemplateProvider templateProvider) {
         ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
         if (methodAnnotation == null) {
             return Optional.empty(); // this basic builder only supports annotated methods
         }
-        ApiMethodDoc apiMethodDoc = ApiMethodDocReader.read(method, parentApiDoc);
-        if (method.isAnnotationPresent(ApiBodyObject.class)) {
-            apiMethodDoc.getBodyobject().setTemplate(templates.get(method.getAnnotation(ApiBodyObject.class).clazz()));
-        }
-        Integer index = LivedocUtils.getIndexOfParameterWithAnnotation(method, ApiBodyObject.class);
-        if (index != -1) {
-            apiMethodDoc.getBodyobject().setTemplate(templates.get(method.getParameterTypes()[index]));
-        }
+        ApiMethodDoc apiMethodDoc = ApiMethodDocReader.read(method, parentApiDoc, templateProvider);
         return Optional.of(apiMethodDoc);
     }
 

@@ -2,34 +2,25 @@ package org.hildan.livedoc.core.pojo;
 
 import java.util.UUID;
 
-import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 
 public class ApiBodyObjectDoc {
     public final String livedocId = UUID.randomUUID().toString();
 
-    private LivedocType type;
+    private final LivedocType type;
 
-    private ObjectTemplate template;
+    private final Object template;
 
-    public ApiBodyObjectDoc(LivedocType type) {
+    public ApiBodyObjectDoc(LivedocType type, Object template) {
         this.type = type;
+        this.template = template;
     }
 
     public LivedocType getType() {
         return type;
     }
 
-    public void setType(LivedocType type) {
-        this.type = type;
-    }
-
-    public ObjectTemplate getTemplate() {
+    public Object getTemplate() {
         return template;
     }
-
-    public void setTemplate(ObjectTemplate template) {
-        this.template = template;
-    }
-
 }

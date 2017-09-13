@@ -4,8 +4,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
-
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc>, Groupable {
 
     public final String livedocId = UUID.randomUUID().toString();
@@ -26,7 +24,7 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 
     private ApiStage stage;
 
-    private ObjectTemplate template;
+    private Object template;
 
     private boolean show;
 
@@ -39,7 +37,6 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.group = "";
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;
-        this.template = null;
         this.show = true;
     }
 
@@ -92,11 +89,11 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.group = group;
     }
 
-    public ObjectTemplate getTemplate() {
+    public Object getTemplate() {
         return template;
     }
 
-    public void setTemplate(ObjectTemplate template) {
+    public void setTemplate(Object template) {
         this.template = template;
     }
 

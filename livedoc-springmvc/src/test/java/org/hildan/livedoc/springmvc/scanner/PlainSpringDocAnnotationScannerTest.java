@@ -56,7 +56,7 @@ public class PlainSpringDocAnnotationScannerTest {
 
     private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay, new HashMap<>());
+        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay);
         assertTrue(apiDoc.isPresent());
         return apiDoc.get();
     }

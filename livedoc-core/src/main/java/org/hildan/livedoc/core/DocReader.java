@@ -3,12 +3,11 @@ package org.hildan.livedoc.core;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
-import org.hildan.livedoc.core.builders.templates.ObjectTemplate;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
 public interface DocReader {
 
@@ -24,8 +23,7 @@ public interface DocReader {
     /**
      * Should return an empty optional when not able to build something from the given method.
      */
-    Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc,
-            Map<Class<?>, ObjectTemplate> templates);
+    Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider);
 
     /**
      * Extracts types (mentioned in the given method's signature) that are relevant for the API. Only root type

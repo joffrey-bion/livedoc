@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.test.pojo;
+package org.hildan.livedoc.core.scanners.templates;
 
 public class TemplateSubObject {
     private Integer id;

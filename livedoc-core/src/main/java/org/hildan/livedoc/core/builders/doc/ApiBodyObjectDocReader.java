@@ -7,16 +7,19 @@ import org.hildan.livedoc.core.annotations.ApiBodyObject;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiBodyObjectDoc;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.util.LivedocUtils;
 
 public class ApiBodyObjectDocReader {
 
-    public static ApiBodyObjectDoc read(Method method) {
+    public static ApiBodyObjectDoc read(Method method, TemplateProvider templateProvider) {
         LivedocType responseType = getBodyType(method);
         if (responseType == null) {
             return null;
         }
-        return new ApiBodyObjectDoc(responseType);
+        Class<?> baseType = responseType.getComposingTypes().get(0);
+        Object template = templateProvider.getTemplate(baseType);
+        return new ApiBodyObjectDoc(responseType, template);
     }
 
     private static LivedocType getBodyType(Method method) {
@@ -27,7 +30,6 @@ public class ApiBodyObjectDocReader {
 
         Integer index = LivedocUtils.getIndexOfParameterWithAnnotation(method, ApiBodyObject.class);
         if (index != -1) {
-            Class<?> clazz = method.getParameterTypes()[index];
             Type type = method.getGenericParameterTypes()[index];
             return LivedocTypeBuilder.build(type);
         }
