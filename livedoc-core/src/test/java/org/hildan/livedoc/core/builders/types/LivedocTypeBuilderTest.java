@@ -11,7 +11,6 @@ import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.annotations.ApiObjectField;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.http.ResponseEntity;
 
 public class LivedocTypeBuilderTest {
 
@@ -143,13 +142,16 @@ public class LivedocTypeBuilderTest {
         return null;
     }
 
+    // similar to the Spring class
+    private static class ResponseEntity<T> {}
+
     @ApiObject(name = "my_parent")
-    class ParentPojo {
+    private class ParentPojo {
 
     }
 
     @ApiObject(name = "fooPojo", group = "foo")
-    public class FooPojo<K> {
+    private class FooPojo<K> {
         @ApiObjectField
         private K fooField;
     }
