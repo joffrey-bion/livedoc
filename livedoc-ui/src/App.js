@@ -1,23 +1,42 @@
+// @flow
 import React, {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './App.css';
-import {DocFetcher} from './components/DocFetcher';
+import {InlineForm} from './components/InlineForm';
+import DocPresenter from './components/DocPresenter';
+import {connect} from 'react-redux';
+import {actions} from './redux/livedoc';
 
-class App extends Component {
+type Props = {
+  fetchDoc: string => void;
+}
+
+class App extends Component<Props> {
   render() {
     return (<MuiThemeProvider>
       <div className="App">
         <div className="App-header">
           <h1 className="App-title">Livedoc</h1>
         </div>
-        <DocFetcher fetch={fetch}/>
+        <InlineForm hintText='URL to JSON documentation' btnLabel='Get Doc'
+                    initialValue={computeInitialUrl()}
+                    onSubmit={this.props.fetchDoc}/>
+        <DocPresenter />
       </div>
     </MuiThemeProvider>);
   }
 }
 
-function fetch(url) {
-  console.log(url);
+function computeInitialUrl(): string {
+  return window.location.href;
 }
 
-export default App;
+const mapStateToProps = state => ({
+  livedoc: state.get('livedoc')
+});
+
+const mapDispatchToProps = {
+  fetchDoc: actions.fetchDoc
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
