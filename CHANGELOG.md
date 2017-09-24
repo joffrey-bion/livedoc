@@ -1,6 +1,19 @@
 # Change Log
 
-## [v1.2.0](https://bintray.com/joffrey-bion/maven/livedoc/1.2.0) (2017-09-14)
+## [v2.0.0](https://bintray.com/joffrey-bion/maven/livedoc/2.0.0) (2017-09-25)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.2.0...v2.0.0)
+
+**Fixed bugs:**
+
+- Complicated enum templates [\#32](https://github.com/joffrey-bion/livedoc/issues/32)
+- Empty templates in the UI [\#31](https://github.com/joffrey-bion/livedoc/issues/31)
+- Broken playground [\#29](https://github.com/joffrey-bion/livedoc/issues/29)
+
+**Merged pull requests:**
+
+- Fix broken handlebars due to formatting [\#30](https://github.com/joffrey-bion/livedoc/pull/30) ([joffrey-bion](https://github.com/joffrey-bion))
+
+## [v1.2.0](https://bintray.com/joffrey-bion/maven/livedoc/1.2.0) (2017-09-13)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.1.0...v1.2.0)
 
 **Implemented enhancements:**
