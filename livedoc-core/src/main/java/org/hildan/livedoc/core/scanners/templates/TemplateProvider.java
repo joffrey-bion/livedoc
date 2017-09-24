@@ -2,16 +2,12 @@ package org.hildan.livedoc.core.scanners.templates;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 
@@ -61,42 +57,12 @@ public class TemplateProvider {
     private Object createTemplate(Class<?> type, Set<Class<?>> containingClasses) {
         Map<String, Object> objectTemplate = new LinkedHashMap<>();
         containingClasses.add(type);
-        for (Property property : getProperties(type)) {
-            String name = getName(property);
+        for (Property property : scanner.getProperties(type)) {
             Object value = getDefaultValue(property, containingClasses);
-            objectTemplate.put(name, value);
+            objectTemplate.put(property.getName(), value);
         }
         containingClasses.remove(type);
         return objectTemplate;
-    }
-
-    private List<Property> getProperties(Class<?> type) {
-        return scanner.getProperties(type)
-                      .stream()
-                      .map(TemplateProvider::overrideProperty)
-                      .sorted(Comparator.comparing(Property::getOrder).thenComparing(Property::getName))
-                      .collect(Collectors.toList());
-    }
-
-    private static Property overrideProperty(Property property) {
-        ApiObjectProperty ann = property.getAccessibleObject().getAnnotation(ApiObjectProperty.class);
-        if (ann == null) {
-            return property; // no override
-        }
-        String name = ann.name().isEmpty() ? property.getName() : ann.name();
-        int order = ann.order() == Integer.MAX_VALUE ? property.getOrder() : ann.order();
-        Property overridden = new Property(name, property.getType(), property.getAccessibleObject());
-        overridden.setOrder(order);
-        overridden.setRequired(property.isRequired());
-        return overridden;
-    }
-
-    private static String getName(Property property) {
-        ApiObjectProperty ann = property.getAccessibleObject().getAnnotation(ApiObjectProperty.class);
-        if (ann != null && !ann.name().isEmpty()) {
-            return ann.name();
-        }
-        return property.getName();
     }
 
     private Object getDefaultValue(Property property, Set<Class<?>> containingClasses) {

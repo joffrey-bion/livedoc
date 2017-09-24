@@ -7,6 +7,8 @@ import java.util.Map;
 import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
+import org.hildan.livedoc.core.scanners.properties.LivedocPropertyScannerWrapper;
+import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,14 +38,14 @@ public class TemplateProviderTest {
 
     @Test
     public void getTemplate() {
-        TemplateProvider templateProvider = new TemplateProvider(new FieldPropertyScanner());
+        TemplateProvider templateProvider = createTemplateProvider();
         Object obj = templateProvider.getTemplate(Parent.class);
 
     }
 
     @Test
     public void getTemplate_generalTest() {
-        TemplateProvider templateProvider = new TemplateProvider(new FieldPropertyScanner());
+        TemplateProvider templateProvider = createTemplateProvider();
         @SuppressWarnings("unchecked")
         Map<String, Object> template = (Map<String, Object>) templateProvider.getTemplate(TemplateObject.class);
 
@@ -110,12 +112,17 @@ public class TemplateProviderTest {
     public void getTemplate_customOrder() throws Exception {
         final ObjectMapper mapper = new ObjectMapper();
 
-        TemplateProvider templateProvider = new TemplateProvider(new FieldPropertyScanner());
+        TemplateProvider templateProvider = createTemplateProvider();
         Object unorderedTemplate = templateProvider.getTemplate(Unordered.class);
         Assert.assertEquals("{\"aField\":\"\",\"xField\":\"\"}", mapper.writeValueAsString(unorderedTemplate));
 
         Object orderedTemplate = templateProvider.getTemplate(Ordered.class);
         Assert.assertEquals("{\"xField\":\"\",\"aField\":\"\",\"bField\":\"\"}",
                 mapper.writeValueAsString(orderedTemplate));
+    }
+
+    private static TemplateProvider createTemplateProvider() {
+        PropertyScanner propertyScanner = new LivedocPropertyScannerWrapper(new FieldPropertyScanner());
+        return new TemplateProvider(propertyScanner);
     }
 }

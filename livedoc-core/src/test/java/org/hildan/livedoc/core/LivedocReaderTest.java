@@ -61,7 +61,6 @@ public class LivedocReaderTest {
 
         Set<ApiObjectDoc> apiObjectDocs = objects.get("");
         assertTrue(apiObjectDocs != null);
-        assertEquals(3, apiObjectDocs.size());
 
         Set<String> objectNames = apiObjectDocs.stream().map(ApiObjectDoc::getName).collect(Collectors.toSet());
         Set<String> expectedObjectNames = new HashSet<>();

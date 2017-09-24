@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
+import org.hildan.livedoc.core.scanners.properties.LivedocPropertyScannerWrapper;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.RecursivePropertyTypeScanner;
@@ -77,7 +78,7 @@ public class LivedocReaderBuilder {
             throw new IllegalStateException("No packages white list provided");
         }
         if (propertyScanner == null) {
-            propertyScanner = new FieldPropertyScanner();
+            propertyScanner = getDefaultPropertyScanner();
         }
         if (typeScanner == null) {
             typeScanner = getDefaultTypeScanner(propertyScanner);
@@ -98,6 +99,10 @@ public class LivedocReaderBuilder {
                 templateProvider);
     }
 
+    private static LivedocPropertyScannerWrapper getDefaultPropertyScanner() {
+        return new LivedocPropertyScannerWrapper(new FieldPropertyScanner());
+    }
+
     private TypeScanner getDefaultTypeScanner(PropertyScanner propertyScanner) {
         RecursivePropertyTypeScanner scanner = new RecursivePropertyTypeScanner(propertyScanner);
         // excludes collections/maps from doc (would just be noise)
@@ -108,11 +113,11 @@ public class LivedocReaderBuilder {
         return scanner;
     }
 
-    private ApiObjectDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
+    private static ApiObjectDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
         return new ApiObjectDocReader(propertyScanner);
     }
 
-    private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
+    private static TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
         return new TemplateProvider(propertyScanner);
     }
 
