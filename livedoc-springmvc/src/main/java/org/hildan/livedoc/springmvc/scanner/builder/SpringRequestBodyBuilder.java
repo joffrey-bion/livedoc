@@ -45,7 +45,7 @@ public class SpringRequestBodyBuilder {
         return new ApiBodyObjectDoc(livedocType, template);
     }
 
-    public static int getIndexOfBodyParam(Method method) {
+    private static int getIndexOfBodyParam(Method method) {
         if (method.isAnnotationPresent(RequestMapping.class)) {
             return getIndexOfBodyParamForRequestMapping(method);
         }

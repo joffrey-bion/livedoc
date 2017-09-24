@@ -123,6 +123,6 @@ public class TemplateProviderTest {
 
     private static TemplateProvider createTemplateProvider() {
         PropertyScanner propertyScanner = new LivedocPropertyScannerWrapper(new FieldPropertyScanner());
-        return new TemplateProvider(propertyScanner);
+        return new TemplateProvider(propertyScanner, c -> true);
     }
 }

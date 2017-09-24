@@ -118,7 +118,7 @@ public class LivedocReaderBuilder {
     }
 
     private static TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
-        return new TemplateProvider(propertyScanner);
+        return new TemplateProvider(propertyScanner, TypePredicates.IS_BASIC_TYPE.negate());
     }
 
     private GlobalDocReader getDefaultGlobalReader() {

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
@@ -31,12 +32,18 @@ public class TemplateProvider {
 
     private final PropertyScanner scanner;
 
-    public TemplateProvider(PropertyScanner scanner) {
+    private final Predicate<Class<?>> filter;
+
+    public TemplateProvider(PropertyScanner scanner, Predicate<Class<?>> filter) {
         this.scanner = scanner;
+        this.filter = filter;
         this.templates = new HashMap<>();
     }
 
     public Object getTemplate(Class<?> type) {
+        if (!filter.test(type)) {
+            return null;
+        }
         return getTemplate(type, new HashSet<>());
     }
 
