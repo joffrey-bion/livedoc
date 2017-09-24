@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -152,7 +152,7 @@ public class LivedocTypeBuilderTest {
 
     @ApiObject(name = "fooPojo", group = "foo")
     private class FooPojo<K> {
-        @ApiObjectField
+        @ApiObjectProperty
         private K fooField;
     }
 

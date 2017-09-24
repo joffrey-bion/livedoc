@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 
@@ -79,7 +79,7 @@ public class TemplateProvider {
     }
 
     private static Property overrideProperty(Property property) {
-        ApiObjectField ann = property.getAccessibleObject().getAnnotation(ApiObjectField.class);
+        ApiObjectProperty ann = property.getAccessibleObject().getAnnotation(ApiObjectProperty.class);
         if (ann == null) {
             return property; // no override
         }
@@ -92,7 +92,7 @@ public class TemplateProvider {
     }
 
     private static String getName(Property property) {
-        ApiObjectField ann = property.getAccessibleObject().getAnnotation(ApiObjectField.class);
+        ApiObjectProperty ann = property.getAccessibleObject().getAnnotation(ApiObjectProperty.class);
         if (ann != null && !ann.name().isEmpty()) {
             return ann.name();
         }

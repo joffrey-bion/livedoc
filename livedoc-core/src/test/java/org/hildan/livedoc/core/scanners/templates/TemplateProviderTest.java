@@ -1,18 +1,16 @@
 package org.hildan.livedoc.core.scanners.templates;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static org.junit.Assert.*;
 
 public class TemplateProviderTest {
 
@@ -87,10 +85,10 @@ public class TemplateProviderTest {
     @ApiObject(name = "unordered")
     static class Unordered {
 
-        @ApiObjectField(name = "xField")
+        @ApiObjectProperty(name = "xField")
         public String x;
 
-        @ApiObjectField(name = "aField")
+        @ApiObjectProperty(name = "aField")
         public String a;
 
     }
@@ -98,13 +96,13 @@ public class TemplateProviderTest {
     @ApiObject(name = "ordered")
     static class Ordered {
 
-        @ApiObjectField(name = "bField", order = 2)
+        @ApiObjectProperty(name = "bField", order = 2)
         public String b;
 
-        @ApiObjectField(name = "xField", order = 1)
+        @ApiObjectProperty(name = "xField", order = 1)
         public String x;
 
-        @ApiObjectField(name = "aField", order = 2)
+        @ApiObjectProperty(name = "aField", order = 2)
         public String a;
     }
 

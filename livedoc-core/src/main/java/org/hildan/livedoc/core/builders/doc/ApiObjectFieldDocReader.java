@@ -1,6 +1,6 @@
 package org.hildan.livedoc.core.builders.doc;
 
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
@@ -23,7 +23,7 @@ public class ApiObjectFieldDocReader {
         String[] allowedvalues = getAllowedValues(property);
         apiFieldDoc.setAllowedvalues(allowedvalues);
 
-        ApiObjectField annotation = property.getAccessibleObject().getAnnotation(ApiObjectField.class);
+        ApiObjectProperty annotation = property.getAccessibleObject().getAnnotation(ApiObjectProperty.class);
         if (annotation != null) {
             apiFieldDoc.setName(BeanUtils.maybeOverridden(annotation.name(), property.getName()));
             apiFieldDoc.setDescription(annotation.description());

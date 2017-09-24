@@ -3,23 +3,23 @@ package org.hildan.livedoc.core.test.pojo;
 import java.util.Map;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 
 @ApiObject(name = "child")
 public class Child extends Parent {
 
-    @ApiObjectField(description = "the test age")
+    @ApiObjectProperty(description = "the test age")
     @ApiVersion(since = "1.0")
     private Integer age;
 
-    @ApiObjectField(description = "the test games")
+    @ApiObjectProperty(description = "the test games")
     private Long[] games;
 
-    @ApiObjectField(description = "the scores for each game")
+    @ApiObjectProperty(description = "the scores for each game")
     private Map<String, Integer> scores;
 
-    @ApiObjectField(name = "gender", description = "the gender of this person")
+    @ApiObjectProperty(name = "gender", description = "the gender of this person")
     @ApiVersion(since = "1.2")
     private Gender gender;
 

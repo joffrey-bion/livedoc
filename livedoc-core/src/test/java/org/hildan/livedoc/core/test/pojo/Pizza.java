@@ -1,15 +1,15 @@
 package org.hildan.livedoc.core.test.pojo;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 
 @ApiObject(name = "customPizzaObject", group = "Restaurant")
 public class Pizza extends Parent {
 
-    @ApiObjectField(description = "the cost of this pizza")
+    @ApiObjectProperty(description = "the cost of this pizza")
     private Float price;
 
-    @ApiObjectField(description = "the topping of this pizza")
+    @ApiObjectProperty(description = "the topping of this pizza")
     private String[] topping;
 
 }

@@ -1,12 +1,12 @@
 package org.hildan.livedoc.core.test.pojo;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 
 @ApiObject
 public interface PojoInterface {
 
-    @ApiObjectField
+    @ApiObjectProperty
     Integer id = 0;
 
 }

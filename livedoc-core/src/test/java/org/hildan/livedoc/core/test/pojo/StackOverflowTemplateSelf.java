@@ -1,13 +1,13 @@
 package org.hildan.livedoc.core.test.pojo;
 
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 
 public class StackOverflowTemplateSelf {
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Integer id;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private StackOverflowTemplateSelf ooo;
 
 }

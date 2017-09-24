@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.pojo.ApiObjectDoc;
 import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
@@ -32,52 +32,52 @@ public class ApiObjectReaderTest {
     @ApiVersion(since = "1.0", until = "2.12")
     private class TestObject {
 
-        @ApiObjectField(description = "the test name", required = true)
+        @ApiObjectProperty(description = "the test name", required = true)
         private String name;
 
-        @ApiObjectField(description = "the test age", required = false)
+        @ApiObjectProperty(description = "the test age", required = false)
         private Integer age;
 
-        @ApiObjectField(description = "the test avg")
+        @ApiObjectProperty(description = "the test avg")
         private Long avg;
 
-        @ApiObjectField(description = "the test map")
+        @ApiObjectProperty(description = "the test map")
         private Map<String, Integer> map;
 
         @SuppressWarnings("rawtypes")
-        @ApiObjectField(
+        @ApiObjectProperty(
                 description = "an unparametrized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
         private List unparametrizedList;
 
-        @ApiObjectField(description = "a parametrized list")
+        @ApiObjectProperty(description = "a parametrized list")
         private List<String> parametrizedList;
 
-        @ApiObjectField(description = "a wildcard parametrized list to test https://github"
+        @ApiObjectProperty(description = "a wildcard parametrized list to test https://github"
                 + ".com/fabiomaffioletti/jsondoc/issues/5")
         private List<?> wildcardParametrized;
 
-        @ApiObjectField(description = "a Long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
+        @ApiObjectProperty(description = "a Long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
         private Long[] LongArray;
 
-        @ApiObjectField(description = "a long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
+        @ApiObjectProperty(description = "a long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
         private long[] longArray;
 
-        @ApiObjectField(name = "foo_bar",
+        @ApiObjectProperty(name = "foo_bar",
                 description = "a property to test https://github.com/fabiomaffioletti/jsondoc/pull/31", required = true)
         private String fooBar;
 
-        @ApiObjectField(name = "version", description = "a property to test version since and until", required = true)
+        @ApiObjectProperty(name = "version", description = "a property to test version since and until", required = true)
         @ApiVersion(since = "1.0", until = "2.12")
         private String version;
 
-        @ApiObjectField(name = "test-enum", description = "a test enum")
+        @ApiObjectProperty(name = "test-enum", description = "a test enum")
         private TestEnum testEnum;
 
-        @ApiObjectField(name = "test-enum-with-allowed-values", description = "a test enum with allowed values",
+        @ApiObjectProperty(name = "test-enum-with-allowed-values", description = "a test enum with allowed values",
                 allowedvalues = {"A", "B", "C"})
         private TestEnum testEnumWithAllowedValues;
 
-        @ApiObjectField(name = "orderedProperty", order = 1)
+        @ApiObjectProperty(name = "orderedProperty", order = 1)
         private String orderedProperty;
     }
 
@@ -193,7 +193,7 @@ public class ApiObjectReaderTest {
     @SuppressWarnings("unused")
     @ApiObject
     private class NoNameApiObject {
-        @ApiObjectField
+        @ApiObjectProperty
         private Long id;
     }
 
@@ -207,10 +207,10 @@ public class ApiObjectReaderTest {
     @SuppressWarnings("unused")
     @ApiObject
     private class TemplateApiObject {
-        @ApiObjectField
+        @ApiObjectProperty
         private Long id;
 
-        @ApiObjectField
+        @ApiObjectProperty
         private String name;
     }
 

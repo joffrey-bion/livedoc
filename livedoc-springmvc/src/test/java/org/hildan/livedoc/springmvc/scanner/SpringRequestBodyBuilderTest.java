@@ -1,7 +1,7 @@
 package org.hildan.livedoc.springmvc.scanner;
 
 import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
@@ -34,10 +34,10 @@ public class SpringRequestBodyBuilderTest {
     @SuppressWarnings("unused")
     @ApiObject
     private class Body {
-        @ApiObjectField
+        @ApiObjectProperty
         private String name;
 
-        @ApiObjectField
+        @ApiObjectProperty
         private Integer age;
     }
 

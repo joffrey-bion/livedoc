@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiObjectField {
+public @interface ApiObjectProperty {
 
     /**
      * A drescription of what the field is

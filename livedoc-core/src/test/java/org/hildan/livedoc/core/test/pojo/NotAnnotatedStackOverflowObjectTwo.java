@@ -1,6 +1,6 @@
 package org.hildan.livedoc.core.test.pojo;
 
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 
 public class NotAnnotatedStackOverflowObjectTwo {
 
@@ -8,7 +8,7 @@ public class NotAnnotatedStackOverflowObjectTwo {
 
     private String name;
 
-    @ApiObjectField(processtemplate = false)
+    @ApiObjectProperty(processtemplate = false)
     private NotAnnotatedStackOverflowObjectOne typeOne;
 
 }

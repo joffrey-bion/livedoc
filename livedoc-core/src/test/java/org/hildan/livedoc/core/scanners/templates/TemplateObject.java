@@ -4,81 +4,81 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hildan.livedoc.core.annotations.ApiObjectField;
+import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.test.pojo.Gender;
 
 public class TemplateObject {
 
-    @ApiObjectField(name = "my_id")
+    @ApiObjectProperty(name = "my_id")
     private Integer id;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private String name;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Gender gender;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private boolean bool;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private int idint;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private long idlong;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private char namechar;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private String[] stringarr;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Integer[] integerarr;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private List untypedlist;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private List<?> wildcardlist;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private List<Long> longlist;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private List<String> stringlist;
 
-    @ApiObjectField(name = "sub_obj", processtemplate = false)
+    @ApiObjectProperty(name = "sub_obj", processtemplate = false)
     private TemplateSubObject subObj = new TemplateSubObject();
 
-    @ApiObjectField
+    @ApiObjectProperty
     private List<TemplateSubObject> subobjlist = new ArrayList<>();
 
-    @ApiObjectField
+    @ApiObjectProperty
     private int[] intarr;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private int[][] intarrarr;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private String[][] stringarrarr;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private TemplateSubSubObject[] subsubobjarr;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Map map;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Map<String, Integer> mapstringinteger;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Map<TemplateSubObject, Integer> mapsubobjinteger;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Map<String, TemplateSubObject> mapintegersubobj;
 
-    @ApiObjectField
+    @ApiObjectProperty
     private Map<String, List<TemplateSubObject>> mapintegerlistsubsubobj;
 
 }
