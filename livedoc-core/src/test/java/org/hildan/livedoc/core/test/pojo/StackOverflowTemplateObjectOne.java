@@ -10,7 +10,7 @@ public class StackOverflowTemplateObjectOne {
     @ApiObjectProperty(description = "The user firstname")
     private String firstname;
 
-    @ApiObjectProperty(description = "The user's default group", processtemplate = false)
+    @ApiObjectProperty(description = "The user's default group")
     private StackOverflowTemplateObjectTwo defaultgroup;
 
 }

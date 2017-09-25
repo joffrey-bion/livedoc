@@ -24,12 +24,13 @@ public class Test1Controller {
             consumes = {"application/json"}, produces = {"application/json"})
     @ApiVersion(since = "1.0")
     @ApiHeaders(headers = {@ApiHeader(name = "application_id", description = "The application's ID")})
-    @ApiErrors(apierrors = {@ApiError(code = "1000", description = "A test error #1"),
-            @ApiError(code = "2000", description = "A test error #2")})
-    public @ApiResponseObject
-    List<Integer> get(@ApiPathParam(name = "id", description = "abc") String id,
+    @ApiErrors(apierrors = {
+            @ApiError(code = "1000", description = "A test error #1"),
+            @ApiError(code = "2000", description = "A test error #2")
+    })
+    @ApiResponseObject
+    public List<Integer> get(@ApiPathParam(name = "id", description = "abc") String id,
             @ApiPathParam(name = "count", description = "xyz") Integer count, @ApiBodyObject String name) {
         return null;
     }
-
 }

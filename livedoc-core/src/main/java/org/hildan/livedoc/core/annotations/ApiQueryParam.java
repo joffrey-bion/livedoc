@@ -11,7 +11,6 @@ import org.hildan.livedoc.core.builders.types.LivedocDefaultType;
 /**
  * This annotation is to be used inside an annotation of type ApiParams
  *
- * @author Fabio Maffioletti
  * @see ApiParams
  */
 @Documented
@@ -22,53 +21,38 @@ public @interface ApiQueryParam {
 
     /**
      * The name of the url parameter, as expected by the server
-     *
-     * @return
      */
-    public String name() default "";
+    String name() default "";
 
     /**
      * A description of what the parameter is needed for
-     *
-     * @return
      */
-    public String description() default "";
+    String description() default "";
 
     /**
      * Whether this parameter is required or not. Default value is true
-     *
-     * @return
      */
-    public boolean required() default true;
+    boolean required() default true;
 
     /**
-     * An array representing the allowed values this parameter can have. Default value is *
-     *
-     * @return
+     * An array representing the allowed values this parameter can have
      */
-    public String[] allowedvalues() default {};
+    String[] allowedvalues() default {};
 
     /**
      * The format from the parameter (ex. yyyy-MM-dd HH:mm:ss, ...)
-     *
-     * @return
      */
-    public String format() default "";
+    String format() default "";
 
     /**
      * The default value for this parameter, if it is not passed in the query string
-     *
-     * @return
      */
-    public String defaultvalue() default "";
+    String defaultvalue() default "";
 
     /**
      * Specify this element if you need to use the ApiParam annotation on the method declaration and not inside the
      * method's signature. This is to be able to document old style servlets' methods like doGet and doPost. This
      * element, even if specified, is not taken into account when the annotation is put inside the method's signature.
-     *
-     * @return
      */
-    public Class<?> clazz() default LivedocDefaultType.class;
-
+    Class<?> clazz() default LivedocDefaultType.class;
 }

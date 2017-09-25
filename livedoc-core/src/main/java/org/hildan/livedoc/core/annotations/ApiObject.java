@@ -12,8 +12,6 @@ import org.hildan.livedoc.core.pojo.ApiVisibility;
 /**
  * This annotation is to be used on your object classes and represents an object used for communication between clients
  * and server
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = ElementType.TYPE)
@@ -23,47 +21,35 @@ public @interface ApiObject {
     /**
      * The name of the object, to be referenced by other annotations with an "object" attribute
      *
-     * @return
      * @see ApiBodyObject
      * @see ApiResponseObject
      */
-    public String name() default "";
+    String name() default "";
 
     /**
      * A description of what the object contains or represents
-     *
-     * @return
      */
-    public String description() default "";
+    String description() default "";
 
     /**
      * Whether to build the json documentation for this object or not. Default value is true
-     *
-     * @return
      */
-    public boolean show() default true;
+    boolean show() default true;
 
     /**
-     * With this it is possible to specify the logical grouping of this object. For example, if you have objects like
-     * "city", "country", "continent", "author" and "book", you can say that "city" "country" and "continent" are
-     * grouped in the "Geography" group, and "author" and "book" are grouped in the "Library" group.
-     *
-     * @return
+     * The logical group (or category) of this object. This allows to group some types together in the documentation.
+     * For example, objects like "city", "country", "continent" can be grouped under "Geography", and "author" and
+     * "book" under "Library", for a better readability of the whole documentation.
      */
-    public String group() default "";
+    String group() default "";
 
     /**
      * Indicates the visibility of the object
-     *
-     * @return
      */
-    public ApiVisibility visibility() default ApiVisibility.UNDEFINED;
+    ApiVisibility visibility() default ApiVisibility.UNDEFINED;
 
     /**
      * Indicates the stage of development or release
-     *
-     * @return
      */
-    public ApiStage stage() default ApiStage.UNDEFINED;
-
+    ApiStage stage() default ApiStage.UNDEFINED;
 }

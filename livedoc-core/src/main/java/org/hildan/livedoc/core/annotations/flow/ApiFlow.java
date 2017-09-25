@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  * This annotation is to be used on a method (typically on a class dedicated to flow description) and contains an array
  * of ApiFlowStep
  *
- * @author Fabio Maffioletti
  * @see ApiFlowStep
  */
 @Documented
@@ -20,40 +19,31 @@ public @interface ApiFlow {
 
     /**
      * The name of the flow
-     *
-     * @return
      */
-    public String name();
+    String name();
 
     /**
      * The description of the flow
-     *
-     * @return
      */
-    public String description() default "";
+    String description() default "";
 
     /**
      * The preconditions for this flow (example: "the user must be logged", "the user must have an administration
      * role")
-     *
-     * @return
      */
-    public String[] preconditions() default {};
+    String[] preconditions() default {};
 
     /**
      * An array of ApiFlowStep annotations
      *
-     * @return
      * @see ApiFlowStep
      */
-    public ApiFlowStep[] steps() default {};
+    ApiFlowStep[] steps() default {};
 
     /**
      * With this it is possible to specify the logical grouping of this flow. See the same property in the @Api
      * annotation.
-     *
-     * @return
      */
-    public String group() default "";
+    String group() default "";
 
 }

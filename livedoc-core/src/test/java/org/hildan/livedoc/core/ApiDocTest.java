@@ -46,88 +46,89 @@ public class ApiDocTest {
     private class TestController {
 
         @ApiMethod(path = "/name", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        String name(@ApiPathParam(name = "name") String name, @ApiBodyObject String body) {
+        @ApiResponseObject
+        public String name(@ApiPathParam(name = "name") String name, @ApiBodyObject String body) {
             return null;
         }
 
         @ApiMethod(path = "/age", verb = ApiVerb.GET, description = "a-test-method", responsestatuscode = "204")
-        public @ApiResponseObject
-        Integer age(@ApiPathParam(name = "age") Integer age, @ApiBodyObject Integer body) {
+        @ApiResponseObject
+        public Integer age(@ApiPathParam(name = "age") Integer age, @ApiBodyObject Integer body) {
             return null;
         }
 
         @ApiMethod(path = "/avg", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        Long avg(@ApiPathParam(name = "avg") Long avg, @ApiBodyObject Long body) {
+        @ApiResponseObject
+        public Long avg(@ApiPathParam(name = "avg") Long avg, @ApiBodyObject Long body) {
             return null;
         }
 
         @ApiMethod(path = "/map", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        Map<String, Integer> map(@ApiPathParam(name = "map") Map<String, Integer> map,
+        @ApiResponseObject
+        public Map<String, Integer> map(@ApiPathParam(name = "map") Map<String, Integer> map,
                 @ApiBodyObject Map<String, Integer> body) {
             return null;
         }
 
         @SuppressWarnings("rawtypes")
         @ApiMethod(path = "/unparametrizedList", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        List unparametrizedList(@ApiPathParam(name = "unparametrizedList") List unparametrizedList,
+        @ApiResponseObject
+        public List unparametrizedList(@ApiPathParam(name = "unparametrizedList") List unparametrizedList,
                 @ApiBodyObject List body) {
             return null;
         }
 
         @ApiMethod(path = "/parametrizedList", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        List<String> parametrizedList(@ApiPathParam(name = "parametrizedList") List<String> parametrizedList,
+        @ApiResponseObject
+        public List<String> parametrizedList(@ApiPathParam(name = "parametrizedList") List<String> parametrizedList,
                 @ApiBodyObject List<String> body) {
             return null;
         }
 
         @ApiMethod(path = "/wildcardParametrizedList", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        List<?> wildcardParametrizedList(
+        @ApiResponseObject
+        public List<?> wildcardParametrizedList(
                 @ApiPathParam(name = "wildcardParametrizedList") List<?> wildcardParametrizedList,
                 @ApiBodyObject List<?> body) {
             return null;
         }
 
         @ApiMethod(path = "/LongArray", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        Long[] LongArray(@ApiPathParam(name = "LongArray") Long[] LongArray, @ApiBodyObject Long[] body) {
+        @ApiResponseObject
+        public Long[] longObjArray(@ApiPathParam(name = "LongArray") Long[] longObjArray, @ApiBodyObject Long[] body) {
             return null;
         }
 
         @ApiMethod(path = "/longArray", verb = ApiVerb.GET, description = "a-test-method")
-        public @ApiResponseObject
-        long[] longArray(@ApiPathParam(name = "longArray") long[] LongArray, @ApiBodyObject long[] body) {
+        @ApiResponseObject
+        public long[] longArray(@ApiPathParam(name = "longArray") long[] longArray, @ApiBodyObject long[] body) {
             return null;
         }
 
         @ApiMethod(path = "/version", verb = ApiVerb.GET, description = "a-test-method for api version feature")
         @ApiVersion(since = "1.0", until = "2.12")
-        public @ApiResponseObject
-        String version(@ApiPathParam(name = "version") String version, @ApiBodyObject String body) {
+        @ApiResponseObject
+        public String version(@ApiPathParam(name = "version") String version, @ApiBodyObject String body) {
             return null;
         }
 
         @ApiMethod(path = "/child", description = "A method returning a child", verb = ApiVerb.GET)
-        public @ApiResponseObject
-        Child child(@ApiPathParam(name = "child") Child child, @ApiBodyObject Child body) {
+        @ApiResponseObject
+        public Child child(@ApiPathParam(name = "child") Child child, @ApiBodyObject Child body) {
             return null;
         }
 
         @ApiMethod(path = "/pizza", description = "A method returning a pizza", verb = ApiVerb.GET)
-        public @ApiResponseObject
-        Pizza pizza(@ApiPathParam(name = "pizza") Pizza pizza, @ApiBodyObject Pizza body) {
+        @ApiResponseObject
+        public Pizza pizza(@ApiPathParam(name = "pizza") Pizza pizza, @ApiBodyObject Pizza body) {
             return null;
         }
 
         @ApiMethod(path = "/multiple-request-methods", verb = {ApiVerb.GET, ApiVerb.POST},
                 description = "a-test-method-with-multiple-request-methods")
-        public @ApiResponseObject
-        Integer multipleRequestMethods(@ApiPathParam(name = "multiple-request-methods") Integer multipleRequestMethods,
+        @ApiResponseObject
+        public Integer multipleRequestMethods(
+                @ApiPathParam(name = "multiple-request-methods") Integer multipleRequestMethods,
                 @ApiBodyObject Integer body) {
             return null;
         }
@@ -138,9 +139,9 @@ public class ApiDocTest {
     public void testApiErrorsDoc() {
         ApiDoc apiDoc = buildDoc(Test3Controller.class, MethodDisplay.URI);
 
-        final List<ApiMethodDoc> methods = apiDoc.getMethods();
-        final ApiMethodDoc apiMethodDoc = methods.get(0);
-        final List<ApiErrorDoc> apiErrors = apiMethodDoc.getApierrors();
+        List<ApiMethodDoc> methods = apiDoc.getMethods();
+        ApiMethodDoc apiMethodDoc = methods.get(0);
+        List<ApiErrorDoc> apiErrors = apiMethodDoc.getApierrors();
 
         Assert.assertEquals(1, methods.size());
         Assert.assertEquals(3, apiErrors.size());
@@ -201,8 +202,7 @@ public class ApiDocTest {
 
             if (apiMethodDoc.getPath().contains("/map")) {
                 Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb().iterator().next());
-                Assert.assertEquals("Map<String, Integer>",
-                        apiMethodDoc.getResponse().getType().getOneLineText());
+                Assert.assertEquals("Map<String, Integer>", apiMethodDoc.getResponse().getType().getOneLineText());
                 Assert.assertEquals("Map<String, Integer>", apiMethodDoc.getBodyobject().getType().getOneLineText());
                 for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
                     if (apiParamDoc.getName().equals("Map")) {
@@ -450,9 +450,11 @@ public class ApiDocTest {
         }
 
         @ApiMethod(path = "/oldStyleMixed", description = "A method params on method level", verb = ApiVerb.GET)
-        @ApiParams(pathparams = {@ApiPathParam(name = "name", clazz = String.class),
-                @ApiPathParam(name = "age", clazz = Integer.class), @ApiPathParam(name = "undefined")},
-                queryparams = {@ApiQueryParam(name = "q", clazz = String.class, defaultvalue = "qTest")})
+        @ApiParams(pathparams = {
+                @ApiPathParam(name = "name", clazz = String.class),
+                @ApiPathParam(name = "age", clazz = Integer.class),
+                @ApiPathParam(name = "undefined")
+        }, queryparams = {@ApiQueryParam(name = "q", clazz = String.class, defaultvalue = "qTest")})
         public String oldStyleMixed(@ApiPathParam(name = "age") Integer age) {
             return null;
         }
@@ -551,7 +553,7 @@ public class ApiDocTest {
     private interface InterfaceController {
 
         @ApiMethod(path = "/interface", verb = ApiVerb.GET)
-        public String inter();
+        String inter();
     }
 
     @SuppressWarnings("unused")
@@ -602,20 +604,20 @@ public class ApiDocTest {
     private class TestMultipleParamsWithSameMethod {
 
         @ApiMethod(path = "/search", description = "search one by title")
-        public @ApiResponseObject
-        List findByTitle(@ApiQueryParam(name = "title") String title) {
+        @ApiResponseObject
+        public List findByTitle(@ApiQueryParam(name = "title") String title) {
             return null;
         }
 
         @ApiMethod(path = "/search", description = "search one by content")
-        public @ApiResponseObject
-        List findByContent(@ApiQueryParam(name = "content") String content) {
+        @ApiResponseObject
+        public List findByContent(@ApiQueryParam(name = "content") String content) {
             return null;
         }
 
         @ApiMethod(path = "/search", description = "search one by content and field")
-        public @ApiResponseObject
-        List findByContent(@ApiQueryParam(name = "content") String content,
+        @ApiResponseObject
+        public List findByContent(@ApiQueryParam(name = "content") String content,
                 @ApiQueryParam(name = "field") String field) {
             return null;
         }
@@ -629,8 +631,10 @@ public class ApiDocTest {
     }
 
     @Api(description = "ApiHeadersController", name = "ApiHeadersController")
-    @ApiHeaders(headers = {@ApiHeader(name = "H1", description = "h1-description"),
-            @ApiHeader(name = "H2", description = "h2-description")})
+    @ApiHeaders(headers = {
+            @ApiHeader(name = "H1", description = "h1-description"),
+            @ApiHeader(name = "H2", description = "h2-description")
+    })
     private class ApiHeadersController {
 
         @ApiMethod(path = "/api-headers-controller-method-one")
@@ -639,10 +643,10 @@ public class ApiDocTest {
         }
 
         @ApiMethod(path = "/api-headers-controller-method-two")
-        @ApiHeaders(headers = {@ApiHeader(name = "H4", description = "h4-description"),
+        @ApiHeaders(headers = {
+                @ApiHeader(name = "H4", description = "h4-description"),
+                // duplicate H1 should be ignored (already on class level)
                 @ApiHeader(name = "H1", description = "h1-description")
-                // this is a duplicate of the one at the class level, it will not be taken into account when building
-                // the doc
         })
         public void apiHeadersMethodTwo() {
 

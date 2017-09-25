@@ -8,6 +8,8 @@ import org.hildan.livedoc.core.annotations.ApiError;
 import org.hildan.livedoc.core.annotations.ApiErrors;
 import org.hildan.livedoc.core.pojo.ApiErrorDoc;
 
+import static java.util.stream.Collectors.toList;
+
 public class ApiErrorDocReader {
 
     public static List<ApiErrorDoc> build(Method method) {
@@ -17,23 +19,23 @@ public class ApiErrorDocReader {
         ApiErrors typeAnnotation = method.getDeclaringClass().getAnnotation(ApiErrors.class);
 
         if (methodAnnotation != null) {
-            for (ApiError apiError : methodAnnotation.apierrors()) {
-                apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
-            }
+            apiMethodDocs.addAll(readApiErrorDocs(methodAnnotation));
         }
 
         if (typeAnnotation != null) {
-            for (final ApiError apiError : typeAnnotation.apierrors()) {
-
-                boolean isAlreadyDefined = apiMethodDocs.stream()
-                                                        .anyMatch(apiErrorDoc -> apiError.code()
-                                                                                         .equals(apiErrorDoc.getCode()));
-                if (!isAlreadyDefined) {
-                    apiMethodDocs.add(new ApiErrorDoc(apiError.code(), apiError.description()));
-                }
-            }
+            List<String> alreadyUsedCodes = apiMethodDocs.stream().map(ApiErrorDoc::getCode).collect(toList());
+            List<ApiErrorDoc> apiMethodDocs2 = readApiErrorDocs(typeAnnotation);
+            apiMethodDocs2.removeIf(errDoc -> alreadyUsedCodes.contains(errDoc.getCode()));
+            apiMethodDocs.addAll(apiMethodDocs2);
         }
         return apiMethodDocs;
     }
 
+    private static List<ApiErrorDoc> readApiErrorDocs(ApiErrors annotation) {
+        List<ApiErrorDoc> errorDocs = new ArrayList<>();
+        for (ApiError error : annotation.apierrors()) {
+            errorDocs.add(new ApiErrorDoc(error.code(), error.description()));
+        }
+        return errorDocs;
+    }
 }

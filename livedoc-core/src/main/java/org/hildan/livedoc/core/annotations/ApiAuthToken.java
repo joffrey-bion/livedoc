@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 /**
  * This annotation is to be used on your "service" class, for example controllers, or on exposed methods. It specifies
  * that the controller/method needs token authentication.
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = {ElementType.TYPE, ElementType.METHOD})
@@ -18,24 +16,17 @@ import java.lang.annotation.Target;
 public @interface ApiAuthToken {
 
     /**
-     * The role(s) a user must have to correctly access the annotated controller/method. Defaults to *
-     *
-     * @return
+     * The role(s) a user must have to correctly access the annotated controller/method. Defaults to '*'
      */
-    public String[] roles() default {"*"};
+    String[] roles() default {"*"};
 
     /**
      * A list of test tokens that can be used to test methods
-     *
-     * @return
      */
-    public String[] testtokens() default {};
+    String[] testtokens() default {};
 
     /**
      * The default scheme placed at the beginning of the Authorization header
-     *
-     * @return
      */
-    public String scheme() default "";
-
+    String scheme() default "";
 }

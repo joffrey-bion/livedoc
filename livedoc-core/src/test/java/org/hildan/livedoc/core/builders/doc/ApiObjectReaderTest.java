@@ -57,7 +57,7 @@ public class ApiObjectReaderTest {
         private List<?> wildcardParametrized;
 
         @ApiObjectProperty(description = "a Long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
-        private Long[] LongArray;
+        private Long[] longObjArray;
 
         @ApiObjectProperty(description = "a long array to test https://github.com/fabiomaffioletti/jsondoc/issues/27")
         private long[] longArray;
@@ -126,9 +126,9 @@ public class ApiObjectReaderTest {
                 Assert.assertEquals("Map<String, Integer>", fieldDoc.getType().getOneLineText());
             }
 
-            if (fieldDoc.getName().equals("LongArray")) {
+            if (fieldDoc.getName().equals("longObjArray")) {
                 Assert.assertEquals("Long[]", fieldDoc.getType().getOneLineText());
-                Assert.assertEquals("LongArray", fieldDoc.getName());
+                Assert.assertEquals("longObjArray", fieldDoc.getName());
                 Assert.assertEquals("false", fieldDoc.getRequired());
             }
 

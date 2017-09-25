@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.reflect.TypeToken;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,7 +17,7 @@ public class FieldPropertyScannerTest {
     private PropertyScanner scanner;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         scanner = new FieldPropertyScanner();
     }
 
@@ -34,13 +35,13 @@ public class FieldPropertyScannerTest {
 
         public String stringField;
 
+        public transient Long transientField;
+
         int intField;
 
         private Object objField;
 
         private List<Integer> genericField;
-
-        public transient Long transientField;
 
         private transient double transientField2;
     }

@@ -41,7 +41,7 @@ public class ApiMethodDocReader {
     private static ApiVisibility getApiVisibility(ApiDoc parentApiDoc, ApiMethod methodAnnotation) {
         ApiVisibility visibility = methodAnnotation.visibility();
         if (visibility.equals(ApiVisibility.UNDEFINED)) {
-           return parentApiDoc.getVisibility();
+            return parentApiDoc.getVisibility();
         }
         return visibility;
     }
@@ -49,9 +49,8 @@ public class ApiMethodDocReader {
     private static ApiStage getApiStage(ApiDoc parentApiDoc, ApiMethod methodAnnotation) {
         ApiStage stage = methodAnnotation.stage();
         if (stage.equals(ApiStage.UNDEFINED)) {
-           return parentApiDoc.getStage();
+            return parentApiDoc.getStage();
         }
         return stage;
     }
-
 }

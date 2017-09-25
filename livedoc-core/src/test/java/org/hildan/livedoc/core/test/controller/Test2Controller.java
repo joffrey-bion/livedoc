@@ -22,8 +22,8 @@ public class Test2Controller {
     @ApiVersion(since = "1.0", until = "2.12")
     @ApiAuthBasic(roles = "ROLE_USER",
             testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
-    public @ApiResponseObject
-    String save(@ApiBodyObject List<String> names) {
+    @ApiResponseObject
+    public String save(@ApiBodyObject List<String> names) {
         return null;
     }
 
@@ -32,8 +32,8 @@ public class Test2Controller {
     @ApiVersion(since = "1.0", until = "2.12")
     @ApiAuthBasic(roles = "ROLE_USER",
             testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
-    public @ApiResponseObject
-    String update(@ApiBodyObject List<String> names) {
+    @ApiResponseObject
+    public String update(@ApiBodyObject List<String> names) {
         return null;
     }
 
@@ -42,51 +42,50 @@ public class Test2Controller {
     @ApiVersion(since = "1.0", until = "2.12")
     @ApiAuthBasic(roles = "ROLE_USER",
             testusers = {@ApiAuthBasicUser(username = "test-username", password = "test-password")})
-    public @ApiResponseObject
-    String patch(@ApiBodyObject Map<String, Object> properties) {
+    @ApiResponseObject
+    public String patch(@ApiBodyObject Map<String, Object> properties) {
         return null;
     }
 
     @ApiMethod(path = "/testMap", verb = ApiVerb.GET, description = "map method for controller 2",
             consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    public @ApiResponseObject
-    Map<String, Parent> map(@ApiBodyObject List<String> names) {
+    @ApiResponseObject
+    public Map<String, Parent> map(@ApiBodyObject List<String> names) {
         return null;
     }
 
     @ApiMethod(path = "/testMapBody", verb = ApiVerb.GET, description = "map body method for controller 2",
             consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    public @ApiResponseObject
-    String map(@ApiBodyObject Map<String, Parent> names) {
+    @ApiResponseObject
+    public String map(@ApiBodyObject Map<String, Parent> names) {
         return null;
     }
 
     @ApiMethod(path = "/testDelete", verb = ApiVerb.DELETE, description = "delete test method for controller 2",
             consumes = {}, produces = {"application/json", "application/xml"})
-    public @ApiResponseObject
-    void delete(@ApiPathParam(name = "parent", description = "A parent object") Parent parent) {
+    @ApiResponseObject
+    public void delete(@ApiPathParam(name = "parent", description = "A parent object") Parent parent) {
 
     }
 
     @ApiMethod(path = "/testOptions", verb = ApiVerb.OPTIONS, description = "options test method for controller 2",
             consumes = {}, produces = {"application/json", "application/xml"})
-    public @ApiResponseObject
-    String options() {
+    @ApiResponseObject
+    public String options() {
         return "options";
     }
 
     @ApiMethod(path = "/testHead", verb = ApiVerb.HEAD, description = "head test method for controller 2",
             consumes = {}, produces = {"application/json", "application/xml"})
-    public @ApiResponseObject
-    String head() {
+    @ApiResponseObject
+    public String head() {
         return "head";
     }
 
     @ApiMethod(path = "/testtrace", verb = ApiVerb.TRACE, description = "trace test method for controller 2",
             consumes = {}, produces = {"application/json", "application/xml"})
-    public @ApiResponseObject
-    String trace() {
+    @ApiResponseObject
+    public String trace() {
         return "trace";
     }
-
 }

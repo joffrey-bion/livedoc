@@ -26,6 +26,12 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
 
     private String group;
 
+    public ApiFlowDoc() {
+        this.preconditions = new LinkedList<>();
+        this.steps = new LinkedList<>();
+        this.methods = new LinkedList<>();
+    }
+
     public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation,
             Map<String, ? extends ApiMethodDoc> apiMethodDocsById) {
         ApiFlowDoc apiFlowDoc = new ApiFlowDoc();
@@ -41,12 +47,6 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
             apiFlowDoc.addMethod(apiFlowStepDoc.getApimethoddoc());
         }
         return apiFlowDoc;
-    }
-
-    public ApiFlowDoc() {
-        this.preconditions = new LinkedList<>();
-        this.steps = new LinkedList<>();
-        this.methods = new LinkedList<>();
     }
 
     public String getName() {

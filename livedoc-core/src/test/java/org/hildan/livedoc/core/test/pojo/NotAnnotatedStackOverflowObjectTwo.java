@@ -8,7 +8,7 @@ public class NotAnnotatedStackOverflowObjectTwo {
 
     private String name;
 
-    @ApiObjectProperty(processtemplate = false)
+    @ApiObjectProperty
     private NotAnnotatedStackOverflowObjectOne typeOne;
 
 }

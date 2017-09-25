@@ -25,9 +25,12 @@ public class DocMerger {
      * Overrides each property of the given target if the given source has a meaningful (non default) value for the
      * property.
      *
-     * @param overridingSource the object to take
+     * @param overridingSource
+     *         the object to read the property values from
      * @param baseTarget
+     *         the object to set properties on (if there is something meaningful to put in place of the previous value)
      * @param <T>
+     *         the type of objects to manipulate
      */
     public <T> void merge(T overridingSource, T baseTarget) {
         assert overridingSource != null;
@@ -63,7 +66,7 @@ public class DocMerger {
     }
 
     private static boolean isOfBasicType(Object obj) {
-        final Class<?> clazz = obj.getClass();
+        Class<?> clazz = obj.getClass();
         return TypePredicates.isBasicType(clazz) || clazz.isArray();
     }
 

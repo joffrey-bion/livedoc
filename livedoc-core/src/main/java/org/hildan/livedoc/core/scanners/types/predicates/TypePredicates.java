@@ -7,11 +7,6 @@ import java.util.function.Predicate;
 
 public class TypePredicates {
 
-    private static final Class<?>[] PRIMITIVE_WRAPPERS = {Boolean.class, Byte.class, Short.class, Character.class,
-            Integer.class, Long.class, Float.class, Double.class};
-
-    private static final Class<?>[] CONTAINERS = {Collection.class, Map.class};
-
     /**
      * A predicate that matches simple classes like primitive types, primitive wrappers, strings and enums. It is
      * intended to be used as a type exploration filter because we don't want to explore the internal properties of
@@ -24,6 +19,11 @@ public class TypePredicates {
      * types, because the exact implementation of a collection doesn't matter once serialized.
      */
     public static final Predicate<Class<?>> IS_CONTAINER = TypePredicates::isContainer;
+
+    private static final Class<?>[] PRIMITIVE_WRAPPERS = {Boolean.class, Byte.class, Short.class, Character.class,
+            Integer.class, Long.class, Float.class, Double.class};
+
+    private static final Class<?>[] CONTAINERS = {Collection.class, Map.class};
 
     public static boolean isBasicType(Class<?> clazz) {
         return isPrimitiveOrWrapper(clazz) || isStringLike(clazz) || clazz.isEnum();

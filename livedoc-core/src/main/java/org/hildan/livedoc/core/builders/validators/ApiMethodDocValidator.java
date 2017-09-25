@@ -28,14 +28,14 @@ public class ApiMethodDocValidator {
 
     private static final String HINT_MISSING_METHOD_DESCRIPTION = "Add description to ApiMethod";
 
-    private static final String HINT_MISSING_METHOD_BODY_OBJECT = "Add annotation ApiBodyObject to document the "
-            + "expected body of the request";
+    private static final String HINT_MISSING_METHOD_BODY_OBJECT =
+            "Add annotation ApiBodyObject to document the " + "expected body of the request";
 
-    private static final String HINT_MISSING_METHOD_RESPONSE_OBJECT = "Add annotation ApiResponseObject to document "
-            + "the returned object";
+    private static final String HINT_MISSING_METHOD_RESPONSE_OBJECT =
+            "Add annotation ApiResponseObject to document " + "the returned object";
 
-    private static final String HINT_MISSING_METHOD_SUMMARY = "Method display set to SUMMARY, but summary info has "
-            + "not been specified";
+    private static final String HINT_MISSING_METHOD_SUMMARY =
+            "Method display set to SUMMARY, but summary info has " + "not been specified";
 
     private static final String MESSAGE_MISSING_METHOD_SUMMARY = "Missing documentation data: summary";
 

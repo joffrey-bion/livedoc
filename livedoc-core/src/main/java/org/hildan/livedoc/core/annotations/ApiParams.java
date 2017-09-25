@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation is to be used on your method and contains the path and query parameters to document.
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = ElementType.METHOD)
@@ -17,13 +15,12 @@ import java.lang.annotation.Target;
 public @interface ApiParams {
 
     /**
-     * An array of ApiQueryParam annotations
+     * An array of {@link ApiQueryParam} annotations
      */
-    public ApiQueryParam[] queryparams() default {};
+    ApiQueryParam[] queryparams() default {};
 
     /**
-     * An array of ApiPathParam annotations
+     * An array of {@link ApiPathParam} annotations
      */
-    public ApiPathParam[] pathparams() default {};
-
+    ApiPathParam[] pathparams() default {};
 }

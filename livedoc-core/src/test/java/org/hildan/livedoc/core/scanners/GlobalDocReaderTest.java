@@ -42,8 +42,10 @@ public class GlobalDocReaderTest {
         return reader.getApiGlobalDoc();
     }
 
-    @ApiGlobal(sections = {@ApiGlobalSection(title = "title",
-            paragraphs = {"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt"})})
+    @ApiGlobal(sections = {
+            @ApiGlobalSection(title = "title",
+                    paragraphs = {"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt"})
+    })
     private class Global {}
 
     @Test
@@ -56,10 +58,11 @@ public class GlobalDocReaderTest {
         Assert.assertEquals(3, sectionDoc.getParagraphs().size());
     }
 
-    @ApiGlobal(sections = {@ApiGlobalSection(title = "section1", paragraphs = {"Paragraph 1"}),
+    @ApiGlobal(sections = {
+            @ApiGlobalSection(title = "section1", paragraphs = {"Paragraph 1"}),
             @ApiGlobalSection(title = "abc", paragraphs = {"Paragraph 1", "Paragraph2"}),
-            @ApiGlobalSection(title = "198xyz",
-                    paragraphs = {"Paragraph 1", "Paragraph2", "Paragraph3", "Paragraph4"}),})
+            @ApiGlobalSection(title = "198xyz", paragraphs = {"Paragraph 1", "Paragraph2", "Paragraph3", "Paragraph4"}),
+    })
     private class MultipleGlobalSections {}
 
     @Test
@@ -98,8 +101,10 @@ public class GlobalDocReaderTest {
         Assert.assertEquals(1, apiGlobalDoc.getMigrationset().getMigrations().size());
     }
 
-    @ApiGlobal(sections = {@ApiGlobalSection(title = "title",
-            paragraphs = {"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt"})})
+    @ApiGlobal(sections = {
+            @ApiGlobalSection(title = "title",
+                    paragraphs = {"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt"})
+    })
     @ApiChangelogSet(changlogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
     @ApiMigrationSet(migrations = {@ApiMigration(fromversion = "1.0", steps = {"Step #1"}, toversion = "1.1")})
     private class AllTogether {}
@@ -116,16 +121,16 @@ public class GlobalDocReaderTest {
     @ApiFlowSet
     private class TestFlow {
 
-        @ApiFlow(name = "flow", description = "A test flow",
-                steps = {@ApiFlowStep(apimethodid = "F1"), @ApiFlowStep(apimethodid = "F2"),
-                        @ApiFlowStep(apimethodid = "F3")}, group = "Flows A")
+        @ApiFlow(name = "flow", description = "A test flow", steps = {
+                @ApiFlowStep(apimethodid = "F1"), @ApiFlowStep(apimethodid = "F2"), @ApiFlowStep(apimethodid = "F3")
+        }, group = "Flows A")
         public void flow() {
 
         }
 
-        @ApiFlow(name = "flow2", description = "A test flow 2",
-                steps = {@ApiFlowStep(apimethodid = "F4"), @ApiFlowStep(apimethodid = "F5"),
-                        @ApiFlowStep(apimethodid = "F6")}, group = "Flows B")
+        @ApiFlow(name = "flow2", description = "A test flow 2", steps = {
+                @ApiFlowStep(apimethodid = "F4"), @ApiFlowStep(apimethodid = "F5"), @ApiFlowStep(apimethodid = "F6")
+        }, group = "Flows B")
         public void flow2() {
 
         }

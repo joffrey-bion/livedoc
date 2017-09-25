@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 /**
  * This annotation is to be used on your method and contains an array of ApiHeader
  *
- * @author Fabio Maffioletti
  * @see ApiHeader
  */
 @Documented
@@ -20,9 +19,7 @@ public @interface ApiHeaders {
     /**
      * An array of ApiHeader annotations
      *
-     * @return
      * @see ApiHeader
      */
-    public ApiHeader[] headers();
-
+    ApiHeader[] headers();
 }

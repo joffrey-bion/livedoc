@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 /**
  * This annotation is to be used inside an annotation of type ApiErrors
  *
- * @author Fabio Maffioletti
  * @see ApiErrors
  */
 @Documented
@@ -19,16 +18,11 @@ public @interface ApiError {
 
     /**
      * The error code returned
-     *
-     * @return
      */
-    public String code();
+    String code();
 
     /**
      * A description of what the error code means
-     *
-     * @return
      */
-    public String description();
-
+    String description();
 }

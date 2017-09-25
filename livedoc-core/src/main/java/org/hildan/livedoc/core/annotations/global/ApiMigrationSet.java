@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation has to be used on a class dedicated to migrations documentation
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = ElementType.TYPE)
@@ -17,11 +15,7 @@ import java.lang.annotation.Target;
 public @interface ApiMigrationSet {
 
     /**
-     * Array of @ApiMigration annotations
-     *
-     * @return
+     * Array of {@link ApiMigration} annotations
      */
-
-    public ApiMigration[] migrations();
-
+    ApiMigration[] migrations();
 }

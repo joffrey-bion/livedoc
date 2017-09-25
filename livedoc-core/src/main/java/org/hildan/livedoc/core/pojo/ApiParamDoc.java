@@ -21,8 +21,8 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
 
     private String defaultvalue;
 
-    public ApiParamDoc(String name, String description, LivedocType type, String required,
-            String[] allowedvalues, String format, String defaultvalue) {
+    public ApiParamDoc(String name, String description, LivedocType type, String required, String[] allowedvalues,
+            String format, String defaultvalue) {
         super();
         this.name = name;
         this.description = description;

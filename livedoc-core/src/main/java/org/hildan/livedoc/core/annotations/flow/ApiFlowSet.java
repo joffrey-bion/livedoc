@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  * This annotation is to be used on a type (typically on a class dedicated to flow description) and will trigger
  * scanning for @ApiFlow annotations
  *
- * @author Fabio Maffioletti
  * @see ApiFlowStep
  */
 @Documented

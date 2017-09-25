@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation is to be used on your "service" class, for example controller classes in Spring MVC.
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
@@ -21,13 +19,12 @@ public @interface ApiVersion {
      *
      * @return
      */
-    public String since();
+    String since();
 
     /**
      * The version until the method/object/class is supported
      *
      * @return
      */
-    public String until() default "";
-
+    String until() default "";
 }

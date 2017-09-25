@@ -1,14 +1,11 @@
 package org.hildan.livedoc.core;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiMethod;
-import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.builders.doc.ApiDocReader;
 import org.hildan.livedoc.core.builders.doc.ApiMethodDocReader;
 import org.hildan.livedoc.core.pojo.ApiDoc;

@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation has to be used on a class dedicated to global api documentation
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = ElementType.TYPE)
@@ -17,10 +15,8 @@ import java.lang.annotation.Target;
 public @interface ApiGlobal {
 
     /**
-     * An array of ApiGlobalSection annotations
-     *
-     * @return
+     * An array of {@link ApiGlobalSection} annotations
      */
-    public ApiGlobalSection[] sections();
+    ApiGlobalSection[] sections();
 
 }

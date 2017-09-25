@@ -12,6 +12,7 @@ import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.junit.Test;
 
 import com.google.common.reflect.TypeToken;
+
 import static org.junit.Assert.assertEquals;
 
 public class GenericTypeExplorerTest {
@@ -30,125 +31,125 @@ public class GenericTypeExplorerTest {
     private static class Custom3P<T, U, V> {}
 
     @Test(expected = IllegalArgumentException.class)
-    public void getClassesInDeclaration_failsOnNull() throws NoSuchMethodException {
+    public void getClassesInDeclaration_failsOnNull() {
         GenericTypeExplorer.getClassesInDeclaration(null);
     }
 
     @Test
-    public void getClassesInDeclaration_simpleString() throws NoSuchMethodException {
+    public void getClassesInDeclaration_simpleString() {
         check(String.class, String.class);
     }
 
     @Test
-    public void getClassesInDeclaration_simpleArray() throws NoSuchMethodException {
+    public void getClassesInDeclaration_simpleArray() {
         check(Integer[].class, Integer.class);
     }
 
     @Test
-    public void getClassesInDeclaration_simpleCustom() throws NoSuchMethodException {
+    public void getClassesInDeclaration_simpleCustom() {
         check(Custom.class, Custom.class);
     }
 
     @Test
-    public void getClassesInDeclaration_simpleInterface() throws NoSuchMethodException {
+    public void getClassesInDeclaration_simpleInterface() {
         check(MyInterface.class, MyInterface.class);
     }
 
     @Test
-    public void getClassesInDeclaration_simpleCustomArray() throws NoSuchMethodException {
+    public void getClassesInDeclaration_simpleCustomArray() {
         check(Custom[].class, Custom.class);
     }
 
     @Test
-    public void getClassesInDeclaration_rawList() throws NoSuchMethodException {
+    public void getClassesInDeclaration_rawList() {
         check(List.class, List.class);
     }
 
     @Test
-    public void getClassesInDeclaration_simpleList() throws NoSuchMethodException {
+    public void getClassesInDeclaration_simpleList() {
         Type listOfIntegers = new TypeToken<List<Integer>>() {}.getType();
         check(listOfIntegers, List.class, Integer.class);
     }
 
     @Test
-    public void getClassesInDeclaration_listOfInterface() throws NoSuchMethodException {
+    public void getClassesInDeclaration_listOfInterface() {
         Type listOfInterface = new TypeToken<List<MyInterface>>() {}.getType();
         check(listOfInterface, List.class, MyInterface.class);
     }
 
     @Test
-    public void getClassesInDeclaration_listWildcard() throws NoSuchMethodException {
+    public void getClassesInDeclaration_listWildcard() {
         Type listOfWildcard = new TypeToken<List<?>>() {}.getType();
         check(listOfWildcard, List.class);
     }
 
     @Test
-    public void getClassesInDeclaration_nestedList() throws NoSuchMethodException {
+    public void getClassesInDeclaration_nestedList() {
         Type nestedList = new TypeToken<List<Set<Integer>>>() {}.getType();
         check(nestedList, List.class, Set.class, Integer.class);
     }
 
     @Test
-    public void getClassesInDeclaration_nestedWildcard() throws NoSuchMethodException {
+    public void getClassesInDeclaration_nestedWildcard() {
         Type nestedWildcard = new TypeToken<List<Set<?>>>() {}.getType();
         check(nestedWildcard, List.class, Set.class);
     }
 
     @Test
-    public void getClassesInDeclaration_rawMap() throws NoSuchMethodException {
+    public void getClassesInDeclaration_rawMap() {
         check(Map.class, Map.class);
     }
 
     @Test
-    public void getClassesInDeclaration_simpleMap() throws NoSuchMethodException {
+    public void getClassesInDeclaration_simpleMap() {
         Type simpleMap = new TypeToken<Map<String, Custom>>() {}.getType();
         check(simpleMap, Map.class, String.class, Custom.class);
     }
 
     @Test
-    public void getClassesInDeclaration_mapWildcardKey() throws NoSuchMethodException {
+    public void getClassesInDeclaration_mapWildcardKey() {
         Type mapWildcardKey = new TypeToken<Map<?, Custom>>() {}.getType();
         check(mapWildcardKey, Map.class, Custom.class);
     }
 
     @Test
-    public void getClassesInDeclaration_mapWildcardValue() throws NoSuchMethodException {
+    public void getClassesInDeclaration_mapWildcardValue() {
         Type mapWildcardValue = new TypeToken<Map<String, ?>>() {}.getType();
         check(mapWildcardValue, Map.class, String.class);
     }
 
     @Test
-    public void getClassesInDeclaration_nestedMapKey() throws NoSuchMethodException {
+    public void getClassesInDeclaration_nestedMapKey() {
         Type nestedMapKey = new TypeToken<Map<List<String>, Custom>>() {}.getType();
         check(nestedMapKey, Map.class, List.class, String.class, Custom.class);
     }
 
     @Test
-    public void getClassesInDeclaration_nestedMapValue() throws NoSuchMethodException {
+    public void getClassesInDeclaration_nestedMapValue() {
         Type nestedMapValue = new TypeToken<Map<String, Set<Custom>>>() {}.getType();
         check(nestedMapValue, Map.class, String.class, Set.class, Custom.class);
     }
 
     @Test
-    public void getClassesInDeclaration_customGeneric1P() throws NoSuchMethodException {
+    public void getClassesInDeclaration_customGeneric1P() {
         Type customGeneric1P = new TypeToken<Custom1P<String>>() {}.getType();
         check(customGeneric1P, Custom1P.class, String.class);
     }
 
     @Test
-    public void getClassesInDeclaration_customGeneric2P() throws NoSuchMethodException {
+    public void getClassesInDeclaration_customGeneric2P() {
         Type customGeneric2P = new TypeToken<Custom2P<String, Integer>>() {}.getType();
         check(customGeneric2P, Custom2P.class, String.class, Integer.class);
     }
 
     @Test
-    public void getClassesInDeclaration_customGeneric1PInterface() throws NoSuchMethodException {
+    public void getClassesInDeclaration_customGeneric1PInterface() {
         Type customGeneric1PInterface = new TypeToken<Custom1P<MyInterface>>() {}.getType();
         check(customGeneric1PInterface, Custom1P.class, MyInterface.class);
     }
 
     @Test
-    public void getClassesInDeclaration_customGeneric1PWildcard() throws NoSuchMethodException {
+    public void getClassesInDeclaration_customGeneric1PWildcard() {
         Type customGeneric1PWildcard = new TypeToken<Custom1P<?>>() {}.getType();
         check(customGeneric1PWildcard, Custom1P.class);
     }
@@ -237,15 +238,14 @@ public class GenericTypeExplorerTest {
         LivedocTypeBuilder.build(genReturnType).getOneLineText();
     }
 
-    public Map<List<String>, Custom2P<Set<Integer>, Custom3P<Map<Custom2P<Long, Boolean>, Custom>, Float, Short>>>
-    complex() {
+    public Map<List<String>, Custom2P<Set<?>, Custom3P<Map<Custom2P<Long, Boolean>, Custom>, Float, Short>>> complex() {
         return null;
     }
 
     @Test
     public void getClassesInDeclaration_complex() throws NoSuchMethodException {
-        check("complex", List.class, String.class, Set.class, Integer.class, Map.class, Custom2P.class, Custom3P.class,
-                Long.class, Boolean.class, Custom.class, Float.class, Short.class);
+        check("complex", List.class, String.class, Set.class, Map.class, Custom2P.class, Custom3P.class, Long.class,
+                Boolean.class, Custom.class, Float.class, Short.class);
     }
 
     private static void check(String methodName, Class<?>... expected) throws NoSuchMethodException {

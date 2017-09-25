@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 /**
  * This annotation is to be used inside an annotation of type ApiMigrationSet
  *
- * @author Fabio Maffioletti
  * @see ApiMigrationSet
  */
 @Documented
@@ -19,23 +18,16 @@ public @interface ApiMigration {
 
     /**
      * Source api version
-     *
-     * @return
      */
-    public String fromversion();
+    String fromversion();
 
     /**
      * Target api version
-     *
-     * @return
      */
-    public String toversion();
+    String toversion();
 
     /**
      * Steps needed to migrate from source api version to target api version
-     *
-     * @return
      */
-    public String[] steps();
-
+    String[] steps();
 }

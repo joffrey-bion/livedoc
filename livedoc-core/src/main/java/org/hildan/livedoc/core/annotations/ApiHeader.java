@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 /**
  * This annotation is to be used inside an annotation of type ApiHeaders
  *
- * @author Fabio Maffioletti
  * @see ApiHeaders
  */
 @Documented
@@ -19,23 +18,16 @@ public @interface ApiHeader {
 
     /**
      * The name of the header parameter
-     *
-     * @return
      */
-    public String name() default "";
+    String name() default "";
 
     /**
      * A description of what the header is needed for
-     *
-     * @return
      */
-    public String description() default "";
+    String description() default "";
 
     /**
-     * An array representing the allowed values this header can have. Default value is *
-     *
-     * @return
+     * An array representing the allowed values this header can have.
      */
-    public String[] allowedvalues() default {};
-
+    String[] allowedvalues() default {};
 }

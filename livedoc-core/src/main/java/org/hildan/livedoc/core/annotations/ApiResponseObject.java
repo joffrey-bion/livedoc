@@ -11,7 +11,6 @@ import org.hildan.livedoc.core.builders.types.LivedocDefaultType;
 /**
  * This annotation is to be used on your method and represents the returned value
  *
- * @author Fabio Maffioletti
  * @see ApiObject
  */
 @Documented
@@ -21,9 +20,6 @@ public @interface ApiResponseObject {
 
     /**
      * Specify this element if are using old style servlets which return void for methods like doGet and doPost
-     *
-     * @return
      */
-    public Class<?> clazz() default LivedocDefaultType.class;
-
+    Class<?> clazz() default LivedocDefaultType.class;
 }

@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation has to be used on a class dedicated to changelog documentation
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = ElementType.TYPE)
@@ -17,10 +15,8 @@ import java.lang.annotation.Target;
 public @interface ApiChangelogSet {
 
     /**
-     * Array of @ApiChangelog annotations
-     *
-     * @return
+     * Array of {@link ApiChangelog} annotations
      */
-    public ApiChangelog[] changlogs();
+    ApiChangelog[] changlogs();
 
 }

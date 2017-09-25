@@ -62,9 +62,18 @@ public class LivedocReader {
     }
 
     /**
-     * Returns the main <code>ApiDoc</code>, containing <code>ApiMethodDoc</code> and <code>ApiObjectDoc</code> objects
+     * Reads a {@link Livedoc} object by inspecting classes as configured.
      *
-     * @return An <code>ApiDoc</code> object
+     * @param version
+     *         the current version of the API
+     * @param basePath
+     *         the base path to use for the playground
+     * @param playgroundEnabled
+     *         whether the playground is enabled or not
+     * @param displayMethodAs
+     *         the way methods should be displayed in the UI
+     *
+     * @return a new {@link Livedoc} object representing the API
      */
     public Livedoc read(String version, String basePath, boolean playgroundEnabled, MethodDisplay displayMethodAs) {
         Livedoc livedoc = new Livedoc(version, basePath);

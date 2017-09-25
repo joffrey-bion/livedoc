@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation is to be used on your objects' fields and represents a field of an object
- *
- * @author Fabio Maffioletti
  */
 @Documented
 @Target(value = ElementType.FIELD)
@@ -17,54 +15,32 @@ import java.lang.annotation.Target;
 public @interface ApiObjectProperty {
 
     /**
-     * A drescription of what the field is
-     *
-     * @return
+     * A description of the property
      */
-    public String description() default "";
+    String description() default "";
 
     /**
-     * The format pattern for this field
-     *
-     * @return
+     * The format pattern for this property (mostly relevant for string properties)
      */
-    public String format() default "";
+    String format() default "";
 
     /**
-     * The allowed values for this field
-     *
-     * @return
+     * The allowed values for this property
      */
-    public String[] allowedvalues() default {};
+    String[] allowedvalues() default {};
 
     /**
-     * If the field is required
-     *
-     * @return
+     * Whether the property is required, defaults to false.
      */
-    public boolean required() default false;
+    boolean required() default false;
 
     /**
-     * The display name for this field if different from the java name
-     *
-     * @return
+     * The display name for this property, if different from the java name.
      */
-    public String name() default "";
+    String name() default "";
 
     /**
-     * Order of field in generated example.
-     *
-     * @return
+     * Position of property in the generated example, smaller is first. Defaults to {@link Integer#MAX_VALUE}.
      */
-    public int order() default Integer.MAX_VALUE;
-
-    /**
-     * Whether to process the template for this object or not. It's similar to what can be obtained using the
-     * JsonIdentityInfo/JsonManagedReference/JsonBackReference. Set this to true to avoid StackOverflow when your object
-     * has a circular or self dependency.
-     *
-     * @return
-     */
-    public boolean processtemplate() default true;
-
+    int order() default Integer.MAX_VALUE;
 }

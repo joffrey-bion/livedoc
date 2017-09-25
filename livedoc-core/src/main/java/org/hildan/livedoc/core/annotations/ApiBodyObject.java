@@ -11,7 +11,6 @@ import org.hildan.livedoc.core.builders.types.LivedocDefaultType;
 /**
  * This annotation is to be used on your method and represents the body object passed the request.
  *
- * @author Fabio Maffioletti
  * @see ApiObject
  */
 @Documented
@@ -26,6 +25,5 @@ public @interface ApiBodyObject {
      *
      * @return
      */
-    public Class<?> clazz() default LivedocDefaultType.class;
-
+    Class<?> clazz() default LivedocDefaultType.class;
 }

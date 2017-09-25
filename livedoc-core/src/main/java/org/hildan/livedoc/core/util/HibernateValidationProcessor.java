@@ -26,47 +26,47 @@ import org.hildan.livedoc.core.pojo.ApiObjectFieldDoc;
 
 public class HibernateValidationProcessor {
 
-    private final static String AssertFalse_message = "must be false";
+    private static final String AssertFalse_message = "must be false";
 
-    private final static String AssertTrue_message = "must be true";
+    private static final String AssertTrue_message = "must be true";
 
-    private final static String DecimalMax_message = "must be less than %s %s";
+    private static final String DecimalMax_message = "must be less than %s %s";
 
-    private final static String DecimalMin_message = "must be greater than %s %s";
+    private static final String DecimalMin_message = "must be greater than %s %s";
 
-    private final static String Digits_message = "numeric value made of <%s digits>.<%s digits>)";
+    private static final String Digits_message = "numeric value made of <%s digits>.<%s digits>)";
 
-    private final static String Future_message = "must be in the future";
+    private static final String Future_message = "must be in the future";
 
-    private final static String Max_message = "must be less than or equal to %s";
+    private static final String Max_message = "must be less than or equal to %s";
 
-    private final static String Min_message = "must be greater than or equal to %s";
+    private static final String Min_message = "must be greater than or equal to %s";
 
-    private final static String NotNull_message = "may not be null";
+    private static final String NotNull_message = "may not be null";
 
-    private final static String Null_message = "must be null";
+    private static final String Null_message = "must be null";
 
-    private final static String Past_message = "must be in the past";
+    private static final String Past_message = "must be in the past";
 
-    private final static String Pattern_message = "must match %s";
+    private static final String Pattern_message = "must match %s";
 
-    private final static String Size_message = "size must be between %s and %s";
+    private static final String Size_message = "size must be between %s and %s";
 
-    private final static String Email_message = "must be a well-formed email address";
+    private static final String Email_message = "must be a well-formed email address";
 
-    private final static String Length_message = "length must be between %s and %s";
+    private static final String Length_message = "length must be between %s and %s";
 
-    private final static String NotBlank_message = "may not be empty";
+    private static final String NotBlank_message = "may not be empty";
 
-    private final static String NotEmpty_message = "may not be empty";
+    private static final String NotEmpty_message = "may not be empty";
 
-    private final static String Range_message = "must be between %s and %s";
+    private static final String Range_message = "must be between %s and %s";
 
-    private final static String URL_message = "must be a valid URL";
+    private static final String URL_message = "must be a valid URL";
 
-    private final static String CreditCardNumber_message = "must be a valid credit card number";
+    private static final String CreditCardNumber_message = "must be a valid credit card number";
 
-    private final static String ScriptAssert_message = "script expression %s didn't evaluate to true";
+    private static final String ScriptAssert_message = "script expression %s didn't evaluate to true";
 
     public static void addConstraintMessages(AnnotatedElement property, ApiObjectFieldDoc apiPojoFieldDoc) {
         try {
