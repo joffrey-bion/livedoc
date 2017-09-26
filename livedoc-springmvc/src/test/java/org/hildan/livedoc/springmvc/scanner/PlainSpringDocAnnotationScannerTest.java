@@ -1,7 +1,6 @@
 package org.hildan.livedoc.springmvc.scanner;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;

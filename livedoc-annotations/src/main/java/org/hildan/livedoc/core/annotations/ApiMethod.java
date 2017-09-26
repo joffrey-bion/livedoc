@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.hildan.livedoc.core.pojo.ApiVisibility;
@@ -18,6 +17,8 @@ import org.hildan.livedoc.core.pojo.ApiVisibility;
 @Target(value = ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiMethod {
+
+    String DEFAULT_RESPONSE_STATUS = "200 - OK";
 
     /**
      * A custom identifier to be used inside Livedoc. This string has to be unique inside the Livedoc documentation.
@@ -60,7 +61,7 @@ public @interface ApiMethod {
     /**
      * Response status code that this method will return to the caller. Defaults to 200
      */
-    String responsestatuscode() default ApiMethodDoc.DEFAULT_RESPONSE_STATUS;
+    String responsestatuscode() default DEFAULT_RESPONSE_STATUS;
 
     /**
      * Indicates the visibility of the method

@@ -1,4 +1,4 @@
-description = 'The annotations of the Livedoc project'
+description = 'The core implementation of the Livedoc project'
 
 apply plugin: 'checkstyle'
 
@@ -11,6 +11,7 @@ configurations {
 }
 
 dependencies {
+    compile project(':livedoc-annotations')
     compile 'org.reflections:reflections:0.9.10'
     compile 'org.slf4j:slf4j-api:1.7.10'
     compileOnly 'org.hibernate:hibernate-validator:5.1.3.Final'

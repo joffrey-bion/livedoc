@@ -3,10 +3,10 @@ package org.hildan.livedoc.core.builders.doc;
 import java.lang.reflect.Method;
 
 import org.hildan.livedoc.core.annotations.ApiResponseObject;
-import org.hildan.livedoc.core.builders.types.LivedocDefaultType;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiResponseObjectDoc;
+import org.hildan.livedoc.core.pojo.LivedocDefaultType;
 
 public class ApiResponseObjectDocReader {
 

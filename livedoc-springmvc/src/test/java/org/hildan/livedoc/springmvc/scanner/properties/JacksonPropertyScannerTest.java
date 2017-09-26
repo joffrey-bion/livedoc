@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import static org.junit.Assert.assertEquals;
 
 public class JacksonPropertyScannerTest {
