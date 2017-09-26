@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import type {Action} from '../redux/livedoc';
+import type {Action} from '../redux/reducer';
+import {actions, types} from '../redux/reducer';
 
 function* fetchDoc(action: Action): * {
   try {

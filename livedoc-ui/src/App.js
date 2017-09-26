@@ -5,7 +5,7 @@ import './App.css';
 import {InlineForm} from './components/InlineForm';
 import DocPresenter from './components/DocPresenter';
 import {connect} from 'react-redux';
-import {actions} from './redux/livedoc';
+import {actions} from './redux/reducer';
 
 type Props = {
   fetchDoc: string => void;
@@ -28,11 +28,10 @@ class App extends Component<Props> {
 }
 
 function computeInitialUrl(): string {
-  return window.location.href;
+  return window.location.href + 'jsondoc';
 }
 
 const mapStateToProps = state => ({
-  livedoc: state.get('livedoc')
 });
 
 const mapDispatchToProps = {
