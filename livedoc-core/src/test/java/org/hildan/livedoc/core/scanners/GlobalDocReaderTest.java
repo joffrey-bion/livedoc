@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.scanners;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.pojo.global.ApiGlobalSectionDoc;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static java.util.stream.Collectors.toSet;
 
 public class GlobalDocReaderTest {
 
@@ -71,14 +74,16 @@ public class GlobalDocReaderTest {
         Assert.assertNotNull(apiGlobalDoc);
         Assert.assertEquals(3, apiGlobalDoc.getSections().size());
 
-        ApiGlobalSectionDoc[] apiGlobalSectionDocs = apiGlobalDoc.getSections()
-                                                                 .toArray(
-                                                                         new ApiGlobalSectionDoc[apiGlobalDoc
-                                                                                 .getSections()
-                                                                                                             .size()]);
-        Assert.assertEquals("section1", apiGlobalSectionDocs[0].getTitle());
-        Assert.assertEquals("abc", apiGlobalSectionDocs[1].getTitle());
-        Assert.assertEquals("198xyz", apiGlobalSectionDocs[2].getTitle());
+        Set<String> expectedTitles = new HashSet<>();
+        expectedTitles.add("section1");
+        expectedTitles.add("abc");
+        expectedTitles.add("198xyz");
+
+        Set<String> actualTitles = apiGlobalDoc.getSections()
+                                               .stream()
+                                               .map(ApiGlobalSectionDoc::getTitle)
+                                               .collect(toSet());
+        Assert.assertEquals(expectedTitles, actualTitles);
     }
 
     @ApiChangelogSet(changlogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
@@ -121,16 +126,16 @@ public class GlobalDocReaderTest {
     @ApiFlowSet
     private class TestFlow {
 
-        @ApiFlow(name = "flow", description = "A test flow", steps = {
+        @ApiFlow(name = "flow", description = "A test flow", group = "Flows A", steps = {
                 @ApiFlowStep(apimethodid = "F1"), @ApiFlowStep(apimethodid = "F2"), @ApiFlowStep(apimethodid = "F3")
-        }, group = "Flows A")
+        })
         public void flow() {
 
         }
 
-        @ApiFlow(name = "flow2", description = "A test flow 2", steps = {
+        @ApiFlow(name = "flow2", description = "A test flow 2", group = "Flows B", steps = {
                 @ApiFlowStep(apimethodid = "F4"), @ApiFlowStep(apimethodid = "F5"), @ApiFlowStep(apimethodid = "F6")
-        }, group = "Flows B")
+        })
         public void flow2() {
 
         }

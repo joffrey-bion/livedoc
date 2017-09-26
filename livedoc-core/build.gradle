@@ -3,9 +3,7 @@ description = 'The annotations of the Livedoc project'
 apply plugin: 'checkstyle'
 
 repositories {
-    maven {
-        url  "https://dl.bintray.com/joffrey-bion/maven"
-    }
+    jcenter()
 }
 
 configurations {
@@ -20,7 +18,7 @@ dependencies {
     testCompile 'org.slf4j:slf4j-log4j12:1.7.10'
     testCompile 'log4j:log4j:1.2.17'
     testCompile 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
-    checkstyleConfig 'org.hildan.checkstyle:checkstyle-config:1.1.0'
+    checkstyleConfig 'org.hildan.checkstyle:checkstyle-config:2.1.0'
 }
 
 checkstyle {

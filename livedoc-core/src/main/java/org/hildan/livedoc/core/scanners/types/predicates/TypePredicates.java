@@ -20,8 +20,16 @@ public class TypePredicates {
      */
     public static final Predicate<Class<?>> IS_CONTAINER = TypePredicates::isContainer;
 
-    private static final Class<?>[] PRIMITIVE_WRAPPERS = {Boolean.class, Byte.class, Short.class, Character.class,
-            Integer.class, Long.class, Float.class, Double.class};
+    private static final Class<?>[] PRIMITIVE_WRAPPERS = {
+            Boolean.class,
+            Byte.class,
+            Short.class,
+            Character.class,
+            Integer.class,
+            Long.class,
+            Float.class,
+            Double.class,
+    };
 
     private static final Class<?>[] CONTAINERS = {Collection.class, Map.class};
 

@@ -124,7 +124,8 @@ public class ApiDocTest {
             return null;
         }
 
-        @ApiMethod(path = "/multiple-request-methods", verb = {ApiVerb.GET, ApiVerb.POST},
+        @ApiMethod(path = "/multiple-request-methods",
+                verb = {ApiVerb.GET, ApiVerb.POST},
                 description = "a-test-method-with-multiple-request-methods")
         @ApiResponseObject
         public Integer multipleRequestMethods(
@@ -450,23 +451,29 @@ public class ApiDocTest {
         }
 
         @ApiMethod(path = "/oldStyleMixed", description = "A method params on method level", verb = ApiVerb.GET)
-        @ApiParams(pathparams = {
-                @ApiPathParam(name = "name", clazz = String.class),
-                @ApiPathParam(name = "age", clazz = Integer.class),
-                @ApiPathParam(name = "undefined")
-        }, queryparams = {@ApiQueryParam(name = "q", clazz = String.class, defaultvalue = "qTest")})
+        @ApiParams(//
+                pathparams = {
+                        @ApiPathParam(name = "name", clazz = String.class),
+                        @ApiPathParam(name = "age", clazz = Integer.class),
+                        @ApiPathParam(name = "undefined")
+                }, //
+                queryparams = {
+                        @ApiQueryParam(name = "q", clazz = String.class, defaultvalue = "qTest")
+                })
         public String oldStyleMixed(@ApiPathParam(name = "age") Integer age) {
             return null;
         }
 
         @ApiMethod(path = "/oldStyleResponseObject",
-                description = "A method with populated ApiResponseObject annotation", verb = ApiVerb.GET)
+                description = "A method with populated ApiResponseObject annotation",
+                verb = ApiVerb.GET)
         @ApiResponseObject(clazz = List.class)
         public void oldStyleResponseObject() {
             return;
         }
 
-        @ApiMethod(path = "/oldStyleBodyObject", description = "A method with populated ApiBodyObject annotation",
+        @ApiMethod(path = "/oldStyleBodyObject",
+                description = "A method with populated ApiBodyObject annotation",
                 verb = ApiVerb.GET)
         @ApiBodyObject(clazz = List.class)
         public void oldStyleBodyObject() {
@@ -706,8 +713,10 @@ public class ApiDocTest {
         assertTrue(allRight);
     }
 
-    @Api(name = "test-type-level-visibility-and-stage", description = "Test type level visibility and stage attributes",
-            visibility = ApiVisibility.PUBLIC, stage = ApiStage.BETA)
+    @Api(name = "test-type-level-visibility-and-stage",
+            description = "Test type level visibility and stage attributes",
+            visibility = ApiVisibility.PUBLIC,
+            stage = ApiStage.BETA)
     private class ControllerWithTypeVisibility {
 
         @ApiMethod(path = "/inherit")
