@@ -1,6 +1,13 @@
 # Change Log
 
-## [v2.0.0](https://bintray.com/joffrey-bion/maven/livedoc/2.0.0) (2017-09-25)
+## [v2.1.0](https://bintray.com/joffrey-bion/maven/livedoc/2.1.0) (2017-09-26)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.0.0...v2.1.0)
+
+**Implemented enhancements:**
+
+- Move annotations to own jar/lib [\#33](https://github.com/joffrey-bion/livedoc/issues/33)
+
+## [v2.0.0](https://bintray.com/joffrey-bion/maven/livedoc/2.0.0) (2017-09-24)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v1.2.0...v2.0.0)
 
 **Fixed bugs:**
