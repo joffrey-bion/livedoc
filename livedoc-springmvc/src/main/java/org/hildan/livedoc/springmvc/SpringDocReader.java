@@ -66,7 +66,7 @@ public class SpringDocReader implements DocReader {
     }
 
     private boolean canReadInfoFrom(Method method) {
-        if (method.isAnnotationPresent(RequestMapping.class)) {
+        if (ClasspathUtils.isRequestMappingOnClasspath() && method.isAnnotationPresent(RequestMapping.class)) {
             return true;
         }
         if (ClasspathUtils.isMessageMappingOnClasspath() && method.isAnnotationPresent(MessageMapping.class)) {

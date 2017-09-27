@@ -1,12 +1,16 @@
 package org.hildan.livedoc.springmvc.scanner.builder;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
+import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,29 +18,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SpringPathBuilder {
 
     public static Set<String> buildPath(Method method, Class<?> controller) {
+        return getMappings(method, controller, getPathExtractors());
+    }
+
+    private static List<PathExtractor<?>> getPathExtractors() {
+        List<PathExtractor<?>> extractors = new ArrayList<>(3);
+        if (ClasspathUtils.isMessageMappingOnClasspath()) {
+            extractors.add(new PathExtractor<>(MessageMapping.class, MessageMapping::value));
+        }
+        if (ClasspathUtils.isSubscribeMappingOnClasspath()) {
+            extractors.add(new PathExtractor<>(SubscribeMapping.class, SubscribeMapping::value));
+        }
+        if (ClasspathUtils.isRequestMappingOnClasspath()) {
+            extractors.add(new PathExtractor<>(RequestMapping.class, RequestMapping::value, RequestMapping::path));
+        }
+        return extractors;
+    }
+
+    private static Set<String> getMappings(Method method, Class<?> controller, List<PathExtractor<?>> extractors) {
         Set<String> paths = new HashSet<>();
-
-        if (method.isAnnotationPresent(MessageMapping.class)) {
-            paths.addAll(getMappings(method, controller, MessageMapping.class));
+        for (PathExtractor<?> extractor : extractors) {
+            if (method.isAnnotationPresent(extractor.getAnnotationClass())) {
+                paths.addAll(getMappings(method, controller, extractor));
+            }
         }
-        if (method.isAnnotationPresent(SubscribeMapping.class)) {
-            paths.addAll(getMappings(method, controller, SubscribeMapping.class));
-        }
-        if (method.isAnnotationPresent(RequestMapping.class)) {
-            paths.addAll(getMappings(method, controller, RequestMapping.class));
-        }
-
         return paths;
     }
 
-    private static Set<String> getMappings(Method method, Class<?> controller,
-            Class<? extends Annotation> annotationClass) {
-        Set<String> controllerMappings = getControllerMappings(controller, annotationClass);
-        Set<String> methodMappings = getMappedPaths(method.getAnnotation(annotationClass));
+    private static Set<String> getMappings(Method method, Class<?> controller, PathExtractor<?> extractor) {
+        Set<String> controllerMappings = extractor.extractPaths(controller);
+        Set<String> methodMappings = extractor.extractPaths(method);
+        return joinAll(controllerMappings, methodMappings);
+    }
 
+    private static Set<String> joinAll(Set<String> pathPrefixes, Set<String> pathsSuffixes) {
         Set<String> mappings = new HashSet<>();
-        for (String controllerPath : controllerMappings) {
-            for (String methodPath : methodMappings) {
+        for (String controllerPath : pathPrefixes) {
+            for (String methodPath : pathsSuffixes) {
                 mappings.add(join(controllerPath, methodPath));
             }
         }
@@ -55,45 +73,35 @@ public class SpringPathBuilder {
         return path1 + path2;
     }
 
-    private static Set<String> getControllerMappings(Class<?> controller, Class<? extends Annotation> annotationClass) {
-        if (controller.isAnnotationPresent(annotationClass)) {
-            return getMappedPaths(controller.getAnnotation(annotationClass));
-        }
-        return Collections.singleton("");
-    }
+    private static class PathExtractor<A extends Annotation> {
 
-    private static Set<String> getMappedPaths(Annotation mapping) {
-        Set<String> paths = new HashSet<>();
-        paths.addAll(Arrays.asList(valueMapping(mapping)));
-        paths.addAll(Arrays.asList(pathMapping(mapping)));
-        if (paths.isEmpty()) {
-            paths.add("");
-        }
-        return paths;
-    }
+        private final Class<A> annotationClass;
 
-    private static String[] pathMapping(Annotation mapping) {
-        try {
-            if (mapping instanceof RequestMapping) {
-                return ((RequestMapping) mapping).path();
+        private final Function<A, String[]>[] pathsExtractors;
+
+        @SafeVarargs
+        private PathExtractor(Class<A> annotationClass, Function<A, String[]>... pathsExtractors) {
+            this.annotationClass = annotationClass;
+            this.pathsExtractors = pathsExtractors;
+        }
+
+        Class<A> getAnnotationClass() {
+            return annotationClass;
+        }
+
+        Set<String> extractPaths(AnnotatedElement element) {
+            A annotation = element.getAnnotation(annotationClass);
+            if (annotation == null) {
+                return Collections.singleton("");
             }
-            return new String[0];
-        } catch (NoSuchMethodError e) {
-            //Handle the fact that this method is only in Spring 4, not available in Spring 3
-            return new String[0];
+            Set<String> paths = new HashSet<>();
+            for (Function<A, String[]> pathExtractor : pathsExtractors) {
+                Collections.addAll(paths, pathExtractor.apply(annotation));
+            }
+            if (paths.isEmpty()) {
+                paths.add("");
+            }
+            return paths;
         }
-    }
-
-    private static String[] valueMapping(Annotation mapping) {
-        if (mapping instanceof RequestMapping) {
-            return ((RequestMapping) mapping).value();
-        }
-        if (mapping instanceof MessageMapping) {
-            return ((MessageMapping) mapping).value();
-        }
-        if (mapping instanceof SubscribeMapping) {
-            return ((SubscribeMapping) mapping).value();
-        }
-        return new String[0];
     }
 }
