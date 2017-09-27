@@ -13,24 +13,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class SpringPathBuilder {
 
-    public static Set<String> buildPath(Method method) {
+    public static Set<String> buildPath(Method method, Class<?> controller) {
         Set<String> paths = new HashSet<>();
 
         if (method.isAnnotationPresent(MessageMapping.class)) {
-            paths.addAll(getMappings(method, MessageMapping.class));
+            paths.addAll(getMappings(method, controller, MessageMapping.class));
         }
         if (method.isAnnotationPresent(SubscribeMapping.class)) {
-            paths.addAll(getMappings(method, SubscribeMapping.class));
+            paths.addAll(getMappings(method, controller, SubscribeMapping.class));
         }
         if (method.isAnnotationPresent(RequestMapping.class)) {
-            paths.addAll(getMappings(method, RequestMapping.class));
+            paths.addAll(getMappings(method, controller, RequestMapping.class));
         }
 
         return paths;
     }
 
-    private static Set<String> getMappings(Method method, Class<? extends Annotation> annotationClass) {
-        Set<String> controllerMappings = getControllerMappings(method, annotationClass);
+    private static Set<String> getMappings(Method method, Class<?> controller,
+            Class<? extends Annotation> annotationClass) {
+        Set<String> controllerMappings = getControllerMappings(controller, annotationClass);
         Set<String> methodMappings = getMappedPaths(method.getAnnotation(annotationClass));
 
         Set<String> mappings = new HashSet<>();
@@ -54,8 +55,7 @@ public class SpringPathBuilder {
         return path1 + path2;
     }
 
-    private static Set<String> getControllerMappings(Method method, Class<? extends Annotation> annotationClass) {
-        Class<?> controller = method.getDeclaringClass();
+    private static Set<String> getControllerMappings(Class<?> controller, Class<? extends Annotation> annotationClass) {
         if (controller.isAnnotationPresent(annotationClass)) {
             return getMappedPaths(controller.getAnnotation(annotationClass));
         }

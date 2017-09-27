@@ -152,10 +152,10 @@ public class LivedocReader {
     }
 
     private List<ApiMethodDoc> readApiMethodDocs(Class<?> controller, ApiDoc doc, MethodDisplay displayMethodAs) {
-        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, doc, displayMethodAs));
+        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, controller, doc, displayMethodAs));
     }
 
-    private static List<Method> getAllMethods(final Class<?> clazz) {
+    private static List<Method> getAllMethods(Class<?> clazz) {
         List<Method> methods = new ArrayList<>();
         Class<?> currentClass = clazz;
         while (currentClass != null) {
@@ -166,9 +166,10 @@ public class LivedocReader {
         return methods;
     }
 
-    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, ApiDoc parentApiDoc, MethodDisplay displayMethodAs) {
+    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
+            MethodDisplay displayMethodAs) {
         Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(
-                r -> r.buildApiMethodDoc(method, parentApiDoc, templateProvider));
+                r -> r.buildApiMethodDoc(method, controller, parentApiDoc, templateProvider));
         doc.ifPresent(apiMethodDoc -> {
             apiMethodDoc.setDisplayMethodAs(displayMethodAs);
             ApiMethodDocDefaults.complete(apiMethodDoc);

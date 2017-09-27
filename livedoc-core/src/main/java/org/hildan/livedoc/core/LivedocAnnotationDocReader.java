@@ -31,7 +31,7 @@ public class LivedocAnnotationDocReader implements DocReader {
     }
 
     @Override
-    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc,
+    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
             TemplateProvider templateProvider) {
         ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
         if (methodAnnotation == null) {

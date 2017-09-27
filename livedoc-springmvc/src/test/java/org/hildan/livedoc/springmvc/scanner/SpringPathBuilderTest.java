@@ -18,7 +18,7 @@ public class SpringPathBuilderTest {
     @SuppressWarnings("unused")
     @Controller
     @RequestMapping
-    public class SpringController {
+    private static class SpringController {
 
         @RequestMapping(value = "/path")
         public void slashPath() {
@@ -48,7 +48,7 @@ public class SpringPathBuilderTest {
     @SuppressWarnings("unused")
     @Controller
     @RequestMapping
-    public class SpringController2 {
+    private static class SpringController2 {
 
         @RequestMapping
         public void none() {
@@ -76,8 +76,28 @@ public class SpringPathBuilderTest {
 
     @SuppressWarnings("unused")
     @Controller
+    @RequestMapping("/child")
+    private static class SpringControllerChild extends SpringController2 {
+
+
+    }
+
+    @Test
+    public void testPathInherited() {
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringControllerChild.class, MethodDisplay.URI);
+        Assert.assertEquals("SpringControllerChild", apiDoc.getName());
+
+        boolean none = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/child"));
+        assertTrue(none);
+
+        boolean test = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/child/test"));
+        assertTrue(test);
+    }
+
+    @SuppressWarnings("unused")
+    @Controller
     @RequestMapping(value = {"/path1", "/path2/"})
-    public class SpringController3 {
+    private static class SpringController3 {
 
         @RequestMapping(value = {"/path3", "path4"})
         public void none() {
@@ -100,7 +120,7 @@ public class SpringPathBuilderTest {
     @SuppressWarnings("unused")
     @Controller
     @RequestMapping(value = "/path")
-    public class SpringController4 {
+    private static class SpringController4 {
 
         @RequestMapping
         public void none() {
@@ -119,7 +139,7 @@ public class SpringPathBuilderTest {
     @SuppressWarnings("unused")
     @Controller
     @RequestMapping(path = {"/path", "/path2"}, value = "/val1")
-    public class SpringController5 {
+    private static class SpringController5 {
 
         @RequestMapping
         public void none() {

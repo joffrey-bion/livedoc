@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.ValueConstants;
 public class SpringHeaderBuilder {
 
     /**
-     * From Spring's documentation: Supported at the type level as well as at the method level! When used at the type
-     * level, all method-level mappings inherit this header restriction. Finally it looks for @ApiHeader annotations on
-     * parameters and adds the result to the final Set
+     * Reads the headers that are necessary to resolve to the given method.
      *
      * @param method
+     *         the method to read the headers from
+     * @param controller
+     *         the controller to read type-level headers from
      *
-     * @return
+     * @return the {@link ApiHeaderDoc}s for the given method
      */
-    public static Set<ApiHeaderDoc> buildHeaders(Method method) {
+    public static Set<ApiHeaderDoc> buildHeaders(Method method, Class<?> controller) {
         Set<ApiHeaderDoc> headers = new LinkedHashSet<>();
-        Class<?> controller = method.getDeclaringClass();
 
         RequestMapping typeAnnotation = controller.getAnnotation(RequestMapping.class);
         RequestMapping methodAnnotation = method.getAnnotation(RequestMapping.class);
