@@ -1,5 +1,21 @@
 # Change Log
 
+## [v2.1.1](https://bintray.com/joffrey-bion/maven/livedoc/2.1.1) (2017-09-28)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.1.0...v2.1.1)
+
+**Implemented enhancements:**
+
+- Support cross-origin requests on the jsondoc endpoint [\#35](https://github.com/joffrey-bion/livedoc/issues/35)
+
+**Fixed bugs:**
+
+- NoClassDefFoundError: org/springframework/messaging/handler/annotation/MessageMapping [\#36](https://github.com/joffrey-bion/livedoc/issues/36)
+- Type-level path not taken into account for inherited methods [\#34](https://github.com/joffrey-bion/livedoc/issues/34)
+
+**Closed issues:**
+
+- Add negated media-types support [\#38](https://github.com/joffrey-bion/livedoc/issues/38)
+
 ## [v2.1.0](https://bintray.com/joffrey-bion/maven/livedoc/2.1.0) (2017-09-26)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.0.0...v2.1.0)
 
