@@ -18,11 +18,11 @@ public class LivedocConfig {
     private LivedocProperties properties;
 
     @Bean
-    public JsonLivedocController jController() {
-        JsonLivedocController controller = new JsonLivedocController(this.properties.getVersion(),
-                this.properties.getBasePath(), this.properties.getPackages());
-        controller.setPlaygroundEnabled(this.properties.isPlaygroundEnabled());
-        controller.setDisplayMethodAs(this.properties.getDisplayMethodAs());
+    public JsonLivedocController jsonLivedocController() {
+        JsonLivedocController controller = new JsonLivedocController(properties.getVersion(), properties.getPackages());
+        controller.setBasePath(properties.getBasePath());
+        controller.setPlaygroundEnabled(properties.isPlaygroundEnabled());
+        controller.setDisplayMethodAs(properties.getDisplayMethodAs());
         return controller;
     }
 
