@@ -2,6 +2,7 @@ package org.hildan.livedoc.springmvc;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.DocReader;
 import org.hildan.livedoc.core.LivedocAnnotationDocReader;
@@ -13,17 +14,27 @@ import org.hildan.livedoc.springmvc.scanner.properties.JacksonPropertyScanner;
 import org.reflections.Reflections;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class SpringLivedocReaderFactory {
 
-    public static LivedocReader getReader(List<String> packages) {
+    /**
+     * Creates a Spring-oriented {@link LivedocReader} with the given configuration.
+     *
+     * @param packages
+     *         the list of packages to scan
+     * @param jacksonObjectMapper
+     *         the Jackson {@link ObjectMapper} to use for property exploration and template generation, or null to use
+     *         a new mapper with Spring defaults
+     *
+     * @return a new {@link LivedocReader}
+     */
+    public static LivedocReader getReader(List<String> packages, ObjectMapper jacksonObjectMapper) {
         Reflections reflections = LivedocUtils.newReflections(packages);
         AnnotatedTypesFinder annotatedTypesFinder = LivedocUtils.createAnnotatedTypesFinder(reflections);
 
-        PropertyScanner propertyScanner = createJacksonPropertyScanner();
+        ObjectMapper mapper = jacksonObjectMapper == null ? createDefaultSpringObjectMapper() : jacksonObjectMapper;
+        PropertyScanner propertyScanner = new JacksonPropertyScanner(mapper);
         DocReader springDocReader = new SpringDocReader(annotatedTypesFinder);
-        LivedocAnnotationDocReader baseDocReader = new LivedocAnnotationDocReader(annotatedTypesFinder);
+        DocReader baseDocReader = new LivedocAnnotationDocReader(annotatedTypesFinder);
 
         return new LivedocReaderBuilder().scanningPackages(packages)
                                          .withPropertyScanner(propertyScanner)
@@ -32,9 +43,7 @@ public class SpringLivedocReaderFactory {
                                          .build();
     }
 
-    private static PropertyScanner createJacksonPropertyScanner() {
-        // to match the spring config without accessing the actual bean containing it
-        ObjectMapper jacksonObjectMapper = Jackson2ObjectMapperBuilder.json().build();
-        return new JacksonPropertyScanner(jacksonObjectMapper);
+    private static ObjectMapper createDefaultSpringObjectMapper() {
+        return Jackson2ObjectMapperBuilder.json().build();
     }
 }

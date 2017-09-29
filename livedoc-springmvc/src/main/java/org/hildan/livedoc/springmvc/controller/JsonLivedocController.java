@@ -1,8 +1,10 @@
 package org.hildan.livedoc.springmvc.controller;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
@@ -29,8 +31,19 @@ public class JsonLivedocController {
 
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
-    public JsonLivedocController(String version, List<String> packages) {
-        this(version, SpringLivedocReaderFactory.getReader(packages));
+    /**
+     * Creates a new {@code JsonLivedocController} with the given parameters.
+     *
+     * @param version
+     *         the current API version
+     * @param packages
+     *         the packages to scan
+     * @param jacksonObjectMapper
+     *         the {@link ObjectMapper} to use for property exploration and template generation, or null to use a new
+     *         mapper with Spring defaults.
+     */
+    public JsonLivedocController(String version, List<String> packages, ObjectMapper jacksonObjectMapper) {
+        this(version, SpringLivedocReaderFactory.getReader(packages, jacksonObjectMapper));
     }
 
     public JsonLivedocController(String version, LivedocReader livedocReader) {
@@ -63,8 +76,8 @@ public class JsonLivedocController {
     }
 
     @RequestMapping(value = JsonLivedocController.JSON_DOC_ENDPOINT,
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     @ResponseBody
     public Livedoc getJsonLivedoc(HttpServletRequest request) {
