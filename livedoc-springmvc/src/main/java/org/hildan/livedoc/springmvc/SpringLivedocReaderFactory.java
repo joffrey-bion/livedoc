@@ -17,6 +17,18 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 public class SpringLivedocReaderFactory {
 
     /**
+     * Creates a Spring-oriented {@link LivedocReader} using a new Jackson {@link ObjectMapper} with Spring defaults.
+     *
+     * @param packages
+     *         the list of packages to scan
+     *
+     * @return a new {@link LivedocReader}
+     */
+    public static LivedocReader getReader(List<String> packages) {
+        return getReader(packages, null);
+    }
+
+    /**
      * Creates a Spring-oriented {@link LivedocReader} with the given configuration.
      *
      * @param packages
