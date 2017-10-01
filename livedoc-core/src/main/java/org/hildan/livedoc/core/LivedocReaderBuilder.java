@@ -2,12 +2,15 @@ package org.hildan.livedoc.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.LivedocPropertyScannerWrapper;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.templates.RecursiveTemplateProvider;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.RecursivePropertyTypeScanner;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
@@ -29,6 +32,8 @@ public class LivedocReaderBuilder {
     private ApiObjectDocReader apiObjectDocReader;
 
     private TemplateProvider templateProvider;
+
+    private Map<Class<?>, Object> defaultTemplates = new HashMap<>();
 
     private TypeScanner typeScanner;
 
@@ -70,6 +75,21 @@ public class LivedocReaderBuilder {
 
     public LivedocReaderBuilder withTypeScanner(TypeScanner typeScanner) {
         this.typeScanner = typeScanner;
+        return this;
+    }
+
+    public LivedocReaderBuilder withTemplateProvider(TemplateProvider templateProvider) {
+        this.templateProvider = templateProvider;
+        return this;
+    }
+
+    public LivedocReaderBuilder addDefaultTemplate(Class<?> type, Object example) {
+        this.defaultTemplates.put(type, example);
+        return this;
+    }
+
+    public LivedocReaderBuilder addDefaultTemplates(Map<Class<?>, Object> defaultTemplates) {
+        this.defaultTemplates.putAll(defaultTemplates);
         return this;
     }
 
@@ -117,8 +137,8 @@ public class LivedocReaderBuilder {
         return new ApiObjectDocReader(propertyScanner);
     }
 
-    private static TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
-        return new TemplateProvider(propertyScanner, TypePredicates.IS_BASIC_TYPE.negate());
+    private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
+        return new RecursiveTemplateProvider(propertyScanner, TypePredicates.IS_BASIC_TYPE.negate(), defaultTemplates);
     }
 
     private GlobalDocReader getDefaultGlobalReader() {

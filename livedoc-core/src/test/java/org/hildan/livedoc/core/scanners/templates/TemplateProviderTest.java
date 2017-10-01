@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hildan.livedoc.core.annotations.ApiObject;
 import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
@@ -12,36 +13,7 @@ import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class TemplateProviderTest {
-
-    private enum TestEnum {
-        VAL1, VAL2
-    }
-
-    private static class Parent {
-
-        private String string;
-
-        private int primitiveInt;
-
-        private Long wrapperLong;
-
-        private Child child;
-    }
-
-    private static class Child {
-
-        private String name;
-    }
-
-    @Test
-    public void getTemplate() {
-        TemplateProvider templateProvider = createTemplateProvider();
-        Object obj = templateProvider.getTemplate(Parent.class);
-
-    }
 
     @Test
     public void getTemplate_generalTest() {
@@ -60,7 +32,7 @@ public class TemplateProviderTest {
 
         Assert.assertEquals(0, template.get("my_id"));
         Assert.assertEquals(0, template.get("idint"));
-        Assert.assertEquals(0, template.get("idlong"));
+        Assert.assertEquals(0L, template.get("idlong"));
         Assert.assertEquals("", template.get("name"));
         Assert.assertEquals("MALE", template.get("gender"));
         Assert.assertEquals(true, template.get("bool"));
@@ -76,7 +48,7 @@ public class TemplateProviderTest {
         Assert.assertEquals(new ArrayList(), template.get("subobjlist"));
         Assert.assertEquals(new ArrayList(), template.get("wildcardlist"));
         Assert.assertEquals(new ArrayList(), template.get("longlist"));
-        Assert.assertEquals("", template.get("namechar"));
+        Assert.assertEquals(' ', template.get("namechar"));
         Assert.assertEquals(new HashMap(), template.get("map"));
         Assert.assertEquals(new HashMap(), template.get("mapstringinteger"));
         Assert.assertEquals(new HashMap(), template.get("mapsubobjinteger"));
@@ -84,19 +56,20 @@ public class TemplateProviderTest {
         Assert.assertEquals(new HashMap(), template.get("mapintegerlistsubsubobj"));
     }
 
-    @ApiObject(name = "unordered")
-    static class Unordered {
+    @SuppressWarnings("unused")
+    @ApiObject(name = "defaultOrder")
+    static class DefaultOrder {
 
         @ApiObjectProperty(name = "xField")
         public String x;
 
         @ApiObjectProperty(name = "aField")
         public String a;
-
     }
 
+    @SuppressWarnings("unused")
     @ApiObject(name = "ordered")
-    static class Ordered {
+    static class CustomOrder {
 
         @ApiObjectProperty(name = "bField", order = 2)
         public String b;
@@ -113,16 +86,16 @@ public class TemplateProviderTest {
         final ObjectMapper mapper = new ObjectMapper();
 
         TemplateProvider templateProvider = createTemplateProvider();
-        Object unorderedTemplate = templateProvider.getTemplate(Unordered.class);
+        Object unorderedTemplate = templateProvider.getTemplate(DefaultOrder.class);
         Assert.assertEquals("{\"aField\":\"\",\"xField\":\"\"}", mapper.writeValueAsString(unorderedTemplate));
 
-        Object orderedTemplate = templateProvider.getTemplate(Ordered.class);
+        Object orderedTemplate = templateProvider.getTemplate(CustomOrder.class);
         Assert.assertEquals("{\"xField\":\"\",\"aField\":\"\",\"bField\":\"\"}",
                 mapper.writeValueAsString(orderedTemplate));
     }
 
     private static TemplateProvider createTemplateProvider() {
         PropertyScanner propertyScanner = new LivedocPropertyScannerWrapper(new FieldPropertyScanner());
-        return new TemplateProvider(propertyScanner, c -> true);
+        return new RecursiveTemplateProvider(propertyScanner, c -> true);
     }
 }
