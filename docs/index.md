@@ -5,7 +5,8 @@ layout: default
 
 # What is Livedoc ?
 
-Livedoc is a Java library that inspects the Java code of your API and builds its documentation based on what it found.
+Livedoc is a Java library that inspects the Java code of your API and builds its documentation based on what it 
+found. It was [inspired by JSONDoc](about-jsondoc).
 
 It does not need you to use a particular framework, although it integrates very well with Spring.
 

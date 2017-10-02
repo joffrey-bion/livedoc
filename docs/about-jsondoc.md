@@ -7,7 +7,7 @@ layout: default
 
 [JSONDoc](http://jsondoc.org) is the project that inspired me when I created Livedoc.
 I started using it during the development of [Seven Wonders Online](https://github.com/luxons/seven-wonders), but was 
-lacking the websocket API support.
+lacking the websocket API support, and facing a few annoying bugs.
 
 ## Why not contribute to JSONDoc?
 
@@ -17,7 +17,7 @@ but didn't get any reply either, so I decided to do my own thing.
 
 ## Why not a fork?
 
-There are multiple reasons I created a new project instead of forking JSONDoc:
+There are multiple reasons why I created a new project instead of forking JSONDoc:
 - I changed almost everything in the code compared to the JSONDoc project, so there was no hope in a future merge
 - I changed the build system
 - I wanted git tags and versions to be independent form the original JSONDoc project, as I could not upload new JSONDoc 
