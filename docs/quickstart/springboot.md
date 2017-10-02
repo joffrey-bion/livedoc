@@ -35,7 +35,7 @@ package), and add the following content:
 livedoc.version=1.0
 livedoc.packages[0]=com.mycompany.controller #packages in which you have your spring controllers
 livedoc.packages[1]=com.mycompany.model #packages in which you have your model classes
-livedoc.packages[2]=org.example.external.model</value> #they can also belong to external jars
+livedoc.packages[2]=org.example.external.model #they can also belong to external jars
 # optional configuration
 livedoc.basePath=http://localhost:8080/api #defaults to local server and context path
 jsondoc.playgroundEnabled=true
@@ -48,9 +48,10 @@ jsondoc.displayMethodAs=URI
 @SpringBootApplication
 @EnableJSONDoc
 public class MyWebapp {
-	public static void main(String[] args) {
-		SpringApplication.run(MyWebapp.class, args);
-	}
+    
+    public static void main(String[] args) {
+        SpringApplication.run(MyWebapp.class, args);
+    }
 }
 ```
 
