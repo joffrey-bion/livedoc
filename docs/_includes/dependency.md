@@ -11,9 +11,9 @@ compile '{{groupId}}:{{artifactId}}:{{version}}'
 {% capture maven_snippet %}
 ```xml
 <dependency>
-  <groupId>{{groupId}}</groupId>
-  <artifactId>{{artifactId}}</artifactId>
-  <version>{{version}}</version>
+    <groupId>{{groupId}}</groupId>
+    <artifactId>{{artifactId}}</artifactId>
+    <version>{{version}}</version>
 </dependency>
 ```
 {% endcapture %}
@@ -21,7 +21,7 @@ compile '{{groupId}}:{{artifactId}}:{{version}}'
 {% capture ivy_snippet %}
 ```xml
 <dependency org='{{groupId}}' name='{{artifactId}}' rev='{{version}}'>
-   <artifact name='{{artifactId}}' ext='pom' />
+    <artifact name='{{artifactId}}' ext='pom' />
 </dependency>
 ```
 {% endcapture %}

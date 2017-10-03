@@ -22,17 +22,17 @@ integration with Livedoc is even faster than plain Spring MVC.
 
 ```xml
 <bean id="documentationController" class="org.hildan.livedoc.springmvc.controller.JsonLivedocController">
-	<constructor-arg name="version" value="1.0" />
-	<constructor-arg name="packages">
-	  <list>
-		<value>com.mycompany.controllers</value> <!-- packages in which you have your spring controllers -->
-		<value>com.mycompany.model</value> <!-- packages in which you have your model classes -->
-		<value>org.example.external.model</value> <!-- they can also belong to external jars -->
-	  </list>
-	</constructor-arg>
-	<property name="basePath" value="http://localhost:8080/api" /> <!-- optional -->
-	<property name="playgroundEnabled" value="true" /> <!-- optional -->
-	<property name="displayMethodAs" value="URI" /> <!-- optional -->
+    <constructor-arg name="version" value="1.0" />
+    <constructor-arg name="packages">
+        <list>
+            <value>com.mycompany.controllers</value> <!-- packages in which you have your spring controllers -->
+            <value>com.mycompany.model</value> <!-- packages in which you have your model classes -->
+            <value>org.example.external.model</value> <!-- they can also belong to external jars -->
+        </list>
+    </constructor-arg>
+    <property name="basePath" value="http://localhost:8080/api" /> <!-- optional -->
+    <property name="playgroundEnabled" value="true" /> <!-- optional -->
+    <property name="displayMethodAs" value="URI" /> <!-- optional -->
 </bean>
 ```
 
