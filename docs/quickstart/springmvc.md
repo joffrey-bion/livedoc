@@ -13,21 +13,7 @@ integration with Livedoc is even faster than plain Spring MVC.
 
 ## Add a dependency on `livedoc-springmvc`
 
-### Gradle
-
-```groovy
-compile 'org.hildan.livedoc:livedoc-springmvc:2.1.1'
-```
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>org.hildan.livedoc</groupId>
-  <artifactId>livedoc-springmvc</artifactId>
-  <version>2.1.1</version>
-</dependency>
-```
+{% include dependency.md artifactId="livedoc-springmvc" %}
 
 ## Use the provided controller via XML
 
@@ -63,21 +49,7 @@ By navigating to the `/jsondoc` endpoint on your server, you may get the JSON de
 
 More interesting, you may also use the provided UI by adding the Livedoc webjar to your classpath:
 
-### Gradle
-
-```groovy 
-compile 'org.hildan.livedoc:livedoc-ui-webjar:2.1.1'
-```
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>org.hildan.livedoc</groupId>
-  <artifactId>livedoc-ui-webjar</artifactId>
-  <version>2.1.1</version>
-</dependency>
-```
+{% include dependency.md artifactId="livedoc-ui-webjar" %}
 
 If you're not familiar with webjars, this [baeldung post](http://www.baeldung.com/maven-webjars) explains how to use 
 one in a Spring application. 

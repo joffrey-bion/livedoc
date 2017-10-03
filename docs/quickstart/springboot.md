@@ -9,21 +9,7 @@ layout: default
 
 ## Add a dependency on `livedoc-springboot`
 
-### Gradle
-
-```groovy
-compile 'org.hildan.livedoc:livedoc-springboot:2.1.1'
-```
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>org.hildan.livedoc</groupId>
-  <artifactId>livedoc-springboot</artifactId>
-  <version>2.1.1</version>
-</dependency>
-```
+{% include dependency.md artifactId="livedoc-springboot" %}
 
 ## Add the required configuration in `application.properties`
 
@@ -63,21 +49,7 @@ By navigating to the `/jsondoc` endpoint on your server, you may get the JSON de
 
 More interesting, you may also use the provided UI by adding the Livedoc webjar to your classpath:
 
-### Gradle
-
-```groovy 
-compile 'org.hildan.livedoc:livedoc-ui-webjar:2.1.1'
-```
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>org.hildan.livedoc</groupId>
-  <artifactId>livedoc-ui-webjar</artifactId>
-  <version>2.1.1</version>
-</dependency>
-```
+{% include dependency.md artifactId="livedoc-ui-webjar" %}
 
 Webjars are supported out-of-the-box by Spring Boot without any additional configuration. You simply need to navigate
  to `/livedoc-ui.html` and enter your JSON doc endpoint URL in the box to fetch your documentation and display it.

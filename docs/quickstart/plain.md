@@ -10,21 +10,7 @@ may then do what you please with it, such as serializing it to JSON.
 
 ## Add a dependency on `livedoc-core`
 
-### Gradle
-
-```groovy
-compile 'org.hildan.livedoc:livedoc-core:2.1.1'
-```
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>org.hildan.livedoc</groupId>
-  <artifactId>livedoc-core</artifactId>
-  <version>2.1.1</version>
-</dependency>
-```
+{% include dependency.md artifactId="livedoc-core" %}
 
 ## Annotate your code
 
@@ -67,20 +53,6 @@ controllers.
 If your framework allows it, you may add the Livedoc UI webjar to your classpath in order to view your documentation 
 in a nice UI:
 
-### Gradle
-
-```groovy 
-compile 'org.hildan.livedoc:livedoc-ui-webjar:2.1.1'
-```
-
-### Maven
-
-```xml
-<dependency>
-  <groupId>org.hildan.livedoc</groupId>
-  <artifactId>livedoc-ui-webjar</artifactId>
-  <version>2.1.1</version>
-</dependency>
-```
+{% include dependency.md artifactId="livedoc-ui-webjar" %}
 
 Simply serve `livedoc-ui.html`, which is part of the resources inside the webjar, and you are good to go.
