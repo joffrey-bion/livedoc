@@ -8,6 +8,9 @@ import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
+/**
+ * A component able to build documentation objects for controllers and their methods.
+ */
 public interface DocReader {
 
     /**
