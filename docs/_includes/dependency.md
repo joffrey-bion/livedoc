@@ -18,11 +18,19 @@ compile '{{groupId}}:{{artifactId}}:{{version}}'
 ```
 {% endcapture %}
 
+{% capture ivy_snippet %}
+```xml
+<dependency org='{{groupId}}' name='{{artifactId}}' rev='{{version}}'>
+   <artifact name='{{artifactId}}' ext='pom' />
+</dependency>
+```
+{% endcapture %}
+
 {% capture set_name %} 
 tabset-{{groupId}}-{{artifactId}}-{{version}}
 {% endcapture %}
 
-{% assign build_tools = 'Gradle,Maven' | split: ',' | compact %}
-{% assign code_snippets = site.emptyArray | push: gradle_snippet | push: maven_snippet %}
+{% assign build_tools = 'Gradle,Maven,Ivy' | split: ',' | compact %}
+{% assign code_snippets = site.emptyArray | push: gradle_snippet | push: maven_snippet | push: ivy_snippet %}
 
 {% include tabs.md tab_set_name=set_name tab_names=build_tools tab_contents=code_snippets %}
