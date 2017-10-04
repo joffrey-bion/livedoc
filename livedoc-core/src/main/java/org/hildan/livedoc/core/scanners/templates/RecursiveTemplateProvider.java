@@ -60,7 +60,7 @@ public class RecursiveTemplateProvider implements TemplateProvider {
     }
 
     public RecursiveTemplateProvider(PropertyScanner scanner, Predicate<Class<?>> filter,
-                                     Map<Class<?>, Object> defaultTemplates) {
+            Map<Class<?>, Object> defaultTemplates) {
         this.scanner = scanner;
         this.filter = filter;
         this.templates = new HashMap<>();
@@ -68,6 +68,7 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         templates.putAll(defaultTemplates);
     }
 
+    @Override
     public Object getTemplate(Class<?> type) {
         if (!filter.test(type)) {
             return null;

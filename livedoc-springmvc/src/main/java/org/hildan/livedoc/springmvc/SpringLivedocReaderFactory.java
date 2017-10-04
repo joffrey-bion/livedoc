@@ -14,6 +14,10 @@ import org.hildan.livedoc.springmvc.scanner.properties.JacksonPropertyScanner;
 import org.reflections.Reflections;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+/**
+ * A helper that internally uses a {@link LivedocReaderBuilder} to configure a {@link LivedocReader} to inspect a
+ * Spring application.
+ */
 public class SpringLivedocReaderFactory {
 
     /**

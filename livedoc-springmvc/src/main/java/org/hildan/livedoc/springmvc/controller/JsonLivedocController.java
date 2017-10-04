@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * A Spring controller that exposes the API documentation as JSON, under the endpoint {@value #JSON_DOC_ENDPOINT}.
+ */
 @Controller
 public class JsonLivedocController {
 

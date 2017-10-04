@@ -20,12 +20,20 @@ import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A {@link PropertyScanner} that uses a Jackson configuration to read properties in the exact way they are serialized.
+ * A {@link PropertyScanner} that uses a Jackson configuration to inspect the properties of a type. This allows to
+ * document the properties the same way they are serialized when using the given {@link ObjectMapper}, and is especially
+ * useful when used with Spring's configuration.
  */
 public class JacksonPropertyScanner implements PropertyScanner {
 
     private final ObjectMapper mapper;
 
+    /**
+     * Creates a new {@link JacksonPropertyScanner} based on the given {@link ObjectMapper}'s configuration.
+     *
+     * @param mapper
+     *         the Jackson {@link ObjectMapper} that is used to serialize the objects to document
+     */
     public JacksonPropertyScanner(ObjectMapper mapper) {
         this.mapper = mapper;
     }

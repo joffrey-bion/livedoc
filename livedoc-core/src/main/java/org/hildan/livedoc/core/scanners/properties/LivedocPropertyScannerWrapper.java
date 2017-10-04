@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.ApiObjectProperty;
 
+/**
+ * A {@link PropertyScanner} that reads properties from a wrapped {@link PropertyScanner} and overrides some details
+ * based on the {@link ApiObjectProperty} annotation.
+ */
 public class LivedocPropertyScannerWrapper implements PropertyScanner {
 
     private final PropertyScanner scanner;

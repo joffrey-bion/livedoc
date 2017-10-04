@@ -42,7 +42,7 @@ public interface DocReader {
      *         the method to document
      * @param controller
      *         the controller in which the given method should be resolved. Cannot be retrieved from the {@link Method}
-     *         because it could be inherited from a parent controller.
+     *         because the method could be inherited from a parent controller.
      * @param parentApiDoc
      *         the {@link ApiDoc} which the given method is part of
      * @param templateProvider

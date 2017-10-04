@@ -12,6 +12,11 @@ import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
+/**
+ * An implementation of {@link DocReader} that reads Livedoc annotations to build the documentation. In this
+ * implementation, controllers are classes annotated with {@link Api}, and methods are only found and documented if
+ * annotated with {@link ApiMethod}.
+ */
 public class LivedocAnnotationDocReader implements DocReader {
 
     private final AnnotatedTypesFinder annotatedTypesFinder;

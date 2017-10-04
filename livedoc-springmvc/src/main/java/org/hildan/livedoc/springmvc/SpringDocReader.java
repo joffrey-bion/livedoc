@@ -10,9 +10,9 @@ import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringHeaderBuilder;
+import org.hildan.livedoc.springmvc.scanner.builder.SpringMediaTypeBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringPathBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringPathVariableBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringMediaTypeBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringQueryParamBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringResponseBuilder;
@@ -26,10 +26,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * An implementation of {@link DocReader} that builds the documentation from Spring annotations. With this
+ * implementation, controllers are classes annotated with {@link Controller} and the likes, and methods are the ones
+ * annotated with {@link RequestMapping} and the likes.
+ */
 public class SpringDocReader implements DocReader {
 
     private final AnnotatedTypesFinder annotatedTypesFinder;
 
+    /**
+     * Creates a new {@link SpringDocReader} with the given {@link AnnotatedTypesFinder}.
+     *
+     * @param annotatedTypesFinder
+     *         an abstract way of finding classes annotated with a given annotation, used to find controllers
+     */
     public SpringDocReader(AnnotatedTypesFinder annotatedTypesFinder) {
         this.annotatedTypesFinder = annotatedTypesFinder;
     }
