@@ -45,7 +45,7 @@ create it.
 
 ## Use the documentation
 
-The `Livedoc` Java object holds all the documentation of your class. You may now use it as you please.
+The `Livedoc` Java object holds all the documentation of your API and classes. You may now use it as you please.
 
 For instance, you may serialize it as JSON and write it to a file, or you may also return it from one of your own 
 controllers.
