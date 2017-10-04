@@ -24,8 +24,8 @@ livedoc.packages[1]=com.mycompany.model #packages in which you have your model c
 livedoc.packages[2]=org.example.external.model #they can also belong to external jars
 # optional configuration
 livedoc.basePath=http://localhost:8080/api #defaults to local server and context path
-jsondoc.playgroundEnabled=true
-jsondoc.displayMethodAs=URI
+livedoc.playgroundEnabled=true
+livedoc.displayMethodAs=URI
 ```
 
 ## Enable JSON documentation on your configuration class
