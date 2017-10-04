@@ -26,11 +26,6 @@ public class SimpleLivedocType implements LivedocType {
     }
 
     @Override
-    public LivedocTypeKind getKind() {
-        return LivedocTypeKind.SIMPLE;
-    }
-
-    @Override
     public String getOneLineText() {
         return name;
     }

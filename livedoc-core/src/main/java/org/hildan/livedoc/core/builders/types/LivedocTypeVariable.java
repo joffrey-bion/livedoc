@@ -24,11 +24,6 @@ public class LivedocTypeVariable implements LivedocType {
     }
 
     @Override
-    public LivedocTypeKind getKind() {
-        return LivedocTypeKind.TYPE_VARIABLE;
-    }
-
-    @Override
     public String getOneLineText() {
         if (bounds.isEmpty()) {
             return name;

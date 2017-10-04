@@ -15,11 +15,6 @@ public class ArrayLivedocType implements LivedocType {
     }
 
     @Override
-    public LivedocTypeKind getKind() {
-        return LivedocTypeKind.ARRAY;
-    }
-
-    @Override
     public String getOneLineText() {
         return componentType.getOneLineText() + "[]";
     }

@@ -11,11 +11,6 @@ public class WildcardLivedocType implements LivedocType {
     }
 
     @Override
-    public LivedocTypeKind getKind() {
-        return LivedocTypeKind.WILDCARD;
-    }
-
-    @Override
     public String getOneLineText() {
         return "?";
     }

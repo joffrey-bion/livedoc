@@ -24,11 +24,6 @@ public class ParameterizedLivedocType implements LivedocType {
     }
 
     @Override
-    public LivedocTypeKind getKind() {
-        return LivedocTypeKind.PARAMETERIZED;
-    }
-
-    @Override
     public String getOneLineText() {
         if (typeParams.isEmpty()) {
             return rawType.getOneLineText();
