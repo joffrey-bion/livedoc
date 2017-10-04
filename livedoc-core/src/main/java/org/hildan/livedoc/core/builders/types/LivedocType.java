@@ -1,10 +1,15 @@
 package org.hildan.livedoc.core.builders.types;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface LivedocType {
 
-    String getOneLineText();
+    default String getOneLineText() {
+        return getTypeElements().stream().map(TypeElement::getText).collect(Collectors.joining());
+    }
+
+    List<TypeElement> getTypeElements();
 
     /**
      * Returns all classes/interfaces appearing in this type's declaration. It recursively considers type parameters and

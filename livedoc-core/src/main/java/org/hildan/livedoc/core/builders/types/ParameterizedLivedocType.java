@@ -2,40 +2,38 @@ package org.hildan.livedoc.core.builders.types;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.hildan.livedoc.core.util.ListJoiner;
 
 public class ParameterizedLivedocType implements LivedocType {
 
-    private final LivedocType rawType;
+    private final SimpleLivedocType rawType;
 
     private final List<LivedocType> typeParams;
 
-    public ParameterizedLivedocType(LivedocType rawType, List<LivedocType> typeParams) {
+    ParameterizedLivedocType(SimpleLivedocType rawType, List<LivedocType> typeParams) {
         this.rawType = rawType;
         this.typeParams = typeParams;
     }
 
-    public LivedocType getRawType() {
-        return rawType;
-    }
-
-    public List<LivedocType> getTypeParams() {
-        return typeParams;
-    }
-
     @Override
-    public String getOneLineText() {
+    public List<TypeElement> getTypeElements() {
         if (typeParams.isEmpty()) {
-            return rawType.getOneLineText();
+            return rawType.getTypeElements();
         }
-        String typeParamsStr = typeParams.stream().map(LivedocType::getOneLineText).collect(Collectors.joining(", "));
-        return rawType.getOneLineText() + '<' + typeParamsStr + '>';
+        List<TypeElement> paramElems = typeParams.stream()
+                                                 .map(LivedocType::getTypeElements)
+                                                 .collect(new ListJoiner<>(TypeElement.COMMA));
+        List<TypeElement> elems = new ArrayList<>(rawType.getTypeElements());
+        elems.add(TypeElement.OPEN_ANGLE_BRACKET);
+        elems.addAll(paramElems);
+        elems.add(TypeElement.CLOSE_ANGLE_BRACKET);
+        return elems;
     }
 
     @Override
     public List<Class<?>> getComposingTypes() {
-        List<Class<?>> types = new ArrayList<>();
-        types.addAll(rawType.getComposingTypes());
+        List<Class<?>> types = new ArrayList<>(rawType.getComposingTypes());
         for (LivedocType typeParam : typeParams) {
             types.addAll(typeParam.getComposingTypes());
         }

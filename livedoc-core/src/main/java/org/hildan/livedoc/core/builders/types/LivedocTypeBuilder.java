@@ -65,7 +65,7 @@ public class LivedocTypeBuilder {
     }
 
     private static SimpleLivedocType buildTypeForClass(Class<?> clazz) {
-        return new SimpleLivedocType(clazz.getName(), getCustomClassName(clazz), clazz);
+        return new SimpleLivedocType(getCustomClassName(clazz), clazz);
     }
 
     private static String getCustomClassName(Class<?> clazz) {
