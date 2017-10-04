@@ -1,5 +1,28 @@
 # Change Log
 
+## [v3.0.0](https://bintray.com/joffrey-bion/maven/livedoc/3.0.0) (2017-10-04)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.1.1...v3.0.0)
+
+**Implemented enhancements:**
+
+- Add Javadoc on all public classes [\#47](https://github.com/joffrey-bion/livedoc/issues/47)
+- Add default value for java.util.Date in templates [\#45](https://github.com/joffrey-bion/livedoc/issues/45)
+- Add custom default values support in templates [\#44](https://github.com/joffrey-bion/livedoc/issues/44)
+- Provide way to set or determine basePath at runtime [\#12](https://github.com/joffrey-bion/livedoc/issues/12)
+
+**Fixed bugs:**
+
+- ObjectMapper custom configuration is ignored by Livedoc [\#43](https://github.com/joffrey-bion/livedoc/issues/43)
+
+**Closed issues:**
+
+- Make the version of Livedoc a global variable in the doc [\#51](https://github.com/joffrey-bion/livedoc/issues/51)
+- Use tabs for dependency inclusion with Gradle/Maven [\#50](https://github.com/joffrey-bion/livedoc/issues/50)
+- Add quick-start documentation in the README [\#48](https://github.com/joffrey-bion/livedoc/issues/48)
+- Jsondoc examples does not use settings from springs ObjectMapper [\#42](https://github.com/joffrey-bion/livedoc/issues/42)
+- NoClassDefFoundError: org/springframework/messaging/MessageHeaders [\#41](https://github.com/joffrey-bion/livedoc/issues/41)
+- Remove hard dependency on spring-boot-starter-web in livedoc-springmvc [\#40](https://github.com/joffrey-bion/livedoc/issues/40)
+
 ## [v2.1.1](https://bintray.com/joffrey-bion/maven/livedoc/2.1.1) (2017-09-28)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.1.0...v2.1.1)
 
