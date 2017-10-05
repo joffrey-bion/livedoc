@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "private": true,
   "dependencies": {
-    "immutable": "^3.8.1",
+    "immutable": "^4.0.0-rc.5",
     "material-ui": "^0.19.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

@@ -1,18 +1,16 @@
 // @flow
+import type {RecordFactory, RecordOf} from 'immutable';
 import {Record} from 'immutable';
-import {Livedoc} from './livedoc';
+import type {Livedoc} from './livedoc';
 
-export type StateShape = {
-  loading: boolean,
-  url: ?string,
-  livedoc: ?Livedoc
+export type StateProps = {
+  loading: boolean, url: ?string, livedoc: ?Livedoc
 }
-export type StateType = Record<StateShape>;
 
-const StateRecord: StateType = Record({
+export const newState: RecordFactory<StateProps> = Record({
   loading: false,
   url: null,
-  livedoc: null
+  livedoc: null,
 });
 
-export class State extends StateRecord {}
+export type State = RecordOf<StateProps>;

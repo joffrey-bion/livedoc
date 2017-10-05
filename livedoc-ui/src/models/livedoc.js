@@ -1,18 +1,18 @@
 // @flow
-import { Map, Record } from 'immutable';
-import {Api} from './api';
+import {List, Map, Record} from 'immutable';
+import type { RecordOf, RecordFactory } from 'immutable';
+import type {Api} from './api';
 
-export type LivedocShape = {
+type LivedocProps = {
   version: string,
   basePath: string,
-  apis: Map<String, Api>
+  apis: Map<String, List<Api>>
 }
-export type LivedocType = Record<LivedocShape>;
 
-const LivedocRecord: LivedocType = Record({
+export const newLivedoc: RecordFactory<LivedocProps> = Record({
   version: '',
   basePath: '',
   apis: Map()
 });
 
-export class Livedoc extends LivedocRecord {}
+export type Livedoc = RecordOf<LivedocProps>;

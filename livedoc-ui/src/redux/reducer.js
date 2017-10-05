@@ -1,8 +1,7 @@
 // @flow
 
-import {Record} from 'immutable';
-import {State} from '../models/state';
-import {Livedoc} from '../models/livedoc';
+import {newState, type State} from '../models/state';
+import {newLivedoc} from '../models/livedoc';
 
 export const types = {
   FETCH_DOC: 'DOC/FETCH',
@@ -21,7 +20,7 @@ export const actions = {
   fetchError: (error: Error) => ({ type: types.DOC_FETCH_ERROR, error }),
 };
 
-export default (state: State = new State(), action: any) => {
+export default (state: State = newState(), action: any) => {
   switch (action.type) {
     case types.FETCH_DOC:
       return {
@@ -33,7 +32,7 @@ export default (state: State = new State(), action: any) => {
       return {
         loading: false,
         url: state.url,
-        livedoc: new Livedoc(action.jsonDoc)
+        livedoc: newLivedoc(action.jsonDoc)
       };
     case types.DOC_FETCH_ERROR:
       return {
