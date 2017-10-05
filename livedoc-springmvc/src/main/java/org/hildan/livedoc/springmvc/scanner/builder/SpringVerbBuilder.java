@@ -1,8 +1,13 @@
 package org.hildan.livedoc.springmvc.scanner.builder;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.pojo.ApiVerb;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,41 +15,43 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 public class SpringVerbBuilder {
 
+    private static final List<RequestMethod> DEFAULT_METHODS = Arrays.asList(RequestMethod.values());
+
     /**
-     * From Spring's documentation: When [RequestMapping method is] used at the type level, all method-level mappings
-     * inherit this HTTP method restriction
+     * Reads {@link ApiVerb}s (HTTP methods) from the given API method.
      *
      * @param method
+     *         the method to read the verbs from
+     * @param controller
+     *         the controller to get type-level verbs from
      *
-     * @return
+     * @return the {@link ApiVerb}s (HTTP methods) of the given API method.
      */
-    public static Set<ApiVerb> buildVerb(Method method) {
-        Set<ApiVerb> apiVerbs = new LinkedHashSet<>();
-        Class<?> controller = method.getDeclaringClass();
+    public static Set<ApiVerb> buildVerb(Method method, Class<?> controller) {
+        List<RequestMethod> methods = new ArrayList<>(DEFAULT_METHODS);
 
-        if (controller.isAnnotationPresent(RequestMapping.class)) {
-            RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
-            getApiVerbFromRequestMapping(apiVerbs, requestMapping);
+        List<RequestMethod> methodLevelMethods = getMethods(method);
+        if (!methodLevelMethods.isEmpty()) {
+            methods.retainAll(methodLevelMethods);
         }
 
-        if (method.isAnnotationPresent(RequestMapping.class)) {
-            RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-            getApiVerbFromRequestMapping(apiVerbs, requestMapping);
+        List<RequestMethod> typeLevelMethods = getMethods(controller);
+        if (!typeLevelMethods.isEmpty()) {
+            methods.retainAll(typeLevelMethods);
         }
 
-        if (apiVerbs.isEmpty()) {
-            apiVerbs.add(ApiVerb.GET);
-        }
-
-        return apiVerbs;
+        return methods.stream().map(SpringVerbBuilder::toApiVerb).collect(Collectors.toSet());
     }
 
-    private static void getApiVerbFromRequestMapping(Set<ApiVerb> apiVerbs, RequestMapping requestMapping) {
-        if (requestMapping.method().length > 0) {
-            for (RequestMethod requestMethod : requestMapping.method()) {
-                apiVerbs.add(ApiVerb.valueOf(requestMethod.name()));
-            }
+    private static List<RequestMethod> getMethods(AnnotatedElement element) {
+        RequestMapping requestMapping = element.getAnnotation(RequestMapping.class);
+        if (requestMapping == null) {
+            return Collections.emptyList();
         }
+        return Arrays.asList(requestMapping.method());
     }
 
+    private static ApiVerb toApiVerb(RequestMethod requestMethod) {
+        return ApiVerb.valueOf(requestMethod.name());
+    }
 }

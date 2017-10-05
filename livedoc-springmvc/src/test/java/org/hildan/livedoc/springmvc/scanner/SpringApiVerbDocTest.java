@@ -1,5 +1,9 @@
 package org.hildan.livedoc.springmvc.scanner;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.ApiVerb;
@@ -20,15 +24,12 @@ public class SpringApiVerbDocTest {
 
         @RequestMapping(value = "/spring-api-verb-controller-method-one")
         public void apiVerbOne() {
-
         }
 
         @RequestMapping(value = "/spring-api-verb-controller-method-two",
                 method = {RequestMethod.POST, RequestMethod.GET})
         public void apiVerbTwo() {
-
         }
-
     }
 
     @Test
@@ -38,8 +39,9 @@ public class SpringApiVerbDocTest {
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-one")) {
-                Assert.assertEquals(1, apiMethodDoc.getVerb().size());
-                Assert.assertEquals(ApiVerb.GET, apiMethodDoc.getVerb().iterator().next());
+                Set<ApiVerb> expectedVerbs = new HashSet<>(Arrays.asList(ApiVerb.values()));
+                expectedVerbs.remove(ApiVerb.UNDEFINED);
+                Assert.assertEquals(expectedVerbs, apiMethodDoc.getVerb());
             }
             if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-two")) {
                 Assert.assertEquals(2, apiMethodDoc.getVerb().size());
@@ -54,9 +56,7 @@ public class SpringApiVerbDocTest {
 
         @RequestMapping(value = "/spring-api-verb-controller-method-one")
         public void apiVerbOne() {
-
         }
-
     }
 
     @Test
@@ -69,7 +69,5 @@ public class SpringApiVerbDocTest {
                 Assert.assertEquals(2, apiMethodDoc.getVerb().size());
             }
         }
-
     }
-
 }

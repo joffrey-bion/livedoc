@@ -1,0 +1,38 @@
+.ui-tabs {
+  background: transparent;
+  border: none;
+}
+
+.ui-tabs .ui-widget-header {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #c0c0c0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+.ui-tabs .ui-tabs-nav {
+  list-style: none;
+  display: flex;
+}
+.ui-tabs .ui-tabs-nav .ui-tabs-tab {
+  position: relative;
+  margin: 0 0 -1px 0;
+  padding: .5em;
+  white-space: nowrap;
+}
+
+.ui-tabs .ui-tabs-nav .ui-state-default {
+  background: transparent;
+  border: none;
+}
+.ui-tabs .ui-tabs-nav .ui-state-active {
+  background: transparent url(../img/uiTabsArrow.png) no-repeat bottom center;
+  border: none;
+}
+.ui-tabs .ui-tabs-nav .ui-state-default a {
+  color: #c0c0c0;
+}
+.ui-tabs .ui-tabs-nav .ui-state-active a {
+  color: #459e00;
+}

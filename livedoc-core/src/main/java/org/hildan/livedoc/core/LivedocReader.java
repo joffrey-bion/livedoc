@@ -30,6 +30,9 @@ import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
 
+/**
+ * A component able to create an API documentation by inspecting classes and reading their annotations.
+ */
 public class LivedocReader {
 
     private final List<String> packageWhiteList;
@@ -46,6 +49,27 @@ public class LivedocReader {
 
     private final DocMerger docMerger;
 
+    /**
+     * Creates a new {@link LivedocReader} with the given configuration.
+     *
+     * @param packageWhiteList
+     *         the packages that should be scanned to find the classes to document. The given list will be used to find
+     *         controllers and to filter the types to document.
+     * @param typeScanner
+     *         the {@link TypeScanner} to use to explore the types to document, starting from the types used in the API
+     * @param globalDocReader
+     *         the {@link GlobalDocReader} to use to generate the global documentation of a project (general info,
+     *         flows, migrations)
+     * @param apiObjectDocReader
+     *         the {@link ApiObjectDocReader} to use to generate the documentation for the types used in the API
+     * @param readers
+     *         the {@link DocReader}s to use to create documentation objects using reflection. They are called in the
+     *         given order, and the last reader's output has precedence over previous ones. This is why, by default, the
+     *         {@link LivedocAnnotationDocReader} is last, so that Livedoc annotations override default framework
+     *         documentations.
+     * @param templateProvider
+     *         the {@link TemplateProvider} to use to create example objects for the types used in the API
+     */
     public LivedocReader(List<String> packageWhiteList, TypeScanner typeScanner, GlobalDocReader globalDocReader,
             ApiObjectDocReader apiObjectDocReader, List<DocReader> readers, TemplateProvider templateProvider) {
         this.packageWhiteList = packageWhiteList;
@@ -57,6 +81,15 @@ public class LivedocReader {
         this.docMerger = new DocMerger(new FieldPropertyScanner());
     }
 
+    /**
+     * Creates a new {@link LivedocReader} with a default configuration.
+     *
+     * @param packages
+     *         the packages that should be scanned to find the classes to document. The given list will be used to find
+     *         controllers and to filter the types to document.
+     *
+     * @return the newly created {@link LivedocReader}
+     */
     public static LivedocReader basicAnnotationReader(List<String> packages) {
         return new LivedocReaderBuilder().scanningPackages(packages).build();
     }
@@ -152,10 +185,10 @@ public class LivedocReader {
     }
 
     private List<ApiMethodDoc> readApiMethodDocs(Class<?> controller, ApiDoc doc, MethodDisplay displayMethodAs) {
-        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, doc, displayMethodAs));
+        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, controller, doc, displayMethodAs));
     }
 
-    private static List<Method> getAllMethods(final Class<?> clazz) {
+    private static List<Method> getAllMethods(Class<?> clazz) {
         List<Method> methods = new ArrayList<>();
         Class<?> currentClass = clazz;
         while (currentClass != null) {
@@ -166,9 +199,10 @@ public class LivedocReader {
         return methods;
     }
 
-    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, ApiDoc parentApiDoc, MethodDisplay displayMethodAs) {
+    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
+            MethodDisplay displayMethodAs) {
         Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(
-                r -> r.buildApiMethodDoc(method, parentApiDoc, templateProvider));
+                r -> r.buildApiMethodDoc(method, controller, parentApiDoc, templateProvider));
         doc.ifPresent(apiMethodDoc -> {
             apiMethodDoc.setDisplayMethodAs(displayMethodAs);
             ApiMethodDocDefaults.complete(apiMethodDoc);

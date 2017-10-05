@@ -8,6 +8,10 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * A {@link PropertyScanner} reading properties as the fields of a class. Only the relevant fields are considered
+ * properties (static, transient and synthetic fields are ignored, for instance).
+ */
 public class FieldPropertyScanner implements PropertyScanner {
 
     @Override

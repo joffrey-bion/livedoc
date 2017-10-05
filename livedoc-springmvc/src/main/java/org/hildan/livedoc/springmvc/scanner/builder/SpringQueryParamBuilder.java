@@ -22,11 +22,11 @@ public class SpringQueryParamBuilder {
      *
      * @param method
      *
+     * @param controller
      * @return
      */
-    public static Set<ApiParamDoc> buildQueryParams(Method method) {
+    public static Set<ApiParamDoc> buildQueryParams(Method method, Class<?> controller) {
         Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
-        Class<?> controller = method.getDeclaringClass();
 
         if (controller.isAnnotationPresent(RequestMapping.class)) {
             RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);

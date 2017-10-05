@@ -7,6 +7,9 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
 
+/**
+ * A component able to build the global documentation of an API (general information, flows, migrations).
+ */
 public interface GlobalDocReader {
 
     Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiMethodDoc> apiMethodDocsById);

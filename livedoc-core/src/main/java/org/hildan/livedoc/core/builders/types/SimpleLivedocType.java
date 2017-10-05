@@ -5,34 +5,18 @@ import java.util.List;
 
 public class SimpleLivedocType implements LivedocType {
 
-    private final String id;
-
     private final String name;
 
     private final Class<?> clazz;
 
-    public SimpleLivedocType(String id, String name, Class<?> clazz) {
-        this.id = id;
+    public SimpleLivedocType(String name, Class<?> clazz) {
         this.name = name;
         this.clazz = clazz;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     @Override
-    public LivedocTypeKind getKind() {
-        return LivedocTypeKind.SIMPLE;
-    }
-
-    @Override
-    public String getOneLineText() {
-        return name;
+    public List<TypeElement> getTypeElements() {
+        return Collections.singletonList(TypeElement.ref(name, clazz));
     }
 
     @Override

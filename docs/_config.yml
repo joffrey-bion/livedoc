@@ -1,0 +1,9 @@
+title: Livedoc
+theme: jekyll-theme-cayman
+
+# for dependencies inclusion doc
+groupId: org.hildan.livedoc
+latestVersion: 3.0.0
+
+# to use in tabs
+emptyArray: []

@@ -16,6 +16,9 @@ import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
 
+/**
+ * An implementation of {@link GlobalDocReader} that reads Livedoc annotations to build the documentation.
+ */
 public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
 
     private final AnnotatedTypesFinder annotatedTypesFinder;

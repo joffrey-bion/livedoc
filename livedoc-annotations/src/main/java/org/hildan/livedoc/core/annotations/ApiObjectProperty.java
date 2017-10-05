@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * This annotation is to be used on your objects' fields and represents a field of an object
  */
 @Documented
-@Target(value = ElementType.FIELD)
+@Target(value = {ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiObjectProperty {
 

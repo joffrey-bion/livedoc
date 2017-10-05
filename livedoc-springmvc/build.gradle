@@ -2,6 +2,7 @@ description = 'The Spring MVC helper of the Livedoc project'
 
 dependencies {
     compile project(':livedoc-core')
+    compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'org.springframework:spring-webmvc:4.2.0.RELEASE'
     testCompile 'org.springframework:spring-webmvc:4.2.0.RELEASE'
     compileOnly 'org.springframework:spring-messaging:4.2.0.RELEASE'

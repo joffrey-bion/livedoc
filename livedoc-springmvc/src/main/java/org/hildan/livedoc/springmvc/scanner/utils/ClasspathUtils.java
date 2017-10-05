@@ -18,6 +18,10 @@ public class ClasspathUtils {
         return isOnClassPath("org.springframework.messaging.simp.annotation.SubscribeMapping");
     }
 
+    public static boolean isRequestMappingOnClasspath() {
+        return isOnClassPath("org.springframework.web.bind.annotation.RequestMapping");
+    }
+
     private static boolean isOnClassPath(String fullyQualifiedClassName) {
         try {
             Class.forName(fullyQualifiedClassName);

@@ -8,6 +8,9 @@ import org.hildan.livedoc.core.pojo.ApiDoc;
 import org.hildan.livedoc.core.pojo.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
+/**
+ * A component able to build documentation objects for controllers and their methods.
+ */
 public interface DocReader {
 
     /**
@@ -37,6 +40,9 @@ public interface DocReader {
      *
      * @param method
      *         the method to document
+     * @param controller
+     *         the controller in which the given method should be resolved. Cannot be retrieved from the {@link Method}
+     *         because the method could be inherited from a parent controller.
      * @param parentApiDoc
      *         the {@link ApiDoc} which the given method is part of
      * @param templateProvider
@@ -45,5 +51,6 @@ public interface DocReader {
      * @return a new {@link ApiMethodDoc} for the given method, or an empty optional if this reader is not able to build
      * a doc for the given method.
      */
-    Optional<ApiMethodDoc> buildApiMethodDoc(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider);
+    Optional<ApiMethodDoc> buildApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
+            TemplateProvider templateProvider);
 }

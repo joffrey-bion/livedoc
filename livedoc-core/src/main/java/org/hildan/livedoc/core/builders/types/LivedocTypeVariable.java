@@ -1,8 +1,12 @@
 package org.hildan.livedoc.core.builders.types;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.hildan.livedoc.core.util.ListJoiner;
 
 public class LivedocTypeVariable implements LivedocType {
 
@@ -10,7 +14,7 @@ public class LivedocTypeVariable implements LivedocType {
 
     private final List<LivedocType> bounds;
 
-    public LivedocTypeVariable(String name, List<LivedocType> bounds) {
+    LivedocTypeVariable(String name, List<LivedocType> bounds) {
         this.name = name;
         this.bounds = bounds;
     }
@@ -19,22 +23,19 @@ public class LivedocTypeVariable implements LivedocType {
         return name;
     }
 
-    public List<LivedocType> getBounds() {
-        return bounds;
-    }
-
     @Override
-    public LivedocTypeKind getKind() {
-        return LivedocTypeKind.TYPE_VARIABLE;
-    }
-
-    @Override
-    public String getOneLineText() {
+    public List<TypeElement> getTypeElements() {
         if (bounds.isEmpty()) {
-            return name;
+            return Collections.singletonList(TypeElement.text(name));
         }
-        String boundsStr = bounds.stream().map(LivedocType::getOneLineText).collect(Collectors.joining(", "));
-        return name + " extends " + boundsStr;
+        List<TypeElement> boundElements = bounds.stream()
+                                                .map(LivedocType::getTypeElements)
+                                                .collect(new ListJoiner<>(TypeElement.COMMA));
+        List<TypeElement> elements = new ArrayList<>();
+        elements.add(TypeElement.text(name));
+        elements.add(TypeElement.EXTENDS);
+        elements.addAll(boundElements);
+        return elements;
     }
 
     @Override

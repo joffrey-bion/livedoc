@@ -2,6 +2,9 @@ package org.hildan.livedoc.springmvc.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.pojo.Livedoc;
 import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * A Spring controller that exposes the API documentation as JSON, under the endpoint {@value #JSON_DOC_ENDPOINT}.
+ */
 @Controller
 public class JsonLivedocController {
 
@@ -28,14 +34,32 @@ public class JsonLivedocController {
 
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
-    public JsonLivedocController(String version, String basePath, List<String> packages) {
-        this(version, basePath, SpringLivedocReaderFactory.getReader(packages));
+    /**
+     * Creates a new {@code JsonLivedocController} with the given parameters.
+     *
+     * @param version
+     *         the current API version
+     * @param packages
+     *         the packages to scan
+     * @param jacksonObjectMapper
+     *         the {@link ObjectMapper} to use for property exploration and template generation, or null to use a new
+     *         mapper with Spring defaults.
+     */
+    public JsonLivedocController(String version, List<String> packages, ObjectMapper jacksonObjectMapper) {
+        this(version, SpringLivedocReaderFactory.getReader(packages, jacksonObjectMapper));
     }
 
-    public JsonLivedocController(String version, String basePath, LivedocReader livedocReader) {
+    public JsonLivedocController(String version, LivedocReader livedocReader) {
         this.version = version;
-        this.basePath = basePath;
         this.livedocReader = livedocReader;
+    }
+
+    public String getBasePath() {
+        return basePath;
+    }
+
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
     }
 
     public boolean isPlaygroundEnabled() {
@@ -54,11 +78,21 @@ public class JsonLivedocController {
         this.displayMethodAs = displayMethodAs;
     }
 
-    @RequestMapping(value = JsonLivedocController.JSON_DOC_ENDPOINT, method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = JsonLivedocController.JSON_DOC_ENDPOINT,
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     @ResponseBody
-    public Livedoc getApi() {
-        return livedocReader.read(version, basePath, playgroundEnabled, displayMethodAs);
+    public Livedoc getJsonLivedoc(HttpServletRequest request) {
+        String baseUrl = basePath == null ? getBaseUrl(request) : basePath;
+        return livedocReader.read(version, baseUrl, playgroundEnabled, displayMethodAs);
+    }
+
+    private static String getBaseUrl(HttpServletRequest request) {
+        String scheme = request.getScheme() + "://";
+        String serverName = request.getServerName();
+        String serverPort = (request.getServerPort() == 80) ? "" : ":" + request.getServerPort();
+        String contextPath = request.getContextPath();
+        return scheme + serverName + serverPort + contextPath;
     }
 }

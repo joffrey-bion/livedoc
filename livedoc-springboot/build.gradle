@@ -2,6 +2,8 @@ description = 'The Spring Boot helper of the Livedoc project'
 
 dependencies {
     compile project(':livedoc-springmvc')
-    compile 'org.springframework.boot:spring-boot-starter-web:1.3.0.RELEASE'
-    compile 'org.springframework.boot:spring-boot-configuration-processor:1.3.0.RELEASE'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web:1.5.7.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-starter-web:1.5.7.RELEASE'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor:1.5.7.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-configuration-processor:1.5.7.RELEASE'
 }

@@ -13,7 +13,7 @@ import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 
 /**
  * An implementation of {@link TypeScanner} that reads the types of the properties of the classes, and recursively
- * inspect those types. The definition of a "property" is defined by the given {@link PropertyScanner}.
+ * inspect those types. The definition of a "property" is decided by the given {@link PropertyScanner}.
  */
 public class RecursivePropertyTypeScanner implements TypeScanner {
 
