@@ -1,10 +1,8 @@
 // @flow
-import {List, Map} from 'immutable';
 import * as React from 'react';
 import {connect} from 'react-redux';
-import type {Livedoc} from '../models/livedoc';
+import type {Livedoc, ApiDoc} from '../models/livedoc';
 import type {State} from '../models/state';
-import type {Api} from '../models/api';
 
 type Props = {
   loading: boolean, url: ?string, livedoc: ?Livedoc
@@ -17,11 +15,12 @@ const DocPresenter = (props: Props) => {
   if (!props.livedoc) {
     return <span>Please provide a URL to fetch a documentation.</span>
   }
-  const apis: Map<string, List<Api>> = props.livedoc.apis;
-  const nbApis = apis.size;
+  const apiDocs: {[key: string]: Array<ApiDoc>} = props.livedoc.apis;
+  // const nbApis: number = apiDocs.keys();
   return <div>
-    <p>nbApisGroups = {nbApis || "undef"}</p>
-    <p>apis.get? = {apis.get !== undefined}</p>
+    <p>apiDocs.get? = {!!apiDocs.get}</p>
+    <p>apiDocs.keys? = {!!apiDocs.keys}</p>
+    <pre style={{textAlign: 'left'}}>apiDocs[""] = {JSON.stringify(apiDocs[''], null, 3)}</pre>
   </div>
 };
 
