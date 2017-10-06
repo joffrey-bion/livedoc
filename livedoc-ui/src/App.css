@@ -11,6 +11,10 @@
   color: white;
 }
 
+.App-content {
+  text-align: left;
+}
+
 .App-title {
   font-family: 'Audiowide', cursive;
   font-weight: normal;

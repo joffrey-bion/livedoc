@@ -2,8 +2,8 @@
 import React, {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './App.css';
-import {InlineForm} from './components/InlineForm';
-import DocPresenter from './components/DocPresenter';
+import {InlineForm} from './components/forms/InlineForm';
+import DocPresenter from './components/doc/DocPresenter';
 import {connect} from 'react-redux';
 import {actions} from './redux/reducer';
 

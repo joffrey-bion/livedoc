@@ -1,8 +1,10 @@
 // @flow
 import * as React from 'react';
 import {connect} from 'react-redux';
-import type {Livedoc, ApiDoc} from '../models/livedoc';
-import type {State} from '../models/state';
+import type {Livedoc, ApiDoc} from '../../models/livedoc';
+import type {State} from '../../models/state';
+import { GlobalInfo } from './GlobalInfo';
+import { NavPanel } from './nav/NavPanel';
 
 type Props = {
   loading: boolean, url: ?string, livedoc: ?Livedoc
@@ -16,10 +18,10 @@ const DocPresenter = (props: Props) => {
     return <span>Please provide a URL to fetch a documentation.</span>
   }
   const apiDocs: {[key: string]: Array<ApiDoc>} = props.livedoc.apis;
-  // const nbApis: number = apiDocs.keys();
-  return <div>
-    <p>apiDocs.get? = {!!apiDocs.get}</p>
-    <p>apiDocs.keys? = {!!apiDocs.keys}</p>
+
+  return <div className='App-content'>
+    <GlobalInfo livedoc={props.livedoc}/>
+    <NavPanel livedoc={props.livedoc} onSelect={id => console.log('Element selected with id =', id)}/>
     <pre style={{textAlign: 'left'}}>apiDocs[""] = {JSON.stringify(apiDocs[''], null, 3)}</pre>
   </div>
 };

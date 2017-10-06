@@ -39,8 +39,7 @@ export type ApiChangelogDoc = Identified & {
   changes: Array<string>,
 }
 
-export type ApiDoc = Identified & Versioned & Authenticated & {
-  name: string,
+export type ApiDoc = Identified & Named & Versioned & Authenticated & {
   description: string,
   visibility: ApiVisibility,
   stage: ApiStage,
@@ -53,8 +52,7 @@ export type ApiErrorDoc = Identified & {
   description: string
 }
 
-export type ApiFlowDoc = {
-  name: string,
+export type ApiFlowDoc = Named & {
   description: string,
   preconditions: Array<string>,
   steps: Array<ApiFlowStepDoc>,
@@ -78,8 +76,7 @@ export type ApiGlobalSectionDoc = Identified & {
   paragraphs: Array<string>,
 }
 
-export type ApiHeaderDoc = Identified & {
-  name: string,
+export type ApiHeaderDoc = Identified & Named & {
   description: string,
   allowedvalues: Array<string>,
 }
@@ -115,8 +112,7 @@ export type ApiMigrationDoc = Identified & {
   steps: Array<string>,
 }
 
-export type ApiObjectDoc = Identified & LivedocHints & Versioned & {
-  name: string,
+export type ApiObjectDoc = Identified & Named & LivedocHints & Versioned & {
   description: string,
   visibility: ApiVisibility,
   stage: ApiStage,
@@ -125,16 +121,14 @@ export type ApiObjectDoc = Identified & LivedocHints & Versioned & {
   auth: ApiAuthDoc,
 };
 
-export type ApiObjectFieldDoc = Identified & LivedocHints & Versioned & {
-  name: string,
+export type ApiObjectFieldDoc = Identified & Named & LivedocHints & Versioned & {
   description: string,
   type: LivedocType,
   format: Array<string>,
   allowedvalues: Array<string>,
 };
 
-export type ApiParamDoc = LivedocHints & {
-  name: string,
+export type ApiParamDoc = LivedocHints & Named & {
   description: string,
   type: LivedocType,
   format: string,
@@ -176,6 +170,10 @@ export type Authenticated = {
 
 export type Identified = {
   livedocId: string,
+};
+
+export type Named = {
+  name: string,
 };
 
 export type Versioned = {
