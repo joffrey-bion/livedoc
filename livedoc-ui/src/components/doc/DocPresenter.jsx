@@ -1,8 +1,8 @@
 // @flow
 import * as React from 'react';
-import {connect} from 'react-redux';
-import type {Livedoc, ApiDoc} from '../../models/livedoc';
-import type {State} from '../../models/state';
+import { connect } from 'react-redux';
+import type { Livedoc } from '../../model/livedoc';
+import type { State } from '../../model/state';
 import { GlobalInfo } from './GlobalInfo';
 import { NavPanel } from './nav/NavPanel';
 
@@ -12,24 +12,20 @@ type Props = {
 
 const DocPresenter = (props: Props) => {
   if (props.loading) {
-    return <span>Loading documentation from {props.url}</span>
+    return <span>Loading documentation from {props.url}</span>;
   }
   if (!props.livedoc) {
-    return <span>Please provide a URL to fetch a documentation.</span>
+    return <span>Please provide a URL to fetch a documentation.</span>;
   }
-  const apiDocs: {[key: string]: Array<ApiDoc>} = props.livedoc.apis;
 
   return <div className='App-content'>
     <GlobalInfo livedoc={props.livedoc}/>
     <NavPanel livedoc={props.livedoc} onSelect={id => console.log('Element selected with id =', id)}/>
-    <pre style={{textAlign: 'left'}}>apiDocs[""] = {JSON.stringify(apiDocs[''], null, 3)}</pre>
-  </div>
+  </div>;
 };
 
 const mapStateToProps = (state: State) => ({
-  loading: state.loading,
-  url: state.url,
-  livedoc: state.livedoc,
+  loading: state.loading, url: state.url, livedoc: state.livedoc,
 });
 
 const mapDispatchToProps = {};

@@ -1,6 +1,6 @@
 // @flow
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import * as React from 'react';
 
 type Props = {
@@ -32,6 +32,6 @@ export class InlineForm extends React.Component<Props, State> {
       <TextField type='text' value={this.state.value} hintText={this.props.hintText}
                  onChange={(e, val) => this.setValue(val)}/>
       <RaisedButton label={this.props.btnLabel} primary onClick={() => this.props.onSubmit(this.state.value)}/>
-    </div>
+    </div>;
   }
 }

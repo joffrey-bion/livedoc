@@ -1,5 +1,21 @@
 // @flow
 
+export type Authenticated = {
+  auth: ApiAuthDoc,
+};
+
+export type Identified = {
+  livedocId: string,
+};
+
+export type Named = {
+  name: string,
+};
+
+export type Versioned = {
+  supportedversions: ApiVersionDoc,
+};
+
 export type Livedoc = {
   version: string,
   basePath: string,
@@ -9,12 +25,6 @@ export type Livedoc = {
   global: ApiGlobalDoc,
   playgroundEnabled: boolean,
   displayMethodAs: MethodDisplay,
-};
-
-export type LivedocHints = {
-  jsondocerrors: Array<string>,
-  jsondocwarnings: Array<string>,
-  jsondochints: Array<string>,
 };
 
 export type ApiAuthDoc = {
@@ -152,6 +162,12 @@ export type ApiVersionDoc = {
 
 export type ApiVisibility = '' | 'PRIVATE' | 'PUBLIC';
 
+export type LivedocHints = {
+  jsondocerrors: Array<string>,
+  jsondocwarnings: Array<string>,
+  jsondochints: Array<string>,
+};
+
 export type LivedocType = {
   oneLineText: string,
   typeElements: Array<TypeElement>,
@@ -163,19 +179,3 @@ export type TypeElement = {
 };
 
 export type MethodDisplay = 'URI' | 'SUMMARY' | 'METHOD';
-
-export type Authenticated = {
-  auth: ApiAuthDoc,
-};
-
-export type Identified = {
-  livedocId: string,
-};
-
-export type Named = {
-  name: string,
-};
-
-export type Versioned = {
-  supportedversions: ApiVersionDoc,
-};

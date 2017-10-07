@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import type { Identified, Named } from '../../../models/livedoc';
+import type { Identified, Named } from '../../../model/livedoc';
 import { NavGroup } from './NavGroup';
 
 type Props = {
@@ -13,9 +13,11 @@ export const NavSection = (props: Props) => {
 
   let navGroups = [];
   for (let key in props.elementsByGroupName) {
-    const groupName = key;
-    const elements: Array<Identified & Named> = props.elementsByGroupName[key];
-    navGroups.push(<NavGroup key={groupName} title={groupName} elements={elements} onSelect={props.onSelect}/>);
+    if (props.elementsByGroupName.hasOwnProperty(key)) {
+      const groupName = key;
+      const elements = props.elementsByGroupName[key];
+      navGroups.push(<NavGroup key={groupName} title={groupName} elements={elements} onSelect={props.onSelect}/>);
+    }
   }
 
   return <div>
@@ -25,4 +27,3 @@ export const NavSection = (props: Props) => {
     </div>
   </div>;
 };
-

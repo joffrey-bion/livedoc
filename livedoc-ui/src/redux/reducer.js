@@ -1,6 +1,7 @@
 // @flow
 
-import {newState, type State} from '../models/state';
+import {newState} from '../model/state';
+import type {State} from '../model/state';
 
 export const types = {
   FETCH_DOC: 'DOC/FETCH',
@@ -25,19 +26,19 @@ export default (state: State = newState(), action: any) => {
       return {
         loading: true,
         url: action.url,
-        livedoc: null
+        livedoc: null,
       };
     case types.DOC_FETCHED:
       return {
         loading: false,
         url: state.url,
-        livedoc: action.jsonDoc
+        livedoc: action.jsonDoc,
       };
     case types.DOC_FETCH_ERROR:
       return {
         loading: false,
         url: state.url,
-        livedoc: null
+        livedoc: null,
       };
     default:
       return state;
