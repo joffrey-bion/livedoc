@@ -1,0 +1,9 @@
+{
+  "extends": "react-app",
+  "rules": {
+    "max-len": ["error", 120],
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "comma-dangle": ["error", "always-multiline"]
+  }
+}
