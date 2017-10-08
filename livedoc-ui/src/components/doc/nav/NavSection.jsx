@@ -6,7 +6,7 @@ import { NavGroup } from './NavGroup';
 
 type Props = {
   title: string,
-  elementsByGroupName: {[key: string]: Array<Identified & Named>},
+  elementsByGroupName: {[key: string]: $ReadOnlyArray<Identified & Named>},
   onSelect: (id: string) => void,
 }
 

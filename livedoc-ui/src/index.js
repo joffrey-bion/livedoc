@@ -7,8 +7,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store';
 
-const initialState = {};
-const store = configureStore(initialState);
+const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>

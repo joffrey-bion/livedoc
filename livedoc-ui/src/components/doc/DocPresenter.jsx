@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import type { Livedoc } from '../../model/livedoc';
 import type { State } from '../../model/state';
 import { GlobalInfo } from './GlobalInfo';
-import { NavPanel } from './nav/NavPanel';
+import NavPanel from './nav/NavPanel';
+import { LoadingInfo } from './LoadingInfo';
 
 type Props = {
   loading: boolean, url: ?string, livedoc: ?Livedoc
@@ -12,20 +13,22 @@ type Props = {
 
 const DocPresenter = (props: Props) => {
   if (props.loading) {
-    return <span>Loading documentation from {props.url}</span>;
+    return <LoadingInfo url={props.url}/>;
   }
   if (!props.livedoc) {
-    return <span>Please provide a URL to fetch a documentation.</span>;
+    return <p>Please provide a URL to fetch a documentation.</p>;
   }
 
   return <div className='App-content'>
     <GlobalInfo livedoc={props.livedoc}/>
-    <NavPanel livedoc={props.livedoc} onSelect={id => console.log('Element selected with id =', id)}/>
+    <NavPanel />
   </div>;
 };
 
 const mapStateToProps = (state: State) => ({
-  loading: state.loading, url: state.url, livedoc: state.livedoc,
+  loading: state.loader.loading,
+  url: state.loader.url,
+  livedoc: state.livedoc,
 });
 
 const mapDispatchToProps = {};

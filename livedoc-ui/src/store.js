@@ -1,11 +1,12 @@
 // @flow
 import {applyMiddleware, compose, createStore} from 'redux';
-import {fromJS} from 'immutable';
 import createSagaMiddleware from 'redux-saga';
 import reducer from './redux/reducer';
 import rootSaga from './sagas';
+import type { State } from './model/state';
+import { newState } from './model/state';
 
-export default function configureStore(initialState: Object = {}) {
+export default function configureStore(initialState: State = newState()) {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware];
   const enhancers = [applyMiddleware(...middlewares)];
@@ -13,7 +14,7 @@ export default function configureStore(initialState: Object = {}) {
   const composeEnhancers = process.env.NODE_ENV !== 'production' && typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
 
-  const store = createStore(reducer, fromJS(initialState), composeEnhancers(...enhancers));
+  const store = createStore(reducer, initialState, composeEnhancers(...enhancers));
 
   sagaMiddleware.run(rootSaga);
 

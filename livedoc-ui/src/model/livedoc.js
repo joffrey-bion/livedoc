@@ -19,9 +19,9 @@ export type Versioned = {
 export type Livedoc = {
   version: string,
   basePath: string,
-  apis: {[key: string]: Array<ApiDoc>},
-  objects: {[key: string]: Array<ApiObjectDoc>},
-  flows: {[key: string]: Array<ApiFlowDoc>},
+  apis: {[key: string]: $ReadOnlyArray<ApiDoc>},
+  objects: {[key: string]: $ReadOnlyArray<ApiObjectDoc>},
+  flows: {[key: string]: $ReadOnlyArray<ApiFlowDoc>},
   global: ApiGlobalDoc,
   playgroundEnabled: boolean,
   displayMethodAs: MethodDisplay,
