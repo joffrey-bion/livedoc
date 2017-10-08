@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { Panel } from 'react-bootstrap';
 import type { Identified, Named } from '../../../model/livedoc';
 import { NavGroup } from './NavGroup';
 
@@ -16,14 +17,11 @@ export const NavSection = (props: Props) => {
     if (props.elementsByGroupName.hasOwnProperty(key)) {
       const groupName = key;
       const elements = props.elementsByGroupName[key];
-      navGroups.push(<NavGroup key={groupName} title={groupName} elements={elements} onSelect={props.onSelect}/>);
+      navGroups.push(<NavGroup key={groupName} name={groupName} elements={elements} onSelect={props.onSelect}/>);
     }
   }
 
-  return <div>
-    <h2>{props.title}</h2>
-    <div style={{border: '1px'}}>
+  return <Panel header={props.title} headerRole='button' collapsible>
       {navGroups}
-    </div>
-  </div>;
+  </Panel>;
 };
