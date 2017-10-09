@@ -21,11 +21,11 @@ const DocPresenter = (props: Props) => {
     return <p>Please provide a URL to fetch a documentation.</p>;
   }
 
-  return <div className='App-content'>
-    <GlobalInfo livedoc={props.livedoc}/>
+  return <section className='App-content'>
     <Grid fluid>
       <Row>
         <Col md={3}>
+          <GlobalInfo livedoc={props.livedoc}/>
           <NavPanel/>
         </Col>
         <Col md={6}>
@@ -33,7 +33,7 @@ const DocPresenter = (props: Props) => {
         </Col>
       </Row>
     </Grid>
-  </div>;
+  </section>;
 };
 
 const mapStateToProps = (state: State) => ({

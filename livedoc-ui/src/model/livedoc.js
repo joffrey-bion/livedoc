@@ -129,6 +129,7 @@ export type ApiObjectDoc = Identified & Named & LivedocHints & Versioned & {
   group: string,
   fields: Array<ApiObjectFieldDoc>,
   auth: ApiAuthDoc,
+  allowedvalues: ?Array<string>,
 };
 
 export type ApiObjectFieldDoc = Identified & Named & LivedocHints & Versioned & {
