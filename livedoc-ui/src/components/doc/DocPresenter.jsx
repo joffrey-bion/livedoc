@@ -1,11 +1,12 @@
 // @flow
 import * as React from 'react';
-import { connect } from 'react-redux';
-import type { Livedoc } from '../../model/livedoc';
-import type { State } from '../../model/state';
+import {Col, Grid, Row} from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {Livedoc} from '../../model/livedoc';
+import type {State} from '../../model/state';
 import DocContent from './content/DocContent';
-import { GlobalInfo } from './GlobalInfo';
-import { LoadingInfo } from './LoadingInfo';
+import {GlobalInfo} from './GlobalInfo';
+import {LoadingInfo} from './LoadingInfo';
 import NavPanel from './nav/NavPanel';
 
 type Props = {
@@ -22,8 +23,16 @@ const DocPresenter = (props: Props) => {
 
   return <div className='App-content'>
     <GlobalInfo livedoc={props.livedoc}/>
-    <NavPanel/>
-    <DocContent/>
+    <Grid fluid>
+      <Row>
+        <Col md={3}>
+          <NavPanel/>
+        </Col>
+        <Col md={6}>
+          <DocContent/>
+        </Col>
+      </Row>
+    </Grid>
   </div>;
 };
 
