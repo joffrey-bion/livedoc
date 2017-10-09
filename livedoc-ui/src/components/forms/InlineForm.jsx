@@ -4,10 +4,7 @@ import TextField from 'material-ui/TextField';
 import * as React from 'react';
 
 type Props = {
-  initialValue: string,
-  hintText: string,
-  onSubmit: string => void,
-  btnLabel: string
+  initialValue: string, hintText: string, onSubmit: string => void, btnLabel: string
 }
 
 type State = {
@@ -29,8 +26,11 @@ export class InlineForm extends React.Component<Props, State> {
 
   render() {
     return <div>
-      <TextField type='text' value={this.state.value} hintText={this.props.hintText}
-                 onChange={(e, val) => this.setValue(val)}/>
+      <TextField type='text'
+                 value={this.state.value}
+                 hintText={this.props.hintText}
+                 onChange={(e, val) => this.setValue(val)}
+                 style={{marginRight: '1em'}}/>
       <RaisedButton label={this.props.btnLabel} primary onClick={() => this.props.onSubmit(this.state.value)}/>
     </div>;
   }
