@@ -4,13 +4,13 @@ import { Panel } from 'react-bootstrap';
 import type { Identified, Named } from '../../../model/livedoc';
 import { NavGroup } from './NavGroup';
 
-type Props = {
+export type NavSectionProps = {
   title: string,
   elementsByGroupName: {[groupName: string]: $ReadOnlyArray<Identified & Named>},
   onSelect: (id: string) => void,
 }
 
-export const NavSection = (props: Props) => {
+export const NavSection = (props: NavSectionProps) => {
 
   let navGroups = [];
   for (let key in props.elementsByGroupName) {

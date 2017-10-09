@@ -4,12 +4,12 @@ import { Table } from 'react-bootstrap';
 import type { ApiObjectDoc } from '../../../../../model/livedoc';
 import { ApiFieldRow } from './ApiFieldRow';
 
-type Props = {
+export type ComplexTypeDetailsProps = {
   typeDoc: ApiObjectDoc,
   onSelect: (id: string) => void,
 }
 
-export const ComplexTypeDetails = (props: Props) => {
+export const ComplexTypeDetails = (props: ComplexTypeDetailsProps) => {
   const doc: ApiObjectDoc = props.typeDoc;
 
   let fieldRows = doc.fields.map(f => <ApiFieldRow key={f.name} field={f} onSelect={props.onSelect}/>);

@@ -9,11 +9,13 @@ import {GlobalInfo} from './GlobalInfo';
 import {LoadingInfo} from './LoadingInfo';
 import NavPanel from './nav/NavPanel';
 
-type Props = {
-  loading: boolean, url: ?string, livedoc: ?Livedoc
+export type DocPresenterProps = {
+  loading: boolean,
+  url: ?string,
+  livedoc: ?Livedoc
 }
 
-const DocPresenter = (props: Props) => {
+const DocPresenter = (props: DocPresenterProps) => {
   if (props.loading) {
     return <LoadingInfo url={props.url}/>;
   }

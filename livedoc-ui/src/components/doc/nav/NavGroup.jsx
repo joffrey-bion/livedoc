@@ -3,13 +3,13 @@ import * as React from 'react';
 import { Nav, NavItem, Panel } from 'react-bootstrap';
 import type { Identified, Named } from '../../../model/livedoc';
 
-type Props = {
+export type NavGroupProps = {
   name: string,
   elements: $ReadOnlyArray<Identified & Named>,
   onSelect: (id: string) => void,
 }
 
-export const NavGroup = (props: Props) => {
+export const NavGroup = (props: NavGroupProps) => {
 
   const navLinks = props.elements.map(e => <NavItem key={e.livedocId} eventKey={e.livedocId}>{e.name}</NavItem>);
 

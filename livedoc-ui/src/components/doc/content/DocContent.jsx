@@ -17,7 +17,7 @@ type Props = {
 
 const DocContent = ({selectedApi, selectedType, selectedFlow, onSelect}: Props) => {
   if (selectedApi) {
-    return <ApiDocPanel apiDoc={selectedApi} onSelect={onSelect}/>;
+    return <ApiDocPanel apiDoc={selectedApi} onMethodSelect={id => console.log(id)} onTypeClick={onSelect}/>;
   }
   if (selectedType) {
     return <ApiTypePanel typeDoc={selectedType} onSelect={onSelect}/>;

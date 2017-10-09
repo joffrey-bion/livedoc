@@ -5,12 +5,12 @@ import type { ApiObjectDoc } from '../../../../model/livedoc';
 import { EnumTypeDetails } from './enum/EnumTypeDetails';
 import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
 
-type Props = {
+export type ApiTypePanelProps = {
   typeDoc: ApiObjectDoc,
   onSelect: (id: string) => void,
 }
 
-export const ApiTypePanel = ({typeDoc, onSelect}: Props) => {
+export const ApiTypePanel = ({typeDoc, onSelect}: ApiTypePanelProps) => {
   const isEnum = typeDoc.allowedvalues && typeDoc.allowedvalues.length > 0;
   const info = isEnum ? <EnumTypeDetails typeDoc={typeDoc}/> : <ComplexTypeDetails typeDoc={typeDoc} onSelect={onSelect}/>;
 

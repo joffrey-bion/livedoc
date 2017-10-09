@@ -4,11 +4,11 @@ import { Table } from 'react-bootstrap';
 import type { ApiObjectDoc } from '../../../../../model/livedoc';
 import { EnumValueRow } from './EnumValueRow';
 
-type Props = {
+export type EnumTypeDetailsProps = {
   typeDoc: ApiObjectDoc
 }
 
-export const EnumTypeDetails = (props: Props) => {
+export const EnumTypeDetails = (props: EnumTypeDetailsProps) => {
   const doc: ApiObjectDoc = props.typeDoc;
 
   let valueRows = doc.allowedvalues.map(v => <EnumValueRow key={v} value={v} description=""/>);

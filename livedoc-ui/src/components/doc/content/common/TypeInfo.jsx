@@ -2,11 +2,13 @@
 import * as React from 'react';
 import type { LivedocType } from '../../../../model/livedoc';
 
-type Props = {
+export type TypeInfoProps = {
   type: LivedocType,
-  onSelect: (id: string) => void,
+  required: ?boolean,
+  onTypeClick: (selectedTypeId: string) => void,
 }
 
-export const TypeInfo = ({type}: Props) => {
-  return <code>{type.oneLineText}</code>;
+export const TypeInfo = (props: TypeInfoProps) => {
+  const optionalMark = props.required === false ? '?' : '';
+  return <code>{props.type.oneLineText + optionalMark}</code>;
 };

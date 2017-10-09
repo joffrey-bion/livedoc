@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 import type { State } from '../../../model/state';
 import { actions } from '../../../redux/reducer';
 
-type Props = {
+export type NavPanelProps = {
   livedoc: Livedoc,
   onSelect: (id: string) => void,
 }
 
-const NavPanel = ({livedoc, onSelect}: Props) => {
+const NavPanel = ({livedoc, onSelect}: NavPanelProps) => {
   return <PanelGroup role='navigation' accordion>
     <NavSection title={'APIs'} elementsByGroupName={livedoc.apis} onSelect={onSelect}/>
     <NavSection title={'Types'} elementsByGroupName={livedoc.objects} onSelect={onSelect}/>
