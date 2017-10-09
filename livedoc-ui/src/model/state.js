@@ -16,22 +16,11 @@ export const newLoaderState: RecordFactory<LoaderStateProps> = Record({
 export type LoaderState = RecordOf<LoaderStateProps>;
 
 
-export type SelectedElementProps = {
-  id: string,
-  type: ElementType,
-}
-export const newSelectedElement: RecordFactory<SelectedElementProps> = Record({
-  id: '',
-  type: 'API',
-});
-export type SelectedElement = RecordOf<SelectedElementProps>;
-
-
 export type ContentViewProps = {
-  selectedElement: ?SelectedElement,
+  selectedElementId: ?string,
 }
 const newContentView: RecordFactory<ContentViewProps> = Record({
-  selectedElement: null,
+  selectedElementId: null,
 });
 export type ContentView = RecordOf<ContentViewProps>;
 

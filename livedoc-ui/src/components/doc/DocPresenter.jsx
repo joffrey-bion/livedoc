@@ -3,9 +3,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import type { Livedoc } from '../../model/livedoc';
 import type { State } from '../../model/state';
+import DocContent from './content/DocContent';
 import { GlobalInfo } from './GlobalInfo';
-import NavPanel from './nav/NavPanel';
 import { LoadingInfo } from './LoadingInfo';
+import NavPanel from './nav/NavPanel';
 
 type Props = {
   loading: boolean, url: ?string, livedoc: ?Livedoc
@@ -21,7 +22,8 @@ const DocPresenter = (props: Props) => {
 
   return <div className='App-content'>
     <GlobalInfo livedoc={props.livedoc}/>
-    <NavPanel />
+    <NavPanel/>
+    <DocContent/>
   </div>;
 };
 
