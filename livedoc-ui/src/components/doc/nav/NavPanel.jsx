@@ -13,7 +13,7 @@ type Props = {
 }
 
 const NavPanel = ({livedoc, onSelect}: Props) => {
-  return <PanelGroup role='navigation'>
+  return <PanelGroup role='navigation' accordion>
     <NavSection title={'APIs'} elementsByGroupName={livedoc.apis} onSelect={onSelect}/>
     <NavSection title={'Types'} elementsByGroupName={livedoc.objects} onSelect={onSelect}/>
     <NavSection title={'Flows'} elementsByGroupName={livedoc.flows} onSelect={onSelect}/>
