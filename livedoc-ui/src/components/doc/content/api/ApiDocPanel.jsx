@@ -1,8 +1,9 @@
 // @flow
 import * as React from 'react';
-import { Accordion, PageHeader } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import type { ApiDoc } from '../../../../model/livedoc';
 import { ApiMethodPanel } from './ApiMethodPanel';
+import { ContentHeader } from '../ContentHeader';
 
 export type ApiDocPanelProps = {
   apiDoc: ApiDoc,
@@ -16,9 +17,8 @@ export const ApiDocPanel = (props: ApiDocPanelProps) => {
   const methodPanels = api.methods.map(m => <ApiMethodPanel key={m.id} methodDoc={m} onTypeClick={props.onTypeClick}/>);
 
   return <section>
-    <PageHeader>{api.name}</PageHeader>
-    <p>{api.description}</p>
-    <Accordion spaced onSelect={props.onMethodSelect}>
+    <ContentHeader title={api.name} description={api.description}/>
+    <Accordion onSelect={props.onMethodSelect}>
       {methodPanels}
     </Accordion>
   </section>;

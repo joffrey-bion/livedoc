@@ -4,6 +4,7 @@ import { PageHeader } from 'react-bootstrap';
 import type { ApiObjectDoc } from '../../../../model/livedoc';
 import { EnumTypeDetails } from './enum/EnumTypeDetails';
 import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
+import { ContentHeader } from '../ContentHeader';
 
 export type ApiTypePanelProps = {
   typeDoc: ApiObjectDoc,
@@ -15,8 +16,7 @@ export const TypeDocPanel = ({typeDoc, onSelect}: ApiTypePanelProps) => {
   const info = isEnum ? <EnumTypeDetails typeDoc={typeDoc}/> : <ComplexTypeDetails typeDoc={typeDoc} onSelect={onSelect}/>;
 
   return <section>
-    <PageHeader>{typeDoc.name}</PageHeader>
-    <p>{typeDoc.description}</p>
+    <ContentHeader title={typeDoc.name} description={typeDoc.description}/>
     {info}
   </section>
 };

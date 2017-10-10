@@ -8,14 +8,14 @@ import type { ApiDoc, ApiFlowDoc, ApiObjectDoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { actions, getSelectedApi, getSelectedType, getSelectedFlow } from '../../../redux/reducer';
 
-type Props = {
+type ContentPanelProps = {
   selectedApi: ApiDoc,
   selectedType: ApiObjectDoc,
   selectedFlow: ApiFlowDoc,
   onSelect: (id: string) => void,
 }
 
-const ContentPanel = ({selectedApi, selectedType, selectedFlow, onSelect}: Props) => {
+const ContentPanel = ({selectedApi, selectedType, selectedFlow, onSelect}: ContentPanelProps) => {
   if (selectedApi) {
     return <ApiDocPanel apiDoc={selectedApi} onMethodSelect={id => console.log(id)} onTypeClick={onSelect}/>;
   }
@@ -23,7 +23,7 @@ const ContentPanel = ({selectedApi, selectedType, selectedFlow, onSelect}: Props
     return <TypeDocPanel typeDoc={selectedType} onSelect={onSelect}/>;
   }
   if (selectedFlow) {
-    return <FlowDocPanel flowDoc={selectedFlow} onSelect={onSelect}/>;
+    return <FlowDocPanel flowDoc={selectedFlow} onMethodSelect={id => console.log(id)} onTypeClick={onSelect}/>;
   }
   return <p>Select an element to see its documentation</p>;
 };
