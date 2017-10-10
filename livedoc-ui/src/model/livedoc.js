@@ -130,6 +130,7 @@ export type ApiObjectDoc = Identified & Named & LivedocHints & Versioned & {
   fields: Array<ApiObjectFieldDoc>,
   auth: ApiAuthDoc,
   allowedvalues: ?Array<string>,
+  template: any,
 };
 
 export type ApiObjectFieldDoc = Identified & Named & LivedocHints & Versioned & {

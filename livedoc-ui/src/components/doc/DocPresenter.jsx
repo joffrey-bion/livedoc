@@ -2,12 +2,13 @@
 import * as React from 'react';
 import {Col, Grid, Row} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {Livedoc} from '../../model/livedoc';
+import type {Livedoc} from '../../model/livedoc';
 import type {State} from '../../model/state';
 import ContentPanel from './content/ContentPanel';
 import {GlobalInfo} from './GlobalInfo';
 import {LoadingInfo} from './LoadingInfo';
 import NavPanel from './nav/NavPanel';
+import SidePanel from './SidePanel';
 
 export type DocPresenterProps = {
   loading: boolean,
@@ -16,7 +17,7 @@ export type DocPresenterProps = {
 }
 
 const DocPresenter = (props: DocPresenterProps) => {
-  if (props.loading) {
+  if (props.loading && props.url) {
     return <LoadingInfo url={props.url}/>;
   }
   if (!props.livedoc) {
@@ -32,6 +33,9 @@ const DocPresenter = (props: DocPresenterProps) => {
         </Col>
         <Col md={6}>
           <ContentPanel/>
+        </Col>
+        <Col md={3}>
+          <SidePanel/>
         </Col>
       </Row>
     </Grid>
