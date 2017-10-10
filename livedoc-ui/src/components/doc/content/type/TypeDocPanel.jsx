@@ -10,7 +10,7 @@ export type ApiTypePanelProps = {
   onSelect: (id: string) => void,
 }
 
-export const ApiTypePanel = ({typeDoc, onSelect}: ApiTypePanelProps) => {
+export const TypeDocPanel = ({typeDoc, onSelect}: ApiTypePanelProps) => {
   const isEnum = typeDoc.allowedvalues && typeDoc.allowedvalues.length > 0;
   const info = isEnum ? <EnumTypeDetails typeDoc={typeDoc}/> : <ComplexTypeDetails typeDoc={typeDoc} onSelect={onSelect}/>;
 

@@ -7,7 +7,7 @@ export type ApiFlowPanelProps = {
   flowDoc: ApiFlowDoc,
 }
 
-export const ApiFlowPanel = (props: ApiFlowPanelProps) => {
+export const FlowDocPanel = (props: ApiFlowPanelProps) => {
   const flow: ApiFlowDoc = props.flowDoc;
 
   return <Panel header={flow.name}>

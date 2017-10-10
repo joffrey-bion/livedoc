@@ -4,7 +4,7 @@ import {Col, Grid, Row} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Livedoc} from '../../model/livedoc';
 import type {State} from '../../model/state';
-import DocContent from './content/DocContent';
+import ContentPanel from './content/ContentPanel';
 import {GlobalInfo} from './GlobalInfo';
 import {LoadingInfo} from './LoadingInfo';
 import NavPanel from './nav/NavPanel';
@@ -31,7 +31,7 @@ const DocPresenter = (props: DocPresenterProps) => {
           <NavPanel/>
         </Col>
         <Col md={6}>
-          <DocContent/>
+          <ContentPanel/>
         </Col>
       </Row>
     </Grid>

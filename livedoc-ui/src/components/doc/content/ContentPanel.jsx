@@ -2,8 +2,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApiDocPanel } from './api/ApiDocPanel';
-import { ApiTypePanel } from './type/ApiTypePanel';
-import { ApiFlowPanel } from './flow/ApiFlowPanel';
+import { TypeDocPanel } from './type/TypeDocPanel';
+import { FlowDocPanel } from './flow/FlowDocPanel';
 import type { ApiDoc, ApiFlowDoc, ApiObjectDoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { actions, getSelectedApi, getSelectedType, getSelectedFlow } from '../../../redux/reducer';
@@ -15,15 +15,15 @@ type Props = {
   onSelect: (id: string) => void,
 }
 
-const DocContent = ({selectedApi, selectedType, selectedFlow, onSelect}: Props) => {
+const ContentPanel = ({selectedApi, selectedType, selectedFlow, onSelect}: Props) => {
   if (selectedApi) {
     return <ApiDocPanel apiDoc={selectedApi} onMethodSelect={id => console.log(id)} onTypeClick={onSelect}/>;
   }
   if (selectedType) {
-    return <ApiTypePanel typeDoc={selectedType} onSelect={onSelect}/>;
+    return <TypeDocPanel typeDoc={selectedType} onSelect={onSelect}/>;
   }
   if (selectedFlow) {
-    return <ApiFlowPanel flowDoc={selectedFlow} onSelect={onSelect}/>;
+    return <FlowDocPanel flowDoc={selectedFlow} onSelect={onSelect}/>;
   }
   return <p>Select an element to see its documentation</p>;
 };
@@ -38,4 +38,4 @@ const mapDispatchToProps = {
   onSelect: actions.selectElement,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocContent);
+export default connect(mapStateToProps, mapDispatchToProps)(ContentPanel);
