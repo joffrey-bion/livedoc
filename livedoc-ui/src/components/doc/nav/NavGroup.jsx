@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Nav, NavItem, Panel } from 'react-bootstrap';
 import type { Identified, Named } from '../../../model/livedoc';
+import './NavGroup.css';
 
 export type NavGroupProps = {
   name: string,
