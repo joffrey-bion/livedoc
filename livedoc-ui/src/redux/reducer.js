@@ -1,5 +1,5 @@
 // @flow
-import type { ApiDoc, ApiFlowDoc, ApiObjectDoc, Identified } from '../model/livedoc';
+import type { ApiDoc, ApiFlowDoc, ApiObjectDoc, Identified, Livedoc } from '../model/livedoc';
 import type { State } from '../model/state';
 import { newState } from '../model/state';
 
@@ -13,20 +13,20 @@ export const types = {
 
 export type Action =
         | { type: 'DOC/FETCH', url: string }
-        | { type: 'DOC/FETCHED', jsonDoc: string }
+        | { type: 'DOC/FETCHED', livedoc: Livedoc }
         | { type: 'DOC/FETCH_ERROR', error: Error }
         | { type: 'SELECT_ELEMENT', id: string }
         | { type: 'RESET' };
 
 export const actions = {
   fetchDoc: (url: string) => ({ type: types.FETCH_DOC, url }),
-  updateDoc: (jsonDoc: any) => ({ type: types.DOC_FETCHED, jsonDoc }),
+  updateDoc: (livedoc: Livedoc) => ({ type: types.DOC_FETCHED, livedoc }),
   fetchError: (error: Error) => ({ type: types.DOC_FETCH_ERROR, error }),
   selectElement: (id: String) => ({ type: types.SELECT_ELEMENT, id }),
   reset: () => ({ type: types.RESET }),
 };
 
-export default (state: State = newState(), action: any) => {
+export default (state: State = newState(), action: Action) => {
   switch (action.type) {
     case types.FETCH_DOC:
       return state.mergeDeep({
@@ -41,7 +41,7 @@ export default (state: State = newState(), action: any) => {
         loader: {
           loading: false,
         },
-        livedoc: action.jsonDoc,
+        livedoc: action.livedoc,
       });
     case types.DOC_FETCH_ERROR:
       return state.mergeDeep({
