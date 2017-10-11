@@ -13,7 +13,7 @@ export const TypeTemplate = ({typeDoc}: TypeTemplateProps) => {
   }
   return <section>
     <h2>Template</h2>
-    <pre class="prettyprint prettyprinted">
+    <pre>
     {JSON.stringify(typeDoc.template, null, 2)}
     </pre>
   </section>
