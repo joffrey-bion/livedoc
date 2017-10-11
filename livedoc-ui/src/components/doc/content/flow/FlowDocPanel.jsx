@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Accordion, Panel } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import type { ApiFlowDoc } from '../../../../model/livedoc';
 import { ContentHeader } from '../ContentHeader';
 import { ApiMethodPanel } from '../api/ApiMethodPanel';

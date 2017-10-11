@@ -20,7 +20,7 @@ const ContentPanel = ({selectedApi, selectedType, selectedFlow, onSelect}: Conte
     return <ApiDocPanel apiDoc={selectedApi} onMethodSelect={id => console.log(id)} onTypeClick={onSelect}/>;
   }
   if (selectedType) {
-    return <TypeDocPanel typeDoc={selectedType} onSelect={onSelect}/>;
+    return <TypeDocPanel typeDoc={selectedType} onTypeClick={onSelect}/>;
   }
   if (selectedFlow) {
     return <FlowDocPanel flowDoc={selectedFlow} onMethodSelect={id => console.log(id)} onTypeClick={onSelect}/>;

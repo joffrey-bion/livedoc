@@ -6,13 +6,13 @@ import { ApiFieldRow } from './ApiFieldRow';
 
 export type ComplexTypeDetailsProps = {
   typeDoc: ApiObjectDoc,
-  onSelect: (id: string) => void,
+  onTypeClick: (id: string) => void,
 }
 
 export const ComplexTypeDetails = (props: ComplexTypeDetailsProps) => {
   const doc: ApiObjectDoc = props.typeDoc;
 
-  let fieldRows = doc.fields.map(f => <ApiFieldRow key={f.name} field={f} onSelect={props.onSelect}/>);
+  let fieldRows = doc.fields.map(f => <ApiFieldRow key={f.name} field={f} onTypeClick={props.onTypeClick}/>);
 
   return <Table striped>
     <thead>
