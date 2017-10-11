@@ -5,11 +5,13 @@ import { connect } from 'react-redux';
 import './App.css';
 import DocPresenter from './components/doc/DocPresenter';
 import { DocFetcher } from './components/fetcher/DocFetcher';
-import { Header } from './components/header/Header';
+import Header from './components/header/Header';
 import { actions } from './redux/reducer';
+import type { State } from './model/state';
 
 type Props = {
-  fetchDoc: string => void;
+  docLoaded: boolean,
+  fetchDoc: string => void,
 }
 
 class App extends Component<Props> {
@@ -17,14 +19,16 @@ class App extends Component<Props> {
     return (<MuiThemeProvider>
       <div className="App">
         <Header/>
-        <DocFetcher fetchDoc={this.props.fetchDoc}/>
+        {!this.props.docLoaded && <DocFetcher fetchDoc={this.props.fetchDoc}/>}
         <DocPresenter/>
       </div>
     </MuiThemeProvider>);
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state: State) => ({
+  docLoaded: !!state.livedoc
+});
 
 const mapDispatchToProps = {
   fetchDoc: actions.fetchDoc,

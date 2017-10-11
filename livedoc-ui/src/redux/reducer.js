@@ -8,19 +8,22 @@ export const types = {
   DOC_FETCHED: 'DOC/FETCHED',
   DOC_FETCH_ERROR: 'DOC/FETCH_ERROR',
   SELECT_ELEMENT: 'SELECT_ELEMENT',
+  RESET: 'RESET',
 };
 
 export type Action =
         | { type: 'DOC/FETCH', url: string }
         | { type: 'DOC/FETCHED', jsonDoc: string }
         | { type: 'DOC/FETCH_ERROR', error: Error }
-        | { type: 'SELECT_ELEMENT', id: string };
+        | { type: 'SELECT_ELEMENT', id: string }
+        | { type: 'RESET' };
 
 export const actions = {
   fetchDoc: (url: string) => ({ type: types.FETCH_DOC, url }),
   updateDoc: (jsonDoc: any) => ({ type: types.DOC_FETCHED, jsonDoc }),
   fetchError: (error: Error) => ({ type: types.DOC_FETCH_ERROR, error }),
   selectElement: (id: String) => ({ type: types.SELECT_ELEMENT, id }),
+  reset: () => ({ type: types.RESET }),
 };
 
 export default (state: State = newState(), action: any) => {
@@ -52,6 +55,8 @@ export default (state: State = newState(), action: any) => {
           selectedElementId: action.id,
         },
       });
+    case types.RESET:
+      return newState();
     default:
       return state;
   }
