@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
-import type { ApiMethodDoc } from '../../../../model/livedoc';
+import type { ApiMethodDoc, LivedocID } from '../../../../model/livedoc';
 import { TypeInfoWithMime } from './TypeInfoWithMime';
 import { ApiMethodParamsTable } from './params/ApiMethodParamsTable';
 
 export type ApiMethodDetailsProps = {
   methodDoc: ApiMethodDoc,
-  onTypeClick: (id: string) => void,
+  onTypeClick: (id: LivedocID) => void,
 }
 
 export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {

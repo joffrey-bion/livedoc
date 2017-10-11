@@ -1,12 +1,12 @@
 // @flow
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
-import type { ApiParamDoc } from '../../../../../model/livedoc';
+import type { ApiParamDoc, LivedocID } from '../../../../../model/livedoc';
 import { ParamRow } from './ParamRow';
 
 export type ApiMethodParamsTableProps = {
   params: ApiParamDoc[],
-  onTypeClick: (id: string) => void,
+  onTypeClick: (id: LivedocID) => void,
 }
 
 export const ApiMethodParamsTable = (props: ApiMethodParamsTableProps) => {

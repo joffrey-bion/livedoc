@@ -1,5 +1,5 @@
 // @flow
-import type { ApiDoc, ApiFlowDoc, ApiObjectDoc, Identified, Livedoc } from '../model/livedoc';
+import type { ApiDoc, ApiFlowDoc, ApiObjectDoc, Identified, Livedoc, LivedocID } from '../model/livedoc';
 import type { State } from '../model/state';
 import { newState } from '../model/state';
 
@@ -22,7 +22,7 @@ export const actions = {
   fetchDoc: (url: string) => ({ type: types.FETCH_DOC, url }),
   updateDoc: (livedoc: Livedoc) => ({ type: types.DOC_FETCHED, livedoc }),
   fetchError: (error: Error) => ({ type: types.DOC_FETCH_ERROR, error }),
-  selectElement: (id: String) => ({ type: types.SELECT_ELEMENT, id }),
+  selectElement: (id: LivedocID) => ({ type: types.SELECT_ELEMENT, id }),
   reset: () => ({ type: types.RESET }),
 };
 
@@ -63,7 +63,7 @@ export default (state: State = newState(), action: Action) => {
 };
 
 const dictionarize = <T>(elementsByWhatever: {[string]: $ReadOnlyArray<T & Identified>}) => {
-  const elementsById: {[id: string]: T} = {};
+  const elementsById: {[id: LivedocID]: T} = {};
   for (let key in elementsByWhatever) {
     if (elementsByWhatever.hasOwnProperty(key)) {
       const elems: $ReadOnlyArray<T & Identified> = elementsByWhatever[key];

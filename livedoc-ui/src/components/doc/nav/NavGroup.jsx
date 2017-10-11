@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react';
 import { Nav, NavItem, Panel } from 'react-bootstrap';
-import type { Identified, Named } from '../../../model/livedoc';
+import type { Identified, LivedocID, Named } from '../../../model/livedoc';
 import './NavGroup.css';
 
 export type NavGroupProps = {
   name: string,
   elements: $ReadOnlyArray<Identified & Named>,
-  onSelect: (id: string) => void,
+  onSelect: (id: LivedocID) => void,
 }
 
 export const NavGroup = (props: NavGroupProps) => {

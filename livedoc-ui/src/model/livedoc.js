@@ -1,11 +1,12 @@
 // @flow
-
 export type Authenticated = {
   auth: ApiAuthDoc,
 };
 
+export type LivedocID = string;
+
 export type Identified = {
-  livedocId: string,
+  livedocId: LivedocID,
 };
 
 export type Named = {

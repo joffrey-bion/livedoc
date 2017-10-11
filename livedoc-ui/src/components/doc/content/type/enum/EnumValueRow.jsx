@@ -2,7 +2,8 @@
 import * as React from 'react';
 
 export type EnumValueRowProps = {
-  value: string, description: string,
+  value: string,
+  description: string,
 }
 
 export const EnumValueRow = (props: EnumValueRowProps) => {

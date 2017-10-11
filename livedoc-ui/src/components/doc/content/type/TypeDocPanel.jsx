@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react';
-import type { ApiObjectDoc } from '../../../../model/livedoc';
+import type { ApiObjectDoc, LivedocID } from '../../../../model/livedoc';
 import { EnumTypeDetails } from './enum/EnumTypeDetails';
 import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
 import { ContentHeader } from '../ContentHeader';
 
 export type ApiTypePanelProps = {
   typeDoc: ApiObjectDoc,
-  onTypeClick: (id: string) => void,
+  onTypeClick: (id: LivedocID) => void,
 }
 
 const TypeDocContent = ({isEnum, typeDoc, onTypeClick}) => {

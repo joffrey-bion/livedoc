@@ -1,11 +1,11 @@
 // @flow
 import * as React from 'react';
-import type { LivedocType } from '../../../../model/livedoc';
+import type { LivedocID, LivedocType } from '../../../../model/livedoc';
 
 export type TypeInfoProps = {
   type: LivedocType,
   required: ?boolean,
-  onTypeClick: (selectedTypeId: string) => void,
+  onTypeClick: (selectedTypeId: LivedocID) => void,
 }
 
 export const TypeInfo = (props: TypeInfoProps) => {

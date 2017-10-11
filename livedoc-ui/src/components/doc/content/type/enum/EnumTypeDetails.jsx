@@ -8,10 +8,10 @@ export type EnumTypeDetailsProps = {
   typeDoc: ApiObjectDoc
 }
 
-export const EnumTypeDetails = (props: EnumTypeDetailsProps) => {
-  const doc: ApiObjectDoc = props.typeDoc;
+export const EnumTypeDetails = ({typeDoc}: EnumTypeDetailsProps) => {
 
-  let valueRows = doc.allowedvalues.map(v => <EnumValueRow key={v} value={v} description=""/>);
+  const values = (typeDoc.allowedvalues: string[]);
+  const valueRows = values.map(v => <EnumValueRow key={v} value={v} description=""/>);
 
   return <Table striped>
     <thead>

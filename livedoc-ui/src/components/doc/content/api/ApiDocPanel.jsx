@@ -1,14 +1,14 @@
 // @flow
 import * as React from 'react';
 import { Accordion } from 'react-bootstrap';
-import type { ApiDoc } from '../../../../model/livedoc';
+import type { ApiDoc, LivedocID } from '../../../../model/livedoc';
 import { ApiMethodPanel } from './ApiMethodPanel';
 import { ContentHeader } from '../ContentHeader';
 
 export type ApiDocPanelProps = {
   apiDoc: ApiDoc,
   onMethodSelect: (id: string) => void,
-  onTypeClick: (id: string) => void,
+  onTypeClick: (id: LivedocID) => void,
 }
 
 export const ApiDocPanel = (props: ApiDocPanelProps) => {

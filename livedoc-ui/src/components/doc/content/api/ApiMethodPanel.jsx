@@ -1,12 +1,12 @@
 // @flow
 import * as React from 'react';
 import { Badge, Panel } from 'react-bootstrap';
-import type { ApiMethodDoc } from '../../../../model/livedoc';
+import type { ApiMethodDoc, LivedocID } from '../../../../model/livedoc';
 import { ApiMethodDetails } from './ApiMethodDetails';
 
 export type ApiMethodPanelProps = {
   methodDoc: ApiMethodDoc,
-  onTypeClick: (id: string) => void,
+  onTypeClick: (id: LivedocID) => void,
 }
 
 export const ApiMethodPanel = (props: ApiMethodPanelProps) => {

@@ -1,11 +1,11 @@
 // @flow
 import * as React from 'react';
-import type { ApiObjectFieldDoc } from '../../../../../model/livedoc';
+import type { ApiObjectFieldDoc, LivedocID } from '../../../../../model/livedoc';
 import { TypeInfo } from '../../common/TypeInfo';
 
 export type ApiFieldRowProps = {
   field: ApiObjectFieldDoc,
-  onTypeClick: (id: string) => void,
+  onTypeClick: (id: LivedocID) => void,
 }
 
 export const ApiFieldRow = (props: ApiFieldRowProps) => {

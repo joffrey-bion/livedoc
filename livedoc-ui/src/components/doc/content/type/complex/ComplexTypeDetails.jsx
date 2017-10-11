@@ -1,12 +1,12 @@
 // @flow
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
-import type { ApiObjectDoc } from '../../../../../model/livedoc';
+import type { ApiObjectDoc, LivedocID } from '../../../../../model/livedoc';
 import { ApiFieldRow } from './ApiFieldRow';
 
 export type ComplexTypeDetailsProps = {
   typeDoc: ApiObjectDoc,
-  onTypeClick: (id: string) => void,
+  onTypeClick: (id: LivedocID) => void,
 }
 
 export const ComplexTypeDetails = (props: ComplexTypeDetailsProps) => {

@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
-import type { Identified, Named } from '../../../model/livedoc';
+import type { Identified, LivedocID, Named } from '../../../model/livedoc';
 import { NavGroup } from './NavGroup';
 
 export type NavSectionProps = {
   title: string,
-  elementsByGroupName: {[groupName: string]: $ReadOnlyArray<Identified & Named>},
-  onSelect: (id: string) => void,
+  elementsByGroupName: { [groupName: string]: $ReadOnlyArray<Identified & Named> },
+  onSelect: (id: LivedocID) => void,
 }
 
 export const NavSection = (props: NavSectionProps) => {
@@ -22,6 +22,6 @@ export const NavSection = (props: NavSectionProps) => {
   }
 
   return <Panel header={props.title} headerRole='button' collapsible>
-      {navGroups}
+    {navGroups}
   </Panel>;
 };

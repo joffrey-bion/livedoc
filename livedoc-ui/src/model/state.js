@@ -1,9 +1,7 @@
 // @flow
-import type {RecordFactory, RecordOf} from 'immutable';
-import {Record} from 'immutable';
-import type {Livedoc} from './livedoc';
-
-export type ElementType = 'API' | 'TYPE' | 'FLOW';
+import type { RecordFactory, RecordOf } from 'immutable';
+import { Record } from 'immutable';
+import type { Livedoc, LivedocID } from './livedoc';
 
 type LoaderStateProps = {
   loading: boolean,
@@ -17,7 +15,7 @@ export type LoaderState = RecordOf<LoaderStateProps>;
 
 
 export type ContentViewProps = {
-  selectedElementId: ?string,
+  selectedElementId: ?LivedocID,
 }
 const newContentView: RecordFactory<ContentViewProps> = Record({
   selectedElementId: null,

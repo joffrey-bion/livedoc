@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { PanelGroup } from 'react-bootstrap';
-import type { Livedoc } from '../../../model/livedoc';
+import type { Livedoc, LivedocID } from '../../../model/livedoc';
 import { NavSection } from './NavSection';
 import { connect } from 'react-redux';
 import type { State } from '../../../model/state';
@@ -9,7 +9,7 @@ import { actions } from '../../../redux/reducer';
 
 export type NavPanelProps = {
   livedoc: Livedoc,
-  onSelect: (id: string) => void,
+  onSelect: (id: LivedocID) => void,
 }
 
 const NavPanel = ({livedoc, onSelect}: NavPanelProps) => {
