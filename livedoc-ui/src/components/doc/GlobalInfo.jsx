@@ -7,9 +7,10 @@ export type GlobalInfoProps = {
 }
 
 export const GlobalInfo = (props: GlobalInfoProps) => {
-  return <ul>
-    <li>Base path: {props.livedoc.basePath}</li>
-    <li>Version: {props.livedoc.version}</li>
-  </ul>;
+  return <blockquote>
+    <h4>API INFO</h4>
+    <small>Base path: {props.livedoc.basePath}</small>
+    <small>Version: {props.livedoc.version}</small>
+  </blockquote>;
 };
 
