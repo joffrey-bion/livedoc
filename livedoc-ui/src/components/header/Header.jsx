@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { actions } from '../../redux/reducer';
 import type { State } from '../../model/state';
 import './Header.css';
+import logo from './livedoc-logo-round-white.svg';
 
 export type HeaderProps = {
   docLoaded: boolean,
@@ -12,7 +13,7 @@ export type HeaderProps = {
 }
 
 const Header = ({docLoaded, reset}: HeaderProps) => (<div className="header">
-  <h2 className="title">Livedoc</h2>
+  <h2 className="title"><img src={logo} alt="logo" width={30}/> Livedoc</h2>
   {docLoaded && <Button bsStyle="primary" onClick={reset}>Reset</Button>}
 </div>);
 
