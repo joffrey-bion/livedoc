@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Nav, NavItem, Panel } from 'react-bootstrap';
+import { Nav, NavItem } from 'react-bootstrap';
 import type { Identified, LivedocID, Named } from '../../../model/livedoc';
 import './NavGroup.css';
 
@@ -19,9 +19,10 @@ export const NavGroup = (props: NavGroupProps) => {
   </Nav>;
 
   if (props.name) {
-    return <Panel header={props.name} headerRole='button' collapsible>
+    return <div>
+      <h4>{props.name}</h4>
       {navGroup}
-    </Panel>;
+    </div>;
   } else {
     return navGroup;
   }

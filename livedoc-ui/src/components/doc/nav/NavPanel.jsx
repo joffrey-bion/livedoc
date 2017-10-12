@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { PanelGroup } from 'react-bootstrap';
+import { Panel, PanelGroup } from 'react-bootstrap';
 import type { Livedoc, LivedocID } from '../../../model/livedoc';
 import { NavSection } from './NavSection';
 import { connect } from 'react-redux';
@@ -13,10 +13,16 @@ export type NavPanelProps = {
 }
 
 const NavPanel = ({livedoc, onSelect}: NavPanelProps) => {
-  return <PanelGroup role='navigation' accordion>
-    <NavSection title={'APIs'} elementsByGroupName={livedoc.apis} onSelect={onSelect}/>
-    <NavSection title={'Types'} elementsByGroupName={livedoc.objects} onSelect={onSelect}/>
-    <NavSection title={'Flows'} elementsByGroupName={livedoc.flows} onSelect={onSelect}/>
+  return <PanelGroup role='navigation' defaultActiveKey='0' accordion>
+    <Panel header='APIs' headerRole='button' eventKey='0' collapsible>
+      <NavSection elementsByGroupName={livedoc.apis} onSelect={onSelect}/>
+    </Panel>
+    <Panel header='Types' headerRole='button' eventKey='1' collapsible>
+      <NavSection elementsByGroupName={livedoc.objects} onSelect={onSelect}/>
+    </Panel>
+    <Panel header='Flows' headerRole='button' eventKey='2' collapsible>
+      <NavSection elementsByGroupName={livedoc.flows} onSelect={onSelect}/>
+    </Panel>
   </PanelGroup>;
 };
 
