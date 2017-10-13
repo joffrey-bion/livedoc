@@ -10,13 +10,7 @@ export type NavSectionProps = {
 
 export const NavSection = (props: NavSectionProps) => {
 
-  let navGroups = [];
-  for (let key in props.elementsByGroupName) {
-    if (props.elementsByGroupName.hasOwnProperty(key)) {
-      const groupName = key;
-      const elements = props.elementsByGroupName[key];
-      navGroups.push(<NavGroup key={groupName} name={groupName} elements={elements} onSelect={props.onSelect}/>);
-    }
-  }
-  return navGroups;
+  return Object.entries(props.elementsByGroupName).map(([gpName, elems]) => {
+    return <NavGroup key={gpName || 'no-group'} name={gpName} elements={elems} onSelect={props.onSelect}/>
+  });
 };

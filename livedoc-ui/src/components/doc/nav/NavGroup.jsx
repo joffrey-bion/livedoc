@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Nav, NavItem } from 'react-bootstrap';
+import { NavItem } from 'reactstrap';
 import type { Identified, LivedocID, Named } from '../../../model/livedoc';
 import './NavGroup.css';
 
@@ -12,18 +12,15 @@ export type NavGroupProps = {
 
 export const NavGroup = (props: NavGroupProps) => {
 
-  const navLinks = props.elements.map(e => <NavItem key={e.livedocId} eventKey={e.livedocId}>{e.name}</NavItem>);
-
-  const navGroup = <Nav bsStyle="pills" stacked onSelect={props.onSelect}>
-    {navLinks}
-  </Nav>;
+  let items = [];
 
   if (props.name) {
-    return <div>
-      <h4>{props.name}</h4>
-      {navGroup}
-    </div>;
-  } else {
-    return navGroup;
+    items.push(<h4>{props.name}</h4>)
   }
+
+  const elements = props.elements.map(e => {
+    return <NavItem key={e.livedocId} onClick={() => props.onSelect(e.livedocId)}>{e.name}</NavItem>;
+  });
+
+  return items.concat(elements);
 };

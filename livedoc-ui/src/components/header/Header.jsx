@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { actions } from '../../redux/reducer';
 import type { State } from '../../model/state';
@@ -14,7 +14,7 @@ export type HeaderProps = {
 
 const Header = ({docLoaded, reset}: HeaderProps) => (<div className="header">
   <h2 className="title"><img src={logo} alt="logo" width={30}/> Livedoc</h2>
-  {docLoaded && <Button bsStyle="primary" onClick={reset}>Reset</Button>}
+  {docLoaded && <Button color="info" onClick={reset}>Reset</Button>}
 </div>);
 
 const mapStateToProps = (state: State) => ({

@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import { Accordion } from 'react-bootstrap';
 import type { ApiFlowDoc, LivedocID } from '../../../../model/livedoc';
 import { ContentHeader } from '../ContentHeader';
 import { ApiMethodPanel } from '../api/ApiMethodPanel';
@@ -14,7 +13,7 @@ export type ApiFlowPanelProps = {
 export const FlowDocPanel = ({flowDoc, onMethodSelect, onTypeClick}: ApiFlowPanelProps) => {
   const flow: ApiFlowDoc = flowDoc;
 
-  const preconditions = flow.preconditions.map(p => <li>p</li>);
+  const preconditions = flow.preconditions.map(cond => <li>{cond}</li>);
   const methodPanels = flow.methods.map(m => <ApiMethodPanel key={m.id} methodDoc={m} onTypeClick={onTypeClick}/>);
 
   return <section>
@@ -23,9 +22,7 @@ export const FlowDocPanel = ({flowDoc, onMethodSelect, onTypeClick}: ApiFlowPane
     <ul>
       {preconditions}
     </ul>
-    <Accordion spaced onSelect={onMethodSelect}>
-      {methodPanels}
-    </Accordion>
+    {methodPanels}
   </section>;
 };
 

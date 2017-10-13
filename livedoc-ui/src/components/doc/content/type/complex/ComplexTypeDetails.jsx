@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table } from 'reactstrap';
 import type { ApiObjectDoc, LivedocID } from '../../../../../model/livedoc';
 import { ApiFieldRow } from './ApiFieldRow';
 

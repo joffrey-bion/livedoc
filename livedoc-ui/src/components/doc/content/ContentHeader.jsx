@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import { PageHeader } from 'react-bootstrap';
 
 export type ContentHeaderProps = {
   title: string,
@@ -9,7 +8,8 @@ export type ContentHeaderProps = {
 
 export const ContentHeader = ({title, description}: ContentHeaderProps) => {
   return <div>
-    <PageHeader>{title}</PageHeader>
+    <h1>{title}</h1>
+    <hr/>
     {description && <blockquote>{description}</blockquote>}
   </div>
 };

@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table } from 'reactstrap';
 import type { ApiParamDoc, LivedocID } from '../../../../../model/livedoc';
 import { ParamRow } from './ParamRow';
 
@@ -14,7 +14,7 @@ export const ApiMethodParamsTable = (props: ApiMethodParamsTableProps) => {
 
   const paramRows = params.map(p => <ParamRow param={p} onTypeClick={props.onTypeClick}/>);
 
-  return <Table striped>
+  return <Table striped size="sm">
     <thead>
     <tr>
       <th>Name</th>

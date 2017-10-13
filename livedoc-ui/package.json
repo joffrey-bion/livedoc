@@ -3,12 +3,13 @@
   "version": "1.2.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.0.0-beta",
     "immutable": "^4.0.0-rc.5",
     "material-ui": "^0.19.2",
     "react": "^16.0.0",
-    "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
+    "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
     "redux-immutable": "^4.0.0",
     "redux-saga": "^0.15.6"

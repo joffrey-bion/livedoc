@@ -1,12 +1,11 @@
 // @flow
 import * as React from 'react';
-import { Badge, Panel } from 'react-bootstrap';
+import { Badge, Card, CardBlock, CardHeader, CardText } from 'reactstrap';
 import type { ApiMethodDoc, LivedocID } from '../../../../model/livedoc';
 import { ApiMethodDetails } from './ApiMethodDetails';
 
 export type ApiMethodPanelProps = {
-  methodDoc: ApiMethodDoc,
-  onTypeClick: (id: LivedocID) => void,
+  methodDoc: ApiMethodDoc, onTypeClick: (id: LivedocID) => void,
 }
 
 export const ApiMethodPanel = (props: ApiMethodPanelProps) => {
@@ -14,11 +13,16 @@ export const ApiMethodPanel = (props: ApiMethodPanelProps) => {
 
   const title = doc.path || doc.method;
   const verbs = doc.verb.map(v => <Badge pullRight style={getStyle(v)}>{v}</Badge>);
-  const header = <h4>{title} {verbs}</h4>;
-  return <Panel header={header} headerRole='button' collapsible>
-    <p>{doc.description}</p>
-    <ApiMethodDetails methodDoc={doc} onTypeClick={props.onTypeClick}/>
-  </Panel>;
+
+  return <Card style={{marginBottom: '15px'}}>
+    <CardHeader role="button">
+      <h4>{title} {verbs}</h4>
+    </CardHeader>
+    <CardBlock>
+      <CardText>{doc.description}</CardText>
+      <ApiMethodDetails methodDoc={doc} onTypeClick={props.onTypeClick}/>
+    </CardBlock>
+  </Card>;
 };
 
 const verbColors = {

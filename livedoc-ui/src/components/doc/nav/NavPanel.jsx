@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Panel, PanelGroup } from 'react-bootstrap';
+import { Nav } from 'reactstrap';
 import type { Livedoc, LivedocID } from '../../../model/livedoc';
 import { NavSection } from './NavSection';
 import { connect } from 'react-redux';
@@ -13,17 +13,14 @@ export type NavPanelProps = {
 }
 
 const NavPanel = ({livedoc, onSelect}: NavPanelProps) => {
-  return <PanelGroup role='navigation' defaultActiveKey='0' accordion>
-    <Panel header='APIs' headerRole='button' eventKey='0' collapsible>
-      <NavSection elementsByGroupName={livedoc.apis} onSelect={onSelect}/>
-    </Panel>
-    <Panel header='Types' headerRole='button' eventKey='1' collapsible>
-      <NavSection elementsByGroupName={livedoc.objects} onSelect={onSelect}/>
-    </Panel>
-    <Panel header='Flows' headerRole='button' eventKey='2' collapsible>
-      <NavSection elementsByGroupName={livedoc.flows} onSelect={onSelect}/>
-    </Panel>
-  </PanelGroup>;
+  return <Nav card vertical>
+    <h3>APIs</h3>
+    <NavSection elementsByGroupName={livedoc.apis} onSelect={onSelect}/>
+    <h3>Types</h3>
+    <NavSection elementsByGroupName={livedoc.objects} onSelect={onSelect}/>
+    <h3>Flows</h3>
+    <NavSection elementsByGroupName={livedoc.flows} onSelect={onSelect}/>
+  </Nav>;
 };
 
 const mapStateToProps = (state: State) => ({

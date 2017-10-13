@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {Col, Grid, Row} from 'react-bootstrap';
+import {Col, Container, Row} from 'reactstrap';
 import {connect} from 'react-redux';
 import type {Livedoc} from '../../model/livedoc';
 import type {State} from '../../model/state';
@@ -25,7 +25,7 @@ const DocPresenter = (props: DocPresenterProps) => {
   }
 
   return <section className='App-content'>
-    <Grid fluid>
+    <Container fluid>
       <Row>
         <Col md={3}>
           <GlobalInfo livedoc={props.livedoc}/>
@@ -38,7 +38,7 @@ const DocPresenter = (props: DocPresenterProps) => {
           <SidePanel/>
         </Col>
       </Row>
-    </Grid>
+    </Container>
   </section>;
 };
 

@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table } from 'reactstrap';
 import type { ApiMethodDoc, LivedocID } from '../../../../model/livedoc';
 import { TypeInfoWithMime } from './TypeInfoWithMime';
 import { ApiMethodParamsTable } from './params/ApiMethodParamsTable';
@@ -34,7 +34,11 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
   }
 
   if (rows.length === 0) {
-    return <p><em style={{opacity: 0.5}}>No additional information available</em></p>
+    if (doc.description) {
+      return null;
+    } else {
+      return <small className="text-muted">No additional information available</small>
+    }
   }
 
   return <Table striped>
@@ -46,7 +50,7 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
 
 function row(header: string, data) {
   return <tr>
-    <th>{header}</th>
+    <th scope="row">{header}</th>
     <td>{data}</td>
   </tr>;
 }
