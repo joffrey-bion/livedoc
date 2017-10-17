@@ -1,16 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Audiowide');
 
 .header {
-    text-align: left;
-    background-color: #222;
-    padding: 5px;
     color: white;
+    background-color: #222;
     display: flex;
     justify-content: space-between;
+    /*padding: 5px;*/
+    text-align: left;
 }
 
-.title {
+.logo {
+    margin-right: 0.5rem;
+}
+
+.navbar-brand, .navbar-brand:hover {
+    color: white;
     font-family: 'Audiowide', cursive;
     font-weight: normal;
-    margin: 0
 }
