@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import type { ApiFlowDoc } from '../../../../model/livedoc';
 import type { State } from '../../../../model/state';
 import { getFlow } from '../../../../redux/reducer';
@@ -8,10 +9,13 @@ import { ApiMethodPanel } from '../api/ApiMethodPanel';
 import { ContentHeader } from '../ContentHeader';
 
 export type ApiFlowPanelProps = {
-  flowDoc: ApiFlowDoc,
+  flowDoc: ?ApiFlowDoc,
 }
 
 const FlowDocPanel = ({flowDoc}: ApiFlowPanelProps) => {
+  if (!flowDoc) {
+    return <Redirect to="/flows"/>;
+  }
   const flow: ApiFlowDoc = flowDoc;
 
   const preconditions = flow.preconditions.map(cond => <li>{cond}</li>);

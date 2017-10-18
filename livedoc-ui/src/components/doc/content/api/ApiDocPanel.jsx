@@ -6,13 +6,17 @@ import type { State } from '../../../../model/state';
 import { getApi } from '../../../../redux/reducer';
 import { ContentHeader } from '../ContentHeader';
 import { ApiMethodPanel } from './ApiMethodPanel';
+import { Redirect } from 'react-router-dom';
 
 export type ApiDocPanelProps = {
-  apiDoc: ApiDoc,
+  apiDoc: ?ApiDoc,
 }
 
-const ApiDocPanel = (props: ApiDocPanelProps) => {
-  const api: ApiDoc = props.apiDoc;
+const ApiDocPanel = ({apiDoc}: ApiDocPanelProps) => {
+  if (!apiDoc) {
+    return <Redirect to="/apis"/>
+  }
+  const api: ApiDoc = apiDoc;
 
   const methodPanels = api.methods.map(m => <ApiMethodPanel key={m.id} methodDoc={m}/>);
 

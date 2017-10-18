@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import type { ApiObjectDoc } from '../../../../model/livedoc';
 import type { State } from '../../../../model/state';
 import { getType } from '../../../../redux/reducer';
@@ -9,7 +10,7 @@ import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
 import { EnumTypeDetails } from './enum/EnumTypeDetails';
 
 export type TypeDocPanelProps = {
-  typeDoc: ApiObjectDoc,
+  typeDoc: ?ApiObjectDoc,
 }
 
 const TypeDocContent = ({isEnum, typeDoc}) => {
@@ -21,6 +22,9 @@ const TypeDocContent = ({isEnum, typeDoc}) => {
 };
 
 const TypeDocPanel = ({typeDoc}: TypeDocPanelProps) => {
+  if (!typeDoc) {
+    return <Redirect to="/types"/>;
+  }
   const isEnum = typeDoc.allowedvalues && typeDoc.allowedvalues.length > 0;
 
   return <section>
