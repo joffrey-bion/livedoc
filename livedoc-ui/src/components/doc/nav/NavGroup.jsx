@@ -1,13 +1,14 @@
 // @flow
 import * as React from 'react';
-import { NavItem } from 'reactstrap';
-import type { Identified, LivedocID, Named } from '../../../model/livedoc';
+import { Link } from 'react-router-dom';
+import { NavItem, NavLink } from 'reactstrap';
+import type { Identified, Named } from '../../../model/livedoc';
 import './NavGroup.css';
 
 export type NavGroupProps = {
   name: string,
+  location: string,
   elements: $ReadOnlyArray<Identified & Named>,
-  onSelect: (id: LivedocID) => void,
 }
 
 export const NavGroup = (props: NavGroupProps) => {
@@ -19,7 +20,9 @@ export const NavGroup = (props: NavGroupProps) => {
   }
 
   const elements = props.elements.map(e => {
-    return <NavItem key={e.livedocId} onClick={() => props.onSelect(e.livedocId)}>{e.name}</NavItem>;
+    return <NavItem key={e.livedocId}>
+      <NavLink to={props.location + '/' + e.livedocId} tag={Link}>{e.name}</NavLink>
+    </NavItem>;
   });
 
   return items.concat(elements);

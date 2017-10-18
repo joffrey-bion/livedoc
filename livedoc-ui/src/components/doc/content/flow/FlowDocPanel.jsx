@@ -1,20 +1,21 @@
 // @flow
 import * as React from 'react';
-import type { ApiFlowDoc, LivedocID } from '../../../../model/livedoc';
-import { ContentHeader } from '../ContentHeader';
+import { connect } from 'react-redux';
+import type { ApiFlowDoc } from '../../../../model/livedoc';
+import type { State } from '../../../../model/state';
+import { getFlow } from '../../../../redux/reducer';
 import { ApiMethodPanel } from '../api/ApiMethodPanel';
+import { ContentHeader } from '../ContentHeader';
 
 export type ApiFlowPanelProps = {
   flowDoc: ApiFlowDoc,
-  onMethodSelect: (id: string) => void,
-  onTypeClick: (id: LivedocID) => void,
 }
 
-export const FlowDocPanel = ({flowDoc, onMethodSelect, onTypeClick}: ApiFlowPanelProps) => {
+const FlowDocPanel = ({flowDoc}: ApiFlowPanelProps) => {
   const flow: ApiFlowDoc = flowDoc;
 
   const preconditions = flow.preconditions.map(cond => <li>{cond}</li>);
-  const methodPanels = flow.methods.map(m => <ApiMethodPanel key={m.id} methodDoc={m} onTypeClick={onTypeClick}/>);
+  const methodPanels = flow.methods.map(m => <ApiMethodPanel key={m.id} methodDoc={m}/>);
 
   return <section>
     <ContentHeader title={flow.name} description={flow.description}/>
@@ -25,4 +26,17 @@ export const FlowDocPanel = ({flowDoc, onMethodSelect, onTypeClick}: ApiFlowPane
     {methodPanels}
   </section>;
 };
+
+export type FlowDocPanelOwnProps = {
+  match: any,
+}
+
+const mapStateToProps = (state: State, {match}: FlowDocPanelOwnProps) => ({
+  flowDoc: getFlow(match.params.flowId, state),
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlowDocPanel);
+
 

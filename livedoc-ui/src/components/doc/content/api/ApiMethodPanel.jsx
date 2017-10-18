@@ -1,11 +1,11 @@
 // @flow
 import * as React from 'react';
 import { Badge, Card, CardBlock, CardHeader, CardText } from 'reactstrap';
-import type { ApiMethodDoc, LivedocID } from '../../../../model/livedoc';
+import type { ApiMethodDoc } from '../../../../model/livedoc';
 import { ApiMethodDetails } from './ApiMethodDetails';
 
 export type ApiMethodPanelProps = {
-  methodDoc: ApiMethodDoc, onTypeClick: (id: LivedocID) => void,
+  methodDoc: ApiMethodDoc,
 }
 
 export const ApiMethodPanel = (props: ApiMethodPanelProps) => {
@@ -20,7 +20,7 @@ export const ApiMethodPanel = (props: ApiMethodPanelProps) => {
     </CardHeader>
     <CardBlock>
       <CardText>{doc.description}</CardText>
-      <ApiMethodDetails methodDoc={doc} onTypeClick={props.onTypeClick}/>
+      <ApiMethodDetails methodDoc={doc}/>
     </CardBlock>
   </Card>;
 };

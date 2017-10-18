@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-import { Button, Navbar, NavbarBrand } from 'reactstrap';
 import { connect } from 'react-redux';
-import { actions } from '../../redux/reducer';
+import { Button, Navbar, NavbarBrand } from 'reactstrap';
 import type { State } from '../../model/state';
+import { actions } from '../../redux/reducer';
 import './Header.css';
 import logo from './livedoc-logo-round-white.svg';
+import { TopNav } from './TopNav';
 
 export type HeaderProps = {
   homeUrl: string,
@@ -17,6 +18,7 @@ const HeaderLogo = () => (<img src={logo} alt="Livedoc Logo" width={20} classNam
 
 const Header = ({homeUrl, docLoaded, reset}: HeaderProps) => (<Navbar className="header">
   <NavbarBrand href={homeUrl} className="title"><HeaderLogo/>Livedoc</NavbarBrand>
+  {docLoaded && <TopNav/>}
   {docLoaded && <Button color="info" onClick={reset}>Reset</Button>}
 </Navbar>);
 

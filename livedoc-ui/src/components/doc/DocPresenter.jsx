@@ -1,14 +1,15 @@
 // @flow
 import * as React from 'react';
-import {Col, Container, Row} from 'reactstrap';
-import {connect} from 'react-redux';
-import type {Livedoc} from '../../model/livedoc';
-import type {State} from '../../model/state';
-import ContentPanel from './content/ContentPanel';
-import {GlobalInfo} from './GlobalInfo';
-import {LoadingInfo} from './LoadingInfo';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Col, Container, Row } from 'reactstrap';
+import type { Livedoc } from '../../model/livedoc';
+import type { State } from '../../model/state';
+import { ContentPanel } from './content/ContentPanel';
+import { GlobalInfo } from './GlobalInfo';
+import { LoadingInfo } from './LoadingInfo';
 import NavPanel from './nav/NavPanel';
-import SidePanel from './SidePanel';
+import { SidePanel } from './SidePanel';
 
 export type DocPresenterProps = {
   loading: boolean,
@@ -50,5 +51,5 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocPresenter);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DocPresenter));
 

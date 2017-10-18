@@ -1,28 +1,42 @@
 // @flow
 import * as React from 'react';
-import type { ApiObjectDoc, LivedocID } from '../../../../model/livedoc';
-import { EnumTypeDetails } from './enum/EnumTypeDetails';
-import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
+import { connect } from 'react-redux';
+import type { ApiObjectDoc } from '../../../../model/livedoc';
+import type { State } from '../../../../model/state';
+import { getType } from '../../../../redux/reducer';
 import { ContentHeader } from '../ContentHeader';
+import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
+import { EnumTypeDetails } from './enum/EnumTypeDetails';
 
-export type ApiTypePanelProps = {
+export type TypeDocPanelProps = {
   typeDoc: ApiObjectDoc,
-  onTypeClick: (id: LivedocID) => void,
 }
 
-const TypeDocContent = ({isEnum, typeDoc, onTypeClick}) => {
+const TypeDocContent = ({isEnum, typeDoc}) => {
   if (isEnum) {
     return <EnumTypeDetails typeDoc={typeDoc}/>;
   } else {
-    return <ComplexTypeDetails typeDoc={typeDoc} onTypeClick={onTypeClick}/>
+    return <ComplexTypeDetails typeDoc={typeDoc}/>
   }
 };
 
-export const TypeDocPanel = ({typeDoc, onTypeClick}: ApiTypePanelProps) => {
+const TypeDocPanel = ({typeDoc}: TypeDocPanelProps) => {
   const isEnum = typeDoc.allowedvalues && typeDoc.allowedvalues.length > 0;
 
   return <section>
     <ContentHeader title={typeDoc.name} description={typeDoc.description}/>
-    <TypeDocContent isEnum={isEnum} typeDoc={typeDoc} onTypeClick={onTypeClick}/>
+    <TypeDocContent isEnum={isEnum} typeDoc={typeDoc}/>
   </section>
 };
+
+export type TypeDocPanelOwnProps = {
+  match: any,
+}
+
+const mapStateToProps = (state: State, {match}: TypeDocPanelOwnProps) => ({
+  typeDoc: getType(match.params.typeId, state),
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TypeDocPanel);

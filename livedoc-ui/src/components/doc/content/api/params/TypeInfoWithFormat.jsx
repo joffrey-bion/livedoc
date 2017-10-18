@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
-import { TypeInfo } from '../../common/TypeInfo';
 import type { TypeInfoProps } from '../../common/TypeInfo';
+import { TypeInfo } from '../../common/TypeInfo';
 
 export type TypeInfoWithFormatProps = TypeInfoProps & {
   format: ?string,

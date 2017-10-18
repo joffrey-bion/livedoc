@@ -7,7 +7,6 @@ export const types = {
   FETCH_DOC: 'DOC/FETCH',
   DOC_FETCHED: 'DOC/FETCHED',
   DOC_FETCH_ERROR: 'DOC/FETCH_ERROR',
-  SELECT_ELEMENT: 'SELECT_ELEMENT',
   RESET: 'RESET',
 };
 
@@ -15,14 +14,12 @@ export type Action =
         | { type: 'DOC/FETCH', url: string }
         | { type: 'DOC/FETCHED', livedoc: Livedoc }
         | { type: 'DOC/FETCH_ERROR', error: Error }
-        | { type: 'SELECT_ELEMENT', id: string }
         | { type: 'RESET' };
 
 export const actions = {
   fetchDoc: (url: string) => ({ type: types.FETCH_DOC, url }),
   updateDoc: (livedoc: Livedoc) => ({ type: types.DOC_FETCHED, livedoc }),
   fetchError: (error: Error) => ({ type: types.DOC_FETCH_ERROR, error }),
-  selectElement: (id: LivedocID) => ({ type: types.SELECT_ELEMENT, id }),
   reset: () => ({ type: types.RESET }),
 };
 
@@ -49,12 +46,6 @@ export default (state: State = newState(), action: Action) => {
           loading: false,
         },
       });
-    case types.SELECT_ELEMENT:
-      return state.mergeDeep({
-        contentView: {
-          selectedElementId: action.id,
-        },
-      });
     case types.RESET:
       return newState();
     default:
@@ -75,15 +66,14 @@ const dictionarize = <T>(elementsByWhatever: {[string]: $ReadOnlyArray<T & Ident
   return elementsById;
 };
 
-const getElementById = <T>(state: State, getElements: (s: State) => {[string]: $ReadOnlyArray<T & Identified>}): ?T => {
-  const id = state.contentView.selectedElementId;
+const getElementById = <T>(id: ?LivedocID, elements: {[string]: $ReadOnlyArray<T & Identified>}): ?T => {
   if (!id) {
     return null;
   }
-  const elementsById = dictionarize(getElements(state));
+  const elementsById = dictionarize(elements);
   return elementsById[id];
 };
 
-export const getSelectedApi = (state: State): ?ApiDoc => getElementById(state, s => s.livedoc.apis);
-export const getSelectedType = (state: State): ?ApiObjectDoc => getElementById(state, s => s.livedoc.objects);
-export const getSelectedFlow = (state: State): ?ApiFlowDoc => getElementById(state, s => s.livedoc.flows);
+export const getApi = (id: LivedocID, state: State): ?ApiDoc => getElementById(id, state.livedoc.apis);
+export const getType = (id: LivedocID, state: State): ?ApiObjectDoc => getElementById(id, state.livedoc.objects);
+export const getFlow = (id: LivedocID, state: State): ?ApiFlowDoc => getElementById(id, state.livedoc.flows);

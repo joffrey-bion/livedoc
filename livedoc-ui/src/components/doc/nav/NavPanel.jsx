@@ -1,34 +1,28 @@
 // @flow
 import * as React from 'react';
-import { Nav } from 'reactstrap';
-import type { Livedoc, LivedocID } from '../../../model/livedoc';
-import { NavSection } from './NavSection';
 import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import type { Livedoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
-import { actions } from '../../../redux/reducer';
+import { NavSection } from './NavSection';
 
 export type NavPanelProps = {
   livedoc: Livedoc,
-  onSelect: (id: LivedocID) => void,
 }
 
-const NavPanel = ({livedoc, onSelect}: NavPanelProps) => {
-  return <Nav card vertical>
-    <h3>APIs</h3>
-    <NavSection elementsByGroupName={livedoc.apis} onSelect={onSelect}/>
-    <h3>Types</h3>
-    <NavSection elementsByGroupName={livedoc.objects} onSelect={onSelect}/>
-    <h3>Flows</h3>
-    <NavSection elementsByGroupName={livedoc.flows} onSelect={onSelect}/>
-  </Nav>;
+const NavPanel = ({livedoc}: NavPanelProps) => {
+  return <Switch>
+    <Route path="/apis" component={(props) => <NavSection elementsByGroupName={livedoc.apis} {...props}/>}/>
+    <Route path="/types" component={(props) => <NavSection elementsByGroupName={livedoc.objects} {...props}/>}/>
+    <Route path="/flows" component={(props) => <NavSection elementsByGroupName={livedoc.flows} {...props}/>}/>
+    <Route exact path="/" component={(props) => <p>This is a test</p>}/>
+  </Switch>;
 };
 
 const mapStateToProps = (state: State) => ({
   livedoc: state.livedoc,
 });
 
-const mapDispatchToProps = {
-  onSelect: actions.selectElement,
-};
+const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavPanel);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavPanel));
