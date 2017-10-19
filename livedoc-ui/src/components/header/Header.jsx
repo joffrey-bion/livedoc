@@ -3,7 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Navbar, NavbarBrand } from 'reactstrap';
 import type { State } from '../../model/state';
-import { actions } from '../../redux/reducer';
+import { isDocLoaded } from '../../redux/livedoc';
+import { actions } from '../../redux/loader';
 import './Header.css';
 import logo from './livedoc-logo-round-white.svg';
 import { TopNav } from './TopNav';
@@ -28,7 +29,7 @@ const getHomeUrl = (currentDocUrl: ?string) => {
 
 const mapStateToProps = (state: State) => ({
   homeUrl: getHomeUrl(state.loader.url),
-  docLoaded: !!state.livedoc,
+  docLoaded: isDocLoaded(state),
 });
 
 const mapDispatchToProps = {

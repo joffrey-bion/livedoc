@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import type { ApiFlowDoc } from '../../../../model/livedoc';
 import type { State } from '../../../../model/state';
-import { getFlow } from '../../../../redux/reducer';
+import { getFlow } from '../../../../redux/livedoc';
 import { ApiMethodPanel } from '../api/ApiMethodPanel';
 import { ContentHeader } from '../ContentHeader';
 

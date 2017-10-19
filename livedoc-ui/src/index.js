@@ -1,21 +1,23 @@
 // @flow
 import 'bootstrap/dist/css/bootstrap.css';
+import createBrowserHistory from 'history/createBrowserHistory'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store';
 
-const store = configureStore();
+const history = createBrowserHistory();
+const store = configureStore(history);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <App/>
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
 );

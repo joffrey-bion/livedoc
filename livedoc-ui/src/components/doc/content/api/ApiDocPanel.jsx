@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import type { ApiDoc } from '../../../../model/livedoc';
 import type { State } from '../../../../model/state';
-import { getApi } from '../../../../redux/reducer';
+import { getApi } from '../../../../redux/livedoc';
 import { ContentHeader } from '../ContentHeader';
 import { ApiMethodPanel } from './ApiMethodPanel';
 import { Redirect } from 'react-router-dom';

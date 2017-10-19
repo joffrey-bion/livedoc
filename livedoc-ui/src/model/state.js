@@ -13,12 +13,11 @@ export const newLoaderState: RecordFactory<LoaderStateProps> = Record({
 });
 export type LoaderState = RecordOf<LoaderStateProps>;
 
-export type StateProps = {
+export type State = {
   loader: LoaderState,
   livedoc: ?Livedoc
 }
-export const newState: RecordFactory<StateProps> = Record({
+export const newState = () => ({
   loader: newLoaderState(),
   livedoc: null,
 });
-export type State = RecordOf<StateProps>;

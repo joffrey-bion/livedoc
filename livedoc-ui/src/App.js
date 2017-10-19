@@ -8,29 +8,28 @@ import DocPresenter from './components/doc/DocPresenter';
 import { DocFetcher } from './components/fetcher/DocFetcher';
 import Header from './components/header/Header';
 import type { State } from './model/state';
-import { actions } from './redux/reducer';
+import { isDocLoaded } from './redux/livedoc';
+import { actions } from './redux/loader';
 
 type Props = {
-  jsonDocUrl: string,
-  docLoaded: boolean,
-  fetchDoc: string => void,
+  jsonDocUrl: string, docLoaded: boolean, fetchDoc: string => void,
 }
 
 class App extends Component<Props> {
   render() {
     return (<MuiThemeProvider>
-              <div className="App">
-                <Header/>
-                {!this.props.docLoaded && <DocFetcher fetchDoc={this.props.fetchDoc}/>}
-                <DocPresenter/>
-              </div>
-            </MuiThemeProvider>);
+      <div className="App">
+        <Header/>
+        {!this.props.docLoaded && <DocFetcher fetchDoc={this.props.fetchDoc}/>}
+        <DocPresenter/>
+      </div>
+    </MuiThemeProvider>);
   }
 }
 
 const mapStateToProps = (state: State) => ({
   jsonDocUrl: state.loader.url,
-  docLoaded: !!state.livedoc,
+  docLoaded: isDocLoaded(state),
 });
 
 const mapDispatchToProps = {

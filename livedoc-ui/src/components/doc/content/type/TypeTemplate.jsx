@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import type { ApiObjectDoc } from '../../../../model/livedoc';
 import type { State } from '../../../../model/state';
-import { getType } from '../../../../redux/reducer';
+import { getType } from '../../../../redux/livedoc';
 
 export type TypeTemplateProps = {
   typeDoc: ApiObjectDoc,

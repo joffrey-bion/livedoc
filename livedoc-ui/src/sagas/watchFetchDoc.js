@@ -1,6 +1,6 @@
 import { apply, call, put, takeLatest } from 'redux-saga/effects'
-import type {Action} from '../redux/reducer';
-import {actions, types} from '../redux/reducer';
+import type {Action} from '../redux/loader';
+import {actions, types} from '../redux/loader';
 
 function* fetchDoc(action: Action): * {
   try {

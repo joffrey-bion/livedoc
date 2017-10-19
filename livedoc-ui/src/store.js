@@ -1,20 +1,28 @@
 // @flow
-import {applyMiddleware, compose, createStore} from 'redux';
+import { routerMiddleware as createRouterMiddleware, routerReducer } from 'react-router-redux'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import reducer from './redux/reducer';
-import rootSaga from './sagas';
 import type { State } from './model/state';
 import { newState } from './model/state';
+import rootSaga from './sagas';
+import loaderReducer from './redux/loader';
+import livedocReducer from './redux/livedoc';
 
-export default function configureStore(initialState: State = newState()) {
+export default function configureStore(history: any, initialState: State = newState()) {
   const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [sagaMiddleware];
+  const routerMiddleware = createRouterMiddleware(history);
+  const middlewares = [sagaMiddleware, routerMiddleware];
   const enhancers = [applyMiddleware(...middlewares)];
 
   const composeEnhancers = process.env.NODE_ENV !== 'production' && typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
 
-  const store = createStore(reducer, initialState, composeEnhancers(...enhancers));
+  const reducers = combineReducers({
+    livedoc: livedocReducer,
+    loader: loaderReducer,
+    router: routerReducer,
+  });
+  const store = createStore(reducers, initialState, composeEnhancers(...enhancers));
 
   sagaMiddleware.run(rootSaga);
 

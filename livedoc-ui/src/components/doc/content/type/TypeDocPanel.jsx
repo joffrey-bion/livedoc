@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import type { ApiObjectDoc } from '../../../../model/livedoc';
 import type { State } from '../../../../model/state';
-import { getType } from '../../../../redux/reducer';
+import { getType } from '../../../../redux/livedoc';
 import { ContentHeader } from '../ContentHeader';
 import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
 import { EnumTypeDetails } from './enum/EnumTypeDetails';
