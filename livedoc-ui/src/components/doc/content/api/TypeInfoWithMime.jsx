@@ -18,7 +18,7 @@ export const TypeInfoWithMime = ({mimeTypes, ...props}: TypeInfoWithMimeProps) =
 };
 
 function joinAsCodeBlocks(elements: string[], delimiter: string) {
-  const codeElems = elements.map(e => <code>{e}</code>);
+  const codeElems = elements.map(s => <code key={s}>{s}</code>);
   let result = [];
   for (let e of codeElems) {
     result.push(e);

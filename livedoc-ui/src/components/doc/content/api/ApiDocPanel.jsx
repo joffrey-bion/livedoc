@@ -18,7 +18,7 @@ const ApiDocPanel = ({apiDoc}: ApiDocPanelProps) => {
   }
   const api: ApiDoc = apiDoc;
 
-  const methodPanels = api.methods.map(m => <ApiMethodPanel key={m.id} methodDoc={m}/>);
+  const methodPanels = api.methods.map(m => <ApiMethodPanel key={m.livedocId} methodDoc={m}/>);
 
   return <section>
     <ContentHeader title={api.name} description={api.description}/>

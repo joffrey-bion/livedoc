@@ -12,7 +12,7 @@ export const ApiMethodPanel = (props: ApiMethodPanelProps) => {
   const doc: ApiMethodDoc = props.methodDoc;
 
   const title = doc.path || doc.method;
-  const verbs = doc.verb.map(v => <Badge style={getStyle(v)}>{v}</Badge>);
+  const verbs = doc.verb.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
 
   return <Card style={{marginBottom: '15px'}}>
     <CardHeader role="button">

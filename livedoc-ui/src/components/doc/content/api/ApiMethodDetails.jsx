@@ -42,7 +42,7 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
 };
 
 function row(header: string, data) {
-  return <tr>
+  return <tr key={header}>
     <th scope="row">{header}</th>
     <td>{data}</td>
   </tr>;
