@@ -4,9 +4,9 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import type { State } from './model/state';
 import { newState } from './model/state';
-import rootSaga from './sagas';
-import loaderReducer from './redux/loader';
 import livedocReducer from './redux/livedoc';
+import loaderReducer from './redux/loader';
+import rootSaga from './sagas';
 
 export default function configureStore(history: any, initialState: State = newState()) {
   const sagaMiddleware = createSagaMiddleware();

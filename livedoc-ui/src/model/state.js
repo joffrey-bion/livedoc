@@ -10,7 +10,7 @@ type LoaderStateProps = {
 export const newLoaderState: RecordFactory<LoaderStateProps> = Record({
   loading: false,
   url: null,
-});
+}, 'LoaderState');
 export type LoaderState = RecordOf<LoaderStateProps>;
 
 export type State = {
