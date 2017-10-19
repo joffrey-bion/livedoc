@@ -1,4 +1,5 @@
 import { apply, call, put, takeLatest } from 'redux-saga/effects'
+import { push } from 'react-router-redux'
 import type {Action} from '../redux/loader';
 import {actions, types} from '../redux/loader';
 
@@ -9,6 +10,7 @@ function* fetchDoc(action: Action): * {
     const data =  yield apply(response, response.json);
     console.log('Fetched documentation:', data);
     yield put(actions.updateDoc(data));
+    yield put(push('/global'));
   } catch (error) {
     console.error('Could not fetch documentation', error);
     yield put(actions.fetchError(error));
