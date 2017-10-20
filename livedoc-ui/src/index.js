@@ -6,23 +6,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { createPersistor, getStoredState } from 'redux-persist';
-import immutableTransform from 'redux-persist-transform-immutable'
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store';
-import { newLoaderState } from './model/state';
 
 const history = createBrowserHistory();
-
-const transformConfig = {
-  records: [newLoaderState],
-  blacklist: ['livedoc'],
-};
-
-const persistConfig = {
-  transforms: [immutableTransform(transformConfig)],
-};
+const persistConfig = {};
 
 async function bootstrap() {
   const restoredState = await getStoredState(persistConfig);

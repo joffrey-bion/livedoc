@@ -1,17 +1,14 @@
 // @flow
-import type { RecordFactory, RecordOf } from 'immutable';
-import { Record } from 'immutable';
 import type { Livedoc } from './livedoc';
 
-type LoaderStateProps = {
+type LoaderState = {
   loading: boolean,
   url: ?string
 }
-export const newLoaderState: RecordFactory<LoaderStateProps> = Record({
+export const newLoaderState = () => ({
   loading: false,
   url: null,
-}, 'LoaderState');
-export type LoaderState = RecordOf<LoaderStateProps>;
+});
 
 export type State = {
   loader: LoaderState,

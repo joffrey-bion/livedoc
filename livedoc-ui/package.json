@@ -18,7 +18,6 @@
     "redux": "^3.7.2",
     "redux-immutable": "^4.0.0",
     "redux-persist": "^4.10.1",
-    "redux-persist-transform-immutable": "^4.3.0",
     "redux-saga": "^0.15.6"
   },
   "devDependencies": {

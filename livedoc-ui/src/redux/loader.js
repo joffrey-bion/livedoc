@@ -26,18 +26,18 @@ export const actions = {
 export default (state: LoaderState = newLoaderState(), action: Action) => {
   switch (action.type) {
     case types.FETCH_DOC:
-      return state.merge({
-          loading: true,
-          url: action.url,
-        });
+      return {
+        ...state,
+        loading: true,
+        url: action.url,
+      };
     case types.DOC_FETCHED:
-      return state.merge({
-          loading: false,
-        });
     case types.DOC_FETCH_ERROR:
-      return state.merge({
-          loading: false,
-      });
+      // we want to remember the URL from which we loaded the doc
+      return {
+        ...state,
+        loading: false,
+      };
     case types.RESET:
       return newLoaderState();
     default:
