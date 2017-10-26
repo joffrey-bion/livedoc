@@ -1,12 +1,7 @@
-
-.App {
-  text-align: center;
+html {
+    height: 100%
 }
 
-.App-content {
-  text-align: left;
-}
-
-.App-intro {
-  font-size: large;
+body {
+    background: #fafafa url("./livedoc-logo-round-gray.svg") no-repeat center;
 }

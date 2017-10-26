@@ -1,10 +1,13 @@
 // @flow
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import * as React from 'react';
+import { Input, InputGroup, InputGroupButton } from 'reactstrap';
 
 type Props = {
-  initialValue: string, hintText: string, onSubmit: string => void, btnLabel: string
+  initialValue: string,
+  hintText: string,
+  onSubmit: string => void,
+  btnLabel: string,
+  [otherProps: any]: any,
 }
 
 type State = {
@@ -25,13 +28,13 @@ export class InlineForm extends React.Component<Props, State> {
   };
 
   render() {
-    return <div>
-      <TextField type='text'
-                 value={this.state.value}
-                 hintText={this.props.hintText}
-                 onChange={(e, val) => this.setValue(val)}
-                 style={{marginRight: '1em'}}/>
-      <RaisedButton label={this.props.btnLabel} primary onClick={() => this.props.onSubmit(this.state.value)}/>
-    </div>;
+    return <InputGroup {...this.props.otherProps}>
+      <Input type='text'
+             value={this.state.value}
+             placeholder={this.props.hintText}
+             onChange={(e, val) => this.setValue(val)}/>
+      <InputGroupButton color="info"
+                        onClick={() => this.props.onSubmit(this.state.value)}>{this.props.btnLabel}</InputGroupButton>
+    </InputGroup>;
   }
 }

@@ -7,7 +7,6 @@ import type { Livedoc } from '../../model/livedoc';
 import type { State } from '../../model/state';
 import { ContentPanel } from './content/ContentPanel';
 import { GlobalInfo } from './GlobalInfo';
-import { LoadingInfo } from './LoadingInfo';
 import NavPanel from './nav/NavPanel';
 import { SidePanel } from './SidePanel';
 
@@ -18,9 +17,6 @@ export type DocPresenterProps = {
 }
 
 const DocPresenter = (props: DocPresenterProps) => {
-  if (props.loading && props.url) {
-    return <LoadingInfo url={props.url}/>;
-  }
   if (!props.livedoc) {
     return <p>Please provide a URL to fetch a documentation.</p>;
   }
