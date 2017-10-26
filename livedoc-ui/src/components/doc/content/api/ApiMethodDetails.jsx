@@ -34,7 +34,7 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
     }
   }
 
-  return <Table striped>
+  return <Table>
     <tbody>
     {rows}
     </tbody>
