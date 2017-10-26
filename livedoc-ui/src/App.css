@@ -5,3 +5,7 @@ html {
 body {
     background: #fafafa url("./livedoc-logo-round-gray.svg") no-repeat center;
 }
+
+h1 {
+    margin-top: 1rem;
+}
