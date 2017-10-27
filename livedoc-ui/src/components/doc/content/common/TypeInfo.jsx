@@ -5,7 +5,7 @@ import type { LivedocType, TypeElement } from '../../../../model/livedoc';
 
 export type TypeInfoProps = {
   type: LivedocType,
-  required: ?boolean,
+  required?: boolean,
 }
 
 type TypeElementProps = {
