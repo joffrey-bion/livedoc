@@ -13,24 +13,34 @@ type TypeElementProps = {
 }
 
 const TypeElementLink = ({element}: TypeElementProps) => {
-  const text = <code>{element.text}</code>;
-
   if (element.link) {
-    return <Link to={'/types/' + element.link}>{text}</Link>
+    return <Link to={'/types/' + element.link}>{element.text}</Link>
   } else {
-    return text;
+    return element.text;
   }
 };
 
 export const TypeInfo = (props: TypeInfoProps) => {
-  const optionalMark = props.required === false ? '?' : '';
+  const mark = computeMark(props.required);
+  const elements = props.type.typeElements.map(e => <TypeElementLink key={e.text} element={e}/>);
 
-  // this if handles old versions of Livedoc
-  // TODO remove when unnecessary
+  // this 'if' statement handles old versions of Livedoc
   if (props.type.typeElements) {
-    return props.type.typeElements.map(e => <TypeElementLink key={e.text} element={e}/>);
+    return <code>{elements}{mark}</code>;
   } else {
-    return <code>{props.type.oneLineText + optionalMark}</code>;
+    // TODO remove this branch when it becomes unnecessary
+    return <code>{props.type.oneLineText + mark}</code>;
   }
 };
+
+function computeMark(required: ?boolean): string {
+  switch (required) {
+    case true:
+      return '*';
+    case false:
+      return '?';
+    default:
+      return '';
+  }
+}
 
