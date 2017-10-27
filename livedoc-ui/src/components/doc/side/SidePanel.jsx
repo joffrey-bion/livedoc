@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import TypeTemplate from './TypeTemplate';
+import TypeTemplate from './TypeExample';
 
 type SidePanelProps = {}
 

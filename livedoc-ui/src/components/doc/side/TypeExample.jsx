@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import type { ApiObjectDoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { getType } from '../../../redux/livedoc';
+import { Card } from 'reactstrap';
 
-export type TypeTemplateProps = {
+export type TypeExampleProps = {
   typeDoc: ApiObjectDoc,
 }
 
-const TypeTemplate = ({typeDoc}: TypeTemplateProps) => {
+const TypeExample = ({typeDoc}: TypeExampleProps) => {
   if (!typeDoc) {
     return null;
   }
@@ -18,10 +19,12 @@ const TypeTemplate = ({typeDoc}: TypeTemplateProps) => {
     return null;
   }
   return <section>
-    <h2>Template</h2>
+    <h3 style={{marginTop: '1rem'}}>Example</h3>
+    <Card style={{padding: '0.5rem'}}>
     <pre>
     {JSON.stringify(typeDoc.template, null, 2)}
     </pre>
+    </Card>
   </section>
 };
 
@@ -36,4 +39,4 @@ const mapStateToProps = (state: State, {match}: TypeTemplateOwnProps) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(TypeTemplate);
+export default connect(mapStateToProps, mapDispatchToProps)(TypeExample);
