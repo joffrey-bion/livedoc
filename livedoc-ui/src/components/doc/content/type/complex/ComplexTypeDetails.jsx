@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Table } from 'reactstrap';
+import { Card, Table } from 'reactstrap';
 import type { ApiObjectDoc } from '../../../../../model/livedoc';
 import { ApiFieldRow } from './ApiFieldRow';
 
@@ -13,16 +13,18 @@ export const ComplexTypeDetails = (props: ComplexTypeDetailsProps) => {
 
   let fieldRows = doc.fields.map(f => <ApiFieldRow key={f.name} field={f}/>);
 
-  return <Table striped>
-    <thead>
-    <tr>
-      <th>Field</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    {fieldRows}
-    </tbody>
-  </Table>;
+  return <Card>
+    <Table striped>
+      <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      {fieldRows}
+      </tbody>
+    </Table>
+  </Card>;
 };
