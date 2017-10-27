@@ -1,5 +1,5 @@
 // @flow
-import type { ApiDoc, ApiFlowDoc, ApiObjectDoc, Identified, Livedoc, LivedocID } from '../model/livedoc';
+import type { ApiDoc, ApiFlowDoc, ApiGlobalDoc, ApiObjectDoc, Identified, Livedoc, LivedocID } from '../model/livedoc';
 import type { State } from '../model/state';
 import type { Action } from './loader';
 import { types } from './loader';
@@ -38,8 +38,22 @@ const getElementById = <T>(id: ?LivedocID, elements: { [string]: ElementArray<T>
   return elementsById[id];
 };
 
-export const getApi = (id: LivedocID, state: State): ?ApiDoc => getElementById(id, state.livedoc.apis);
-export const getType = (id: LivedocID, state: State): ?ApiObjectDoc => getElementById(id, state.livedoc.objects);
-export const getFlow = (id: LivedocID, state: State): ?ApiFlowDoc => getElementById(id, state.livedoc.flows);
+export function getGlobalDoc(state: State): ?ApiGlobalDoc {
+  return state.livedoc && state.livedoc.global;
+}
 
-export const isDocLoaded = (state: State) => state.livedoc !== null;
+export function getApi(id: LivedocID, state: State): ?ApiDoc {
+  return state.livedoc && getElementById(id, state.livedoc.apis);
+}
+
+export function getType(id: LivedocID, state: State): ?ApiObjectDoc {
+  return state.livedoc && getElementById(id, state.livedoc.objects);
+}
+
+export function getFlow(id: LivedocID, state: State): ?ApiFlowDoc {
+  return state.livedoc && getElementById(id, state.livedoc.flows);
+}
+
+export function isDocLoaded(state: State): boolean {
+  return state.livedoc !== null;
+}

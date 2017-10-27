@@ -18,7 +18,7 @@ type Props = {
 const App = (props: Props) => (<div>
           <Header/>
           <Switch>
-            <Route path="/fetch" render={(props) => <DocFetcher/>}/>
+            <Route path="/fetch" render={() => <DocFetcher/>}/>
             {!props.docLoaded && <Redirect to="/fetch"/>}
             <Route path="/" component={DocPresenter}/>
           </Switch>
