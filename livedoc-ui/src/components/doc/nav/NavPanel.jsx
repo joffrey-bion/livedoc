@@ -15,7 +15,6 @@ const NavPanel = ({livedoc}: NavPanelProps) => {
     <Route path="/apis" component={(props) => <NavSection elementsByGroupName={livedoc.apis} {...props}/>}/>
     <Route path="/types" component={(props) => <NavSection elementsByGroupName={livedoc.objects} {...props}/>}/>
     <Route path="/flows" component={(props) => <NavSection elementsByGroupName={livedoc.flows} {...props}/>}/>
-    <Route exact path="/" component={(props) => <p>This is a test</p>}/>
   </Switch>;
 };
 

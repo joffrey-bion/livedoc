@@ -6,9 +6,9 @@ import { Col, Container, Row } from 'reactstrap';
 import type { Livedoc } from '../../model/livedoc';
 import type { State } from '../../model/state';
 import { ContentPanel } from './content/ContentPanel';
-import { GlobalInfo } from './GlobalInfo';
+import { GeneralInfo } from './general/GeneralInfo';
 import NavPanel from './nav/NavPanel';
-import { SidePanel } from './SidePanel';
+import { SidePanel } from './side/SidePanel';
 
 export type DocPresenterProps = {
   loading: boolean,
@@ -25,7 +25,7 @@ const DocPresenter = (props: DocPresenterProps) => {
     <Container fluid>
       <Row>
         <Col md={3}>
-          <GlobalInfo livedoc={props.livedoc}/>
+          <GeneralInfo livedoc={props.livedoc}/>
           <NavPanel/>
         </Col>
         <Col md={6}>
