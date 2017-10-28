@@ -1,3 +1,6 @@
-.nav > li > a {
-    padding: 0 5px
+.nav-anchor {
+    padding: 0 0.5rem
+}
+.nav-anchor.active {
+    font-weight: bold;
 }

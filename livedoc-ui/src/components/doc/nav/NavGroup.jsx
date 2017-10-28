@@ -2,26 +2,42 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { NavItem, NavLink } from 'reactstrap';
-import type { Identified, Named } from '../../../model/livedoc';
 import './NavGroup.css';
 
-export type NavGroupProps = {
+export type NavElementDescription = {
+  link: string,
   name: string,
-  location: string,
-  elements: $ReadOnlyArray<Identified & Named>,
+  disabled?: boolean,
+}
+
+export type NavGroupDescription = {
+  name?: string,
+  elements: NavElementDescription[],
+}
+
+export type NavGroupProps = {
+  group: NavGroupDescription,
+  currentLoc: string,
+  parentLoc: string,
 }
 
 export const NavGroup = (props: NavGroupProps) => {
 
   let items = [];
 
-  if (props.name) {
-    items.push(<h4>{props.name}</h4>)
+  if (props.group.name) {
+    items.push(<span className="groupTitle">{props.group.name}</span>)
   }
 
-  const elements = props.elements.map(e => {
-    return <NavItem key={e.livedocId}>
-      <NavLink to={props.location + '/' + e.livedocId} tag={Link}>{e.name}</NavLink>
+  const elements = props.group.elements.map((e, index) => {
+    const linkUrl = props.parentLoc + '/' + e.link;
+    const active = props.currentLoc === linkUrl;
+    return <NavItem key={index}>
+      <NavLink className="nav-anchor"
+               to={linkUrl}
+               disabled={e.disabled}
+               active={active}
+               tag={Link}>{e.name}</NavLink>
     </NavItem>;
   });
 

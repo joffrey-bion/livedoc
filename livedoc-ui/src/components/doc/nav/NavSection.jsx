@@ -1,18 +1,22 @@
 // @flow
 import * as React from 'react';
 import { Nav } from 'reactstrap';
-import type { Identified, Named } from '../../../model/livedoc';
 import { NavGroup } from './NavGroup';
+import type { NavGroupDescription } from './NavGroup';
 
 export type NavSectionProps = {
   match: any,
-  elementsByGroupName: { [groupName: string]: $ReadOnlyArray<Identified & Named> },
+  location: any,
+  groups: NavGroupDescription[],
 }
 
 export const NavSection = (props: NavSectionProps) => {
 
-  const navItems = Object.entries(props.elementsByGroupName).map(([gpName, elems]) => {
-    return <NavGroup key={gpName || 'no-group'} name={gpName} elements={elems} location={props.match.url}/>
+  const parentLoc = props.match.url;
+  const currentLoc = props.location.pathname;
+
+  const navItems = props.groups.map((gp, index) => {
+    return <NavGroup key={index} currentLoc={currentLoc} parentLoc={parentLoc} group={gp}/>
   });
 
   return <Nav vertical>{navItems}</Nav>

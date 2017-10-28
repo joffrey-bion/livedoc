@@ -63,7 +63,7 @@ export type ApiErrorDoc = Identified & {
   description: string
 }
 
-export type ApiFlowDoc = Named & {
+export type ApiFlowDoc = Identified & Named & {
   description: string,
   preconditions: Array<string>,
   steps: Array<ApiFlowStepDoc>,

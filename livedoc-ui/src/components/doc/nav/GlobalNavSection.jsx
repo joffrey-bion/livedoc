@@ -1,22 +1,28 @@
 // @flow
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { Nav, NavItem, NavLink } from 'reactstrap';
+import type { ApiGlobalDoc } from '../../../model/livedoc';
+import type { NavElementDescription, NavGroupDescription } from './NavGroup';
+import { NavSection } from './NavSection';
 
 export type GlobalNavSectionProps = {
-  match: any,
+  globalDoc: ApiGlobalDoc,
 }
 
-export const GlobalNavSection = (props: GlobalNavSectionProps) => {
-  return <Nav vertical>
-    <NavItem>
-      <NavLink to={props.match.url + '/general'} tag={Link}>General</NavLink>
-    </NavItem>
-    <NavItem>
-      <NavLink to={props.match.url + '/changelog'} tag={Link}>Change Log</NavLink>
-    </NavItem>
-    <NavItem>
-      <NavLink to={props.match.url + '/migrations'} tag={Link}>Migrations</NavLink>
-    </NavItem>
-  </Nav>;
+export const GlobalNavSection = ({globalDoc, ...otherProps}: GlobalNavSectionProps) => {
+  const hasGeneral = globalDoc.sections.length > 0;
+  const hasChangeLogs = globalDoc.changelogset.changelogs.length > 0;
+  const hasMigrations = globalDoc.migrationset.migrations.length > 0;
+
+  const globalElements: NavElementDescription[] = [];
+  globalElements.push(navElementDesc('general', 'General', hasGeneral));
+  globalElements.push(navElementDesc('changelog', 'Change Log', hasChangeLogs));
+  globalElements.push(navElementDesc('migrations', 'Migrations', hasMigrations));
+
+  const globalGroup: NavGroupDescription = {elements: globalElements};
+
+  return <NavSection groups={[globalGroup]} {...otherProps}/>;
 };
+
+function navElementDesc(link: string, name: string, enabled: boolean): NavElementDescription {
+  return {link, name, disabled: !enabled};
+}
