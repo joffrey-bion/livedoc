@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Button, Navbar, NavbarBrand } from 'reactstrap';
 import type { State } from '../../model/state';
 import { isDocLoaded } from '../../redux/livedoc';
@@ -36,4 +37,4 @@ const mapDispatchToProps = {
   reset: actions.reset,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -2,7 +2,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
-import './App.css';
 import DocPresenter from './components/doc/DocPresenter';
 import DocFetcher from './components/fetcher/DocFetcher';
 import Header from './components/header/Header';

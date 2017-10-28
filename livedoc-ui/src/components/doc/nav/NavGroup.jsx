@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink as RouterNavLink } from 'react-router-dom';
 import { NavItem, NavLink } from 'reactstrap';
 import './NavGroup.css';
 
@@ -17,7 +17,6 @@ export type NavGroupDescription = {
 
 export type NavGroupProps = {
   group: NavGroupDescription,
-  currentLoc: string,
   parentLoc: string,
 }
 
@@ -31,14 +30,11 @@ export const NavGroup = (props: NavGroupProps) => {
   }
 
   const elements = props.group.elements.map((e, index) => {
-    const linkUrl = props.parentLoc + '/' + e.link;
-    const active = props.currentLoc === linkUrl;
     return <NavItem key={index}>
       <NavLink className="nav-anchor"
-               to={linkUrl}
+               to={props.parentLoc + '/' + e.link}
                disabled={e.disabled}
-               active={active}
-               tag={Link}>{e.name}</NavLink>
+               tag={RouterNavLink}>{e.name}</NavLink>
     </NavItem>;
   });
 

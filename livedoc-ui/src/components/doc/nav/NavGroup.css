@@ -1,24 +1,15 @@
 .group-title {
     margin-top: 1rem;
     margin-bottom: 0.2rem;
-    font-weight: bold;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.61);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .nav-anchor {
+    color: black;
     padding: 0 0.5rem;
-    color: rgba(0, 0, 0, 0.7);
 }
 
 .nav-anchor:hover:not(.disabled) {
-    color: rgb(0, 140, 154);
-}
-
-.nav-anchor.active {
-    font-weight: bold;
-    color: rgba(0, 140, 154, 0.8);
-}
-
-.nav-link.disabled:hover {
-    cursor: default;
+    color: rgb(0, 120, 125);
 }

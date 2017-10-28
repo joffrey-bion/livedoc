@@ -1,0 +1,9 @@
+
+.top-nav-anchor {
+    color: white;
+    padding: 0 1rem;
+}
+
+.top-nav-anchor:hover:not(.disabled) {
+    color: white;
+}
