@@ -3,14 +3,19 @@ import * as React from 'react';
 import { Badge, Card, CardBody, CardHeader, CardText, Collapse } from 'reactstrap';
 import type { ApiMethodDoc } from '../../../../model/livedoc';
 import { ApiMethodDetails } from './ApiMethodDetails';
+import './ApiMethodPanel.css';
 
 export type ApiMethodPanelProps = {
   methodDoc: ApiMethodDoc,
 }
 
-export class ApiMethodPanel extends React.Component<ApiMethodPanelProps> {
+export type ApiMethodPanelState = {
+  isOpen: boolean,
+}
 
-  constructor(props) {
+export class ApiMethodPanel extends React.Component<ApiMethodPanelProps, ApiMethodPanelState> {
+
+  constructor(props: ApiMethodPanelProps) {
     super(props);
     this.state = {
       isOpen: false
@@ -31,7 +36,7 @@ export class ApiMethodPanel extends React.Component<ApiMethodPanelProps> {
     const verbs = doc.verb.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
 
     return <Card style={{marginBottom: '15px'}}>
-      <CardHeader onClick={toggleOpen}>{title} {verbs}</CardHeader>
+      <CardHeader className="api-method-header" onClick={toggleOpen}>{title} {verbs}</CardHeader>
       <Collapse isOpen={this.state.isOpen}>
         <CardBody>
           <CardText>{doc.description}</CardText>
