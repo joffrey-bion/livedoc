@@ -2,10 +2,24 @@
 
 .header {
     color: white;
-    background-color: #092726;
+    background-color: #094241;
     display: flex;
     justify-content: space-between;
     text-align: left;
+}
+
+.close, .close:hover, .close:focus, .close:active {
+    margin-top: -6px;
+    color: white;
+    outline: none;
+}
+
+.close {
+    opacity: 0.5;
+}
+
+.close:hover, .close:focus, .close:active {
+    opacity: 1;
 }
 
 .logo {

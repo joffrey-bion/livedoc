@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Button, Navbar, NavbarBrand } from 'reactstrap';
+import { Navbar, NavbarBrand } from 'reactstrap';
 import type { State } from '../../model/state';
 import { isDocLoaded } from '../../redux/livedoc';
 import { actions } from '../../redux/loader';
@@ -18,10 +18,14 @@ export type HeaderProps = {
 
 const HeaderLogo = () => (<img src={logo} alt="Livedoc Logo" width={20} className="logo"/>);
 
+const CloseButton = ({reset}) => (<button type="button" onClick={reset} className="close" aria-label="Reset">
+  <span aria-hidden="true">&times;</span>
+</button>);
+
 const Header = ({homeUrl, docLoaded, reset}: HeaderProps) => (<Navbar className="header">
   <NavbarBrand href={homeUrl} className="title"><HeaderLogo/>Livedoc</NavbarBrand>
   {docLoaded && <TopNav/>}
-  {docLoaded && <Button color="info" onClick={reset}>Reset</Button>}
+  {docLoaded && <CloseButton reset={reset}/>}
 </Navbar>);
 
 const getHomeUrl = (currentDocUrl: ?string) => {
