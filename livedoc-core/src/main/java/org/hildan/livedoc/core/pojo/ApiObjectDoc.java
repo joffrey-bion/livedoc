@@ -2,11 +2,12 @@ package org.hildan.livedoc.core.pojo;
 
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.UUID;
+
+import org.hildan.livedoc.core.util.LivedocUtils;
 
 public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc>, Groupable {
 
-    public final String livedocId = UUID.randomUUID().toString();
+    private final String livedocId;
 
     private String name;
 
@@ -28,7 +29,8 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
 
     private boolean show;
 
-    public ApiObjectDoc() {
+    public ApiObjectDoc(Class<?> clazz) {
+        this.livedocId = LivedocUtils.getLivedocId(clazz);
         this.name = "";
         this.description = "";
         this.supportedversions = null;
@@ -38,6 +40,10 @@ public class ApiObjectDoc extends AbstractDoc implements Comparable<ApiObjectDoc
         this.visibility = ApiVisibility.UNDEFINED;
         this.stage = ApiStage.UNDEFINED;
         this.show = true;
+    }
+
+    public String getLivedocId() {
+        return livedocId;
     }
 
     public String getName() {

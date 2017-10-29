@@ -21,7 +21,7 @@ public class ApiObjectDocReader {
     }
 
     public ApiObjectDoc read(Class<?> clazz) {
-        ApiObjectDoc apiObjectDoc = new ApiObjectDoc();
+        ApiObjectDoc apiObjectDoc = new ApiObjectDoc(clazz);
         apiObjectDoc.setName(clazz.getSimpleName());
         apiObjectDoc.setSupportedversions(ApiVersionDocReader.read(clazz));
         apiObjectDoc.setShow(Modifier.isAbstract(clazz.getModifiers()));

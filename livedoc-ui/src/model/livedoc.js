@@ -178,7 +178,7 @@ export type LivedocType = {
 
 export type TypeElement = {
   text: string,
-  link: string,
+  livedocId: ?LivedocID,
 };
 
 export type MethodDisplay = 'URI' | 'SUMMARY' | 'METHOD';

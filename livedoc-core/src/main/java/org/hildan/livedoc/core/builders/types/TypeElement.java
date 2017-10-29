@@ -1,5 +1,7 @@
 package org.hildan.livedoc.core.builders.types;
 
+import org.hildan.livedoc.core.util.LivedocUtils;
+
 public class TypeElement {
 
     static final TypeElement COMMA = text(", ");
@@ -16,11 +18,11 @@ public class TypeElement {
 
     private final String text;
 
-    private final String link;
+    private final String livedocId;
 
-    private TypeElement(String text, String link) {
+    private TypeElement(String text, String livedocId) {
         this.text = text;
-        this.link = link;
+        this.livedocId = livedocId;
     }
 
     public static TypeElement text(String text) {
@@ -28,14 +30,14 @@ public class TypeElement {
     }
 
     public static TypeElement ref(String customName, Class<?> clazz) {
-        return new TypeElement(customName, clazz.getCanonicalName());
+        return new TypeElement(customName, LivedocUtils.getLivedocId(clazz));
     }
 
     public String getText() {
         return text;
     }
 
-    public String getLink() {
-        return link;
+    public String getLivedocId() {
+        return livedocId;
     }
 }

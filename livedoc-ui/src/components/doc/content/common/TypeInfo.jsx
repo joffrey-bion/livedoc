@@ -13,8 +13,8 @@ type TypeElementProps = {
 }
 
 const TypeElementLink = ({element}: TypeElementProps) => {
-  if (element.link) {
-    return <Link to={'/types/' + element.link}>{element.text}</Link>
+  if (element.livedocId) {
+    return <Link to={'/types/' + element.livedocId}>{element.text}</Link>
   } else {
     return element.text;
   }
@@ -22,7 +22,7 @@ const TypeElementLink = ({element}: TypeElementProps) => {
 
 export const TypeInfo = (props: TypeInfoProps) => {
   const mark = computeMark(props.required);
-  const elements = props.type.typeElements.map(e => <TypeElementLink key={e.text} element={e}/>);
+  const elements = props.type.typeElements.map((e, index) => <TypeElementLink key={index} element={e}/>);
 
   // this 'if' statement handles old versions of Livedoc
   if (props.type.typeElements) {

@@ -21,6 +21,10 @@ public class LivedocUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(LivedocReader.class);
 
+    public static String getLivedocId(Class<?> clazz) {
+        return clazz.getCanonicalName();
+    }
+
     public static int getIndexOfParameterWithAnnotation(Method method, Class<? extends Annotation> annotationClass) {
         Annotation[][] paramsAnnotations = method.getParameterAnnotations();
         for (int i = 0; i < paramsAnnotations.length; i++) {
