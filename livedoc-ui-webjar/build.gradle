@@ -1,0 +1,44 @@
+plugins {
+    id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: 'base'
+apply plugin: 'idea'
+
+buildDir = 'build'
+
+node {
+    version = '8.8.1'
+    yarnVersion = '1.2.1'
+    download = true
+}
+
+task bundle(type: YarnTask) {
+    inputs.dir(new File('public'))
+    inputs.dir(new File('src'))
+    outputs.dir(new File("$buildDir"))
+    args = ['run', 'build']
+}
+
+task start(type: YarnTask) {
+    args = ['start']
+}
+
+//task test(type: YarnTask) {
+//    args = ['test:oneshot']
+//}
+
+jar {
+    from('build') {
+        include '*.*'
+        into 'META-INF/resources'
+    }
+    from('build/static') {
+        include '**/*'
+        into "META-INF/resources/webjars/${project.name}"
+    }
+}
+
+//check.dependsOn(test)
+bundle.dependsOn(yarn_install)
+assemble.dependsOn(bundle)

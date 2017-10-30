@@ -21,6 +21,7 @@
     "redux-saga": "^0.15.6"
   },
   "devDependencies": {
+    "cross-env": "^5.1.1",
     "flow-bin": "^0.56.0",
     "flow-typed": "^2.2.0",
     "react-scripts": "^1.0.14",
@@ -30,6 +31,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "test:oneshot": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
 }
