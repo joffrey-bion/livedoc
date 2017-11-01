@@ -32,7 +32,7 @@ export class InlineForm extends React.Component<Props, State> {
       <Input type='text'
              value={this.state.value}
              placeholder={this.props.hintText}
-             onChange={(e, val) => this.setValue(val)}/>
+             onChange={e => this.setValue(e.target.value)}/>
       <InputGroupButton color="info"
                         onClick={() => this.props.onSubmit(this.state.value)}>{this.props.btnLabel}</InputGroupButton>
     </InputGroup>;
