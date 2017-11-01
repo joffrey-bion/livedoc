@@ -25,7 +25,7 @@ export const NavGroup = (props: NavGroupProps) => {
   let items = [];
 
   if (props.group.name) {
-    items.push(<div className="group-title">{props.group.name}</div>);
+    items.push(<div key="-1" className="group-title">{props.group.name}</div>);
     // items.push(<hr />);
   }
 
