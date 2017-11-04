@@ -1,7 +1,7 @@
 {
   "name": "livedoc-ui",
-  "version": "1.2.0",
-  "private": true,
+  "homepage": "/livedoc",
+  "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.0.0-beta.2",
     "history": "^4.7.2",

@@ -24,21 +24,18 @@ task start(type: YarnTask) {
     args = ['start']
 }
 
-//task test(type: YarnTask) {
-//    args = ['test:oneshot']
-//}
+task testJs(type: YarnTask) {
+    args = ['test:oneshot']
+}
 
 jar {
     from('build') {
         include '*.*'
-        into 'META-INF/resources'
-    }
-    from('build/static') {
-        include '**/*'
-        into "META-INF/resources/webjars/${project.name}"
+        include 'static/**/*'
+        into 'META-INF/resources/livedoc'
     }
 }
 
-//check.dependsOn(test)
+check.dependsOn(testJs)
 bundle.dependsOn(yarn_install)
 assemble.dependsOn(bundle)
