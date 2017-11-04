@@ -1,6 +1,6 @@
 // @flow
 import 'bootstrap/dist/css/bootstrap.css';
-import createBrowserHistory from 'history/createBrowserHistory'
+import createHistory from 'history/createHashHistory'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -11,7 +11,7 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store';
 
-const history = createBrowserHistory();
+const history = createHistory();
 const persistConfig = {};
 
 async function bootstrap() {
