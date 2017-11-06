@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, CardText, Collapse } from 'reactstrap';
 import type { ApiMethodDoc } from '../../../../model/livedoc';
 import { ApiMethodDetails } from './ApiMethodDetails';
@@ -7,45 +8,29 @@ import './ApiMethodPanel.css';
 
 export type ApiMethodPanelProps = {
   methodDoc: ApiMethodDoc,
+  location: any,
+  match: any,
 }
 
-export type ApiMethodPanelState = {
-  isOpen: boolean,
-}
+export const ApiMethodPanel = ({methodDoc, location, match}: ApiMethodPanelProps) => {
 
-export class ApiMethodPanel extends React.Component<ApiMethodPanelProps, ApiMethodPanelState> {
+  const title = methodDoc.path || methodDoc.method;
+  const verbs = methodDoc.verb.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
 
-  constructor(props: ApiMethodPanelProps) {
-    super(props);
-    this.state = {
-      isOpen: false
-    };
-  }
+  const methodUrl = match.url + '/' + methodDoc.livedocId;
+  const open = location.pathname === methodUrl;
+  const linkUrl = open ? match.url : methodUrl;
 
-  toggleOpen() {
-    this.setState((prevState) => ({
-      isOpen: !prevState.isOpen
-    }));
-  }
-
-  render() {
-    const doc: ApiMethodDoc = this.props.methodDoc;
-    const toggleOpen = () => this.toggleOpen();
-
-    const title = doc.path || doc.method;
-    const verbs = doc.verb.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
-
-    return <Card style={{marginBottom: '15px'}}>
-      <CardHeader className="api-method-header" onClick={toggleOpen}>{title} {verbs}</CardHeader>
-      <Collapse isOpen={this.state.isOpen}>
-        <CardBody>
-          <CardText>{doc.description}</CardText>
-          <ApiMethodDetails methodDoc={doc}/>
-        </CardBody>
-      </Collapse>
-    </Card>;
-  }
-}
+  return <Card style={{marginBottom: '15px'}}>
+    <CardHeader className="api-method-header" tag={Link} to={linkUrl}>{title} {verbs}</CardHeader>
+    <Collapse isOpen={open}>
+      <CardBody>
+        <CardText>{methodDoc.description}</CardText>
+        <ApiMethodDetails methodDoc={methodDoc}/>
+      </CardBody>
+    </Collapse>
+  </Card>;
+};
 
 const verbColors = {
   GET: '#468847',

@@ -1,24 +1,29 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import type { ApiDoc } from '../../../../model/livedoc';
 import type { State } from '../../../../model/state';
 import { getApi } from '../../../../redux/livedoc';
 import { ContentHeader } from '../ContentHeader';
 import { ApiMethodPanel } from './ApiMethodPanel';
-import { Redirect } from 'react-router-dom';
 
-export type ApiDocPanelProps = {
+export type ApiDocPanelOwnProps = {
+  match: any,
+  location: any,
+}
+
+export type ApiDocPanelProps = ApiDocPanelOwnProps & {
   apiDoc: ?ApiDoc,
 }
 
-const ApiDocPanel = ({apiDoc}: ApiDocPanelProps) => {
+const ApiDocPanel = ({apiDoc, ...props}: ApiDocPanelProps) => {
   if (!apiDoc) {
     return <Redirect to="/apis"/>
   }
   const api: ApiDoc = apiDoc;
 
-  const methodPanels = api.methods.map(m => <ApiMethodPanel key={m.livedocId} methodDoc={m}/>);
+  const methodPanels = api.methods.map(m => <ApiMethodPanel key={m.livedocId} methodDoc={m} {...props}/>);
 
   return <section>
     <ContentHeader title={api.name} description={api.description}/>
@@ -26,12 +31,9 @@ const ApiDocPanel = ({apiDoc}: ApiDocPanelProps) => {
   </section>;
 };
 
-export type ApiDocPanelOwnProps = {
-  match: any,
-}
-
-const mapStateToProps = (state: State, {match}: ApiDocPanelOwnProps) => ({
-  apiDoc: getApi(match.params.apiId, state),
+const mapStateToProps = (state: State, props: ApiDocPanelOwnProps) => ({
+  apiDoc: getApi(props.match.params.apiId, state),
+  ...props,
 });
 
 const mapDispatchToProps = {};
