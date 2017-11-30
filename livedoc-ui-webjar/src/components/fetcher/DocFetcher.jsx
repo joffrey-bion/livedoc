@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { Container, Row } from 'reactstrap';
 import type { State } from '../../model/state';
 import { isDocLoaded } from '../../redux/livedoc';
-import { actions } from '../../redux/loader';
+import { actions } from '../../redux/actions/loader';
 import { InlineForm } from '../forms/InlineForm';
 
 type Props = {

@@ -6,6 +6,7 @@ import type { State } from './model/state';
 import { newState } from './model/state';
 import livedocReducer from './redux/livedoc';
 import loaderReducer from './redux/loader';
+import playgroundReducer from './redux/playground';
 import rootSaga from './sagas';
 
 export default function configureStore(history: any, initialState: State = newState()) {
@@ -20,6 +21,7 @@ export default function configureStore(history: any, initialState: State = newSt
   const reducers = combineReducers({
     livedoc: livedocReducer,
     loader: loaderReducer,
+    playground: playgroundReducer,
     router: routerReducer,
   });
   const store = createStore(reducers, initialState, composeEnhancers(...enhancers));

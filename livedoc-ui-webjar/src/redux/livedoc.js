@@ -3,16 +3,16 @@ import type {
   ApiDoc, ApiFlowDoc, ApiGlobalDoc, ApiMethodDoc, ApiObjectDoc, Identified, Livedoc, LivedocID,
 } from '../model/livedoc';
 import type { State } from '../model/state';
-import type { Action } from './loader';
-import { types } from './loader';
+import type { Action } from './actions';
+import { DOC_FETCH_ERROR, DOC_FETCHED, FETCH_DOC, RESET } from "./actions/loader";
 
 export default (livedoc: ?Livedoc = null, action: Action) => {
   switch (action.type) {
-    case types.DOC_FETCHED:
+    case DOC_FETCHED:
       return action.livedoc;
-    case types.FETCH_DOC:
-    case types.DOC_FETCH_ERROR:
-    case types.RESET:
+    case FETCH_DOC:
+    case DOC_FETCH_ERROR:
+    case RESET:
       return null;
     default:
       return livedoc;

@@ -1,13 +1,14 @@
-import { apply, call, put, takeLatest } from 'redux-saga/effects'
+// @flow
 import { push } from 'react-router-redux'
-import type {Action} from '../redux/loader';
-import {actions, types} from '../redux/loader';
+import { apply, call, put, takeLatest } from 'redux-saga/effects'
+import type { Action } from '../redux/actions';
+import { actions, FETCH_DOC } from '../redux/actions/loader';
 
 function* fetchDoc(action: Action): * {
   try {
     console.log('Fetching documentation at', action.url);
     const response = yield call(fetch, action.url, {mode: 'cors'});
-    const data =  yield apply(response, response.json);
+    const data = yield apply(response, response.json);
     console.log('Fetched documentation:', data);
     yield put(actions.updateDoc(data));
     yield put(push('/global'));
@@ -19,7 +20,7 @@ function* fetchDoc(action: Action): * {
 
 function* watchFetchDoc() {
   console.log('Watching for FETCH_DOC actions');
-  yield takeLatest(types.FETCH_DOC, fetchDoc);
+  yield takeLatest(FETCH_DOC, fetchDoc);
 }
 
 export default watchFetchDoc;

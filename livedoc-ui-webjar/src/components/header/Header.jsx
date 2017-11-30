@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import type { State } from '../../model/state';
 import { isDocLoaded } from '../../redux/livedoc';
-import { actions } from '../../redux/loader';
+import { actions } from '../../redux/actions/loader';
 import './Header.css';
 import logo from './livedoc-logo-round-white.svg';
 import { TopNav } from './TopNav';
