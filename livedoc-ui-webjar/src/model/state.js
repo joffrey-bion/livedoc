@@ -1,5 +1,6 @@
 // @flow
 import type { Livedoc } from './livedoc';
+import type { ResponseMetaData } from './playground';
 
 export type LoaderState = {
   +loading: boolean,
@@ -11,13 +12,21 @@ export const newLoaderState = () => ({
 });
 
 export type PlaygroundState = {
-  +loading: boolean,
-  +response: ?Response,
+  +waitingResponse: boolean,
+  +streamingResponse: boolean,
+  +responseMeta: ?ResponseMetaData,
+  +responseBody: ?string,
+  +error: any,
 }
-export const newPlaygroundState = () => ({
-  loading: false,
-  response: null,
-});
+export function newPlaygroundState(): PlaygroundState {
+  return {
+    waitingResponse: false,
+    streamingResponse: false,
+    responseMeta: null,
+    responseBody: null,
+    error: null,
+  };
+}
 
 export type State = {
   +loader: LoaderState,

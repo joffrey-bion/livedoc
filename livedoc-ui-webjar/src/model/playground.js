@@ -1,4 +1,4 @@
-import type { ApiVerb } from "./livedoc";
+import type { ApiVerb } from './livedoc';
 
 export type RequestInfo = {
   url: string,
@@ -7,5 +7,11 @@ export type RequestInfo = {
     accept: string,
     contentType: string,
   },
-  body: string,
+  body: ?string,
+}
+
+export type ResponseMetaData = {
+  headers: Headers;
+  status: number;
+  statusText: string;
 }

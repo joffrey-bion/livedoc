@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import type { ApiObjectDoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { getType } from '../../../redux/livedoc';
-import { Card } from 'reactstrap';
+import { JsonCard } from '../../cards/JsonCard';
 
 export type TypeExampleProps = {
   typeDoc: ApiObjectDoc,
@@ -20,14 +20,9 @@ const TypeExample = ({typeDoc}: TypeExampleProps) => {
   }
   return <section>
     <h3 style={{marginTop: '1rem'}}>Example</h3>
-    <Card style={{padding: '0.5rem'}}>
-    <pre>
-    {JSON.stringify(typeDoc.template, null, 2)}
-    </pre>
-    </Card>
+    <JsonCard jsonObject={typeDoc.template}/>
   </section>
 };
-
 
 export type TypeTemplateOwnProps = {
   match: any,

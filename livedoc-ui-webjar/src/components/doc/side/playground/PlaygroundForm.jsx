@@ -2,6 +2,7 @@
 import * as React from 'react';
 import {Button, Col, Form, FormGroup, Input, Label} from 'reactstrap';
 import type {ApiBodyObjectDoc, ApiMethodDoc, ApiVerb} from '../../../../model/livedoc';
+import type {RequestInfo} from '../../../../model/playground';
 
 export type PlaygroundFormProps = {
   basePath: string,
@@ -44,7 +45,7 @@ const RequestBodyInput = (textAreaProps) => {
 
 export class PlaygroundForm extends React.Component<PlaygroundFormProps, PlaygroundFormState> {
 
-  static defaultMime = 'application/json';
+  static defaultMime: string = 'application/json';
   static defaultMethod: ApiVerb = 'TRACE';
 
   constructor(props: PlaygroundFormProps) {
@@ -59,24 +60,24 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
   static getInitialRequestInfo(props: PlaygroundFormProps): PlaygroundFormState {
     const doc: ApiMethodDoc = props.methodDoc;
     return {
-      url: props.basePath + PlaygroundForm.getFirst(doc.path, ""),
+      url: props.basePath + PlaygroundForm.getFirst(doc.path, ''),
       method: PlaygroundForm.getFirst(doc.verb, PlaygroundForm.defaultMethod),
       acceptHeader: PlaygroundForm.getFirst(doc.produces, PlaygroundForm.defaultMime),
       contentType: PlaygroundForm.getFirst(doc.consumes, PlaygroundForm.defaultMime),
-      body: doc.bodyobject && PlaygroundForm.getTemplateBody(doc.bodyobject),
+      body: PlaygroundForm.getTemplateBody(doc.bodyobject),
     };
   }
 
-  static getFirst<T>(arr: T[], defaultValue: T): T {
+  static getFirst<T>(arr: Array<T>, defaultValue: T): T {
     if (!arr) {
       return defaultValue;
     }
     return arr.length === 0 ? defaultValue : arr[0];
   }
 
-  static getTemplateBody(obj: ApiBodyObjectDoc) {
+  static getTemplateBody(obj: ?ApiBodyObjectDoc): string {
     const template = obj && obj.template;
-    return template ? JSON.stringify(template, null, 2) : "";
+    return template ? JSON.stringify(template, null, 2) : '';
   }
 
   handleChange(event: any) {
@@ -92,9 +93,9 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
       method: this.state.method,
       headers: {
         accept: this.state.acceptHeader,
-        contentType: this.state.contentType
+        contentType: this.state.contentType,
       },
-      body: this.state.body
+      body: this.state.body === '' ? undefined : this.state.body,
     };
     this.props.onSubmit(request);
   }

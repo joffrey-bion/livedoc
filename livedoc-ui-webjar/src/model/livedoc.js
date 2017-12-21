@@ -104,7 +104,7 @@ export type ApiMethodDoc = Identified & LivedocHints & Versioned & {
   headers: Array<ApiHeaderDoc>,
   pathparameters: Array<ApiParamDoc>,
   queryparameters: Array<ApiParamDoc>,
-  bodyobject: ApiBodyObjectDoc,
+  bodyobject: ?ApiBodyObjectDoc,
   response: ApiResponseObjectDoc,
   responsestatuscode: string,
   visibility: ApiVisibility,

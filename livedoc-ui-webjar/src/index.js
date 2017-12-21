@@ -1,6 +1,6 @@
 // @flow
 import 'bootstrap/dist/css/bootstrap.css';
-import createHistory from 'history/createHashHistory'
+import createHistory from 'history/createHashHistory';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

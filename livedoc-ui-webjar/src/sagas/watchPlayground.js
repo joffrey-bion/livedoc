@@ -1,33 +1,49 @@
 // @flow
-import { call, put, takeLatest } from 'redux-saga/effects'
-import type { RequestInfo } from "../model/playground";
-import type { SendHttpRequestAction } from "../redux/actions/playground";
-import { actions, SEND_HTTP_REQUEST } from '../redux/actions/playground';
+import { apply, call, put, takeLatest } from 'redux-saga/effects'
+import type { RequestInfo, ResponseMetaData } from '../model/playground';
+import type { SendHttpRequestAction } from '../redux/actions/playground';
+import { actions, SUBMIT_HTTP } from '../redux/actions/playground';
+
+function* watchPlaygroundActions(): * {
+  console.log('Watching for SUBMIT_HTTP actions');
+  yield takeLatest(SUBMIT_HTTP, sendHttpRequest);
+}
 
 function* sendHttpRequest(action: SendHttpRequestAction): * {
   try {
     const reqInfo: RequestInfo = action.request;
-    const options = {
-      method: reqInfo.method,
-      headers: {
-        "Accept": reqInfo.headers.accept,
-        "Content-Type": reqInfo.headers.contentType,
-      },
-      body: reqInfo.body,
-      mode: 'cors',
-    };
+    const options = toFetchOptions(reqInfo);
 
     const response: Response = yield call(fetch, reqInfo.url, options);
-    yield put(actions.displayResponse(response));
+    const responseMeta: ResponseMetaData = extractMetaData(response);
+    yield put(actions.displayResponseMetaData(responseMeta));
+
+    const responseBody: string = yield apply(response, response.text);
+    yield put(actions.displayResponseBody(responseBody));
   } catch (error) {
     console.error('Playground request failed', error);
     yield put(actions.requestError(error));
   }
 }
 
-function* watchPlaygroundActions() {
-  console.log('Watching for SEND_HTTP_REQUEST actions');
-  yield takeLatest(SEND_HTTP_REQUEST, sendHttpRequest);
+function toFetchOptions(requestInfo: RequestInfo): ResponseMetaData {
+  return {
+    method: requestInfo.method,
+    headers: {
+      'Accept': requestInfo.headers.accept,
+      'Content-Type': requestInfo.headers.contentType,
+    },
+    body: requestInfo.body,
+    mode: 'cors',
+  };
+}
+
+function extractMetaData(response: Response): ResponseMetaData {
+  return {
+    headers: response.headers,
+    status: response.status,
+    statusText: response.statusText,
+  };
 }
 
 export default watchPlaygroundActions;
