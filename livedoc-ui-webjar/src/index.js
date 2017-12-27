@@ -5,25 +5,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import { createPersistor, getStoredState } from 'redux-persist';
+import { PersistGate } from 'redux-persist/es/integration/react';
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store';
 
 const history = createHistory();
-const persistConfig = {};
 
 async function bootstrap() {
-  const restoredState = await getStoredState(persistConfig);
-  const store = configureStore(history, restoredState);
-  createPersistor(store, persistConfig);
+  const {persistor, store} = configureStore(history);
 
   ReactDOM.render(<Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App/>
-    </ConnectedRouter>
+    <PersistGate persistor={persistor}>
+      <ConnectedRouter history={history}>
+        <App/>
+      </ConnectedRouter>
+    </PersistGate>
   </Provider>, document.getElementById('root'));
+
   registerServiceWorker();
 }
 
