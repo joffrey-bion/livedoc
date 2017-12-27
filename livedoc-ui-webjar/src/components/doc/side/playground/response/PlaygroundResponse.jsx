@@ -27,10 +27,11 @@ const PlaygroundResponseDumb = (props: PlaygroundResponseProps) => {
   if (!props.responseMeta) {
     return null;
   }
+  const status = props.responseMeta.status;
   const contentType = props.responseMeta.headers.get('Content-Type');
   return <Card style={{marginTop: '2rem', padding: '0.8rem'}}>
     <h4>Response</h4>
-    <div>Status: {props.responseMeta.status}</div>
+    <div>Status: {status}</div>
     <BodyContainer loading={props.streamingResponse} body={props.responseBody} type={contentType}/>
   </Card>;
 };

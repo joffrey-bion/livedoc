@@ -12,7 +12,7 @@ export const TypeInfoWithFormat = ({format, ...props}: TypeInfoWithFormatProps) 
   const typeInfo = <TypeInfo {...props} />;
 
   if (format) {
-    return <span>{typeInfo} (format: {format})</span>
+    return <span>{typeInfo} (format: {format})</span>;
   }
   return typeInfo;
 };

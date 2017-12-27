@@ -12,8 +12,8 @@ export type NavSectionProps = {
 
 export const NavSection = (props: NavSectionProps) => {
   const navItems = props.groups.map((gp, index) => {
-    return <NavGroup key={index} parentLoc={props.match.url} group={gp}/>
+    return <NavGroup key={index} parentLoc={props.match.url} group={gp}/>;
   });
 
-  return <Nav vertical>{navItems}</Nav>
+  return <Nav vertical>{navItems}</Nav>;
 };

@@ -5,7 +5,7 @@ import type { LivedocType, TypeElement } from '../../../../model/livedoc';
 
 export type TypeInfoProps = {
   type: LivedocType,
-  required?: boolean,
+  required: string,
 }
 
 type TypeElementProps = {
@@ -14,7 +14,7 @@ type TypeElementProps = {
 
 const TypeElementLink = ({element}: TypeElementProps) => {
   if (element.livedocId) {
-    return <Link to={'/types/' + element.livedocId}>{element.text}</Link>
+    return <Link to={'/types/' + element.livedocId}>{element.text}</Link>;
   } else {
     return element.text;
   }
@@ -33,11 +33,11 @@ export const TypeInfo = (props: TypeInfoProps) => {
   }
 };
 
-function computeMark(required: ?boolean): string {
+function computeMark(required: string): string {
   switch (required) {
-    case true:
+    case 'true':
       return '*';
-    case false:
+    case 'false':
       return '?';
     default:
       return '';

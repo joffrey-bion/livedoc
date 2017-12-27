@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import { Nav, NavItem, NavLink } from 'reactstrap';
-import './TopNav.css'
+import './TopNav.css';
 
 const TopNavItem = ({path, name}) => (<NavItem>
   <NavLink className="top-nav-anchor" to={path} tag={RouterNavLink}>{name}</NavLink>

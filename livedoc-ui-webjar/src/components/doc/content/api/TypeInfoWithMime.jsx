@@ -12,7 +12,7 @@ export const TypeInfoWithMime = ({mimeTypes, ...props}: TypeInfoWithMimeProps) =
   const typeInfo = <TypeInfo {...props}/>;
 
   if (mimeTypes) {
-    return <span>{typeInfo} as {joinAsCodeBlocks(mimeTypes, ', ')}</span>
+    return <span>{typeInfo} as {joinAsCodeBlocks(mimeTypes, ', ')}</span>;
   }
   return typeInfo;
 };

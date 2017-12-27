@@ -10,7 +10,11 @@ export type ParamRowProps = {
 export const ParamRow = ({param}: ParamRowProps) => {
   return <tr>
     <td>{param.name}</td>
-    <td><TypeInfoWithFormat type={param.type} required={param.required} format={param.format}/></td>
+    <td>
+      <TypeInfoWithFormat type={param.type}
+                          required={param.required === 'undefined' ? null : param.required === 'true'}
+                          format={param.format}/>
+    </td>
     <td>{param.description}</td>
   </tr>;
 };

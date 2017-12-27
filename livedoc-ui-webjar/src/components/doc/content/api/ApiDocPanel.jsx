@@ -19,7 +19,7 @@ export type ApiDocPanelProps = ApiDocPanelOwnProps & {
 
 const ApiDocPanel = ({apiDoc, ...props}: ApiDocPanelProps) => {
   if (!apiDoc) {
-    return <Redirect to="/apis"/>
+    return <Redirect to="/apis"/>;
   }
   const api: ApiDoc = apiDoc;
 

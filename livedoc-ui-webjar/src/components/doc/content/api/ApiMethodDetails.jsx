@@ -14,23 +14,23 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
 
   let rows = [];
   if (doc.pathparameters && doc.pathparameters.length > 0) {
-    rows.push(row('Path Params', <ApiMethodParamsTable params={doc.pathparameters}/>))
+    rows.push(row('Path Params', <ApiMethodParamsTable params={doc.pathparameters}/>));
   }
   if (doc.queryparameters && doc.queryparameters.length > 0) {
-    rows.push(row('Query Params', <ApiMethodParamsTable params={doc.queryparameters}/>))
+    rows.push(row('Query Params', <ApiMethodParamsTable params={doc.queryparameters}/>));
   }
   if (doc.bodyobject) {
-    rows.push(row('Request body type', <TypeInfoWithMime type={doc.bodyobject.type} mimeTypes={doc.consumes}/>))
+    rows.push(row('Request body type', <TypeInfoWithMime type={doc.bodyobject.type} mimeTypes={doc.consumes}/>));
   }
   if (doc.response && doc.response.type && doc.response.type.oneLineText !== 'void') {
-    rows.push(row('Response body type', <TypeInfoWithMime type={doc.response.type} mimeTypes={doc.produces}/>))
+    rows.push(row('Response body type', <TypeInfoWithMime type={doc.response.type} mimeTypes={doc.produces}/>));
   }
 
   if (rows.length === 0) {
     if (doc.description) {
       return null;
     } else {
-      return <small className="text-muted">No additional information available</small>
+      return <small className="text-muted">No additional information available</small>;
     }
   }
 

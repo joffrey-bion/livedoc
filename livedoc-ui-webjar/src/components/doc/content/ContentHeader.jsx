@@ -11,5 +11,5 @@ export const ContentHeader = ({title, description}: ContentHeaderProps) => {
     <h1>{title}</h1>
     <hr/>
     {description && <p className="lead">{description}</p>}
-  </div>
+  </div>;
 };

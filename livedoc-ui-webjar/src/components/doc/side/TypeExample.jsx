@@ -21,7 +21,7 @@ const TypeExample = ({typeDoc}: TypeExampleProps) => {
   return <section>
     <h3 style={{marginTop: '1rem'}}>Example</h3>
     <JsonCard jsonObject={typeDoc.template}/>
-  </section>
+  </section>;
 };
 
 export type TypeTemplateOwnProps = {

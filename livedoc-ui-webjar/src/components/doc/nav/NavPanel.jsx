@@ -26,7 +26,7 @@ function createGroups(elementsByGroupName: { [groupName: string]: $ReadOnlyArray
     return {
       name: groupName,
       elements: groupElements,
-    }
+    };
   });
 }
 

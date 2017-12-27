@@ -17,7 +17,7 @@ const TypeDocContent = ({isEnum, typeDoc}) => {
   if (isEnum) {
     return <EnumTypeDetails typeDoc={typeDoc}/>;
   } else {
-    return <ComplexTypeDetails typeDoc={typeDoc}/>
+    return <ComplexTypeDetails typeDoc={typeDoc}/>;
   }
 };
 
@@ -30,7 +30,7 @@ const TypeDocPanel = ({typeDoc}: TypeDocPanelProps) => {
   return <section>
     <ContentHeader title={typeDoc.name} description={typeDoc.description}/>
     <TypeDocContent isEnum={isEnum} typeDoc={typeDoc}/>
-  </section>
+  </section>;
 };
 
 export type TypeDocPanelOwnProps = {
