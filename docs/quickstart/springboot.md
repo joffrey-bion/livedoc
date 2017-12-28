@@ -47,14 +47,5 @@ This will automatically register a controller that serves the documentation as J
 
 By navigating to the `/jsondoc` endpoint on your server, you may get the JSON description of your documentation.
 
-More interesting, you may also use the provided UI by adding the Livedoc webjar to your classpath:
-
-{% include dependency.md artifactId="livedoc-ui-webjar" %}
-
-Webjars are supported out-of-the-box by Spring Boot without any additional configuration. You simply need to navigate
- to `/livedoc-ui.html` and enter your JSON doc endpoint URL in the box to fetch your documentation and display it.
- 
-You may also avoid entering the documentation link each time by providing it as query parameter:
-
-    http://localhost:8080/livedoc-ui.html?url=http://localhost:8080/jsondoc
+More interesting, you may also use the provided UI with [very few steps](../livedoc-ui).
 

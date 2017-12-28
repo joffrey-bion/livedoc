@@ -45,14 +45,10 @@ create it.
 
 ## Use the documentation
 
-The `Livedoc` Java object holds all the documentation of your API and classes. You may now use it as you please.
+The `Livedoc` Java object holds all the documentation of your API and classes. Once you have built this object as 
+mentioned in the previous section, you may use it as you please.
 
-For instance, you may serialize it as JSON and write it to a file, or you may also return it from one of your own 
-controllers.
+For instance, you may serialize it as JSON and write it to a file. You may also return it from one of your own 
+controllers, which is basically what the Spring flavour of Livedoc provides out of the box.
 
-If your framework allows it, you may add the Livedoc UI webjar to your classpath in order to view your documentation 
-in a nice UI:
-
-{% include dependency.md artifactId="livedoc-ui-webjar" %}
-
-Simply serve `livedoc-ui.html`, which is part of the resources inside the webjar, and you are good to go.
+If your framework supports webjars, you may also use [Livedoc's UI](../livedoc-ui) to view the doc.

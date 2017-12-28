@@ -47,9 +47,4 @@ Livedoc annotations.
 
 By navigating to the `/jsondoc` endpoint on your server, you may get the JSON description of your documentation.
 
-More interesting, you may also use the provided UI by adding the Livedoc webjar to your classpath:
-
-{% include dependency.md artifactId="livedoc-ui-webjar" %}
-
-If you're not familiar with webjars, this [baeldung post](http://www.baeldung.com/maven-webjars) explains how to use 
-one in a Spring application. 
+More interesting, you may also use the provided UI with [very few steps](../livedoc-ui).
