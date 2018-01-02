@@ -1,17 +1,17 @@
 // @flow
 import * as React from 'react';
-import type { TypeInfoProps } from '../common/TypeInfo';
-import { TypeInfo } from '../common/TypeInfo';
+import type { TypeRefProps } from '../common/TypeRef';
+import { TypeRef } from '../common/TypeRef';
 
-export type TypeInfoWithMimeProps = TypeInfoProps & {
-  mimeTypes: ?(string[]),
+export type TypeRefWithMimeProps = TypeRefProps & {
+  mimeTypes: ?Array<string>,
 }
 
-export const TypeInfoWithMime = ({mimeTypes, ...props}: TypeInfoWithMimeProps) => {
+export const TypeRefWithMime = ({mimeTypes, ...props}: TypeRefWithMimeProps) => {
 
-  const typeInfo = <TypeInfo {...props}/>;
+  const typeInfo = <TypeRef {...props}/>;
 
-  if (mimeTypes) {
+  if (mimeTypes && mimeTypes.length > 0) {
     return <span>{typeInfo} as {joinAsCodeBlocks(mimeTypes, ', ')}</span>;
   }
   return typeInfo;

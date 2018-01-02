@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Table } from 'reactstrap';
 import type { ApiMethodDoc } from '../../../../model/livedoc';
 import { ApiMethodParamsTable } from './params/ApiMethodParamsTable';
-import { TypeInfoWithMime } from './TypeInfoWithMime';
+import { TypeRefWithMime } from './TypeRefWithMime';
 
 export type ApiMethodDetailsProps = {
   methodDoc: ApiMethodDoc,
@@ -20,10 +20,10 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
     rows.push(row('Query Params', <ApiMethodParamsTable params={doc.queryparameters}/>));
   }
   if (doc.bodyobject) {
-    rows.push(row('Request body type', <TypeInfoWithMime type={doc.bodyobject.type} mimeTypes={doc.consumes}/>));
+    rows.push(row('Request body type', <TypeRefWithMime type={doc.bodyobject.type} mimeTypes={doc.consumes}/>));
   }
   if (doc.response && doc.response.type && doc.response.type.oneLineText !== 'void') {
-    rows.push(row('Response body type', <TypeInfoWithMime type={doc.response.type} mimeTypes={doc.produces}/>));
+    rows.push(row('Response body type', <TypeRefWithMime type={doc.response.type} mimeTypes={doc.produces}/>));
   }
 
   if (rows.length === 0) {

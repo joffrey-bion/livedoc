@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import type { LivedocType, TypeElement } from '../../../../model/livedoc';
 
-export type TypeInfoProps = {
+export type TypeRefProps = {
   type: LivedocType,
-  required: string,
+  required?: string,
 }
 
 type TypeElementProps = {
@@ -20,20 +20,13 @@ const TypeElementLink = ({element}: TypeElementProps) => {
   }
 };
 
-export const TypeInfo = (props: TypeInfoProps) => {
+export const TypeRef = (props: TypeRefProps) => {
   const mark = computeMark(props.required);
   const elements = props.type.typeElements.map((e, index) => <TypeElementLink key={index} element={e}/>);
-
-  // this 'if' statement handles old versions of Livedoc
-  if (props.type.typeElements) {
-    return <code>{elements}{mark}</code>;
-  } else {
-    // TODO remove this branch when it becomes unnecessary
-    return <code>{props.type.oneLineText + mark}</code>;
-  }
+  return <code>{elements}{mark}</code>;
 };
 
-function computeMark(required: string): string {
+function computeMark(required: ?string): string {
   switch (required) {
     case 'true':
       return '*';

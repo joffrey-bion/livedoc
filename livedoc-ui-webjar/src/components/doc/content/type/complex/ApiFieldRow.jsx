@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import type { ApiObjectFieldDoc } from '../../../../../model/livedoc';
-import { TypeInfo } from '../../common/TypeInfo';
+import { TypeRef } from '../../common/TypeRef';
 
 export type ApiFieldRowProps = {
   field: ApiObjectFieldDoc,
@@ -12,7 +12,7 @@ export const ApiFieldRow = (props: ApiFieldRowProps) => {
 
   return <tr>
     <td><code>{field.name}</code></td>
-    <td><TypeInfo type={field.type}/></td>
+    <td><TypeRef type={field.type}/></td>
     <td>{field.description}</td>
   </tr>;
 };
