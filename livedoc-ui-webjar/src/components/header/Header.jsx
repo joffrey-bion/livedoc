@@ -22,7 +22,7 @@ const CloseButton = ({reset}) => (<button type="button" onClick={reset} classNam
   <span aria-hidden="true">&times;</span>
 </button>);
 
-const Header = ({homeUrl, docLoaded, reset}: HeaderProps) => (<Navbar className="header">
+const HeaderPresenter = ({homeUrl, docLoaded, reset}: HeaderProps) => (<Navbar className="header">
   <NavbarBrand href={homeUrl} className="title"><HeaderLogo/>Livedoc</NavbarBrand>
   {docLoaded && <TopNav/>}
   {docLoaded && <CloseButton reset={reset}/>}
@@ -41,4 +41,4 @@ const mapDispatchToProps = {
   reset: actions.reset,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export const Header =  withRouter(connect(mapStateToProps, mapDispatchToProps)(HeaderPresenter));

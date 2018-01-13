@@ -7,7 +7,7 @@ import { Container, Row } from 'reactstrap';
 import type { State } from '../../model/state';
 import { isDocLoaded } from '../../redux/livedoc';
 import { actions } from '../../redux/actions/loader';
-import { InlineForm } from '../forms/InlineForm';
+import { InlineForm } from './InlineForm';
 
 type Props = {
   loading: boolean,
@@ -29,7 +29,7 @@ const Form = ({fetchDoc, ...props}) => <InlineForm hintText='URL to JSON documen
                                                    initialValue={computeInitialUrl()}
                                                    onSubmit={fetchDoc} {...props}/>;
 
-const DocFetcher = (props: Props) => {
+const DocFetcherPresenter = (props: Props) => {
   if (props.loading && props.url) {
     return <CircularProgress style={absoluteCenter} size={370} thickness={0.4}/>;
   } else {
@@ -62,4 +62,4 @@ const mapDispatchToProps = {
   fetchDoc: actions.fetchDoc,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DocFetcher));
+export const DocFetcher = withRouter(connect(mapStateToProps, mapDispatchToProps)(DocFetcherPresenter));

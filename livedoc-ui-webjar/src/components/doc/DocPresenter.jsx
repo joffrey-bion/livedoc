@@ -1,14 +1,13 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { Col, Container, Row } from 'reactstrap';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import type { Livedoc } from '../../model/livedoc';
 import type { State } from '../../model/state';
-import { ContentPanel } from './content/ContentPanel';
-import { GeneralInfo } from './general/GeneralInfo';
-import NavPanel from './nav/NavPanel';
-import { SidePanel } from './side/SidePanel';
+import { ApisScene } from './apis/ApisScene';
+import { FlowsScene } from './flows/FlowsScene';
+import { GlobalDocScene } from './global/GlobalDocScene';
+import { TypesScene } from './types/TypesScene';
 
 export type DocPresenterProps = {
   loading: boolean,
@@ -22,22 +21,26 @@ const DocPresenter = (props: DocPresenterProps) => {
   }
 
   return <section className='App-content'>
-    <Container fluid>
-      <Row>
-        <Col md={3}>
-          <GeneralInfo livedoc={props.livedoc}/>
-          <NavPanel/>
-        </Col>
-        <Col md={6}>
-          <ContentPanel/>
-        </Col>
-        <Col md={3}>
-          <SidePanel/>
-        </Col>
-      </Row>
-    </Container>
+    <Switch>
+      <Route path="/global" component={GlobalDocScene}/>
+      <Route exact path="/apis" render={renderApi}/>
+      <Route exact path="/apis/:apiId" render={renderApi}/>
+      <Route path="/apis/:apiId/:methodId" render={renderApi}/>
+      <Route exact path="/types" render={renderType}/>
+      <Route path="/types/:typeId" render={renderType}/>
+      <Route exact path="/flows" render={renderFlow}/>
+      <Route path="/flows/:flowId" render={renderFlow}/>
+      <Redirect to="/global"/>
+    </Switch>
   </section>;
 };
+
+const renderApi = ({match}) => <ApisScene selectedApiId={match.params.apiId} selectedMethodId={match.params.methodId}/>;
+
+const renderType = ({match}) => <TypesScene selectedTypeId={match.params.typeId}/>;
+
+const renderFlow = ({match}) => <FlowsScene selectedFlowId={match.params.flowId}
+                                            selectedMethodId={match.params.methodId}/>;
 
 const mapStateToProps = (state: State) => ({
   loading: state.loader.loading,
@@ -47,5 +50,5 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {};
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DocPresenter));
+export const Doc = withRouter(connect(mapStateToProps, mapDispatchToProps)(DocPresenter));
 

@@ -34,7 +34,7 @@ const dictionarize = <T>(elementsByWhatever: { [string]: ElementArray<T> }): Ele
 
 const getElementById = <T>(id: ?LivedocID, elements: { [string]: ElementArray<T> }): ?T => {
   if (!id) {
-    console.error("No ID provided to retrieve livedoc element");
+    console.error(new Error("No ID provided to retrieve livedoc element"));
     return null;
   }
   const elementsById = dictionarize(elements);
