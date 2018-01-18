@@ -38,4 +38,4 @@ jar {
 
 check.dependsOn(testJs)
 bundle.dependsOn(yarn_install)
-assemble.dependsOn(bundle)
+jar.dependsOn(bundle)
