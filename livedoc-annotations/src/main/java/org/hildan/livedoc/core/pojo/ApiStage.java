@@ -1,7 +1,9 @@
 package org.hildan.livedoc.core.pojo;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ApiStage {
-    UNDEFINED(""),
+    UNDEFINED(null),
     PRE_ALPHA("PRE-ALPHA"),
     ALPHA("ALPHA"),
     BETA("BETA"),
@@ -15,8 +17,8 @@ public enum ApiStage {
         this.label = label;
     }
 
+    @JsonValue
     public String getLabel() {
         return label;
     }
-
 }

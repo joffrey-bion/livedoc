@@ -11,6 +11,7 @@ configurations {
 }
 
 dependencies {
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.0'
     checkstyleConfig 'org.hildan.checkstyle:checkstyle-config:2.1.0'
 }
 

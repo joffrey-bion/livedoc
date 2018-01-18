@@ -29,7 +29,7 @@ const TypeDocPanelPresenter = ({typeDoc}: TypeDocPanelProps) => {
   const isEnum = typeDoc.allowedvalues && typeDoc.allowedvalues.length > 0;
 
   return <section>
-    <ContentHeader title={typeDoc.name} description={typeDoc.description}/>
+    <ContentHeader title={typeDoc.name} description={typeDoc.description} stage={typeDoc.stage}/>
     <TypeDocContent isEnum={isEnum} typeDoc={typeDoc}/>
   </section>;
 };

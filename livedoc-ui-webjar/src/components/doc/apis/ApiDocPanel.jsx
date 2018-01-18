@@ -30,7 +30,7 @@ const ApiDocPanelPresenter = ({apiDoc, selectedMethodId}: ApiDocPanelProps) => {
   });
 
   return <section>
-    <ContentHeader title={api.name} description={api.description}/>
+    <ContentHeader title={api.name} description={api.description} stage={api.stage} />
     {methodPanels}
   </section>;
 };

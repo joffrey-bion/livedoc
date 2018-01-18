@@ -52,8 +52,8 @@ export type ApiChangelogDoc = Identified & {
 
 export type ApiDoc = Identified & Named & Versioned & Authenticated & {
   description: string,
-  visibility: ApiVisibility,
-  stage: ApiStage,
+  visibility: ?ApiVisibility,
+  stage: ?ApiStage,
   group: string,
   methods: Array<ApiMethodDoc>,
 };
@@ -107,8 +107,8 @@ export type ApiMethodDoc = Identified & LivedocHints & Versioned & {
   bodyobject: ?ApiBodyObjectDoc,
   response: ApiResponseObjectDoc,
   responsestatuscode: string,
-  visibility: ApiVisibility,
-  stage: ApiStage,
+  visibility: ?ApiVisibility,
+  stage: ?ApiStage,
   apierrors: Array<ApiErrorDoc>,
   auth: ApiAuthDoc,
 }
@@ -125,8 +125,8 @@ export type ApiMigrationDoc = Identified & {
 
 export type ApiObjectDoc = Identified & Named & LivedocHints & Versioned & {
   description: string,
-  visibility: ApiVisibility,
-  stage: ApiStage,
+  visibility: ?ApiVisibility,
+  stage: ?ApiStage,
   group: string,
   fields: Array<ApiObjectFieldDoc>,
   auth: ApiAuthDoc,
@@ -154,7 +154,7 @@ export type ApiResponseObjectDoc = Identified & {
   type: LivedocType,
 }
 
-export type ApiStage = '' | 'PRE_ALPHA' | 'ALPHA' | 'BETA' | 'RC' | 'GA' | 'DEPRECATED';
+export type ApiStage = 'PRE-ALPHA' | 'ALPHA' | 'BETA' | 'RC' | 'GA' | 'DEPRECATED';
 
 export type ApiVerb = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'TRACE' | 'UNDEFINED';
 
@@ -163,7 +163,7 @@ export type ApiVersionDoc = {
   until: string,
 };
 
-export type ApiVisibility = '' | 'PRIVATE' | 'PUBLIC';
+export type ApiVisibility = 'PRIVATE' | 'PUBLIC';
 
 export type LivedocHints = {
   jsondocerrors: Array<string>,
