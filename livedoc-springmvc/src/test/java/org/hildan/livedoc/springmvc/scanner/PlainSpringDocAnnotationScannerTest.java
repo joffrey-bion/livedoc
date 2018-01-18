@@ -107,7 +107,7 @@ public class PlainSpringDocAnnotationScannerTest {
                 assertEquals("true", apiParamDoc.getRequired());
                 assertTrue(apiParamDoc.getDefaultvalue().isEmpty());
                 apiParamDoc = qpIterator.next();
-                assertEquals("", apiParamDoc.getName());
+                assertEquals("query", apiParamDoc.getName());
                 assertEquals("true", apiParamDoc.getRequired());
                 assertEquals("", apiParamDoc.getDefaultvalue());
 

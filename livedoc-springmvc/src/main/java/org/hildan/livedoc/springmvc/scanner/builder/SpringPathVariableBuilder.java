@@ -1,7 +1,7 @@
 package org.hildan.livedoc.springmvc.scanner.builder;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -9,41 +9,41 @@ import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.builders.types.LivedocType;
 import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.pojo.ApiParamDoc;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.PathVariable;
 
 public class SpringPathVariableBuilder {
 
+    private static final DefaultParameterNameDiscoverer PARAM_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
+
     public static Set<ApiParamDoc> buildPathVariable(Method method) {
         Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
 
-        Annotation[][] parametersAnnotations = method.getParameterAnnotations();
-        for (int i = 0; i < parametersAnnotations.length; i++) {
-            PathVariable pathVariable = null;
-            ApiPathParam apiPathParam = null;
-            ApiParamDoc apiParamDoc = null;
+        Parameter[] parameters = method.getParameters();
+        for (int i = 0; i < parameters.length; i++) {
+            Parameter param = parameters[i];
+            PathVariable pathVariable = param.getAnnotation(PathVariable.class);
+            ApiPathParam apiPathParam = param.getAnnotation(ApiPathParam.class);
+            if (pathVariable != null) {
+                LivedocType livedocType = LivedocTypeBuilder.build(param.getParameterizedType());
+                String paramName = getSpringParamName(method, pathVariable, i);
+                ApiParamDoc apiParamDoc = new ApiParamDoc(paramName, "", livedocType, "true", new String[0], null, "");
 
-            for (int j = 0; j < parametersAnnotations[i].length; j++) {
-                if (parametersAnnotations[i][j] instanceof PathVariable) {
-                    pathVariable = (PathVariable) parametersAnnotations[i][j];
-                }
-                if (parametersAnnotations[i][j] instanceof ApiPathParam) {
-                    apiPathParam = (ApiPathParam) parametersAnnotations[i][j];
-                }
-
-                if (pathVariable != null) {
-                    LivedocType livedocType = LivedocTypeBuilder.build(method.getGenericParameterTypes()[i]);
-                    apiParamDoc = new ApiParamDoc(pathVariable.value(), "", livedocType, "true", new String[] {}, null,
-                            "");
+                if (apiPathParam != null) {
                     mergeApiPathParamDoc(apiPathParam, apiParamDoc);
                 }
-            }
-
-            if (apiParamDoc != null) {
                 apiParamDocs.add(apiParamDoc);
             }
         }
 
         return apiParamDocs;
+    }
+
+    private static String getSpringParamName(Method method, PathVariable pathVariable, int index) {
+        if (!pathVariable.value().isEmpty()) {
+            return pathVariable.value();
+        }
+        return PARAM_NAME_DISCOVERER.getParameterNames(method)[index];
     }
 
     /**
@@ -54,14 +54,12 @@ public class SpringPathVariableBuilder {
      * @param apiParamDoc
      */
     private static void mergeApiPathParamDoc(ApiPathParam apiPathParam, ApiParamDoc apiParamDoc) {
-        if (apiPathParam != null) {
-            if (apiParamDoc.getName().trim().isEmpty()) {
-                apiParamDoc.setName(apiPathParam.name());
-            }
-            apiParamDoc.setDescription(apiPathParam.description());
-            apiParamDoc.setAllowedvalues(apiPathParam.allowedvalues());
-            apiParamDoc.setFormat(apiPathParam.format());
+        if (apiParamDoc.getName().trim().isEmpty()) {
+            apiParamDoc.setName(apiPathParam.name());
         }
+        apiParamDoc.setDescription(apiPathParam.description());
+        apiParamDoc.setAllowedvalues(apiPathParam.allowedvalues());
+        apiParamDoc.setFormat(apiPathParam.format());
     }
 
 }

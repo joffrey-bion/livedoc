@@ -44,7 +44,7 @@ public class SpringPathVariableBuilderTest {
                 Assert.assertEquals(2, apiMethodDoc.getPathparameters().size());
                 Iterator<ApiParamDoc> iterator = apiMethodDoc.getPathparameters().iterator();
                 ApiParamDoc id = iterator.next();
-                Assert.assertEquals("", id.getName());
+                Assert.assertEquals("id", id.getName());
                 Assert.assertEquals("Long", id.getType().getOneLineText());
                 ApiParamDoc name = iterator.next();
                 Assert.assertEquals("name", name.getName());
@@ -61,7 +61,7 @@ public class SpringPathVariableBuilderTest {
                 Assert.assertEquals("name", name.getName());
                 Assert.assertEquals("String", name.getType().getOneLineText());
                 ApiParamDoc test = iterator.next();
-                Assert.assertEquals("", test.getName());
+                Assert.assertEquals("test", test.getName());
                 Assert.assertEquals("Long", test.getType().getOneLineText());
             }
         }
@@ -91,7 +91,7 @@ public class SpringPathVariableBuilderTest {
                 Assert.assertEquals(2, apiMethodDoc.getPathparameters().size());
                 Iterator<ApiParamDoc> iterator = apiMethodDoc.getPathparameters().iterator();
                 ApiParamDoc id = iterator.next();
-                Assert.assertEquals("", id.getName());
+                Assert.assertEquals("id", id.getName());
                 Assert.assertEquals("Long", id.getType().getOneLineText());
                 Assert.assertEquals("description for id", id.getDescription());
                 ApiParamDoc name = iterator.next();

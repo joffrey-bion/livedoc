@@ -149,7 +149,7 @@ public class SpringQueryParamBuilderTest {
                 Iterator<ApiParamDoc> iterator = apiMethodDoc.getQueryparameters().iterator();
                 iterator.next();
                 ApiParamDoc queryParam = iterator.next();
-                Assert.assertEquals("", queryParam.getName());
+                Assert.assertEquals("name", queryParam.getName());
                 Assert.assertEquals("true", queryParam.getRequired());
                 Assert.assertEquals("String", queryParam.getType().getOneLineText());
                 Assert.assertEquals("", queryParam.getDefaultvalue());
