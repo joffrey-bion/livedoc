@@ -23,7 +23,7 @@ export const MethodPanel = ({methodDoc, open, collapseUrl, expandUrl}: MethodPan
     <CardHeader className="api-method-header" tag={Link} to={linkUrl}>{title} {verbs}</CardHeader>
     <Collapse isOpen={open}>
       <CardBody>
-        <CardText>{methodDoc.description}</CardText>
+        {methodDoc.description && <CardText>{methodDoc.description}</CardText>}
         <ApiMethodDetails methodDoc={methodDoc}/>
       </CardBody>
     </Collapse>
