@@ -4,10 +4,12 @@ import type { ResponseMetaData } from './playground';
 
 export type LoaderState = {
   +loading: boolean,
+  +loadingError: ?string,
   +url: ?string
 }
 export const newLoaderState = () => ({
   loading: false,
+  loadingError: null,
   url: null,
 });
 

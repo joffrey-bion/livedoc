@@ -8,7 +8,7 @@ export const RESET = 'RESET';
 
 export type FetchDocAction = { type: 'DOC/FETCH', url: string };
 export type UpdateDocAction = { type: 'DOC/FETCHED', livedoc: Livedoc };
-export type DocFetchErrorAction = { type: 'DOC/FETCH_ERROR' };
+export type DocFetchErrorAction = { type: 'DOC/FETCH_ERROR', errorMsg: string };
 export type ResetDocAction = { type: 'RESET' };
 
 export type LoaderAction = FetchDocAction | UpdateDocAction | DocFetchErrorAction | ResetDocAction;
@@ -16,6 +16,6 @@ export type LoaderAction = FetchDocAction | UpdateDocAction | DocFetchErrorActio
 export const actions = {
   fetchDoc: (url: string): FetchDocAction => ({ type: FETCH_DOC, url }),
   updateDoc: (livedoc: Livedoc): UpdateDocAction => ({ type: DOC_FETCHED, livedoc }),
-  fetchError: (error: Error): DocFetchErrorAction => ({ type: DOC_FETCH_ERROR, error }),
+  fetchError: (errorMsg: string): DocFetchErrorAction => ({ type: DOC_FETCH_ERROR, errorMsg }),
   reset: (): ResetDocAction => ({type: RESET}),
 };

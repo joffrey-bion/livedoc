@@ -10,14 +10,21 @@ export default (state: LoaderState = newLoaderState(), action: Action) => {
       return {
         ...state,
         loading: true,
+        loadingError: null,
         url: action.url,
       };
     case DOC_FETCHED:
+      // we want to remember the URL from which we loaded the doc
+      return {
+        ...state,
+        loading: false,
+      };
     case DOC_FETCH_ERROR:
       // we want to remember the URL from which we loaded the doc
       return {
         ...state,
         loading: false,
+        loadingError: action.errorMsg,
       };
     case RESET:
       return newLoaderState();

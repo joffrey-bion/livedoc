@@ -3,14 +3,14 @@ import { CircularProgress } from 'material-ui';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Container, Row } from 'reactstrap';
+import { Alert, Container, Row } from 'reactstrap';
 import type { State } from '../../model/state';
-import { isDocLoaded } from '../../redux/livedoc';
 import { actions } from '../../redux/actions/loader';
 import { InlineForm } from './InlineForm';
 
 type Props = {
   loading: boolean,
+  loadingError: ?string,
   url: ?string,
   fetchDoc: (url: string) => void,
 }
@@ -28,6 +28,12 @@ const absoluteCenter = {
 const Form = ({fetchDoc, ...props}) => <InlineForm hintText='URL to JSON documentation' btnLabel='Get Doc'
                                                    initialValue={computeInitialUrl()}
                                                    onSubmit={fetchDoc} {...props}/>;
+const FetchError = ({loadingError}) => {
+  if (loadingError === null) {
+    return null;
+  }
+  return <Alert color="danger">{loadingError}</Alert>;
+};
 
 const DocFetcherPresenter = (props: Props) => {
   if (props.loading && props.url) {
@@ -37,6 +43,7 @@ const DocFetcherPresenter = (props: Props) => {
       <Row className="h-100 align-items-center">
         <Form {...props}/>
       </Row>
+      <FetchError loadingError={props.loadingError}/>
     </Container>;
   }
 };
@@ -54,8 +61,8 @@ function computeInitialUrl(): string {
 
 const mapStateToProps = (state: State) => ({
   loading: state.loader.loading,
+  loadingError: state.loader.loadingError,
   url: state.loader.url,
-  docLoaded: isDocLoaded(state),
 });
 
 const mapDispatchToProps = {
