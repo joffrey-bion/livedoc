@@ -62,7 +62,12 @@ public class DocMerger {
     }
 
     private static boolean shouldReplaceWithoutMerge(Field field, Object sourceValue, Object targetValue) {
-        return targetValue == null || (isOfBasicType(sourceValue) && !isDefaultValue(field, sourceValue));
+        return targetValue == null || !sameClass(sourceValue, targetValue) || (isOfBasicType(sourceValue)
+                && !isDefaultValue(field, sourceValue));
+    }
+
+    private static boolean sameClass(Object sourceValue, Object targetValue) {
+        return sourceValue == null || targetValue == null || sourceValue.getClass().equals(targetValue.getClass());
     }
 
     private static boolean isOfBasicType(Object obj) {
