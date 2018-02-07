@@ -13,22 +13,22 @@ import static java.util.stream.Collectors.toList;
 public class ApiErrorDocReader {
 
     public static List<ApiErrorDoc> build(Method method) {
-        List<ApiErrorDoc> apiMethodDocs = new ArrayList<>();
+        List<ApiErrorDoc> apiErrorDocs = new ArrayList<>();
 
         ApiErrors methodAnnotation = method.getAnnotation(ApiErrors.class);
         ApiErrors typeAnnotation = method.getDeclaringClass().getAnnotation(ApiErrors.class);
 
         if (methodAnnotation != null) {
-            apiMethodDocs.addAll(readApiErrorDocs(methodAnnotation));
+            apiErrorDocs.addAll(readApiErrorDocs(methodAnnotation));
         }
 
         if (typeAnnotation != null) {
-            List<String> alreadyUsedCodes = apiMethodDocs.stream().map(ApiErrorDoc::getCode).collect(toList());
-            List<ApiErrorDoc> apiMethodDocs2 = readApiErrorDocs(typeAnnotation);
-            apiMethodDocs2.removeIf(errDoc -> alreadyUsedCodes.contains(errDoc.getCode()));
-            apiMethodDocs.addAll(apiMethodDocs2);
+            List<String> alreadyUsedCodes = apiErrorDocs.stream().map(ApiErrorDoc::getCode).collect(toList());
+            List<ApiErrorDoc> apiErrorDocsFromTypeAnnotation = readApiErrorDocs(typeAnnotation);
+            apiErrorDocsFromTypeAnnotation.removeIf(errDoc -> alreadyUsedCodes.contains(errDoc.getCode()));
+            apiErrorDocs.addAll(apiErrorDocsFromTypeAnnotation);
         }
-        return apiMethodDocs;
+        return apiErrorDocs;
     }
 
     private static List<ApiErrorDoc> readApiErrorDocs(ApiErrors annotation) {
