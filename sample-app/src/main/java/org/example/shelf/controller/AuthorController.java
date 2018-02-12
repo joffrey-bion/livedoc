@@ -30,34 +30,39 @@ import org.springframework.web.util.UriComponentsBuilder;
 @ApiAuthToken(roles = {"*"}, testtokens = "abc", scheme = "Bearer")
 public class AuthorController {
 
+    private final AuthorRepository authorRepository;
+
     @Autowired
-    private AuthorRepository authorRepository;
+    public AuthorController(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
 
     @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ONE)
     @ApiAuthToken
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public @ApiResponseObject
-    Author findOne(@ApiPathParam(name = "id") @PathVariable Long id) {
+    @ApiResponseObject
+    public Author findOne(@ApiPathParam(name = "id") @PathVariable Long id) {
         return authorRepository.findOne(id);
     }
 
     @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ALL)
     @RequestMapping(method = RequestMethod.GET)
-    public @ApiResponseObject
-    List<Author> findAll() {
+    @ApiResponseObject
+    public List<Author> findAll() {
         return authorRepository.findAll();
     }
 
     @ApiMethod(id = DocumentationConstants.AUTHOR_SAVE)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public @ApiResponseObject
-    ResponseEntity<Void> save(@ApiBodyObject @RequestBody Author author, UriComponentsBuilder uriComponentsBuilder) {
+    @ApiResponseObject
+    public ResponseEntity<Void> save(@ApiBodyObject @RequestBody Author author,
+            UriComponentsBuilder uriComponentsBuilder) {
         authorRepository.save(author);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriComponentsBuilder.path("/authors/{id}").buildAndExpand(author.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @ApiMethod(id = DocumentationConstants.AUTHOR_DELETE)

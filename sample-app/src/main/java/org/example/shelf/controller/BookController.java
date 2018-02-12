@@ -36,24 +36,24 @@ public class BookController {
     }
 
     @ApiMethod(id = DocumentationConstants.BOOK_FIND_ONE, summary = "Gets a book given the book ID")
+    @ApiResponseObject
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public @ApiResponseObject
-    Book findOne(@ApiPathParam(name = "id") @PathVariable Long id) {
+    public Book findOne(@ApiPathParam(name = "id") @PathVariable Long id) {
         return bookRepository.findOne(id);
     }
 
     @ApiMethod(id = DocumentationConstants.BOOK_FIND_ALL)
     @RequestMapping(method = RequestMethod.GET)
-    public @ApiResponseObject
-    List<Book> findAll() {
+    @ApiResponseObject
+    public List<Book> findAll() {
         return bookRepository.findAll();
     }
 
     @ApiMethod(id = DocumentationConstants.BOOK_SAVE)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public @ApiResponseObject
-    ResponseEntity<Void> save(@ApiBodyObject @RequestBody Book book, UriComponentsBuilder uriComponentsBuilder) {
+    @ApiResponseObject
+    public ResponseEntity<Void> save(@ApiBodyObject @RequestBody Book book, UriComponentsBuilder uriComponentsBuilder) {
         bookRepository.save(book);
 
         HttpHeaders headers = new HttpHeaders();
