@@ -13,6 +13,6 @@ export const ContentHeader = ({title, description, stage}: ContentHeaderProps) =
   return <div>
     <h1>{title} <StageBadge stage={stage}/></h1>
     <hr/>
-    {description && <p className="lead">{description}</p>}
+    {description && <p className="lead" dangerouslySetInnerHTML={{__html: description}}/>}
   </div>;
 };
