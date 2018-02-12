@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.scanners.types.predicates;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -50,6 +51,6 @@ public class TypePredicates {
     }
 
     public static boolean isContainer(Class<?> clazz) {
-        return Arrays.stream(CONTAINERS).anyMatch(c -> c.isAssignableFrom(clazz));
+        return clazz.isArray() || Arrays.stream(CONTAINERS).anyMatch(c -> c.isAssignableFrom(clazz));
     }
 }

@@ -72,7 +72,7 @@ public class DocMerger {
 
     private static boolean isOfBasicType(Object obj) {
         Class<?> clazz = obj.getClass();
-        return TypePredicates.isBasicType(clazz) || clazz.isArray();
+        return TypePredicates.isBasicType(clazz) || TypePredicates.isContainer(clazz);
     }
 
     private static boolean isDefaultValue(Field field, Object value) {
