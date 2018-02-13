@@ -22,8 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "The user services", name = "User services")
 public class UserController {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @ApiMethod(id = DocumentationConstants.USER_FIND_ONE)
     @ApiErrors(apierrors = {
