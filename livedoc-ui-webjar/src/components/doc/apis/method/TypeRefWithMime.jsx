@@ -4,14 +4,14 @@ import type { TypeRefProps } from '../../typeref/TypeRef';
 import { TypeRef } from '../../typeref/TypeRef';
 
 export type TypeRefWithMimeProps = TypeRefProps & {
-  mimeTypes: ?Array<string>,
+  mimeTypes: Array<string>,
 }
 
 export const TypeRefWithMime = ({mimeTypes, ...props}: TypeRefWithMimeProps) => {
 
   const typeInfo = <TypeRef {...props}/>;
 
-  if (mimeTypes && mimeTypes.length > 0) {
+  if (mimeTypes.length > 0) {
     return <span>{typeInfo} as {joinAsCodeBlocks(mimeTypes, ', ')}</span>;
   }
   return typeInfo;
