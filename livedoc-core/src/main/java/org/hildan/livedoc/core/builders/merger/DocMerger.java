@@ -2,7 +2,9 @@ package org.hildan.livedoc.core.builders.merger;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hildan.livedoc.core.pojo.ApiStage;
 import org.hildan.livedoc.core.pojo.ApiVerb;
@@ -62,17 +64,36 @@ public class DocMerger {
     }
 
     private static boolean shouldReplaceWithoutMerge(Field field, Object sourceValue, Object targetValue) {
-        return targetValue == null || !sameClass(sourceValue, targetValue) || (isOfBasicType(sourceValue)
-                && !isDefaultValue(field, sourceValue));
+        if (targetValue == null) {
+            return true;
+        }
+        if (sourceValue == null) {
+            return false;
+        }
+        if (TypePredicates.isBasicType(sourceValue.getClass())) {
+            return !isDefaultValue(field, sourceValue);
+        }
+        if (TypePredicates.isContainer(sourceValue.getClass())) {
+            return !isEmptyContainer(sourceValue);
+        }
+        return !sameClass(sourceValue, targetValue);
+    }
+
+    private static boolean isEmptyContainer(Object nonNullContainer) {
+        if (nonNullContainer instanceof Collection) {
+            return ((Collection)nonNullContainer).isEmpty();
+        }
+        if (nonNullContainer instanceof Map) {
+            return ((Map)nonNullContainer).isEmpty();
+        }
+        if (nonNullContainer.getClass().isArray()) {
+            return ((Object[])nonNullContainer).length == 0;
+        }
+        return false;
     }
 
     private static boolean sameClass(Object sourceValue, Object targetValue) {
         return sourceValue == null || targetValue == null || sourceValue.getClass().equals(targetValue.getClass());
-    }
-
-    private static boolean isOfBasicType(Object obj) {
-        Class<?> clazz = obj.getClass();
-        return TypePredicates.isBasicType(clazz) || TypePredicates.isContainer(clazz);
     }
 
     private static boolean isDefaultValue(Field field, Object value) {
