@@ -81,13 +81,13 @@ public class DocMerger {
 
     private static boolean isEmptyContainer(Object nonNullContainer) {
         if (nonNullContainer instanceof Collection) {
-            return ((Collection)nonNullContainer).isEmpty();
+            return ((Collection) nonNullContainer).isEmpty();
         }
         if (nonNullContainer instanceof Map) {
-            return ((Map)nonNullContainer).isEmpty();
+            return ((Map) nonNullContainer).isEmpty();
         }
         if (nonNullContainer.getClass().isArray()) {
-            return ((Object[])nonNullContainer).length == 0;
+            return ((Object[]) nonNullContainer).length == 0;
         }
         return false;
     }
