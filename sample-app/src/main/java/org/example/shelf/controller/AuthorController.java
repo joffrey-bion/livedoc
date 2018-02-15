@@ -37,7 +37,7 @@ public class AuthorController {
         this.authorRepository = authorRepository;
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ONE)
+    @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ONE, description = "Gets the author with the given ID")
     @ApiAuthToken
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiResponseObject
@@ -45,14 +45,14 @@ public class AuthorController {
         return authorRepository.findOne(id);
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ALL)
+    @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ALL, description = "Returns the list of all authors")
     @RequestMapping(method = RequestMethod.GET)
     @ApiResponseObject
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_SAVE)
+    @ApiMethod(id = DocumentationConstants.AUTHOR_SAVE, description = "Creates a new author with the given data")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponseObject
@@ -65,7 +65,7 @@ public class AuthorController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_DELETE)
+    @ApiMethod(id = DocumentationConstants.AUTHOR_DELETE, description = "Deletes the author with the given ID")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@ApiPathParam(name = "id") @PathVariable Long id) {
