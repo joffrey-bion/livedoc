@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Table } from 'reactstrap';
 import type { ApiMethodDoc } from '../../../../model/livedoc';
 import { StageBadge } from '../../../shared/content/StageBadge';
+import { AuthInfo } from './AuthInfo';
 import { ApiMethodParamsTable } from './params/ApiMethodParamsTable';
 import { TypeRefWithMime } from './TypeRefWithMime';
 
@@ -25,6 +26,9 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
   }
   if (doc.response && doc.response.type && doc.response.type.oneLineText !== 'void') {
     rows.push(row('Response body type', <TypeRefWithMime type={doc.response.type} mimeTypes={doc.produces}/>));
+  }
+  if (doc.auth) {
+    rows.push(row('Authentication', <AuthInfo auth={doc.auth}/>));
   }
   if (doc.stage) {
     rows.push(row('Stage', <StageBadge stage={doc.stage}/>));

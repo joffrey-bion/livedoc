@@ -11,7 +11,7 @@ export type ApiMethodParamsTableProps = {
 export const ApiMethodParamsTable = (props: ApiMethodParamsTableProps) => {
   const params: ApiParamDoc[] = props.params;
 
-  const paramRows = params.map(p => <ParamRow param={p}/>);
+  const paramRows = params.map((p, index) => <ParamRow key={index} param={p}/>);
 
   return <Table striped size="sm">
     <thead>

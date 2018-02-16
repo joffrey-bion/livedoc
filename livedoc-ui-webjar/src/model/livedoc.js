@@ -29,12 +29,14 @@ export type Livedoc = {
 };
 
 export type ApiAuthDoc = {
-  type: string,
+  type: ApiAuthType,
   roles: Array<string>,
   testusers: {[key: string]: string},
-  scheme: string,
+  scheme: ?string,
   testtokens: Array<string>
 }
+
+export type ApiAuthType = 'NONE' | 'BASIC_AUTH' | 'TOKEN' ;
 
 export type ApiBodyObjectDoc = Identified & {
   type: LivedocType,

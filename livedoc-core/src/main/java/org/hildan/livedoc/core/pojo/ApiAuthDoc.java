@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class ApiAuthDoc {
 
-    private String type;
+    private ApiAuthType type;
 
     // Basic auth
     private List<String> roles = new ArrayList<>();
@@ -21,11 +21,11 @@ public class ApiAuthDoc {
 
     private Set<String> testtokens = new HashSet<>();
 
-    public String getType() {
+    public ApiAuthType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ApiAuthType type) {
         this.type = type;
     }
 

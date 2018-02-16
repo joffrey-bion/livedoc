@@ -42,14 +42,14 @@ public class ApiAuthDocReader {
 
     private static ApiAuthDoc readFromApiAuthNoneAnnotation(ApiAuthNone annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
-        apiAuthDoc.setType(ApiAuthType.NONE.name());
+        apiAuthDoc.setType(ApiAuthType.NONE);
         apiAuthDoc.addRole(ANONYMOUS);
         return apiAuthDoc;
     }
 
     private static ApiAuthDoc readFromApiAuthBasicAnnotation(ApiAuthBasic annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
-        apiAuthDoc.setType(ApiAuthType.BASIC_AUTH.name());
+        apiAuthDoc.setType(ApiAuthType.BASIC_AUTH);
         apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
         for (ApiAuthBasicUser testuser : annotation.testusers()) {
             apiAuthDoc.addTestUser(testuser.username(), testuser.password());
@@ -59,7 +59,7 @@ public class ApiAuthDocReader {
 
     private static ApiAuthDoc readFromApiAuthTokenAnnotation(ApiAuthToken annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
-        apiAuthDoc.setType(ApiAuthType.TOKEN.name());
+        apiAuthDoc.setType(ApiAuthType.TOKEN);
         apiAuthDoc.setScheme(annotation.scheme());
         apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
         for (String testtoken : annotation.testtokens()) {
@@ -67,5 +67,4 @@ public class ApiAuthDocReader {
         }
         return apiAuthDoc;
     }
-
 }
