@@ -105,7 +105,7 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
 
     return <Form onSubmit={e => this.handleSubmit(e)}>
       <PlaygroundFormRow label="URL" id="urlInput">
-        <Input type="text" id="urlInput" disabled value={this.state.url}/>
+        <Input type="text" id="urlInput" name="url" value={this.state.url} onChange={e => this.handleChange(e)}/>
       </PlaygroundFormRow>
       <SelectRow label="Method" id="methodSelect" name="method" options={doc.verb}
                  value={this.state.method} onChange={e => this.handleChange(e)}/>
