@@ -9,14 +9,17 @@ export type AuthInfoProps = {
 }
 
 export const AuthInfo = ({auth}: AuthInfoProps) => {
-  const elements = [];
-  elements.push(element('Type', <code>{auth.type}</code>));
-  elements.push(element('Roles', <CodeElementsList items={auth.roles}/>));
-  if (auth.scheme) {
-    elements.push(element('Scheme', <code>{auth.scheme}</code>));
-  }
+  return <div>
+    Type: <code>{auth.type}</code><Scheme scheme={auth.scheme}/><br/>
+    Roles: <CodeElementsList items={auth.roles}/>
+  </div>;
+};
 
-  return <HorizontalList items={elements}/>;
+const Scheme = ({scheme}) => {
+  if (!scheme) {
+    return null;
+  }
+  return [' – Scheme: ', <code>{scheme}</code>];
 };
 
 function element(header: string, data) {
