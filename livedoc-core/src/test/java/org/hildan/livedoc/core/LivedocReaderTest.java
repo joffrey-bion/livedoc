@@ -1,6 +1,6 @@
 package org.hildan.livedoc.core;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,6 +19,7 @@ import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class LivedocReaderTest {
@@ -86,12 +87,12 @@ public class LivedocReaderTest {
         assertEquals(1, flows.size());
 
         Set<ApiFlowDoc> apiFlowDocs = flows.get("");
-        assertTrue(apiFlowDocs != null);
+        assertNotNull(apiFlowDocs);
         assertEquals(2, apiFlowDocs.size());
     }
 
     private static void checkAllVerbsUsed(Livedoc livedoc) {
-        List<ApiVerb> verbs = livedoc.getApis()
+        Set<ApiVerb> verbs = livedoc.getApis()
                                      .values()
                                      .stream()
                                      .flatMap(Collection::stream)
@@ -100,12 +101,8 @@ public class LivedocReaderTest {
                                      .flatMap(Collection::stream)
                                      .map(ApiMethodDoc::getVerb)
                                      .flatMap(Collection::stream)
-                                     .distinct()
-                                     .sorted()
-                                     .collect(Collectors.toList());
-        List<ApiVerb> expectedVerbs = new ArrayList<>();
-        Collections.addAll(expectedVerbs, ApiVerb.values());
-        expectedVerbs.remove(ApiVerb.UNDEFINED); // we should always have a valid default value, not UNDEFINED
+                                     .collect(Collectors.toSet());
+        Set<ApiVerb> expectedVerbs = new HashSet<>(Arrays.asList(ApiVerb.values()));
         assertEquals(expectedVerbs, verbs);
     }
 

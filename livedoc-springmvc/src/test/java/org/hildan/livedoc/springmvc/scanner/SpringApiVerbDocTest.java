@@ -40,7 +40,6 @@ public class SpringApiVerbDocTest {
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-one")) {
                 Set<ApiVerb> expectedVerbs = new HashSet<>(Arrays.asList(ApiVerb.values()));
-                expectedVerbs.remove(ApiVerb.UNDEFINED);
                 Assert.assertEquals(expectedVerbs, apiMethodDoc.getVerb());
             }
             if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-two")) {

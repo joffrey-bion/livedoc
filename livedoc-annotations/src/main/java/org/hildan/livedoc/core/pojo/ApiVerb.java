@@ -8,8 +8,7 @@ public enum ApiVerb {
     DELETE,
     HEAD,
     OPTIONS,
-    TRACE,
-    UNDEFINED;
+    TRACE;
 
     public boolean requiresBody() {
         return this == POST || this == PUT;

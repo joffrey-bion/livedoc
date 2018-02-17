@@ -11,7 +11,7 @@ public class ApiMethodDocDefaults {
     public static void complete(ApiMethodDoc doc) {
 
         Set<ApiVerb> verbs = doc.getVerb();
-        if (verbs == null || verbs.isEmpty() || verbs.contains(ApiVerb.UNDEFINED)) {
+        if (verbs == null || verbs.isEmpty()) {
             doc.setVerb(Collections.singleton(ApiVerb.GET));
         }
     }
