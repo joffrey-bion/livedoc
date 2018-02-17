@@ -161,7 +161,7 @@ public class ApiDocTest {
         Assert.assertEquals("a-test-controller", apiDoc.getDescription());
         Assert.assertEquals("1.0", apiDoc.getSupportedversions().getSince());
         Assert.assertEquals("2.12", apiDoc.getSupportedversions().getUntil());
-        Assert.assertEquals(ApiAuthType.NONE.name(), apiDoc.getAuth().getType());
+        Assert.assertEquals(ApiAuthType.NONE, apiDoc.getAuth().getType());
         Assert.assertEquals(ApiAuthDocReader.ANONYMOUS, apiDoc.getAuth().getRoles().get(0));
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -314,25 +314,25 @@ public class ApiDocTest {
     public void testControllerWithBasicAuth() {
         ApiDoc apiDoc = buildDoc(TestControllerWithBasicAuth.class, MethodDisplay.URI);
         Assert.assertEquals("test-controller-with-basic-auth", apiDoc.getName());
-        Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiDoc.getAuth().getType());
+        Assert.assertEquals(ApiAuthType.BASIC_AUTH, apiDoc.getAuth().getType());
         Assert.assertEquals("ROLE_USER", apiDoc.getAuth().getRoles().get(0));
         Assert.assertEquals("ROLE_ADMIN", apiDoc.getAuth().getRoles().get(1));
         assertTrue(apiDoc.getAuth().getTestusers().size() > 0);
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/basicAuth")) {
-                Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
+                Assert.assertEquals(ApiAuthType.BASIC_AUTH, apiMethodDoc.getAuth().getType());
                 Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
                 assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
             }
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
-                Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
+                Assert.assertEquals(ApiAuthType.NONE, apiMethodDoc.getAuth().getType());
                 Assert.assertEquals(ApiAuthDocReader.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
             }
 
             if (apiMethodDoc.getPath().contains("/undefinedAuthWithAuthOnClass")) {
-                Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
+                Assert.assertEquals(ApiAuthType.BASIC_AUTH, apiMethodDoc.getAuth().getType());
                 Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
                 Assert.assertEquals("ROLE_ADMIN", apiMethodDoc.getAuth().getRoles().get(1));
             }
@@ -360,18 +360,18 @@ public class ApiDocTest {
     @Test
     public void testApiAuthToken() {
         ApiDoc apiDoc = buildDoc(TestControllerWithAuthToken.class, MethodDisplay.URI);
-        Assert.assertEquals("TOKEN", apiDoc.getAuth().getType());
+        Assert.assertEquals(ApiAuthType.TOKEN, apiDoc.getAuth().getType());
         Assert.assertEquals("", apiDoc.getAuth().getScheme());
         Assert.assertEquals("abc", apiDoc.getAuth().getTesttokens().iterator().next());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/inherit")) {
-                Assert.assertEquals("TOKEN", apiMethodDoc.getAuth().getType());
+                Assert.assertEquals(ApiAuthType.TOKEN, apiMethodDoc.getAuth().getType());
                 Assert.assertEquals("", apiMethodDoc.getAuth().getScheme());
                 Assert.assertEquals("abc", apiMethodDoc.getAuth().getTesttokens().iterator().next());
             }
             if (apiMethodDoc.getPath().contains("/override")) {
-                Assert.assertEquals("TOKEN", apiMethodDoc.getAuth().getType());
+                Assert.assertEquals(ApiAuthType.TOKEN, apiMethodDoc.getAuth().getType());
                 Assert.assertEquals("Bearer", apiMethodDoc.getAuth().getScheme());
                 Assert.assertEquals("xyz", apiMethodDoc.getAuth().getTesttokens().iterator().next());
             }
@@ -412,13 +412,13 @@ public class ApiDocTest {
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPath().contains("/basicAuth")) {
-                Assert.assertEquals(ApiAuthType.BASIC_AUTH.name(), apiMethodDoc.getAuth().getType());
+                Assert.assertEquals(ApiAuthType.BASIC_AUTH, apiMethodDoc.getAuth().getType());
                 Assert.assertEquals("ROLE_USER", apiMethodDoc.getAuth().getRoles().get(0));
                 assertTrue(apiMethodDoc.getAuth().getTestusers().size() > 0);
             }
 
             if (apiMethodDoc.getPath().contains("/noAuth")) {
-                Assert.assertEquals(ApiAuthType.NONE.name(), apiMethodDoc.getAuth().getType());
+                Assert.assertEquals(ApiAuthType.NONE, apiMethodDoc.getAuth().getType());
                 Assert.assertEquals(ApiAuthDocReader.ANONYMOUS, apiMethodDoc.getAuth().getRoles().get(0));
             }
 
@@ -469,7 +469,6 @@ public class ApiDocTest {
                 verb = ApiVerb.GET)
         @ApiResponseObject(clazz = List.class)
         public void oldStyleResponseObject() {
-            return;
         }
 
         @ApiMethod(path = "/oldStyleBodyObject",
@@ -477,7 +476,6 @@ public class ApiDocTest {
                 verb = ApiVerb.GET)
         @ApiBodyObject(clazz = List.class)
         public void oldStyleBodyObject() {
-            return;
         }
 
     }

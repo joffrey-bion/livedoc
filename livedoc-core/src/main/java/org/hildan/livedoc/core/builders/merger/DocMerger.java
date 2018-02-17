@@ -115,9 +115,6 @@ public class DocMerger {
         if (value instanceof Boolean) {
             return Boolean.FALSE.equals(value);
         }
-        if (value instanceof ApiVerb) {
-            return value == ApiVerb.UNDEFINED;
-        }
         if (value instanceof ApiStage) {
             return value == ApiStage.UNDEFINED;
         }

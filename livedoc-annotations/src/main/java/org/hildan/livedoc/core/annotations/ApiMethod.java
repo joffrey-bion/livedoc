@@ -42,11 +42,11 @@ public @interface ApiMethod {
     String description() default "";
 
     /**
-     * The request verb for this method. Defaults to "GET"
+     * The request verbs allowed for this method.
      *
      * @see ApiVerb
      */
-    ApiVerb[] verb() default ApiVerb.UNDEFINED;
+    ApiVerb[] verb() default {};
 
     /**
      * An array of strings representing media types produced by the method, like application/json, application/xml, ...
