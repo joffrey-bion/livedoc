@@ -12,12 +12,12 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalSection;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
-import org.hildan.livedoc.core.pojo.global.ApiChangelogDoc;
-import org.hildan.livedoc.core.pojo.global.ApiChangelogsDoc;
-import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
-import org.hildan.livedoc.core.pojo.global.ApiGlobalSectionDoc;
-import org.hildan.livedoc.core.pojo.global.ApiMigrationDoc;
-import org.hildan.livedoc.core.pojo.global.ApiMigrationsDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiChangelogDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiChangelogsDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiMigrationDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiMigrationsDoc;
 
 public class ApiGlobalDocReader {
 
@@ -27,8 +27,8 @@ public class ApiGlobalDocReader {
         apiGlobalDoc = buildGlobalDoc(apiGlobalDoc, globalClasses);
         apiGlobalDoc = buildChangelogDoc(apiGlobalDoc, changelogClasses);
         apiGlobalDoc = buildMigrationDoc(apiGlobalDoc, migrationClasses);
-        if (apiGlobalDoc.getSections().isEmpty() && apiGlobalDoc.getChangelogset().getChangelogs().isEmpty()
-                && apiGlobalDoc.getMigrationset().getMigrations().isEmpty()) {
+        if (apiGlobalDoc.getSections().isEmpty() && apiGlobalDoc.getChangelogSet().getChangelogs().isEmpty()
+                && apiGlobalDoc.getMigrationSet().getMigrations().isEmpty()) {
             return null;
         } else {
             return apiGlobalDoc;
@@ -76,13 +76,13 @@ public class ApiGlobalDocReader {
             Class<?> clazz = changelogClasses.iterator().next();
             ApiChangelogSet apiChangelogSet = clazz.getAnnotation(ApiChangelogSet.class);
             ApiChangelogsDoc apiChangelogsDoc = new ApiChangelogsDoc();
-            for (ApiChangelog apiChangelog : apiChangelogSet.changlogs()) {
+            for (ApiChangelog apiChangelog : apiChangelogSet.changelogs()) {
                 ApiChangelogDoc apiChangelogDoc = new ApiChangelogDoc();
                 apiChangelogDoc.setVersion(apiChangelog.version());
                 apiChangelogDoc.setChanges(apiChangelog.changes());
                 apiChangelogsDoc.addChangelog(apiChangelogDoc);
             }
-            apiGlobalDoc.setChangelogset(apiChangelogsDoc);
+            apiGlobalDoc.setChangelogSet(apiChangelogsDoc);
         }
         return apiGlobalDoc;
     }
@@ -94,12 +94,12 @@ public class ApiGlobalDocReader {
             ApiMigrationsDoc apiMigrationsDoc = new ApiMigrationsDoc();
             for (ApiMigration apiMigration : apiMigrationSet.migrations()) {
                 ApiMigrationDoc apiMigrationDoc = new ApiMigrationDoc();
-                apiMigrationDoc.setFromVersion(apiMigration.fromversion());
-                apiMigrationDoc.setToVersion(apiMigration.toversion());
+                apiMigrationDoc.setFromVersion(apiMigration.fromVersion());
+                apiMigrationDoc.setToVersion(apiMigration.toVersion());
                 apiMigrationDoc.setSteps(apiMigration.steps());
                 apiMigrationsDoc.addMigration(apiMigrationDoc);
             }
-            apiGlobalDoc.setMigrationset(apiMigrationsDoc);
+            apiGlobalDoc.setMigrationSet(apiMigrationsDoc);
         }
         return apiGlobalDoc;
     }

@@ -12,9 +12,9 @@ import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.builders.doc.ApiGlobalDocReader;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 
 /**
  * An implementation of {@link GlobalDocReader} that reads Livedoc annotations to build the documentation.

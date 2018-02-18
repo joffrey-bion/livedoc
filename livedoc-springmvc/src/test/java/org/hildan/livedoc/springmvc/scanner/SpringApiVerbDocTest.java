@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiVerb;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,10 +19,10 @@ public class SpringApiVerbDocTest {
 
     @SuppressWarnings("unused")
     @Controller
-    @RequestMapping(value = "/api-verb")
+    @RequestMapping("/api-verb")
     public class SpringApiVerbController {
 
-        @RequestMapping(value = "/spring-api-verb-controller-method-one")
+        @RequestMapping("/spring-api-verb-controller-method-one")
         public void apiVerbOne() {
         }
 
@@ -38,12 +38,12 @@ public class SpringApiVerbDocTest {
         Assert.assertEquals("SpringApiVerbController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-one")) {
+            if (apiMethodDoc.getPaths().contains("/api-verb/spring-api-verb-controller-method-one")) {
                 Set<ApiVerb> expectedVerbs = new HashSet<>(Arrays.asList(ApiVerb.values()));
-                Assert.assertEquals(expectedVerbs, apiMethodDoc.getVerb());
+                Assert.assertEquals(expectedVerbs, apiMethodDoc.getVerbs());
             }
-            if (apiMethodDoc.getPath().contains("/api-verb/spring-api-verb-controller-method-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getVerb().size());
+            if (apiMethodDoc.getPaths().contains("/api-verb/spring-api-verb-controller-method-two")) {
+                Assert.assertEquals(2, apiMethodDoc.getVerbs().size());
             }
         }
     }
@@ -53,7 +53,7 @@ public class SpringApiVerbDocTest {
     @RequestMapping(value = "/api-verb-2", method = {RequestMethod.POST, RequestMethod.PUT})
     public class SpringApiVerbController2 {
 
-        @RequestMapping(value = "/spring-api-verb-controller-method-one")
+        @RequestMapping("/spring-api-verb-controller-method-one")
         public void apiVerbOne() {
         }
     }
@@ -64,8 +64,8 @@ public class SpringApiVerbDocTest {
         Assert.assertEquals("SpringApiVerbController2", apiDoc.getName());
         Assert.assertEquals(1, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPath().contains("/api-verb-2/spring-api-verb-controller-method-one")) {
-                Assert.assertEquals(2, apiMethodDoc.getVerb().size());
+            if (apiMethodDoc.getPaths().contains("/api-verb-2/spring-api-verb-controller-method-one")) {
+                Assert.assertEquals(2, apiMethodDoc.getVerbs().size());
             }
         }
     }

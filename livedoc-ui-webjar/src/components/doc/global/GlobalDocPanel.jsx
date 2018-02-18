@@ -16,8 +16,8 @@ export type GlobalDocPanelProps = {
 const GlobalDocPanelPresenter = ({globalDoc}: GlobalDocPanelProps) => {
   return <Switch>
     <Route path="/global/general" render={() => <GlobalDocSections sections={globalDoc.sections}/>}/>
-    <Route path="/global/changelog" render={() => <ChangeLogs changeLogs={globalDoc.changelogset}/>}/>
-    <Route path="/global/migrations" render={() => <Migrations migrations={globalDoc.migrationset}/>}/>
+    <Route path="/global/changelog" render={() => <ChangeLogs changeLogs={globalDoc.changelogSet}/>}/>
+    <Route path="/global/migrations" render={() => <Migrations migrations={globalDoc.migrationSet}/>}/>
     <Redirect to="/global/general"/>
   </Switch>;
 };

@@ -10,31 +10,31 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.example.shelf.documentation.DocumentationConstants;
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
 @Entity
-@ApiObject(name = "Book",
+@ApiType(name = "Book",
         group = DocumentationConstants.GROUP_LIBRARY,
         description = "Represents a book. Every book has an <code>Author</code> and a price.")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiObjectProperty(description = "The book's ID", order = 4)
+    @ApiTypeProperty(description = "The book's ID", order = 4)
     private Long id;
 
     @Column(name = "title")
-    @ApiObjectProperty(description = "The book's title", order = 2)
+    @ApiTypeProperty(description = "The book's title", order = 2)
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    @ApiObjectProperty(description = "The book's author", order = 1)
+    @ApiTypeProperty(description = "The book's author", order = 1)
     private Author author;
 
     @Column(name = "price")
-    @ApiObjectProperty(required = true, format = "Must be a double", description = "The price of the book")
+    @ApiTypeProperty(required = true, format = "Must be a double", description = "The price of the book")
     private Double price;
 
     public Book() {

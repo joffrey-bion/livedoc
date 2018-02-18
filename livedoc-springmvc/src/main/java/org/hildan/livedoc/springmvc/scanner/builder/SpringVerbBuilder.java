@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.pojo.ApiVerb;
+import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 

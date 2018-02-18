@@ -6,11 +6,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
 /**
  * A {@link PropertyScanner} that reads properties from a wrapped {@link PropertyScanner} and overrides some details
- * based on the {@link ApiObjectProperty} annotation.
+ * based on the {@link ApiTypeProperty} annotation.
  */
 public class LivedocPropertyScannerWrapper implements PropertyScanner {
 
@@ -31,7 +31,7 @@ public class LivedocPropertyScannerWrapper implements PropertyScanner {
 
     private static Property overrideProperty(Property property) {
         AccessibleObject accessibleObject = property.getAccessibleObject();
-        ApiObjectProperty ann = accessibleObject.getAnnotation(ApiObjectProperty.class);
+        ApiTypeProperty ann = accessibleObject.getAnnotation(ApiTypeProperty.class);
         if (ann == null) {
             return property; // no override
         }

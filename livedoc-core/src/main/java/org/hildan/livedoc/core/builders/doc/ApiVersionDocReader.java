@@ -3,7 +3,7 @@ package org.hildan.livedoc.core.builders.doc;
 import java.lang.reflect.AnnotatedElement;
 
 import org.hildan.livedoc.core.annotations.ApiVersion;
-import org.hildan.livedoc.core.pojo.ApiVersionDoc;
+import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 
 public class ApiVersionDocReader {
 

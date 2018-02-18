@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.DocReader;
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringHeaderBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringMediaTypeBuilder;
@@ -91,17 +91,17 @@ public class SpringDocReader implements DocReader {
 
     private ApiMethodDoc buildApiMethodDoc(Method method, Class<?> controller, TemplateProvider templateProvider) {
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-        apiMethodDoc.setPath(SpringPathBuilder.buildPath(method, controller));
-        apiMethodDoc.setMethod(method.getName());
-        apiMethodDoc.setVerb(SpringVerbBuilder.buildVerb(method, controller));
+        apiMethodDoc.setPaths(SpringPathBuilder.buildPath(method, controller));
+        apiMethodDoc.setName(method.getName());
+        apiMethodDoc.setVerbs(SpringVerbBuilder.buildVerb(method, controller));
         apiMethodDoc.setProduces(SpringMediaTypeBuilder.buildProduces(method, controller));
         apiMethodDoc.setConsumes(SpringMediaTypeBuilder.buildConsumes(method, controller));
         apiMethodDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method, controller));
-        apiMethodDoc.setPathparameters(SpringPathVariableBuilder.buildPathVariable(method));
-        apiMethodDoc.setQueryparameters(SpringQueryParamBuilder.buildQueryParams(method, controller));
-        apiMethodDoc.setBodyobject(SpringRequestBodyBuilder.buildRequestBody(method, templateProvider));
-        apiMethodDoc.setResponse(SpringResponseBuilder.buildResponse(method));
-        apiMethodDoc.setResponsestatuscode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
+        apiMethodDoc.setPathParameters(SpringPathVariableBuilder.buildPathVariable(method));
+        apiMethodDoc.setQueryParameters(SpringQueryParamBuilder.buildQueryParams(method, controller));
+        apiMethodDoc.setRequestBody(SpringRequestBodyBuilder.buildRequestBody(method, templateProvider));
+        apiMethodDoc.setResponseBodyType(SpringResponseBuilder.buildResponse(method));
+        apiMethodDoc.setResponseStatusCode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
         return apiMethodDoc;
     }
 }

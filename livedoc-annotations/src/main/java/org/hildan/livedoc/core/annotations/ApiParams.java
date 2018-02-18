@@ -10,17 +10,17 @@ import java.lang.annotation.Target;
  * This annotation is to be used on your method and contains the path and query parameters to document.
  */
 @Documented
-@Target(value = ElementType.METHOD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiParams {
 
     /**
      * An array of {@link ApiQueryParam} annotations
      */
-    ApiQueryParam[] queryparams() default {};
+    ApiQueryParam[] queryParams() default {};
 
     /**
      * An array of {@link ApiPathParam} annotations
      */
-    ApiPathParam[] pathparams() default {};
+    ApiPathParam[] pathParams() default {};
 }

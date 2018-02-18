@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.pojo.LivedocDefaultType;
+import org.hildan.livedoc.core.model.LivedocDefaultType;
 
 /**
  * This annotation is to be used inside an annotation of type ApiParams
@@ -14,7 +14,7 @@ import org.hildan.livedoc.core.pojo.LivedocDefaultType;
  * @see ApiParams
  */
 @Documented
-@Target(value = {ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
+@Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiPathParam {
 
@@ -31,7 +31,7 @@ public @interface ApiPathParam {
     /**
      * An array representing the allowed values this parameter can have.
      */
-    String[] allowedvalues() default {};
+    String[] allowedValues() default {};
 
     /**
      * The format from the parameter (ex. yyyy-MM-dd HH:mm:ss, ...)
@@ -43,5 +43,5 @@ public @interface ApiPathParam {
      * method's signature. This is to be able to document old style servlets' methods like doGet and doPost. This
      * element, even if specified, is not taken into account when the annotation is put inside the method's signature.
      */
-    Class<?> clazz() default LivedocDefaultType.class;
+    Class<?> type() default LivedocDefaultType.class;
 }

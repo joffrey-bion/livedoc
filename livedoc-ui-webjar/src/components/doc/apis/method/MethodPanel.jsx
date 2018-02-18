@@ -15,8 +15,8 @@ export type MethodPanelProps = {
 
 export const MethodPanel = ({methodDoc, open, collapseUrl, expandUrl}: MethodPanelProps) => {
 
-  const title = methodDoc.path || methodDoc.method;
-  const verbs = methodDoc.verb.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
+  const title = methodDoc.paths || methodDoc.name;
+  const verbs = methodDoc.verbs.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
   const linkUrl = open ? collapseUrl : expandUrl;
 
   return <Card style={{marginBottom: '15px'}}>

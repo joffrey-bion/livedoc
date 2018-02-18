@@ -26,7 +26,7 @@ const TypeDocPanelPresenter = ({typeDoc}: TypeDocPanelProps) => {
   if (!typeDoc) {
     return <Redirect to={RouteHelper.typesUrl()}/>;
   }
-  const isEnum = typeDoc.allowedvalues && typeDoc.allowedvalues.length > 0;
+  const isEnum = typeDoc.allowedValues && typeDoc.allowedValues.length > 0;
 
   return <section>
     <ContentHeader title={typeDoc.name} description={typeDoc.description} stage={typeDoc.stage}/>

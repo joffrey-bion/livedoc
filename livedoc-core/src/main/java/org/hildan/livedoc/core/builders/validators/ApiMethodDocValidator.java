@@ -2,11 +2,11 @@ package org.hildan.livedoc.core.builders.validators;
 
 import java.util.Collections;
 
-import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.ApiParamDoc;
-import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.doc.ApiVerb;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 
 public class ApiMethodDocValidator {
 
@@ -29,10 +29,10 @@ public class ApiMethodDocValidator {
     private static final String HINT_MISSING_METHOD_DESCRIPTION = "Add description to ApiMethod";
 
     private static final String HINT_MISSING_METHOD_BODY_OBJECT =
-            "Add annotation ApiBodyObject to document the " + "expected body of the request";
+            "Add annotation ApiRequestBodyType to document the " + "expected body of the request";
 
     private static final String HINT_MISSING_METHOD_RESPONSE_OBJECT =
-            "Add annotation ApiResponseObject to document " + "the returned object";
+            "Add annotation ApiResponseBodyType to document " + "the returned object";
 
     private static final String HINT_MISSING_METHOD_SUMMARY =
             "Method display set to SUMMARY, but summary info has " + "not been specified";
@@ -50,18 +50,18 @@ public class ApiMethodDocValidator {
      */
     public static void validate(ApiMethodDoc apiMethodDoc) {
 
-        if (apiMethodDoc.getPath().isEmpty()) {
-            apiMethodDoc.setPath(Collections.singleton(ERROR_MISSING_METHOD_PATH));
-            apiMethodDoc.addJsondocerror(ERROR_MISSING_METHOD_PATH);
+        if (apiMethodDoc.getPaths().isEmpty()) {
+            apiMethodDoc.setPaths(Collections.singleton(ERROR_MISSING_METHOD_PATH));
+            apiMethodDoc.addJsondocError(ERROR_MISSING_METHOD_PATH);
         }
 
         if (apiMethodDoc.getSummary().trim().isEmpty() && requiresSummary(apiMethodDoc)) {
             apiMethodDoc.setSummary(MESSAGE_MISSING_METHOD_SUMMARY);
-            apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_SUMMARY);
+            apiMethodDoc.addJsondocHint(HINT_MISSING_METHOD_SUMMARY);
         }
 
         if (apiMethodDoc.getDescription().trim().isEmpty()) {
-            apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_DESCRIPTION);
+            apiMethodDoc.addJsondocHint(HINT_MISSING_METHOD_DESCRIPTION);
         }
 
         validateHeaders(apiMethodDoc);
@@ -78,51 +78,51 @@ public class ApiMethodDocValidator {
     private static void validateHeaders(ApiMethodDoc apiMethodDoc) {
         for (ApiHeaderDoc apiHeaderDoc : apiMethodDoc.getHeaders()) {
             if (apiHeaderDoc.getName().trim().isEmpty()) {
-                apiMethodDoc.addJsondocerror(ERROR_MISSING_HEADER_NAME);
+                apiMethodDoc.addJsondocError(ERROR_MISSING_HEADER_NAME);
             }
         }
     }
 
     private static void validatePathParams(ApiMethodDoc apiMethodDoc) {
-        for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathparameters()) {
+        for (ApiParamDoc apiParamDoc : apiMethodDoc.getPathParameters()) {
             if (apiParamDoc.getName().trim().isEmpty()) {
-                apiMethodDoc.addJsondocerror(ERROR_MISSING_PATH_PARAM_NAME);
+                apiMethodDoc.addJsondocError(ERROR_MISSING_PATH_PARAM_NAME);
             }
 
             if (apiParamDoc.getDescription().trim().isEmpty()) {
-                apiMethodDoc.addJsondochint(HINT_MISSING_PATH_PARAM_DESCRIPTION);
+                apiMethodDoc.addJsondocHint(HINT_MISSING_PATH_PARAM_DESCRIPTION);
             }
         }
     }
 
     private static void validateQueryParams(ApiMethodDoc apiMethodDoc) {
-        for (ApiParamDoc apiParamDoc : apiMethodDoc.getQueryparameters()) {
+        for (ApiParamDoc apiParamDoc : apiMethodDoc.getQueryParameters()) {
             if (apiParamDoc.getName().trim().isEmpty()) {
-                apiMethodDoc.addJsondocerror(ERROR_MISSING_QUERY_PARAM_NAME);
+                apiMethodDoc.addJsondocError(ERROR_MISSING_QUERY_PARAM_NAME);
             }
             if (apiParamDoc.getDescription().trim().isEmpty()) {
-                apiMethodDoc.addJsondochint(HINT_MISSING_QUERY_PARAM_DESCRIPTION);
+                apiMethodDoc.addJsondocHint(HINT_MISSING_QUERY_PARAM_DESCRIPTION);
             }
         }
     }
 
     private static void validateRequestBody(ApiMethodDoc apiMethodDoc) {
-        if (apiMethodDoc.getVerb().stream().anyMatch(ApiVerb::requiresBody)) {
+        if (apiMethodDoc.getVerbs().stream().anyMatch(ApiVerb::requiresBody)) {
             if (apiMethodDoc.getConsumes().isEmpty()) {
-                apiMethodDoc.addJsondocwarning(WARN_MISSING_METHOD_CONSUMES);
+                apiMethodDoc.addJsondocWarning(WARN_MISSING_METHOD_CONSUMES);
             }
-            if (apiMethodDoc.getBodyobject() == null) {
-                apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_BODY_OBJECT);
+            if (apiMethodDoc.getRequestBody() == null) {
+                apiMethodDoc.addJsondocHint(HINT_MISSING_METHOD_BODY_OBJECT);
             }
         }
     }
 
     private static void validateResponse(ApiMethodDoc apiMethodDoc) {
         if (apiMethodDoc.getProduces().isEmpty()) {
-            apiMethodDoc.addJsondocwarning(WARN_MISSING_METHOD_PRODUCES);
+            apiMethodDoc.addJsondocWarning(WARN_MISSING_METHOD_PRODUCES);
         }
-        if (apiMethodDoc.getResponse() == null) {
-            apiMethodDoc.addJsondochint(HINT_MISSING_METHOD_RESPONSE_OBJECT);
+        if (apiMethodDoc.getResponseBodyType() == null) {
+            apiMethodDoc.addJsondocHint(HINT_MISSING_METHOD_RESPONSE_OBJECT);
         }
     }
 

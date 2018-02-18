@@ -15,31 +15,31 @@ import javax.persistence.OneToMany;
 import org.example.shelf.documentation.DocumentationConstants;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@ApiObject(name = "Author",
+@ApiType(name = "Author",
         group = DocumentationConstants.GROUP_LIBRARY,
         description = "Represents an author. Every author has a list of <code>Book</code>s")
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiObjectProperty
+    @ApiTypeProperty
     private Long id;
 
     @Column(name = "name")
     @NotBlank
     @Length(min = 5, max = 20)
-    @ApiObjectProperty(required = true, description = "Name and surname of the author")
+    @ApiTypeProperty(required = true, description = "Name and surname of the author")
     private String name;
 
     @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ApiObjectProperty
+    @ApiTypeProperty
     private List<Book> books = new ArrayList<Book>();
 
     public Author() {

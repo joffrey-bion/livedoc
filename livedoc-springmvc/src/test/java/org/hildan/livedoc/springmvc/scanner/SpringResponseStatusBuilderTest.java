@@ -1,8 +1,8 @@
 package org.hildan.livedoc.springmvc.scanner;
 
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,13 +18,13 @@ public class SpringResponseStatusBuilderTest {
     @RequestMapping
     public class SpringController {
 
-        @RequestMapping(value = "/status-one")
-        @ResponseStatus(value = HttpStatus.CREATED)
+        @RequestMapping("/status-one")
+        @ResponseStatus(HttpStatus.CREATED)
         public String statusOne() {
             return "";
         }
 
-        @RequestMapping(value = "/status-two")
+        @RequestMapping("/status-two")
         public void statusTwo() {
 
         }
@@ -37,11 +37,11 @@ public class SpringResponseStatusBuilderTest {
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPath().contains("/status-one")) {
-                Assert.assertEquals("201 - Created", apiMethodDoc.getResponsestatuscode());
+            if (apiMethodDoc.getPaths().contains("/status-one")) {
+                Assert.assertEquals("201 - Created", apiMethodDoc.getResponseStatusCode());
             }
-            if (apiMethodDoc.getPath().contains("/status-two")) {
-                Assert.assertEquals("200 - OK", apiMethodDoc.getResponsestatuscode());
+            if (apiMethodDoc.getPaths().contains("/status-two")) {
+                Assert.assertEquals("200 - OK", apiMethodDoc.getResponseStatusCode());
             }
         }
     }

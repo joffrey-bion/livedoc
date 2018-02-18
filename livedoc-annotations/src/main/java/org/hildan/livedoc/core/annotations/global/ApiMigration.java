@@ -12,19 +12,19 @@ import java.lang.annotation.Target;
  * @see ApiMigrationSet
  */
 @Documented
-@Target(value = ElementType.TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiMigration {
 
     /**
      * Source api version
      */
-    String fromversion();
+    String fromVersion();
 
     /**
      * Target api version
      */
-    String toversion();
+    String toVersion();
 
     /**
      * Steps needed to migrate from source api version to target api version

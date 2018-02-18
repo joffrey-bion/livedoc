@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @see ApiFlowStep
  */
 @Documented
-@Target(value = ElementType.METHOD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiFlow {
 

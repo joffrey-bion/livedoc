@@ -2,9 +2,9 @@ package org.hildan.livedoc.springmvc.scanner;
 
 import java.util.Map;
 
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,17 +19,17 @@ public class SpringResponseBuilderTest {
     @RequestMapping
     public class SpringController {
 
-        @RequestMapping(value = "/response-one")
+        @RequestMapping("/response-one")
         public String string() {
             return "";
         }
 
-        @RequestMapping(value = "/response-two")
+        @RequestMapping("/response-two")
         public ResponseEntity<String> responseEntityString() {
             return ResponseEntity.ok("");
         }
 
-        @RequestMapping(value = "/response-three")
+        @RequestMapping("/response-three")
         public ResponseEntity<Map<String, Integer>> responseEntityMap() {
             return ResponseEntity.ok(null);
         }
@@ -42,15 +42,15 @@ public class SpringResponseBuilderTest {
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPath().contains("/response-one")) {
-                Assert.assertEquals("String", apiMethodDoc.getResponse().getType().getOneLineText());
+            if (apiMethodDoc.getPaths().contains("/response-one")) {
+                Assert.assertEquals("String", apiMethodDoc.getResponseBodyType().getOneLineText());
             }
-            if (apiMethodDoc.getPath().contains("/response-two")) {
-                Assert.assertEquals("String", apiMethodDoc.getResponse().getType().getOneLineText());
+            if (apiMethodDoc.getPaths().contains("/response-two")) {
+                Assert.assertEquals("String", apiMethodDoc.getResponseBodyType().getOneLineText());
             }
-            if (apiMethodDoc.getPath().contains("/response-three")) {
+            if (apiMethodDoc.getPaths().contains("/response-three")) {
                 Assert.assertEquals("Map<String, Integer>",
-                        apiMethodDoc.getResponse().getType().getOneLineText());
+                        apiMethodDoc.getResponseBodyType().getOneLineText());
             }
         }
     }

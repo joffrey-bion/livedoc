@@ -6,11 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.hildan.livedoc.core.pojo.ApiStage;
-import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.pojo.ApiVisibility;
-import org.hildan.livedoc.core.pojo.SpecialDefaultIntValue;
-import org.hildan.livedoc.core.pojo.SpecialDefaultStringValue;
+import org.hildan.livedoc.core.model.doc.SpecialDefaultIntValue;
+import org.hildan.livedoc.core.model.doc.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
@@ -114,12 +111,6 @@ public class DocMerger {
         }
         if (value instanceof Boolean) {
             return Boolean.FALSE.equals(value);
-        }
-        if (value instanceof ApiStage) {
-            return value == ApiStage.UNDEFINED;
-        }
-        if (value instanceof ApiVisibility) {
-            return value == ApiVisibility.UNDEFINED;
         }
         if (value.getClass().isArray()) {
             return Array.getLength(value) == 0;

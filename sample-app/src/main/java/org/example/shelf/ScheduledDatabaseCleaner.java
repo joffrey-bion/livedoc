@@ -17,7 +17,7 @@ public class ScheduledDatabaseCleaner {
         this.authorRepository = authorRepository;
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 120000)
     @Transactional
     public void cleanAndRestore() {
         authorRepository.deleteByIdGreaterThan(2L);

@@ -3,7 +3,7 @@ package org.hildan.livedoc.spring.boot.starter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = LivedocConfig.LIVEDOC_PROPERTIES_PREFIX)

@@ -13,12 +13,12 @@ import org.hildan.livedoc.core.annotations.ApiMethod;
  * documented with the {@link ApiMethod} annotation in which the "id" property is specified
  */
 @Documented
-@Target(value = ElementType.ANNOTATION_TYPE)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiFlowStep {
 
     /**
      * The api method identified by this id is the method used in the flow step
      */
-    String apimethodid();
+    String apiMethodId();
 }

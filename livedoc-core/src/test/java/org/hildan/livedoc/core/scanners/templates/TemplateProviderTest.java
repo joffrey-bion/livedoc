@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.LivedocPropertyScannerWrapper;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
@@ -57,27 +57,27 @@ public class TemplateProviderTest {
     }
 
     @SuppressWarnings("unused")
-    @ApiObject(name = "defaultOrder")
+    @ApiType(name = "defaultOrder")
     static class DefaultOrder {
 
-        @ApiObjectProperty(name = "xField")
+        @ApiTypeProperty(name = "xField")
         public String x;
 
-        @ApiObjectProperty(name = "aField")
+        @ApiTypeProperty(name = "aField")
         public String a;
     }
 
     @SuppressWarnings("unused")
-    @ApiObject(name = "ordered")
+    @ApiType(name = "ordered")
     static class CustomOrder {
 
-        @ApiObjectProperty(name = "bField", order = 2)
+        @ApiTypeProperty(name = "bField", order = 2)
         public String b;
 
-        @ApiObjectProperty(name = "xField", order = 1)
+        @ApiTypeProperty(name = "xField", order = 1)
         public String x;
 
-        @ApiObjectProperty(name = "aField", order = 2)
+        @ApiTypeProperty(name = "aField", order = 2)
         public String a;
     }
 

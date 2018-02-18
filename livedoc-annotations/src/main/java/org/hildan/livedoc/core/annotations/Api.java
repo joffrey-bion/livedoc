@@ -6,14 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.pojo.ApiStage;
-import org.hildan.livedoc.core.pojo.ApiVisibility;
-
 /**
  * This annotation is to be used on your "service" class, for example controller classes in Spring MVC.
  */
 @Documented
-@Target(value = ElementType.TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Api {
 
@@ -33,14 +30,4 @@ public @interface Api {
      * book services you can group them in the "Library" group.
      */
     String group() default "";
-
-    /**
-     * Indicates the visibility of the api
-     */
-    ApiVisibility visibility() default ApiVisibility.UNDEFINED;
-
-    /**
-     * Indicates the stage of development or release
-     */
-    ApiStage stage() default ApiStage.UNDEFINED;
 }

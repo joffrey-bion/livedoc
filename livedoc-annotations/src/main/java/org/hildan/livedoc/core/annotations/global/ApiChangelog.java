@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @see ApiChangelogSet
  */
 @Documented
-@Target(value = ElementType.ANNOTATION_TYPE)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiChangelog {
 

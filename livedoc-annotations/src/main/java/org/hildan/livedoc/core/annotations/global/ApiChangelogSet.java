@@ -10,13 +10,13 @@ import java.lang.annotation.Target;
  * This annotation has to be used on a class dedicated to changelog documentation
  */
 @Documented
-@Target(value = ElementType.TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiChangelogSet {
 
     /**
      * Array of {@link ApiChangelog} annotations
      */
-    ApiChangelog[] changlogs();
+    ApiChangelog[] changelogs();
 
 }

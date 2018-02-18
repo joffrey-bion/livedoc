@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 
 /**
  * A utility class allowing to extract all classes involved in a generic type declaration.

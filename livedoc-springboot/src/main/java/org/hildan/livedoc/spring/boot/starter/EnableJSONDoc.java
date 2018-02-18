@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = ElementType.TYPE)
+@Target(ElementType.TYPE)
 @Documented
 @Import(LivedocConfig.class)
 public @interface EnableJSONDoc {

@@ -8,8 +8,8 @@ import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.builders.doc.ApiDocReader;
 import org.hildan.livedoc.core.builders.doc.ApiMethodDocReader;
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
 /**

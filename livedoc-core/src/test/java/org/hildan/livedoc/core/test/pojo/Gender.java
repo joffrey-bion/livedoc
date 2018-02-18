@@ -1,8 +1,8 @@
 package org.hildan.livedoc.core.test.pojo;
 
-import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.types.ApiType;
 
-@ApiObject(name = "gender", description = "An enum for the gender")
+@ApiType(name = "gender", description = "An enum for the gender")
 public enum Gender {
 
     MALE,

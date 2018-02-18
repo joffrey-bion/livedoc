@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @see ApiHeaders
  */
 @Documented
-@Target(value = {ElementType.ANNOTATION_TYPE, ElementType.PARAMETER})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiHeader {
 
@@ -29,5 +29,5 @@ public @interface ApiHeader {
     /**
      * An array representing the allowed values this header can have.
      */
-    String[] allowedvalues() default {};
+    String[] allowedValues() default {};
 }

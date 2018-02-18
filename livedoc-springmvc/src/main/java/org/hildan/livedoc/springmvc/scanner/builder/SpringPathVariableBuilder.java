@@ -6,9 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiPathParam;
-import org.hildan.livedoc.core.builders.types.LivedocType;
-import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
-import org.hildan.livedoc.core.pojo.ApiParamDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -47,8 +47,8 @@ public class SpringPathVariableBuilder {
     }
 
     /**
-     * Available properties that can be overridden: name, description, allowedvalues, format. Name is overridden only if
-     * it's empty in the apiParamDoc argument. Description, format and allowedvalues are copied in any case.
+     * Available properties that can be overridden: name, description, allowedValues, format. Name is overridden only if
+     * it's empty in the apiParamDoc argument. Description, format and allowedValues are copied in any case.
      *
      * @param apiPathParam
      * @param apiParamDoc
@@ -58,7 +58,7 @@ public class SpringPathVariableBuilder {
             apiParamDoc.setName(apiPathParam.name());
         }
         apiParamDoc.setDescription(apiPathParam.description());
-        apiParamDoc.setAllowedvalues(apiPathParam.allowedvalues());
+        apiParamDoc.setAllowedValues(apiPathParam.allowedValues());
         apiParamDoc.setFormat(apiPathParam.format());
     }
 

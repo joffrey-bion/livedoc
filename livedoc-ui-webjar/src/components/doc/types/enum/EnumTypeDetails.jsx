@@ -9,7 +9,7 @@ export type EnumTypeDetailsProps = {
 }
 
 export const EnumTypeDetails = ({typeDoc}: EnumTypeDetailsProps) => {
-  const values = typeDoc.allowedvalues || [];
+  const values = typeDoc.allowedValues || [];
   const valueRows = values.map(v => <EnumValueRow key={v} value={v} description=""/>);
 
   return <Card>

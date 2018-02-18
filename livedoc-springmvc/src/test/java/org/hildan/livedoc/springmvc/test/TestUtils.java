@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.LivedocReader;
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 
 import static org.junit.Assert.assertTrue;

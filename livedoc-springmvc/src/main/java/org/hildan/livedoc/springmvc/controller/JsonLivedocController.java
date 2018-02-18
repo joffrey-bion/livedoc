@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hildan.livedoc.core.LivedocReader;
-import org.hildan.livedoc.core.pojo.Livedoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.Livedoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -78,7 +78,7 @@ public class JsonLivedocController {
         this.displayMethodAs = displayMethodAs;
     }
 
-    @RequestMapping(value = JsonLivedocController.JSON_DOC_ENDPOINT,
+    @RequestMapping(name = JsonLivedocController.JSON_DOC_ENDPOINT,
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin

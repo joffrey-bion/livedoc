@@ -1,12 +1,12 @@
 package org.hildan.livedoc.springmvc.issues.issue151;
 
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
-@ApiObject(group = "foogroup", description = "Foo description")
+@ApiType(group = "foogroup", description = "Foo description")
 public class FooWrapper<T> {
 
-    @ApiObjectProperty(description = "The wrapper's content")
+    @ApiTypeProperty(description = "The wrapper's content")
     private T content;
 
 }

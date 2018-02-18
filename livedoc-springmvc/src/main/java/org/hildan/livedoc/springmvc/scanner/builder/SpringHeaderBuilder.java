@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.ApiHeaderDoc;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ValueConstants;

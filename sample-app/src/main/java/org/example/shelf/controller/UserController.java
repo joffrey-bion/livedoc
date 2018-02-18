@@ -7,8 +7,8 @@ import org.example.shelf.exception.ItemNotFoundException;
 import org.example.shelf.model.User;
 import org.example.shelf.repository.UserRepository;
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiError;
-import org.hildan.livedoc.core.annotations.ApiErrors;
+import org.hildan.livedoc.core.annotations.errors.ApiError;
+import org.hildan.livedoc.core.annotations.errors.ApiErrors;
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @ApiMethod(id = DocumentationConstants.USER_FIND_ONE)
-    @ApiErrors(apierrors = {
+    @ApiErrors({
             @ApiError(code = "404", description = "When the user with the given id is not found")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

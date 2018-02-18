@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * This annotation has to be used on a class dedicated to migrations documentation
  */
 @Documented
-@Target(value = ElementType.TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiMigrationSet {
 

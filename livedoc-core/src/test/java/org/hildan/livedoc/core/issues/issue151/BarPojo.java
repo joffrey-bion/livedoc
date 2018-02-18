@@ -1,12 +1,12 @@
 package org.hildan.livedoc.core.issues.issue151;
 
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
-@ApiObject(group = "bargroup", description = "Bar description")
+@ApiType(group = "bargroup", description = "Bar description")
 public class BarPojo {
 
-    @ApiObjectProperty(description = "Bar description")
+    @ApiTypeProperty(description = "Bar description")
     private String barField;
 
 }

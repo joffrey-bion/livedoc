@@ -1,8 +1,8 @@
 package org.hildan.livedoc.springmvc.issues.invisible;
 
-import org.hildan.livedoc.core.annotations.ApiObject;
+import org.hildan.livedoc.core.annotations.types.ApiType;
 
-@ApiObject(name = "Resource Interface")
+@ApiType(name = "Resource Interface")
 public interface ResourceInterface {
 
     String getId();

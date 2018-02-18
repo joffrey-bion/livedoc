@@ -7,9 +7,9 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiParams;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
-import org.hildan.livedoc.core.builders.types.LivedocType;
-import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
-import org.hildan.livedoc.core.pojo.ApiParamDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 
 public class ApiQueryParamDocReader {
 
@@ -17,8 +17,8 @@ public class ApiQueryParamDocReader {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
         if (method.isAnnotationPresent(ApiParams.class)) {
-            for (ApiQueryParam apiParam : method.getAnnotation(ApiParams.class).queryparams()) {
-                ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, LivedocTypeBuilder.build(apiParam.clazz()));
+            for (ApiQueryParam apiParam : method.getAnnotation(ApiParams.class).queryParams()) {
+                ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, LivedocTypeBuilder.build(apiParam.type()));
                 docs.add(apiParamDoc);
             }
         }
@@ -40,7 +40,7 @@ public class ApiQueryParamDocReader {
 
     public static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType) {
         return new ApiParamDoc(annotation.name(), annotation.description(), livedocType,
-                String.valueOf(annotation.required()), annotation.allowedvalues(), annotation.format(),
-                annotation.defaultvalue());
+                String.valueOf(annotation.required()), annotation.allowedValues(), annotation.format(),
+                annotation.defaultValue());
     }
 }

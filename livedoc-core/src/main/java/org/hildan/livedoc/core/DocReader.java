@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 
 /**

@@ -20,12 +20,12 @@ import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
 import org.hildan.livedoc.core.builders.merger.DocMerger;
 import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
 import org.hildan.livedoc.core.builders.validators.ApiObjectDocValidator;
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.ApiObjectDoc;
-import org.hildan.livedoc.core.pojo.Groupable;
-import org.hildan.livedoc.core.pojo.Livedoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.Groupable;
+import org.hildan.livedoc.core.model.doc.Livedoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
@@ -160,11 +160,11 @@ public class LivedocReader {
 
     private static Set<Type> getReferencedTypes(ApiMethodDoc apiMethodDoc) {
         Set<Type> types = new HashSet<>();
-        if (apiMethodDoc.getBodyobject() != null) {
-            types.addAll(apiMethodDoc.getBodyobject().getType().getComposingTypes());
+        if (apiMethodDoc.getRequestBody() != null) {
+            types.addAll(apiMethodDoc.getRequestBody().getType().getComposingTypes());
         }
-        if (apiMethodDoc.getResponse() != null) {
-            types.addAll(apiMethodDoc.getResponse().getType().getComposingTypes());
+        if (apiMethodDoc.getResponseBodyType() != null) {
+            types.addAll(apiMethodDoc.getResponseBodyType().getComposingTypes());
         }
         return types;
     }
@@ -211,12 +211,12 @@ public class LivedocReader {
         return doc;
     }
 
-    private List<ApiObjectDoc> getApiObjectDocs(Collection<Class<?>> types) {
+    private List<ApiTypeDoc> getApiObjectDocs(Collection<Class<?>> types) {
         return buildDocs(types, this::readApiObjectDoc);
     }
 
-    private Optional<ApiObjectDoc> readApiObjectDoc(Class<?> type) {
-        ApiObjectDoc doc = apiObjectDocReader.read(type);
+    private Optional<ApiTypeDoc> readApiObjectDoc(Class<?> type) {
+        ApiTypeDoc doc = apiObjectDocReader.read(type);
         doc.setTemplate(templateProvider.getTemplate(type));
         ApiObjectDocValidator.validate(doc);
         return Optional.of(doc);

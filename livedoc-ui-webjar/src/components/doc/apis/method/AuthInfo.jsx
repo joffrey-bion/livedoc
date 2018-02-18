@@ -2,7 +2,6 @@
 import * as React from 'react';
 import type { ApiAuthDoc } from '../../../../model/livedoc';
 import { CodeElementsList } from '../../../shared/content/CodeElementsList';
-import { HorizontalList } from '../../../shared/content/HorizontalList';
 
 export type AuthInfoProps = {
   auth: ApiAuthDoc,
@@ -21,7 +20,3 @@ const Scheme = ({scheme}) => {
   }
   return [' – Scheme: ', <code>{scheme}</code>];
 };
-
-function element(header: string, data) {
-  return <span>{header}: {data}</span>;
-}

@@ -1,16 +1,16 @@
 package org.hildan.livedoc.core.test.pojo;
 
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
 public class StackOverflowTemplateObjectOne {
 
-    @ApiObjectProperty(description = "The user id")
+    @ApiTypeProperty(description = "The user id")
     private Long id;
 
-    @ApiObjectProperty(description = "The user firstname")
+    @ApiTypeProperty(description = "The user firstname")
     private String firstname;
 
-    @ApiObjectProperty(description = "The user's default group")
+    @ApiTypeProperty(description = "The user's default group")
     private StackOverflowTemplateObjectTwo defaultgroup;
 
 }

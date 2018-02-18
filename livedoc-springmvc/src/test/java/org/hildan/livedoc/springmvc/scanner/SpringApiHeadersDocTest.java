@@ -2,10 +2,10 @@ package org.hildan.livedoc.springmvc.scanner;
 
 import java.util.Iterator;
 
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class SpringApiHeadersDocTest {
     @RequestMapping(headers = {"h1", "h2"})
     public class SpringApiHeadersController {
 
-        @RequestMapping(value = "/spring-api-headers-controller-method-one")
+        @RequestMapping("/spring-api-headers-controller-method-one")
         public void apiHeadersMethodOne() {
 
         }
@@ -31,7 +31,7 @@ public class SpringApiHeadersDocTest {
         }
 
         @RequestMapping(value = "/spring-api-headers-controller-method-three", headers = {"h4"})
-        public void apiHeadersMethodThree(@RequestHeader(value = "h5") String h5) {
+        public void apiHeadersMethodThree(@RequestHeader("h5") String h5) {
 
         }
 
@@ -44,13 +44,13 @@ public class SpringApiHeadersDocTest {
         Assert.assertEquals("SpringApiHeadersController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPath().contains("/spring-api-headers-controller-method-one")) {
+            if (apiMethodDoc.getPaths().contains("/spring-api-headers-controller-method-one")) {
                 Assert.assertEquals(2, apiMethodDoc.getHeaders().size());
             }
-            if (apiMethodDoc.getPath().contains("/spring-api-headers-controller-method-two")) {
+            if (apiMethodDoc.getPaths().contains("/spring-api-headers-controller-method-two")) {
                 Assert.assertEquals(3, apiMethodDoc.getHeaders().size());
             }
-            if (apiMethodDoc.getPath().contains("/spring-api-headers-controller-method-three")) {
+            if (apiMethodDoc.getPaths().contains("/spring-api-headers-controller-method-three")) {
                 Assert.assertEquals(4, apiMethodDoc.getHeaders().size());
                 Iterator<ApiHeaderDoc> headers = apiMethodDoc.getHeaders().iterator();
                 ApiHeaderDoc h1 = headers.next();

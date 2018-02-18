@@ -15,17 +15,17 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
   const doc: ApiMethodDoc = props.methodDoc;
 
   let rows = [];
-  if (doc.pathparameters && doc.pathparameters.length > 0) {
-    rows.push(row('Path Params', <ApiMethodParamsTable params={doc.pathparameters}/>));
+  if (doc.pathParameters && doc.pathParameters.length > 0) {
+    rows.push(row('Path Params', <ApiMethodParamsTable params={doc.pathParameters}/>));
   }
-  if (doc.queryparameters && doc.queryparameters.length > 0) {
-    rows.push(row('Query Params', <ApiMethodParamsTable params={doc.queryparameters}/>));
+  if (doc.queryParameters && doc.queryParameters.length > 0) {
+    rows.push(row('Query Params', <ApiMethodParamsTable params={doc.queryParameters}/>));
   }
-  if (doc.bodyobject) {
-    rows.push(row('Request body type', <TypeRefWithMime type={doc.bodyobject.type} mimeTypes={doc.consumes}/>));
+  if (doc.requestBody) {
+    rows.push(row('Request body type', <TypeRefWithMime type={doc.requestBody.type} mimeTypes={doc.consumes}/>));
   }
-  if (doc.response && doc.response.type && doc.response.type.oneLineText !== 'void') {
-    rows.push(row('Response body type', <TypeRefWithMime type={doc.response.type} mimeTypes={doc.produces}/>));
+  if (doc.responseBodyType && doc.responseBodyType.oneLineText !== 'void') {
+    rows.push(row('Response body type', <TypeRefWithMime type={doc.responseBodyType} mimeTypes={doc.produces}/>));
   }
   if (doc.auth) {
     rows.push(row('Authentication', <AuthInfo auth={doc.auth}/>));

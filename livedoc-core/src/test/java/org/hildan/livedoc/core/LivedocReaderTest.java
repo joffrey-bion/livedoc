@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.ApiObjectDoc;
-import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.pojo.Livedoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
-import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.ApiVerb;
+import org.hildan.livedoc.core.model.doc.Livedoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -57,26 +57,26 @@ public class LivedocReaderTest {
     }
 
     private static void checkObjects(Livedoc livedoc) {
-        Map<String, Set<ApiObjectDoc>> objects = livedoc.getObjects();
+        Map<String, Set<ApiTypeDoc>> objects = livedoc.getObjects();
         assertEquals(2, objects.size());
 
-        Set<ApiObjectDoc> apiObjectDocs = objects.get("");
-        assertTrue(apiObjectDocs != null);
+        Set<ApiTypeDoc> apiTypeDocs = objects.get("");
+        assertTrue(apiTypeDocs != null);
 
-        Set<String> objectNames = apiObjectDocs.stream().map(ApiObjectDoc::getName).collect(Collectors.toSet());
+        Set<String> objectNames = apiTypeDocs.stream().map(ApiTypeDoc::getName).collect(Collectors.toSet());
         Set<String> expectedObjectNames = new HashSet<>();
         expectedObjectNames.add("parent");
         expectedObjectNames.add("child");
         expectedObjectNames.add("gender");
         assertEquals(expectedObjectNames, objectNames);
 
-        Set<ApiObjectDoc> apiObjectDocsRestaurant = objects.get("Restaurant");
-        assertTrue(apiObjectDocsRestaurant != null);
-        assertEquals(1, apiObjectDocsRestaurant.size());
+        Set<ApiTypeDoc> apiTypeDocsRestaurant = objects.get("Restaurant");
+        assertTrue(apiTypeDocsRestaurant != null);
+        assertEquals(1, apiTypeDocsRestaurant.size());
 
-        Set<String> restaurantObjectNames = apiObjectDocsRestaurant.stream()
-                                                                   .map(ApiObjectDoc::getName)
-                                                                   .collect(Collectors.toSet());
+        Set<String> restaurantObjectNames = apiTypeDocsRestaurant.stream()
+                                                                 .map(ApiTypeDoc::getName)
+                                                                 .collect(Collectors.toSet());
         Set<String> expectedRestaurantObjectNames = new HashSet<>();
         expectedRestaurantObjectNames.add("customPizzaObject");
         assertEquals(expectedRestaurantObjectNames, restaurantObjectNames);
@@ -93,15 +93,15 @@ public class LivedocReaderTest {
 
     private static void checkAllVerbsUsed(Livedoc livedoc) {
         Set<ApiVerb> verbs = livedoc.getApis()
-                                     .values()
-                                     .stream()
-                                     .flatMap(Collection::stream)
-                                     .distinct()
-                                     .map(ApiDoc::getMethods)
-                                     .flatMap(Collection::stream)
-                                     .map(ApiMethodDoc::getVerb)
-                                     .flatMap(Collection::stream)
-                                     .collect(Collectors.toSet());
+                                    .values()
+                                    .stream()
+                                    .flatMap(Collection::stream)
+                                    .distinct()
+                                    .map(ApiDoc::getMethods)
+                                    .flatMap(Collection::stream)
+                                    .map(ApiMethodDoc::getVerbs)
+                                    .flatMap(Collection::stream)
+                                    .collect(Collectors.toSet());
         Set<ApiVerb> expectedVerbs = new HashSet<>(Arrays.asList(ApiVerb.values()));
         assertEquals(expectedVerbs, verbs);
     }

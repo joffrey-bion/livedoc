@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
-import org.hildan.livedoc.core.builders.types.LivedocType;
-import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
-import org.hildan.livedoc.core.pojo.ApiParamDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -112,8 +112,8 @@ public class SpringQueryParamBuilder {
     }
 
     /**
-     * Available properties that can be overridden: name, description, required, allowedvalues, format, defaultvalue.
-     * Name is overridden only if it's empty in the apiParamDoc argument. Description, format and allowedvalues are
+     * Available properties that can be overridden: name, description, required, allowedValues, format, defaultValue.
+     * Name is overridden only if it's empty in the apiParamDoc argument. Description, format and allowedValues are
      * copied in any case Default value and required are not overridden: in any case they are coming from the default
      * values of @RequestParam
      *
@@ -126,7 +126,7 @@ public class SpringQueryParamBuilder {
                 apiParamDoc.setName(apiQueryParam.name());
             }
             apiParamDoc.setDescription(apiQueryParam.description());
-            apiParamDoc.setAllowedvalues(apiQueryParam.allowedvalues());
+            apiParamDoc.setAllowedValues(apiQueryParam.allowedValues());
             apiParamDoc.setFormat(apiQueryParam.format());
         }
     }

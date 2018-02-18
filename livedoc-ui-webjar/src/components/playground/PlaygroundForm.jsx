@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import {Button, Col, Form, FormGroup, Input, Label} from 'reactstrap';
-import type {ApiBodyObjectDoc, ApiMethodDoc, ApiVerb} from '../../model/livedoc';
+import type {ApiRequestBodyDoc, ApiMethodDoc, ApiVerb} from '../../model/livedoc';
 import type {RequestInfo} from '../../model/playground';
 
 export type PlaygroundFormProps = {
@@ -46,7 +46,7 @@ const RequestBodyInput = (textAreaProps) => {
 export class PlaygroundForm extends React.Component<PlaygroundFormProps, PlaygroundFormState> {
 
   static defaultMime: string = 'application/json';
-  static defaultMethod: ApiVerb = 'TRACE';
+  static defaultMethod: ApiVerb = 'GET';
 
   constructor(props: PlaygroundFormProps) {
     super(props);
@@ -60,11 +60,11 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
   static getInitialRequestInfo(props: PlaygroundFormProps): PlaygroundFormState {
     const doc: ApiMethodDoc = props.methodDoc;
     return {
-      url: props.basePath + PlaygroundForm.getFirst(doc.path, ''),
-      method: PlaygroundForm.getFirst(doc.verb, PlaygroundForm.defaultMethod),
+      url: props.basePath + PlaygroundForm.getFirst(doc.paths, ''),
+      method: PlaygroundForm.getFirst(doc.verbs, PlaygroundForm.defaultMethod),
       acceptHeader: PlaygroundForm.getFirst(doc.produces, PlaygroundForm.defaultMime),
       contentType: PlaygroundForm.getFirst(doc.consumes, PlaygroundForm.defaultMime),
-      body: PlaygroundForm.getTemplateBody(doc.bodyobject),
+      body: PlaygroundForm.getTemplateBody(doc.requestBody),
     };
   }
 
@@ -75,7 +75,7 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
     return arr.length === 0 ? defaultValue : arr[0];
   }
 
-  static getTemplateBody(obj: ?ApiBodyObjectDoc): string {
+  static getTemplateBody(obj: ?ApiRequestBodyDoc): string {
     const template = obj && obj.template;
     return template ? JSON.stringify(template, null, 2) : '';
   }
@@ -107,13 +107,13 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
       <PlaygroundFormRow label="URL" id="urlInput">
         <Input type="text" id="urlInput" name="url" value={this.state.url} onChange={e => this.handleChange(e)}/>
       </PlaygroundFormRow>
-      <SelectRow label="Method" id="methodSelect" name="method" options={doc.verb}
+      <SelectRow label="Method" id="methodSelect" name="method" options={doc.verbs}
                  value={this.state.method} onChange={e => this.handleChange(e)}/>
       <SelectRow label="Accept" id="acceptSelect" name="acceptHeader" options={doc.produces}
                  value={this.state.acceptHeader} onChange={e => this.handleChange(e)}/>
       <SelectRow label="Content Type" id="contentSelect" name="contentType" options={doc.consumes}
                  value={this.state.contentType} onChange={e => this.handleChange(e)}/>
-      {doc.bodyobject && <RequestBodyInput name="body" value={this.state.body} onChange={e => this.handleChange(e)}/>}
+      {doc.requestBody && <RequestBodyInput name="body" value={this.state.body} onChange={e => this.handleChange(e)}/>}
       <Button type="submit">Submit</Button>
     </Form>;
   }

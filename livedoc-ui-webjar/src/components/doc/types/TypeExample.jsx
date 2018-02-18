@@ -14,7 +14,7 @@ const TypeExamplePresenter = ({typeDoc}: TypeExampleProps) => {
   if (!typeDoc) {
     return null;
   }
-  const isEnum = typeDoc.allowedvalues && typeDoc.allowedvalues.length > 0;
+  const isEnum = typeDoc.allowedValues && typeDoc.allowedValues.length > 0;
   if (isEnum) {
     return null;
   }

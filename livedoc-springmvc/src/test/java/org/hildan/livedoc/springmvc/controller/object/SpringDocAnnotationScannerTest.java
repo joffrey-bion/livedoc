@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hildan.livedoc.core.LivedocReader;
-import org.hildan.livedoc.core.pojo.ApiObjectDoc;
-import org.hildan.livedoc.core.pojo.Livedoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.Livedoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Test;
 
@@ -27,8 +27,8 @@ public class SpringDocAnnotationScannerTest {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
 
-        Map<String, Set<ApiObjectDoc>> objects = doc.getObjects();
-        for (Set<ApiObjectDoc> values : objects.values()) {
+        Map<String, Set<ApiTypeDoc>> objects = doc.getObjects();
+        for (Set<ApiTypeDoc> values : objects.values()) {
             assertContainsDoc(values, "NestedObject1");
         }
     }
@@ -38,19 +38,19 @@ public class SpringDocAnnotationScannerTest {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
 
-        Map<String, Set<ApiObjectDoc>> objects = doc.getObjects();
-        for (Set<ApiObjectDoc> values : objects.values()) {
+        Map<String, Set<ApiTypeDoc>> objects = doc.getObjects();
+        for (Set<ApiTypeDoc> values : objects.values()) {
             assertContainsDoc(values, "NestedObject2");
             assertContainsDoc(values, "NestedObject3");
         }
     }
 
-    private void assertContainsDoc(Set<ApiObjectDoc> values, String name) {
-        for (ApiObjectDoc apiObjectDoc : values) {
-            if (apiObjectDoc.getName().equals(name)) {
+    private void assertContainsDoc(Set<ApiTypeDoc> values, String name) {
+        for (ApiTypeDoc apiTypeDoc : values) {
+            if (apiTypeDoc.getName().equals(name)) {
                 return;
             }
         }
-        fail("Could not find ApiObjectDoc with name " + name);
+        fail("Could not find ApiTypeDoc with name " + name);
     }
 }

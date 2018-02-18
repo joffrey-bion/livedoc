@@ -10,21 +10,17 @@ import java.lang.annotation.Target;
  * This annotation is to be used on your "service" class, for example controller classes in Spring MVC.
  */
 @Documented
-@Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiVersion {
 
     /**
      * The version since the method/object/class is supported
-     *
-     * @return
      */
     String since();
 
     /**
      * The version until the method/object/class is supported
-     *
-     * @return
      */
     String until() default "";
 }

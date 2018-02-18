@@ -28,7 +28,7 @@ public class JacksonPropertyScannerTest {
         scanner = new JacksonPropertyScanner(new ObjectMapper());
     }
 
-    @JsonIgnoreProperties(value = {"ignoredOnClass", "ignoredOnClass2"})
+    @JsonIgnoreProperties({"ignoredOnClass", "ignoredOnClass2"})
     private static class MyDto {
 
         @JsonProperty("publicFieldRenamed")

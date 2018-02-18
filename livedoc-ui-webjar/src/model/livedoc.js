@@ -1,8 +1,4 @@
 // @flow
-export type Authenticated = {
-  auth: ApiAuthDoc,
-};
-
 export type LivedocID = string;
 
 export type Identified = {
@@ -14,7 +10,19 @@ export type Named = {
 };
 
 export type Versioned = {
-  supportedversions: ApiVersionDoc,
+  supportedVersions: ApiVersionDoc,
+};
+
+export type Scoped = {
+  visibility: ?ApiVisibility,
+};
+
+export type Secured = {
+  auth: ApiAuthDoc,
+};
+
+export type Staged = {
+  stage: ?ApiStage,
 };
 
 export type Livedoc = {
@@ -31,16 +39,16 @@ export type Livedoc = {
 export type ApiAuthDoc = {
   type: ApiAuthType,
   roles: Array<string>,
-  testusers: {[key: string]: string},
+  testUsers: {[key: string]: string},
   scheme: ?string,
-  testtokens: Array<string>
+  testTokens: Array<string>,
 }
 
 export type ApiAuthType = 'NONE' | 'BASIC_AUTH' | 'TOKEN' ;
 
-export type ApiBodyObjectDoc = Identified & {
+export type ApiRequestBodyDoc = Identified & {
   type: LivedocType,
-  template: any
+  template: any,
 }
 
 export type ApiChangelogsDoc = Identified & {
@@ -52,10 +60,8 @@ export type ApiChangelogDoc = Identified & {
   changes: Array<string>,
 }
 
-export type ApiDoc = Identified & Named & Versioned & Authenticated & {
+export type ApiDoc = Identified & Named & Versioned & Secured & Scoped & Staged & {
   description: string,
-  visibility: ?ApiVisibility,
-  stage: ?ApiStage,
   group: string,
   methods: Array<ApiMethodDoc>,
 };
@@ -74,14 +80,14 @@ export type ApiFlowDoc = Identified & Named & {
 }
 
 export type ApiFlowStepDoc = Identified & {
-  apimethodid: string,
-  apimethoddoc: ApiMethodDoc,
+  apiMethodId: string,
+  apiMethodDoc: ApiMethodDoc,
 }
 
 export type ApiGlobalDoc = Identified & {
   sections: Array<ApiGlobalSectionDoc>,
-  changelogset: ApiChangelogsDoc,
-  migrationset: ApiMigrationsDoc,
+  changelogSet: ApiChangelogsDoc,
+  migrationSet: ApiMigrationsDoc,
 }
 
 export type ApiGlobalSectionDoc = Identified & {
@@ -91,27 +97,25 @@ export type ApiGlobalSectionDoc = Identified & {
 
 export type ApiHeaderDoc = Identified & Named & {
   description: string,
-  allowedvalues: Array<string>,
+  allowedValues: Array<string>,
 }
 
-export type ApiMethodDoc = Identified & LivedocHints & Versioned & {
+export type ApiMethodDoc = Identified & LivedocHints & Versioned & Scoped & Staged & {
   id: string,
-  path: Array<string>,
-  method: string,
+  paths: Array<string>,
+  name: string,
   description: string,
   summary: string,
-  verb: Array<ApiVerb>,
+  verbs: Array<ApiVerb>,
   produces: Array<string>,
   consumes: Array<string>,
   headers: Array<ApiHeaderDoc>,
-  pathparameters: Array<ApiParamDoc>,
-  queryparameters: Array<ApiParamDoc>,
-  bodyobject: ?ApiBodyObjectDoc,
-  response: ApiResponseObjectDoc,
-  responsestatuscode: string,
-  visibility: ?ApiVisibility,
-  stage: ?ApiStage,
-  apierrors: Array<ApiErrorDoc>,
+  pathParameters: Array<ApiParamDoc>,
+  queryParameters: Array<ApiParamDoc>,
+  requestBody: ?ApiRequestBodyDoc,
+  responseBodyType: LivedocType,
+  responseStatusCode: string,
+  apiErrors: Array<ApiErrorDoc>,
   auth: ApiAuthDoc,
 }
 
@@ -125,14 +129,12 @@ export type ApiMigrationDoc = Identified & {
   steps: Array<string>,
 }
 
-export type ApiObjectDoc = Identified & Named & LivedocHints & Versioned & {
+export type ApiObjectDoc = Identified & Named & LivedocHints & Versioned & Scoped & Staged & {
   description: string,
-  visibility: ?ApiVisibility,
-  stage: ?ApiStage,
   group: string,
   fields: Array<ApiObjectFieldDoc>,
   auth: ApiAuthDoc,
-  allowedvalues: ?Array<string>,
+  allowedValues: ?Array<string>,
   template: any,
 };
 
@@ -140,25 +142,21 @@ export type ApiObjectFieldDoc = Identified & Named & LivedocHints & Versioned & 
   description: string,
   type: LivedocType,
   format: Array<string>,
-  allowedvalues: Array<string>,
+  allowedValues: Array<string>,
 };
 
 export type ApiParamDoc = LivedocHints & Named & {
   description: string,
   type: LivedocType,
   format: string,
-  allowedvalues: Array<string>,
+  allowedValues: Array<string>,
   required: 'true' | 'false' | 'undefined',
   defaultValue: string,
 }
 
-export type ApiResponseObjectDoc = Identified & {
-  type: LivedocType,
-}
-
 export type ApiStage = 'PRE-ALPHA' | 'ALPHA' | 'BETA' | 'RC' | 'GA' | 'DEPRECATED';
 
-export type ApiVerb = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'TRACE' | 'UNDEFINED';
+export type ApiVerb = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'TRACE';
 
 export type ApiVersionDoc = {
   since: string,
@@ -168,9 +166,9 @@ export type ApiVersionDoc = {
 export type ApiVisibility = 'PRIVATE' | 'PUBLIC';
 
 export type LivedocHints = {
-  jsondocerrors: Array<string>,
-  jsondocwarnings: Array<string>,
-  jsondochints: Array<string>,
+  livedocErrors: Array<string>,
+  livedocWarnings: Array<string>,
+  livedocHints: Array<string>,
 };
 
 export type LivedocType = {

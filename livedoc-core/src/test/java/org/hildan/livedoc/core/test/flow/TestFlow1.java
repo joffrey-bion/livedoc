@@ -8,15 +8,15 @@ import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 public class TestFlow1 {
 
     @ApiFlow(name = "Flow1", description = "Description for flow 1",
-            steps = {@ApiFlowStep(apimethodid = "M1"), @ApiFlowStep(apimethodid = "M2"),
-                    @ApiFlowStep(apimethodid = "M3")})
+            steps = {@ApiFlowStep(apiMethodId = "M1"), @ApiFlowStep(apiMethodId = "M2"),
+                    @ApiFlowStep(apiMethodId = "M3")})
     public void flow1() {
 
     }
 
     @ApiFlow(name = "Flow2", description = "Description for flow 2",
-            steps = {@ApiFlowStep(apimethodid = "M0"), @ApiFlowStep(apimethodid = "M4"),
-                    @ApiFlowStep(apimethodid = "M5")})
+            steps = {@ApiFlowStep(apiMethodId = "M0"), @ApiFlowStep(apiMethodId = "M4"),
+                    @ApiFlowStep(apiMethodId = "M5")})
     public void flow2() {
 
     }

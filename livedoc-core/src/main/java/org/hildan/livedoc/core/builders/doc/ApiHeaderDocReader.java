@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiHeader;
 import org.hildan.livedoc.core.annotations.ApiHeaders;
-import org.hildan.livedoc.core.pojo.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.ApiHeaderDoc;
 
 public class ApiHeaderDocReader {
 
@@ -18,13 +18,13 @@ public class ApiHeaderDocReader {
 
         if (typeAnnotation != null) {
             for (ApiHeader apiHeader : typeAnnotation.headers()) {
-                docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedvalues()));
+                docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedValues()));
             }
         }
 
         if (methodAnnotation != null) {
             for (ApiHeader apiHeader : methodAnnotation.headers()) {
-                docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedvalues()));
+                docs.add(new ApiHeaderDoc(apiHeader.name(), apiHeader.description(), apiHeader.allowedValues()));
             }
         }
 

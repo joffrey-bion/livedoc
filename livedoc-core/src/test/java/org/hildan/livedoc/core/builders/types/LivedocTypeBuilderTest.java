@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -145,14 +147,14 @@ public class LivedocTypeBuilderTest {
     // similar to the Spring class
     private static class ResponseEntity<T> {}
 
-    @ApiObject(name = "my_parent")
+    @ApiType(name = "my_parent")
     private class ParentPojo {
 
     }
 
-    @ApiObject(name = "fooPojo", group = "foo")
+    @ApiType(name = "fooPojo", group = "foo")
     private class FooPojo<K> {
-        @ApiObjectProperty
+        @ApiTypeProperty
         private K fooField;
     }
 

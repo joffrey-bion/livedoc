@@ -6,15 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.pojo.ApiStage;
-import org.hildan.livedoc.core.pojo.ApiVerb;
-import org.hildan.livedoc.core.pojo.ApiVisibility;
+import org.hildan.livedoc.core.model.doc.ApiVerb;
 
 /**
  * This annotation is to be used on your exposed methods.
  */
 @Documented
-@Target(value = ElementType.METHOD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiMethod {
 
@@ -46,7 +44,7 @@ public @interface ApiMethod {
      *
      * @see ApiVerb
      */
-    ApiVerb[] verb() default {};
+    ApiVerb[] verbs() default {};
 
     /**
      * An array of strings representing media types produced by the method, like application/json, application/xml, ...
@@ -61,15 +59,5 @@ public @interface ApiMethod {
     /**
      * Response status code that this method will return to the caller. Defaults to 200
      */
-    String responsestatuscode() default DEFAULT_RESPONSE_STATUS;
-
-    /**
-     * Indicates the visibility of the method
-     */
-    ApiVisibility visibility() default ApiVisibility.UNDEFINED;
-
-    /**
-     * Indicates the stage of development or release
-     */
-    ApiStage stage() default ApiStage.UNDEFINED;
+    String responseStatusCode() default DEFAULT_RESPONSE_STATUS;
 }

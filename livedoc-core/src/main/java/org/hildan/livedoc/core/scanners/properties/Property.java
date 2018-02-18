@@ -76,7 +76,7 @@ public class Property implements Comparable<Property> {
     }
 
     /**
-     * This comparison is the same as the one in ApiObjectFieldDoc class
+     * This comparison is the same as the one in ApiFieldDoc class
      */
     @Override
     public int compareTo(Property o) {

@@ -4,9 +4,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hildan.livedoc.core.annotations.ApiError;
-import org.hildan.livedoc.core.annotations.ApiErrors;
-import org.hildan.livedoc.core.pojo.ApiErrorDoc;
+import org.hildan.livedoc.core.annotations.errors.ApiError;
+import org.hildan.livedoc.core.annotations.errors.ApiErrors;
+import org.hildan.livedoc.core.model.doc.ApiErrorDoc;
 
 import static java.util.stream.Collectors.toList;
 
@@ -33,7 +33,7 @@ public class ApiErrorDocReader {
 
     private static List<ApiErrorDoc> readApiErrorDocs(ApiErrors annotation) {
         List<ApiErrorDoc> errorDocs = new ArrayList<>();
-        for (ApiError error : annotation.apierrors()) {
+        for (ApiError error : annotation.value()) {
             errorDocs.add(new ApiErrorDoc(error.code(), error.description()));
         }
         return errorDocs;

@@ -18,10 +18,10 @@ import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.GlobalDocReader;
 import org.hildan.livedoc.core.LivedocAnnotationGlobalDocReader;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.pojo.global.ApiGlobalDoc;
-import org.hildan.livedoc.core.pojo.global.ApiGlobalSectionDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -86,32 +86,32 @@ public class GlobalDocReaderTest {
         Assert.assertEquals(expectedTitles, actualTitles);
     }
 
-    @ApiChangelogSet(changlogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
+    @ApiChangelogSet(changelogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
     private class Changelog {}
 
     @Test
     public void testApiGlobalDoc_changelog() {
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(null, Changelog.class, null);
         Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(1, apiGlobalDoc.getChangelogset().getChangelogs().size());
+        Assert.assertEquals(1, apiGlobalDoc.getChangelogSet().getChangelogs().size());
     }
 
-    @ApiMigrationSet(migrations = {@ApiMigration(fromversion = "1.0", steps = {"Step #1"}, toversion = "1.1")})
+    @ApiMigrationSet(migrations = {@ApiMigration(fromVersion = "1.0", steps = {"Step #1"}, toVersion = "1.1")})
     private class Migration {}
 
     @Test
     public void testApiGlobalDoc_migration() {
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(null, null, Migration.class);
         Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(1, apiGlobalDoc.getMigrationset().getMigrations().size());
+        Assert.assertEquals(1, apiGlobalDoc.getMigrationSet().getMigrations().size());
     }
 
     @ApiGlobal(sections = {
             @ApiGlobalSection(title = "title",
                     paragraphs = {"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt"})
     })
-    @ApiChangelogSet(changlogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
-    @ApiMigrationSet(migrations = {@ApiMigration(fromversion = "1.0", steps = {"Step #1"}, toversion = "1.1")})
+    @ApiChangelogSet(changelogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
+    @ApiMigrationSet(migrations = {@ApiMigration(fromVersion = "1.0", steps = {"Step #1"}, toVersion = "1.1")})
     private class AllTogether {}
 
     @Test
@@ -119,22 +119,22 @@ public class GlobalDocReaderTest {
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(AllTogether.class, AllTogether.class, AllTogether.class);
         Assert.assertNotNull(apiGlobalDoc);
         Assert.assertEquals(1, apiGlobalDoc.getSections().size());
-        Assert.assertEquals(1, apiGlobalDoc.getMigrationset().getMigrations().size());
-        Assert.assertEquals(1, apiGlobalDoc.getChangelogset().getChangelogs().size());
+        Assert.assertEquals(1, apiGlobalDoc.getMigrationSet().getMigrations().size());
+        Assert.assertEquals(1, apiGlobalDoc.getChangelogSet().getChangelogs().size());
     }
 
     @ApiFlowSet
     private class TestFlow {
 
         @ApiFlow(name = "flow", description = "A test flow", group = "Flows A", steps = {
-                @ApiFlowStep(apimethodid = "F1"), @ApiFlowStep(apimethodid = "F2"), @ApiFlowStep(apimethodid = "F3")
+                @ApiFlowStep(apiMethodId = "F1"), @ApiFlowStep(apiMethodId = "F2"), @ApiFlowStep(apiMethodId = "F3")
         })
         public void flow() {
 
         }
 
         @ApiFlow(name = "flow2", description = "A test flow 2", group = "Flows B", steps = {
-                @ApiFlowStep(apimethodid = "F4"), @ApiFlowStep(apimethodid = "F5"), @ApiFlowStep(apimethodid = "F6")
+                @ApiFlowStep(apiMethodId = "F4"), @ApiFlowStep(apiMethodId = "F5"), @ApiFlowStep(apiMethodId = "F6")
         })
         public void flow2() {
 

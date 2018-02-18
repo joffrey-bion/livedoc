@@ -6,7 +6,7 @@ import { StageBadge } from './StageBadge';
 export type ContentHeaderProps = {
   title: string,
   description?: string,
-  stage?: ApiStage,
+  stage?: ?ApiStage,
 }
 
 export const ContentHeader = ({title, description, stage}: ContentHeaderProps) => {

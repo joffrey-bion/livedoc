@@ -3,8 +3,8 @@ package org.hildan.livedoc.springmvc.scanner;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,11 +20,11 @@ public class SpringPathBuilderTest {
     @RequestMapping
     private static class SpringController {
 
-        @RequestMapping(value = "/path")
+        @RequestMapping("/path")
         public void slashPath() {
         }
 
-        @RequestMapping(value = "/")
+        @RequestMapping("/")
         public void path() {
         }
 
@@ -38,10 +38,10 @@ public class SpringPathBuilderTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class, MethodDisplay.URI);
         Assert.assertEquals("SpringController", apiDoc.getName());
 
-        boolean slashPath = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/path"));
+        boolean slashPath = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/path"));
         assertTrue(slashPath);
 
-        boolean slash = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/"));
+        boolean slash = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/"));
         assertTrue(slash);
     }
 
@@ -54,7 +54,7 @@ public class SpringPathBuilderTest {
         public void none() {
         }
 
-        @RequestMapping(value = "/test")
+        @RequestMapping("/test")
         public void test() {
         }
     }
@@ -65,12 +65,12 @@ public class SpringPathBuilderTest {
         Assert.assertEquals("SpringController2", apiDoc.getName());
 
         boolean none = apiDoc.getMethods().stream().anyMatch(input -> {
-            System.out.println(input.getPath());
-            return input.getPath().contains("/");
+            System.out.println(input.getPaths());
+            return input.getPaths().contains("/");
         });
         assertTrue(none);
 
-        boolean test = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/test"));
+        boolean test = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/test"));
         assertTrue(test);
     }
 
@@ -87,19 +87,19 @@ public class SpringPathBuilderTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringControllerChild.class, MethodDisplay.URI);
         Assert.assertEquals("SpringControllerChild", apiDoc.getName());
 
-        boolean none = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/child"));
+        boolean none = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/child"));
         assertTrue(none);
 
-        boolean test = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/child/test"));
+        boolean test = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/child/test"));
         assertTrue(test);
     }
 
     @SuppressWarnings("unused")
     @Controller
-    @RequestMapping(value = {"/path1", "/path2/"})
+    @RequestMapping({"/path1", "/path2/"})
     private static class SpringController3 {
 
-        @RequestMapping(value = {"/path3", "path4"})
+        @RequestMapping({"/path3", "path4"})
         public void none() {
         }
     }
@@ -111,7 +111,7 @@ public class SpringPathBuilderTest {
 
         boolean allRight = apiDoc.getMethods()
                                  .stream()
-                                 .anyMatch(input -> input.getPath()
+                                 .anyMatch(input -> input.getPaths()
                                                          .containsAll(Arrays.asList("/path1/path3", "/path1/path4",
                                                                  "/path2/path3", "/path2/path4")));
         assertTrue(allRight);
@@ -119,7 +119,7 @@ public class SpringPathBuilderTest {
 
     @SuppressWarnings("unused")
     @Controller
-    @RequestMapping(value = "/path")
+    @RequestMapping("/path")
     private static class SpringController4 {
 
         @RequestMapping
@@ -132,7 +132,7 @@ public class SpringPathBuilderTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController4.class, MethodDisplay.URI);
         Assert.assertEquals("SpringController4", apiDoc.getName());
 
-        boolean allRight = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().contains("/path"));
+        boolean allRight = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/path"));
         assertTrue(allRight);
     }
 
@@ -152,7 +152,7 @@ public class SpringPathBuilderTest {
         Assert.assertEquals("SpringController5", apiDoc.getName());
 
         List<String> expectedPaths = Arrays.asList("/path", "/path2", "/val1");
-        boolean allRight = apiDoc.getMethods().stream().anyMatch(input -> input.getPath().containsAll(expectedPaths));
+        boolean allRight = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().containsAll(expectedPaths));
         assertTrue(allRight);
     }
 
@@ -162,7 +162,7 @@ public class SpringPathBuilderTest {
         List<String> expectedPaths = Arrays.asList("/path", "/path2", "/val1");
         boolean allRight = apiDoc.getMethods()
                                  .stream()
-                                 .anyMatch(input -> input.getPath().containsAll(expectedPaths)
+                                 .anyMatch(input -> input.getPaths().containsAll(expectedPaths)
                                          && input.getDisplayedMethodString().contains("none"));
         assertTrue(allRight);
     }

@@ -3,12 +3,12 @@ package org.hildan.livedoc.core.builders.doc;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.hildan.livedoc.core.annotations.ApiAuthBasic;
-import org.hildan.livedoc.core.annotations.ApiAuthBasicUser;
-import org.hildan.livedoc.core.annotations.ApiAuthNone;
-import org.hildan.livedoc.core.annotations.ApiAuthToken;
-import org.hildan.livedoc.core.pojo.ApiAuthDoc;
-import org.hildan.livedoc.core.pojo.ApiAuthType;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
+import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
+import org.hildan.livedoc.core.model.doc.ApiAuthType;
 
 public class ApiAuthDocReader {
 
@@ -51,7 +51,7 @@ public class ApiAuthDocReader {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
         apiAuthDoc.setType(ApiAuthType.BASIC_AUTH);
         apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
-        for (ApiAuthBasicUser testuser : annotation.testusers()) {
+        for (ApiAuthBasicUser testuser : annotation.testUsers()) {
             apiAuthDoc.addTestUser(testuser.username(), testuser.password());
         }
         return apiAuthDoc;
@@ -62,7 +62,7 @@ public class ApiAuthDocReader {
         apiAuthDoc.setType(ApiAuthType.TOKEN);
         apiAuthDoc.setScheme(annotation.scheme());
         apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
-        for (String testtoken : annotation.testtokens()) {
+        for (String testtoken : annotation.testTokens()) {
             apiAuthDoc.addTestToken(testtoken);
         }
         return apiAuthDoc;

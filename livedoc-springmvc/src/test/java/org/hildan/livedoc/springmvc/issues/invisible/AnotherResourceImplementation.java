@@ -1,12 +1,12 @@
 package org.hildan.livedoc.springmvc.issues.invisible;
 
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
-@ApiObject(name = "another resource implementation")
+@ApiType(name = "another resource implementation")
 public class AnotherResourceImplementation implements ResourceInterface {
 
-    @ApiObjectProperty(name = "resource id")
+    @ApiTypeProperty(name = "resource id")
     private String id;
 
     @Override

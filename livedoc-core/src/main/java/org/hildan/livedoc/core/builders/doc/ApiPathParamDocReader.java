@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiParams;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
-import org.hildan.livedoc.core.builders.types.LivedocType;
-import org.hildan.livedoc.core.builders.types.LivedocTypeBuilder;
-import org.hildan.livedoc.core.pojo.ApiParamDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 
 public class ApiPathParamDocReader {
 
@@ -18,8 +18,8 @@ public class ApiPathParamDocReader {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
         if (method.isAnnotationPresent(ApiParams.class)) {
-            for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathparams()) {
-                LivedocType type = LivedocTypeBuilder.build(apiParam.clazz());
+            for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathParams()) {
+                LivedocType type = LivedocTypeBuilder.build(apiParam.type());
                 ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, type);
                 docs.add(apiParamDoc);
             }
@@ -30,7 +30,6 @@ public class ApiPathParamDocReader {
             for (int j = 0; j < parametersAnnotations[i].length; j++) {
                 if (parametersAnnotations[i][j] instanceof ApiPathParam) {
                     ApiPathParam annotation = (ApiPathParam) parametersAnnotations[i][j];
-                    Class<?> clazz = method.getParameterTypes()[i];
                     Type type = method.getGenericParameterTypes()[i];
                     LivedocType livedocType = LivedocTypeBuilder.build(type);
                     ApiParamDoc apiParamDoc = buildFromAnnotation(annotation, livedocType);
@@ -44,6 +43,6 @@ public class ApiPathParamDocReader {
 
     private static ApiParamDoc buildFromAnnotation(ApiPathParam annotation, LivedocType livedocType) {
         return new ApiParamDoc(annotation.name(), annotation.description(), livedocType, "true",
-                annotation.allowedvalues(), annotation.format(), null);
+                annotation.allowedValues(), annotation.format(), null);
     }
 }

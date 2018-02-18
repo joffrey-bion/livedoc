@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @see ApiHeader
  */
 @Documented
-@Target(value = {ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiHeaders {
 

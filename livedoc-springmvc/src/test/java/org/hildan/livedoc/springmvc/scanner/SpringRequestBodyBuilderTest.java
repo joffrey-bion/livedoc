@@ -1,10 +1,10 @@
 package org.hildan.livedoc.springmvc.scanner;
 
-import org.hildan.livedoc.core.annotations.ApiObject;
-import org.hildan.livedoc.core.annotations.ApiObjectProperty;
-import org.hildan.livedoc.core.pojo.ApiDoc;
-import org.hildan.livedoc.core.pojo.ApiMethodDoc;
-import org.hildan.livedoc.core.pojo.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
+import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,12 +19,12 @@ public class SpringRequestBodyBuilderTest {
     @RequestMapping
     public class SpringController {
 
-        @RequestMapping(value = "/body-one")
+        @RequestMapping("/body-one")
         public void bodyOne(@RequestBody String string) {
 
         }
 
-        @RequestMapping(value = "/body-two")
+        @RequestMapping("/body-two")
         public void bodyTwo(@RequestBody Body body) {
 
         }
@@ -32,12 +32,12 @@ public class SpringRequestBodyBuilderTest {
     }
 
     @SuppressWarnings("unused")
-    @ApiObject
+    @ApiType
     private class Body {
-        @ApiObjectProperty
+        @ApiTypeProperty
         private String name;
 
-        @ApiObjectProperty
+        @ApiTypeProperty
         private Integer age;
     }
 
@@ -47,13 +47,13 @@ public class SpringRequestBodyBuilderTest {
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPath().contains("/body-one")) {
-                Assert.assertNotNull(apiMethodDoc.getBodyobject());
-                Assert.assertEquals("String", apiMethodDoc.getBodyobject().getType().getOneLineText());
+            if (apiMethodDoc.getPaths().contains("/body-one")) {
+                Assert.assertNotNull(apiMethodDoc.getRequestBody());
+                Assert.assertEquals("String", apiMethodDoc.getRequestBody().getType().getOneLineText());
             }
-            if (apiMethodDoc.getPath().contains("/body-two")) {
-                Assert.assertNotNull(apiMethodDoc.getBodyobject());
-                Assert.assertEquals("Body", apiMethodDoc.getBodyobject().getType().getOneLineText());
+            if (apiMethodDoc.getPaths().contains("/body-two")) {
+                Assert.assertNotNull(apiMethodDoc.getRequestBody());
+                Assert.assertEquals("Body", apiMethodDoc.getRequestBody().getType().getOneLineText());
             }
         }
     }
