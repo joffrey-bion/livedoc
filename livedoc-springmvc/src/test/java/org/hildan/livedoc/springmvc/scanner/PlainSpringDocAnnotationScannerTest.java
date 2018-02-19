@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
@@ -82,10 +82,10 @@ public class PlainSpringDocAnnotationScannerTest {
                 Iterator<ApiHeaderDoc> headersIterator = headers.iterator();
                 ApiHeaderDoc headerTest = headersIterator.next();
                 assertEquals("header", headerTest.getName());
-                assertEquals("test", headerTest.getAllowedValues()[0]);
+                assertEquals("test", headerTest.getValues().get(0));
                 ApiHeaderDoc headerTwo = headersIterator.next();
                 assertEquals("header-two", headerTwo.getName());
-                assertEquals("header-test", headerTwo.getAllowedValues()[0]);
+                assertEquals("header-test", headerTwo.getValues().get(0));
 
                 assertEquals("String", apiMethodDoc.getRequestBody().getType().getOneLineText());
                 assertEquals("String", apiMethodDoc.getResponseBodyType().getOneLineText());

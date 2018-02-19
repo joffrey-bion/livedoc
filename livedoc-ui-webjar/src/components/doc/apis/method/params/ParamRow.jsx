@@ -9,7 +9,9 @@ export type ParamRowProps = {
 
 export const ParamRow = ({param}: ParamRowProps) => {
   return <tr>
-    <td>{param.name}</td>
+    <td>
+      <code>{param.name}</code>
+    </td>
     <td>
       <TypeRefWithFormat type={param.type} required={param.required} format={param.format}/>
     </td>

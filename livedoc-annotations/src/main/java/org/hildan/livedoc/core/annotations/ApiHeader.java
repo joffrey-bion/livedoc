@@ -29,5 +29,5 @@ public @interface ApiHeader {
     /**
      * An array representing the allowed values this header can have.
      */
-    String[] allowedValues() default {};
+    String[] allowedValues() default {"*"};
 }

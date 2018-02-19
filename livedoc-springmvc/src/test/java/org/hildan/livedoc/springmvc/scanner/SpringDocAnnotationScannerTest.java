@@ -14,7 +14,7 @@ import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
@@ -79,7 +79,7 @@ public class SpringDocAnnotationScannerTest {
                 Set<ApiHeaderDoc> headers = apiMethodDoc.getHeaders();
                 ApiHeaderDoc header = headers.iterator().next();
                 Assert.assertEquals("header", header.getName());
-                Assert.assertEquals("test", header.getAllowedValues()[0]);
+                Assert.assertEquals("test", header.getValues().get(0));
 
                 Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryParameters();
                 Assert.assertEquals(3, queryparameters.size());

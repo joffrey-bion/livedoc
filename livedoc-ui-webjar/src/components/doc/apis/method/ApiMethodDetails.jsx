@@ -4,6 +4,7 @@ import { Table } from 'reactstrap';
 import type { ApiMethodDoc } from '../../../../model/livedoc';
 import { StageBadge } from '../../../shared/content/StageBadge';
 import { AuthInfo } from './AuthInfo';
+import { ApiMethodHeadersTable } from './headers/ApiMethodHeadersTable';
 import { ApiMethodParamsTable } from './params/ApiMethodParamsTable';
 import { TypeRefWithMime } from './TypeRefWithMime';
 
@@ -20,6 +21,9 @@ export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
   }
   if (doc.queryParameters && doc.queryParameters.length > 0) {
     rows.push(row('Query Params', <ApiMethodParamsTable params={doc.queryParameters}/>));
+  }
+  if (doc.headers && doc.headers.length > 0) {
+    rows.push(row('Headers', <ApiMethodHeadersTable headers={doc.headers}/>));
   }
   if (doc.requestBody) {
     rows.push(row('Request body type', <TypeRefWithMime type={doc.requestBody.type} mimeTypes={doc.consumes}/>));

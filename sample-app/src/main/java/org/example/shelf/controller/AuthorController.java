@@ -6,11 +6,11 @@ import org.example.shelf.documentation.DocumentationConstants;
 import org.example.shelf.model.Author;
 import org.example.shelf.repository.AuthorRepository;
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
-import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
+import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -57,7 +58,8 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponseBodyType
     public ResponseEntity<Void> save(@ApiRequestBodyType @RequestBody Author author,
-            UriComponentsBuilder uriComponentsBuilder) {
+            UriComponentsBuilder uriComponentsBuilder,
+            @RequestHeader(name = "some-header", defaultValue = "aDefaultValue") String someHeader) {
         authorRepository.save(author);
 
         HttpHeaders headers = new HttpHeaders();
@@ -66,7 +68,7 @@ public class AuthorController {
     }
 
     @ApiMethod(id = DocumentationConstants.AUTHOR_DELETE, description = "Deletes the author with the given ID")
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "delete=ok")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@ApiPathParam(name = "id") @PathVariable Long id) {
         Author author = authorRepository.findOne(id);

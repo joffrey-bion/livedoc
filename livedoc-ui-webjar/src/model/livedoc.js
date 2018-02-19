@@ -97,8 +97,11 @@ export type ApiGlobalSectionDoc = Identified & {
 
 export type ApiHeaderDoc = Identified & Named & {
   description: string,
-  allowedValues: Array<string>,
+  type: HeaderFilterType,
+  values: Array<string>,
 }
+
+export type HeaderFilterType = 'REQUIRED_MATCHING' | 'OPTIONAL' | 'FORBIDDEN' | 'DIFFERENT';
 
 export type ApiMethodDoc = Identified & LivedocHints & Versioned & Scoped & Staged & {
   id: string,
