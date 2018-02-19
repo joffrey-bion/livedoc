@@ -1,11 +1,13 @@
 // @flow
 import * as React from 'react';
-import type { ApiGlobalDoc } from '../../model/livedoc';
+import type { ApiGlobalDoc } from '../../../model/livedoc';
 import type { NavElementDescription, NavGroupDescription } from './NavGroup';
 import { NavSection } from './NavSection';
 
 export type GlobalNavSectionProps = {
   globalDoc: ApiGlobalDoc,
+  match: any,
+  location: any,
 }
 
 export const GlobalNavSection = ({globalDoc, ...otherProps}: GlobalNavSectionProps) => {
