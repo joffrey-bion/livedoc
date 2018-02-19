@@ -7,31 +7,31 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
-import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
-import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
-import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
-import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
-import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
 import org.hildan.livedoc.core.annotations.ApiHeader;
 import org.hildan.livedoc.core.annotations.ApiHeaders;
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.annotations.ApiParams;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
+import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
+import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
 import org.hildan.livedoc.core.annotations.ApiStage;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.annotations.ApiVisibility;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
 import org.hildan.livedoc.core.builders.doc.ApiAuthDocReader;
 import org.hildan.livedoc.core.model.doc.ApiAuthType;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiErrorDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
-import org.hildan.livedoc.core.model.doc.Stage;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
-import org.hildan.livedoc.core.model.doc.Visibility;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.Stage;
+import org.hildan.livedoc.core.model.doc.Visibility;
 import org.hildan.livedoc.core.test.controller.Test3Controller;
 import org.hildan.livedoc.core.test.pojo.Child;
 import org.hildan.livedoc.core.test.pojo.Pizza;
@@ -99,7 +99,8 @@ public class ApiDocTest {
 
         @ApiMethod(path = "/LongArray", verbs = ApiVerb.GET, description = "a-test-method")
         @ApiResponseBodyType
-        public Long[] longObjArray(@ApiPathParam(name = "LongArray") Long[] longObjArray, @ApiRequestBodyType Long[] body) {
+        public Long[] longObjArray(@ApiPathParam(name = "LongArray") Long[] longObjArray,
+                @ApiRequestBodyType Long[] body) {
             return null;
         }
 
