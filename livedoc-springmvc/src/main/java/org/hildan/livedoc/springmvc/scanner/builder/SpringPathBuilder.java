@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -24,13 +25,13 @@ public class SpringPathBuilder {
     private static List<PathExtractor<?>> getPathExtractors() {
         List<PathExtractor<?>> extractors = new ArrayList<>(3);
         if (ClasspathUtils.isMessageMappingOnClasspath()) {
-            extractors.add(new PathExtractor<>(MessageMapping.class, MessageMapping::value));
+            extractors.add(PathExtractor.of(MessageMapping.class, MessageMapping::value));
         }
         if (ClasspathUtils.isSubscribeMappingOnClasspath()) {
-            extractors.add(new PathExtractor<>(SubscribeMapping.class, SubscribeMapping::value));
+            extractors.add(PathExtractor.of(SubscribeMapping.class, SubscribeMapping::value));
         }
         if (ClasspathUtils.isRequestMappingOnClasspath()) {
-            extractors.add(new PathExtractor<>(RequestMapping.class, RequestMapping::value, RequestMapping::path));
+            extractors.add(PathExtractor.of(RequestMapping.class, RequestMapping::value, RequestMapping::path));
         }
         return extractors;
     }
@@ -77,12 +78,17 @@ public class SpringPathBuilder {
 
         private final Class<A> annotationClass;
 
-        private final Function<A, String[]>[] pathsExtractors;
+        private final List<Function<A, String[]>> pathsExtractors;
 
-        @SafeVarargs
-        private PathExtractor(Class<A> annotationClass, Function<A, String[]>... pathsExtractors) {
+        private PathExtractor(Class<A> annotationClass, List<Function<A, String[]>> pathsExtractors) {
             this.annotationClass = annotationClass;
             this.pathsExtractors = pathsExtractors;
+        }
+
+        @SafeVarargs
+        public static <A extends Annotation> PathExtractor<A> of(Class<A> annotationClass,
+                Function<A, String[]>... pathsExtractors) {
+            return new PathExtractor<>(annotationClass, Arrays.asList(pathsExtractors));
         }
 
         Class<A> getAnnotationClass() {
