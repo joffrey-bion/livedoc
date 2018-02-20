@@ -21,22 +21,22 @@ export const HeaderRow = ({header}: HeaderRowProps) => {
 };
 
 function getValueDescription(type: HeaderFilterType, values: string[]) {
+  const valList = <CodeElementsList items={values}/>;
+
   switch (type) {
     case 'REQUIRED_MATCHING':
-      if (values.length > 1) {
-        return ['one of ', <CodeElementsList items={values}/>];
-      } else {
-        return <CodeElementsList items={values}/>;
-      }
+      return valList;
     case 'OPTIONAL':
       if (values.length === 1) {
-        return ['default: ', <code>{values[0]}</code>];
+        return ['(optional) Default:', <br/>, valList];
       } else {
         return '(optional)';
       }
     case 'FORBIDDEN':
       return '(forbidden)';
     case 'DIFFERENT':
-      return ['not ', <CodeElementsList items={values}/>];
+      return ['not ', valList];
+    default:
+      return null;
   }
 }
