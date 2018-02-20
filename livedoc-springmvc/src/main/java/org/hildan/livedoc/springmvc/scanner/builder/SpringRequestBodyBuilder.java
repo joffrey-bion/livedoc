@@ -20,10 +20,8 @@ public class SpringRequestBodyBuilder {
         if (index < 0) {
             return null;
         }
-        Class<?> bodyParamBaseType = method.getParameterTypes()[index];
-        Object template = templateProvider.getTemplate(bodyParamBaseType);
-
         Type bodyParamType = method.getGenericParameterTypes()[index];
+        Object template = templateProvider.getTemplate(bodyParamType);
         LivedocType livedocType = LivedocTypeBuilder.build(bodyParamType);
 
         return new ApiRequestBodyDoc(livedocType, template);

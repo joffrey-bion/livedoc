@@ -39,23 +39,23 @@ public class JacksonPropertyScanner implements PropertyScanner {
     }
 
     @Override
-    public List<Property> getProperties(Class<?> clazz) {
-        return getJacksonProperties(clazz).stream()
+    public List<Property> getProperties(Type type) {
+        return getJacksonProperties(type).stream()
                                           .filter(JacksonPropertyScanner::isReadable)
                                           .map(this::convertProp)
                                           .collect(toList());
     }
 
-    private List<BeanPropertyDefinition> getJacksonProperties(Class<?> clazz) {
-        BeanDescription beanDescription = getBeanDescription(clazz);
+    private List<BeanPropertyDefinition> getJacksonProperties(Type type) {
+        BeanDescription beanDescription = getBeanDescription(type);
         List<String> ignoredProps = getIgnoredProperties(beanDescription);
         List<BeanPropertyDefinition> properties = beanDescription.findProperties();
         properties.removeIf(p -> ignoredProps.contains(p.getName()));
         return properties;
     }
 
-    private BeanDescription getBeanDescription(Class<?> clazz) {
-        JavaType javaType = mapper.getTypeFactory().constructType(clazz);
+    private BeanDescription getBeanDescription(Type type) {
+        JavaType javaType = mapper.getTypeFactory().constructType(type);
         return mapper.getSerializationConfig().introspect(javaType);
     }
 

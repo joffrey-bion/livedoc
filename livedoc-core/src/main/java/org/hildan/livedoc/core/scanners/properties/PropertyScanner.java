@@ -1,5 +1,6 @@
 package org.hildan.livedoc.core.scanners.properties;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -12,10 +13,10 @@ public interface PropertyScanner {
     /**
      * Gets the properties of the given class, as defined by the implementation.
      *
-     * @param clazz
-     *         the class to get the properties of
+     * @param type
+     *         the type to get the properties of
      *
      * @return the properties of the given class
      */
-    List<Property> getProperties(Class<?> clazz);
+    List<Property> getProperties(Type type);
 }

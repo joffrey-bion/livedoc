@@ -13,25 +13,25 @@ import org.hildan.livedoc.core.util.LivedocUtils;
 public class ApiBodyObjectDocReader {
 
     public static ApiRequestBodyDoc read(Method method, TemplateProvider templateProvider) {
-        LivedocType responseType = getBodyType(method);
+        Type responseType = getBodyType(method);
         if (responseType == null) {
             return null;
         }
-        Class<?> baseType = responseType.getComposingTypes().get(0);
-        Object template = templateProvider.getTemplate(baseType);
-        return new ApiRequestBodyDoc(responseType, template);
+        LivedocType livedocType = LivedocTypeBuilder.build(responseType);
+        Object template = templateProvider.getTemplate(responseType);
+        return new ApiRequestBodyDoc(livedocType, template);
     }
 
-    private static LivedocType getBodyType(Method method) {
+    private static Type getBodyType(Method method) {
         if (method.isAnnotationPresent(ApiRequestBodyType.class)) {
             ApiRequestBodyType annotation = method.getAnnotation(ApiRequestBodyType.class);
-            return LivedocTypeBuilder.build(annotation.value());
+            return annotation.value();
         }
 
         Integer index = LivedocUtils.getIndexOfParameterWithAnnotation(method, ApiRequestBodyType.class);
         if (index != -1) {
             Type type = method.getGenericParameterTypes()[index];
-            return LivedocTypeBuilder.build(type);
+            return type;
         }
 
         return null;

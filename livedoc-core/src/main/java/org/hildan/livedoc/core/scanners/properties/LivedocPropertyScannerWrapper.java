@@ -21,7 +21,7 @@ public class LivedocPropertyScannerWrapper implements PropertyScanner {
     }
 
     @Override
-    public List<Property> getProperties(Class<?> type) {
+    public List<Property> getProperties(Type type) {
         return scanner.getProperties(type)
                       .stream()
                       .map(LivedocPropertyScannerWrapper::overrideProperty)

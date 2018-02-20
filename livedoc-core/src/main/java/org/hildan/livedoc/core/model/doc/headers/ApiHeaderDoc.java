@@ -36,11 +36,13 @@ public class ApiHeaderDoc {
     }
 
     public static ApiHeaderDoc differentFrom(String name, String description, String forbiddenValue) {
-        return new ApiHeaderDoc(name, description, Collections.singletonList(forbiddenValue), HeaderFilterType.DIFFERENT);
+        return new ApiHeaderDoc(name, description, Collections.singletonList(forbiddenValue),
+                HeaderFilterType.DIFFERENT);
     }
 
     public static ApiHeaderDoc matching(String name, String description, String format) {
-        return new ApiHeaderDoc(name, description, Collections.singletonList(format), HeaderFilterType.REQUIRED_MATCHING);
+        return new ApiHeaderDoc(name, description, Collections.singletonList(format),
+                HeaderFilterType.REQUIRED_MATCHING);
     }
 
     public static ApiHeaderDoc oneOf(String name, String description, List<String> allowedValues) {

@@ -1,5 +1,6 @@
 package org.hildan.livedoc.core;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,13 +41,13 @@ public class LivedocReaderBuilder {
 
     private TemplateProvider templateProvider;
 
-    private Map<Class<?>, Object> defaultTemplates = new HashMap<>();
+    private Map<Type, Object> defaultTemplates = new HashMap<>();
 
     private TypeScanner typeScanner;
 
-    private Predicate<Class<?>> typeFilter = TypePredicates.IS_CONTAINER.negate();
+    private Predicate<? super Class<?>> typeFilter = TypePredicates.IS_CONTAINER.negate();
 
-    private Predicate<Class<?>> typeExplorationFilter = TypePredicates.IS_BASIC_TYPE.negate();
+    private Predicate<Type> typeExplorationFilter = TypePredicates.IS_BASIC_TYPE.negate();
 
     private Reflections reflections;
 
@@ -165,7 +166,7 @@ public class LivedocReaderBuilder {
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder withTypeFilter(Predicate<Class<?>> filter) {
+    public LivedocReaderBuilder withTypeFilter(Predicate<Type> filter) {
         this.typeFilter = filter;
         return this;
     }
@@ -181,7 +182,7 @@ public class LivedocReaderBuilder {
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder withTypeExplorationFilter(Predicate<Class<?>> filter) {
+    public LivedocReaderBuilder withTypeExplorationFilter(Predicate<Type> filter) {
         this.typeExplorationFilter = filter;
         return this;
     }
@@ -189,7 +190,7 @@ public class LivedocReaderBuilder {
     /**
      * Defines the {@link TemplateProvider} to use to create example objects for the types used in the API. <p> The
      * default uses the configured {@link PropertyScanner}, so it should not usually need to be replaced. To add custom
-     * templates, {@link #addDefaultTemplate(Class, Object)} and {@link #addDefaultTemplates(Map)} should be preferred.
+     * templates, {@link #addDefaultTemplate(Type, Object)} and {@link #addDefaultTemplates(Map)} should be preferred.
      *
      * @param templateProvider
      *         the {@link TemplateProvider} to use
@@ -211,7 +212,7 @@ public class LivedocReaderBuilder {
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder addDefaultTemplate(Class<?> type, Object example) {
+    public LivedocReaderBuilder addDefaultTemplate(Type type, Object example) {
         defaultTemplates.put(type, example);
         return this;
     }
@@ -224,7 +225,7 @@ public class LivedocReaderBuilder {
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder addDefaultTemplates(Map<Class<?>, Object> defaultTemplates) {
+    public LivedocReaderBuilder addDefaultTemplates(Map<? extends Type, Object> defaultTemplates) {
         this.defaultTemplates.putAll(defaultTemplates);
         return this;
     }

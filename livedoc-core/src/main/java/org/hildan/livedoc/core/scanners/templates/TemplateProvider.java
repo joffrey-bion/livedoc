@@ -1,5 +1,6 @@
 package org.hildan.livedoc.core.scanners.templates;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -16,5 +17,5 @@ public interface TemplateProvider {
      *
      * @return an example object for the given type
      */
-    Object getTemplate(Class<?> type);
+    Object getTemplate(Type type);
 }

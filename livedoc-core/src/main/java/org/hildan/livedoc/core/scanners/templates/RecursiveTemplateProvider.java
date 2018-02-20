@@ -1,5 +1,10 @@
 package org.hildan.livedoc.core.scanners.templates;
 
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.TemporalAccessor;
@@ -49,18 +54,18 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         defaultValuesOfParentTypes.put(TemporalAmount.class, Duration.ofSeconds(5));
     }
 
-    private final Map<Class<?>, Object> templates;
+    private final Map<Type, Object> templates;
 
     private final PropertyScanner scanner;
 
-    private final Predicate<Class<?>> filter;
+    private final Predicate<Type> filter;
 
-    public RecursiveTemplateProvider(PropertyScanner scanner, Predicate<Class<?>> filter) {
+    public RecursiveTemplateProvider(PropertyScanner scanner, Predicate<Type> filter) {
         this(scanner, filter, new HashMap<>());
     }
 
-    public RecursiveTemplateProvider(PropertyScanner scanner, Predicate<Class<?>> filter,
-            Map<Class<?>, Object> defaultTemplates) {
+    public RecursiveTemplateProvider(PropertyScanner scanner, Predicate<Type> filter,
+            Map<Type, Object> defaultTemplates) {
         this.scanner = scanner;
         this.filter = filter;
         this.templates = new HashMap<>();
@@ -69,14 +74,14 @@ public class RecursiveTemplateProvider implements TemplateProvider {
     }
 
     @Override
-    public Object getTemplate(Class<?> type) {
-        if (!filter.test(type)) {
-            return null;
-        }
+    public Object getTemplate(Type type) {
         return getTemplate(type, new HashSet<>());
     }
 
-    private Object getTemplate(Class<?> type, Set<Class<?>> containingClasses) {
+    private Object getTemplate(Type type, Set<Type> containingClasses) {
+        if (type == null || !filter.test(type)) {
+            return null;
+        }
         if (containingClasses.contains(type)) {
             // avoid infinite recursion of templates
             return null;
@@ -85,36 +90,49 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         if (template != null) {
             return template;
         }
-        template = createTemplateWithProperties(type, containingClasses);
+        template = createExample(type, containingClasses);
         templates.put(type, template);
         return template;
     }
 
-    private Object createTemplateWithProperties(Class<?> type, Set<Class<?>> containingClasses) {
-        Map<String, Object> objectTemplate = new LinkedHashMap<>();
-        containingClasses.add(type);
-        for (Property property : scanner.getProperties(type)) {
-            Object value = getExampleValue(property, containingClasses);
-            objectTemplate.put(property.getName(), value);
+    private Object createExample(Type type, Set<Type> containingClasses) {
+        if (type instanceof WildcardType || type instanceof TypeVariable) {
+            // simulate an empty object (without properties) because we have no information
+            return Collections.emptyMap();
         }
-        containingClasses.remove(type);
-        return objectTemplate;
+        if (type instanceof GenericArrayType) {
+            Type componentType = ((GenericArrayType) type).getGenericComponentType();
+            Object exampleElement = getTemplate(componentType, containingClasses);
+            return Collections.singletonList(exampleElement);
+        }
+        if (type instanceof ParameterizedType) {
+            return createParameterizedTypeExample((ParameterizedType) type, containingClasses);
+        }
+        assert type instanceof Class : "Unknown type category " + type.getClass();
+        Class<?> clazz = (Class<?>) type;
+        return createClassExample(clazz, containingClasses);
     }
 
-    private Object getExampleValue(Property property, Set<Class<?>> containingClasses) {
-        Class<?> type = property.getType();
-        if (containingClasses.contains(type)) {
-            // avoid infinite recursion of templates
-            return null;
+    private Object createParameterizedTypeExample(ParameterizedType type, Set<Type> containingClasses) {
+        Class<?> rawType = (Class<?>) type.getRawType();
+        Type[] typeParams = type.getActualTypeArguments();
+
+        if (Collection.class.isAssignableFrom(rawType)) {
+            Type componentType = typeParams[0];
+            Object exampleElement = getTemplate(componentType, containingClasses);
+            return Collections.singletonList(exampleElement);
         }
-        Object defaultValue = property.getDefaultValue();
-        if (defaultValue != null) {
-            return defaultValue;
+        if (Map.class.isAssignableFrom(rawType)) {
+            Type keyType = typeParams[0];
+            Type valueType = typeParams[1];
+            Object exampleKey = getTemplate(keyType, containingClasses);
+            Object exampleValue = getTemplate(valueType, containingClasses);
+            return Collections.singletonMap(exampleKey, exampleValue);
         }
-        return getDefaultValueForType(type, containingClasses);
+        return createBeanExample(type, rawType, containingClasses);
     }
 
-    private Object getDefaultValueForType(Class<?> type, Set<Class<?>> containingClasses) {
+    private Object createClassExample(Class<?> type, Set<Type> containingClasses) {
         Object defaultValueOfParentType = getDefaultValueOfParentType(type);
         if (defaultValueOfParentType != null) {
             return defaultValueOfParentType;
@@ -122,11 +140,42 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         if (type.isEnum()) {
             return getEnumDefaultValue(type);
         }
-        if (type.isArray() || Collection.class.isAssignableFrom(type)) {
+        if (type.isArray()) {
+            Class<?> componentType = type.getComponentType();
+            Object exampleElement = getTemplate(componentType, containingClasses);
+            return Collections.singletonList(exampleElement);
+        }
+        // raw Collection
+        if (Collection.class.isAssignableFrom(type)) {
             return Collections.emptyList();
         }
+        // raw Map
         if (Map.class.isAssignableFrom(type)) {
             return Collections.emptyMap();
+        }
+        return createBeanExample(type, type, containingClasses);
+    }
+
+    private Object createBeanExample(Type type, Class<?> rawType, Set<Type> containingClasses) {
+        Map<String, Object> objectTemplate = new LinkedHashMap<>();
+        containingClasses.add(type);
+        for (Property property : scanner.getProperties(rawType)) {
+            Object value = getPropertyExample(property, containingClasses);
+            objectTemplate.put(property.getName(), value);
+        }
+        containingClasses.remove(type);
+        return objectTemplate;
+    }
+
+    private Object getPropertyExample(Property property, Set<Type> containingClasses) {
+        Type type = property.getGenericType();
+        if (containingClasses.contains(type)) {
+            // avoid infinite recursion of templates
+            return null;
+        }
+        Object defaultValue = property.getDefaultValue();
+        if (defaultValue != null) {
+            return defaultValue;
         }
         return getTemplate(type, containingClasses);
     }

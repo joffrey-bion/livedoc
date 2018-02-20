@@ -19,9 +19,9 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
 
     private final PropertyScanner scanner;
 
-    private Predicate<Class<?>> typeFilter;
+    private Predicate<? super Class<?>> typeFilter;
 
-    private Predicate<Class<?>> typeExplorationFilter;
+    private Predicate<? super Class<?>> typeExplorationFilter;
 
     private Function<Class<?>, Set<Class<?>>> typeMapper;
 
@@ -32,19 +32,19 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
         this.typeMapper = Collections::singleton;
     }
 
-    public Predicate<Class<?>> getTypeFilter() {
+    public Predicate<? super Class<?>> getTypeFilter() {
         return typeFilter;
     }
 
-    public void setTypeFilter(Predicate<Class<?>> typeFilter) {
+    public void setTypeFilter(Predicate<? super Class<?>> typeFilter) {
         this.typeFilter = typeFilter;
     }
 
-    public Predicate<Class<?>> getTypeExplorationFilter() {
+    public Predicate<? super Class<?>> getTypeExplorationFilter() {
         return typeExplorationFilter;
     }
 
-    public void setTypeExplorationFilter(Predicate<Class<?>> typeExplorationFilter) {
+    public void setTypeExplorationFilter(Predicate<? super Class<?>> typeExplorationFilter) {
         this.typeExplorationFilter = typeExplorationFilter;
     }
 

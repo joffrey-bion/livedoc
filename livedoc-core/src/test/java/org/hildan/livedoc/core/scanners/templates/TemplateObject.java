@@ -37,7 +37,7 @@ public class TemplateObject {
     private Integer[] integerarr;
 
     @ApiTypeProperty
-    private List untypedlist;
+    private List rawlist;
 
     @ApiTypeProperty
     private List<?> wildcardlist;
@@ -76,9 +76,9 @@ public class TemplateObject {
     private Map<TemplateSubObject, Integer> mapsubobjinteger;
 
     @ApiTypeProperty
-    private Map<String, TemplateSubObject> mapintegersubobj;
+    private Map<Integer, TemplateSubObject> mapintegersubobj;
 
     @ApiTypeProperty
-    private Map<String, List<TemplateSubObject>> mapintegerlistsubsubobj;
+    private Map<Integer, List<TemplateSubSubObject>> mapintegerlistsubsubobj;
 
 }
