@@ -85,16 +85,16 @@ public class SpringHeaderBuilder {
     private static ApiHeaderDoc createApiHeaderDoc(RequestHeader annotation) {
         String headerName = annotation.value().isEmpty() ? annotation.name() : annotation.value();
         String defaultVal = extractDefaultValue(annotation);
-        if (defaultVal == null && annotation.required()) {
-            return ApiHeaderDoc.required(headerName, "");
+        if (defaultVal != null || !annotation.required()) {
+            return ApiHeaderDoc.optional(headerName, "", defaultVal);
         }
-        return ApiHeaderDoc.optional(headerName, "", defaultVal);
+        return ApiHeaderDoc.required(headerName, "");
     }
 
     private static String extractDefaultValue(RequestHeader requestHeader) {
         String defaultVal = requestHeader.defaultValue();
         if (defaultVal.equals(ValueConstants.DEFAULT_NONE)) {
-            defaultVal = null;
+            return null;
         }
         return defaultVal;
     }

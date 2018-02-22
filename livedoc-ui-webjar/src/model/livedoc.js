@@ -99,6 +99,7 @@ export type ApiHeaderDoc = Identified & Named & {
   description: string,
   type: HeaderFilterType,
   values: Array<string>,
+  defaultValue: ?string,
 }
 
 export type HeaderFilterType = 'REQUIRED_MATCHING' | 'OPTIONAL' | 'FORBIDDEN' | 'DIFFERENT';

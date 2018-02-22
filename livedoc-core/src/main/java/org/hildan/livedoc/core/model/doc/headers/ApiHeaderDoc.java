@@ -16,37 +16,42 @@ public class ApiHeaderDoc {
 
     private final List<String> values;
 
-    private ApiHeaderDoc(String name, String description, List<String> values, HeaderFilterType type) {
+    private final String defaultValue;
+
+    private ApiHeaderDoc(String name, String description, HeaderFilterType type, List<String> values,
+            String defaultValue) {
         this.name = name;
         this.description = description;
         this.values = values;
         this.type = type;
+        this.defaultValue = defaultValue;
     }
 
     public static ApiHeaderDoc required(String name, String description) {
-        return new ApiHeaderDoc(name, description, Collections.singletonList("*"), HeaderFilterType.REQUIRED_MATCHING);
+        return new ApiHeaderDoc(name, description, HeaderFilterType.REQUIRED_MATCHING, Collections.singletonList("*"),
+                null);
     }
 
     public static ApiHeaderDoc optional(String name, String description, String defaultValue) {
-        return new ApiHeaderDoc(name, description, Collections.singletonList(defaultValue), HeaderFilterType.OPTIONAL);
+        return new ApiHeaderDoc(name, description, HeaderFilterType.OPTIONAL, Collections.emptyList(), defaultValue);
     }
 
     public static ApiHeaderDoc forbidden(String name, String description) {
-        return new ApiHeaderDoc(name, description, Collections.emptyList(), HeaderFilterType.FORBIDDEN);
+        return new ApiHeaderDoc(name, description, HeaderFilterType.FORBIDDEN, Collections.emptyList(), null);
     }
 
     public static ApiHeaderDoc differentFrom(String name, String description, String forbiddenValue) {
-        return new ApiHeaderDoc(name, description, Collections.singletonList(forbiddenValue),
-                HeaderFilterType.DIFFERENT);
+        return new ApiHeaderDoc(name, description, HeaderFilterType.DIFFERENT,
+                Collections.singletonList(forbiddenValue), null);
     }
 
     public static ApiHeaderDoc matching(String name, String description, String format) {
-        return new ApiHeaderDoc(name, description, Collections.singletonList(format),
-                HeaderFilterType.REQUIRED_MATCHING);
+        return new ApiHeaderDoc(name, description, HeaderFilterType.REQUIRED_MATCHING,
+                Collections.singletonList(format), null);
     }
 
     public static ApiHeaderDoc oneOf(String name, String description, List<String> allowedValues) {
-        return new ApiHeaderDoc(name, description, allowedValues, HeaderFilterType.REQUIRED_MATCHING);
+        return new ApiHeaderDoc(name, description, HeaderFilterType.REQUIRED_MATCHING, allowedValues, null);
     }
 
     public String getName() {
@@ -63,6 +68,10 @@ public class ApiHeaderDoc {
 
     public List<String> getValues() {
         return values;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
     @Override

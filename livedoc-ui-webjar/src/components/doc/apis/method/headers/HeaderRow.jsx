@@ -10,12 +10,13 @@ export type HeaderRowProps = {
 export const HeaderRow = ({header}: HeaderRowProps) => {
 
   const value = getValueDescription(header.type, header.values);
+  const defaultValue = header.defaultValue !== null && [<br/>, header.defaultValue];
 
   return <tr>
     <td>
       <code>{header.name}</code>
     </td>
-    <td>{value}</td>
+    <td>{value}{defaultValue}</td>
     {header.description && <td>{header.description}</td>}
   </tr>;
 };
@@ -27,8 +28,8 @@ function getValueDescription(type: HeaderFilterType, values: string[]) {
     case 'REQUIRED_MATCHING':
       return valList;
     case 'OPTIONAL':
-      if (values.length === 1) {
-        return ['(optional) Default:', <br/>, valList];
+      if (values.length > 0) {
+        return ['(optional) ', <br/>, valList];
       } else {
         return '(optional)';
       }
