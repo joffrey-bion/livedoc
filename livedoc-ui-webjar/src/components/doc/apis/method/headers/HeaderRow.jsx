@@ -10,13 +10,12 @@ export type HeaderRowProps = {
 export const HeaderRow = ({header}: HeaderRowProps) => {
 
   const value = getValueDescription(header.type, header.values);
-  const defaultValue = header.defaultValue !== null && [<br/>, header.defaultValue];
 
   return <tr>
     <td>
       <code>{header.name}</code>
     </td>
-    <td>{value}{defaultValue}</td>
+    <td>{value}<FormattedDefaultValue defaultValue={header.defaultValue}/></td>
     {header.description && <td>{header.description}</td>}
   </tr>;
 };
@@ -41,3 +40,10 @@ function getValueDescription(type: HeaderFilterType, values: string[]) {
       return null;
   }
 }
+
+const FormattedDefaultValue = ({defaultValue}) => {
+  if (defaultValue === null) {
+    return null;
+  }
+  return [<br/>, 'Default: ', <code>{defaultValue}</code>];
+};
