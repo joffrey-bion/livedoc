@@ -19,9 +19,9 @@ public class Issue151Test {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.issue151");
         LivedocReader builder = SpringLivedocReaderFactory.getReader(packages);
         Livedoc livedoc = builder.read("version", "basePath", true, MethodDisplay.URI);
-        Assert.assertEquals(2, livedoc.getObjects().keySet().size());
-        Assert.assertEquals(1, livedoc.getObjects().get("bargroup").size());
-        Assert.assertEquals(1, livedoc.getObjects().get("foogroup").size());
+        Assert.assertEquals(2, livedoc.getTypes().keySet().size());
+        Assert.assertEquals(1, livedoc.getTypes().get("bargroup").size());
+        Assert.assertEquals(1, livedoc.getTypes().get("foogroup").size());
     }
 
 }

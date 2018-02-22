@@ -16,10 +16,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.builders.defaults.ApiMethodDocDefaults;
-import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
+import org.hildan.livedoc.core.builders.doc.ApiTypeDocReader;
 import org.hildan.livedoc.core.builders.merger.DocMerger;
 import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
-import org.hildan.livedoc.core.builders.validators.ApiObjectDocValidator;
+import org.hildan.livedoc.core.builders.validators.ApiTypeDocValidator;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
@@ -43,7 +43,7 @@ public class LivedocReader {
 
     private final TypeScanner typeScanner;
 
-    private final ApiObjectDocReader apiObjectDocReader;
+    private final ApiTypeDocReader apiTypeDocReader;
 
     private final TemplateProvider templateProvider;
 
@@ -60,8 +60,8 @@ public class LivedocReader {
      * @param globalDocReader
      *         the {@link GlobalDocReader} to use to generate the global documentation of a project (general info,
      *         flows, migrations)
-     * @param apiObjectDocReader
-     *         the {@link ApiObjectDocReader} to use to generate the documentation for the types used in the API
+     * @param apiTypeDocReader
+     *         the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API
      * @param readers
      *         the {@link DocReader}s to use to create documentation objects using reflection. They are called in the
      *         given order, and the last reader's output has precedence over previous ones. This is why, by default, the
@@ -71,10 +71,10 @@ public class LivedocReader {
      *         the {@link TemplateProvider} to use to create example objects for the types used in the API
      */
     public LivedocReader(List<String> packageWhiteList, TypeScanner typeScanner, GlobalDocReader globalDocReader,
-            ApiObjectDocReader apiObjectDocReader, List<DocReader> readers, TemplateProvider templateProvider) {
+            ApiTypeDocReader apiTypeDocReader, List<DocReader> readers, TemplateProvider templateProvider) {
         this.packageWhiteList = packageWhiteList;
         this.typeScanner = typeScanner;
-        this.apiObjectDocReader = apiObjectDocReader;
+        this.apiTypeDocReader = apiTypeDocReader;
         this.globalDocReader = globalDocReader;
         this.docReaders = readers;
         this.templateProvider = templateProvider;
@@ -118,7 +118,7 @@ public class LivedocReader {
         Set<Class<?>> types = getClassesToDocument(apiDocs);
 
         livedoc.setApis(group(apiDocs));
-        livedoc.setObjects(group(getApiObjectDocs(types)));
+        livedoc.setTypes(group(getApiTypeDocs(types)));
 
         Map<String, ApiMethodDoc> apiMethodDocsById = getAllApiMethodDocsById(apiDocs);
         livedoc.setFlows(group(globalDocReader.getApiFlowDocs(apiMethodDocsById)));
@@ -211,14 +211,14 @@ public class LivedocReader {
         return doc;
     }
 
-    private List<ApiTypeDoc> getApiObjectDocs(Collection<Class<?>> types) {
-        return buildDocs(types, this::readApiObjectDoc);
+    private List<ApiTypeDoc> getApiTypeDocs(Collection<Class<?>> types) {
+        return buildDocs(types, this::readApiTypeDoc);
     }
 
-    private Optional<ApiTypeDoc> readApiObjectDoc(Class<?> type) {
-        ApiTypeDoc doc = apiObjectDocReader.read(type);
+    private Optional<ApiTypeDoc> readApiTypeDoc(Class<?> type) {
+        ApiTypeDoc doc = apiTypeDocReader.read(type);
         doc.setTemplate(templateProvider.getTemplate(type));
-        ApiObjectDocValidator.validate(doc);
+        ApiTypeDocValidator.validate(doc);
         return Optional.of(doc);
     }
 

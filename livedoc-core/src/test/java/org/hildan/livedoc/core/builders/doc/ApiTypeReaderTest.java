@@ -24,11 +24,11 @@ import static org.junit.Assert.assertNull;
 
 public class ApiTypeReaderTest {
 
-    private ApiObjectDocReader reader;
+    private ApiTypeDocReader reader;
 
     @Before
     public void setUp() {
-        reader = new ApiObjectDocReader(new FieldPropertyScanner());
+        reader = new ApiTypeDocReader(new FieldPropertyScanner());
     }
 
     @SuppressWarnings({"unused", "DefaultAnnotationParam"})

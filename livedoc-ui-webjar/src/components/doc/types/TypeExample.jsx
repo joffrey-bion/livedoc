@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import type { ApiObjectDoc, LivedocID } from '../../../model/livedoc';
+import type { ApiTypeDoc, LivedocID } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { getType } from '../../../redux/livedoc';
 import { JsonCard } from '../../shared/cards/JsonCard';
 
 export type TypeExampleProps = {
-  typeDoc: ApiObjectDoc,
+  typeDoc: ApiTypeDoc,
 }
 
 const TypeExamplePresenter = ({typeDoc}: TypeExampleProps) => {

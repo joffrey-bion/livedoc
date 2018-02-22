@@ -29,7 +29,7 @@ export type Livedoc = {
   version: string,
   basePath: string,
   apis: {[groupName: string]: $ReadOnlyArray<ApiDoc>},
-  objects: {[groupName: string]: $ReadOnlyArray<ApiObjectDoc>},
+  types: {[groupName: string]: $ReadOnlyArray<ApiTypeDoc>},
   flows: {[groupName: string]: $ReadOnlyArray<ApiFlowDoc>},
   global: ApiGlobalDoc,
   playgroundEnabled: boolean,
@@ -133,7 +133,7 @@ export type ApiMigrationDoc = Identified & {
   steps: Array<string>,
 }
 
-export type ApiObjectDoc = Identified & Named & LivedocHints & Versioned & Scoped & Staged & {
+export type ApiTypeDoc = Identified & Named & LivedocHints & Versioned & Scoped & Staged & {
   description: string,
   group: string,
   fields: Array<ApiObjectFieldDoc>,

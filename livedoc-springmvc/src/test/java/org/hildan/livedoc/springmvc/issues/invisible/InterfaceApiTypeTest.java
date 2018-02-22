@@ -19,9 +19,9 @@ public class InterfaceApiTypeTest {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.invisible");
         LivedocReader builder = SpringLivedocReaderFactory.getReader(packages);
         Livedoc livedoc = builder.read("version", "basePath", true, MethodDisplay.URI);
-        Assert.assertEquals(1, livedoc.getObjects().keySet().size());
-        for (String string : livedoc.getObjects().keySet()) {
-            Assert.assertEquals(2, livedoc.getObjects().get(string).size());
+        Assert.assertEquals(1, livedoc.getTypes().keySet().size());
+        for (String string : livedoc.getTypes().keySet()) {
+            Assert.assertEquals(2, livedoc.getTypes().get(string).size());
         }
         for (ApiDoc apiDoc : livedoc.getApis().get("")) {
             for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

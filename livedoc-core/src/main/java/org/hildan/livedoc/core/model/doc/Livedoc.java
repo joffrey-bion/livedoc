@@ -16,8 +16,8 @@ public class Livedoc {
     // The key is the group these apis belongs to. It can be empty.
     private Map<String, Set<ApiDoc>> apis;
 
-    // The key is the group these objects belongs to. It can be empty.
-    private Map<String, Set<ApiTypeDoc>> objects;
+    // The key is the group these types belongs to. It can be empty.
+    private Map<String, Set<ApiTypeDoc>> types;
 
     // The key is the group these flows belongs to. It can be empty.
     private Map<String, Set<ApiFlowDoc>> flows;
@@ -48,10 +48,6 @@ public class Livedoc {
         this.version = version;
     }
 
-    public Map<String, Set<ApiTypeDoc>> getObjects() {
-        return objects;
-    }
-
     public Map<String, Set<ApiDoc>> getApis() {
         return apis;
     }
@@ -60,8 +56,12 @@ public class Livedoc {
         this.apis = apis;
     }
 
-    public void setObjects(Map<String, Set<ApiTypeDoc>> objects) {
-        this.objects = objects;
+    public Map<String, Set<ApiTypeDoc>> getTypes() {
+        return types;
+    }
+
+    public void setTypes(Map<String, Set<ApiTypeDoc>> types) {
+        this.types = types;
     }
 
     public String getBasePath() {
@@ -106,7 +106,7 @@ public class Livedoc {
 
     @Override
     public String toString() {
-        return "Livedoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", objects=" + objects
+        return "Livedoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", types=" + types
                 + ", flows=" + flows + ", global=" + global + ", playgroundEnabled=" + playgroundEnabled
                 + ", displayMethodAs=" + displayMethodAs + "]";
     }

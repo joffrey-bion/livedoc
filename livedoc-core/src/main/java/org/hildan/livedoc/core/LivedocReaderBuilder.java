@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import org.hildan.livedoc.core.builders.doc.ApiObjectDocReader;
+import org.hildan.livedoc.core.builders.doc.ApiTypeDocReader;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.LivedocPropertyScannerWrapper;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
@@ -37,7 +37,7 @@ public class LivedocReaderBuilder {
 
     private List<DocReader> docReaders = new ArrayList<>();
 
-    private ApiObjectDocReader apiObjectDocReader;
+    private ApiTypeDocReader apiTypeDocReader;
 
     private TemplateProvider templateProvider;
 
@@ -131,16 +131,16 @@ public class LivedocReaderBuilder {
     }
 
     /**
-     * Defines the {@link ApiObjectDocReader} to use to generate the documentation for the types used in the API. <p>
+     * Defines the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API. <p>
      * The default uses the configured {@link PropertyScanner}, so it should not usually need to be replaced.
      *
-     * @param apiObjectDocReader
-     *         the {@link ApiObjectDocReader} to use
+     * @param apiTypeDocReader
+     *         the {@link ApiTypeDocReader} to use
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder withObjectDocReader(ApiObjectDocReader apiObjectDocReader) {
-        this.apiObjectDocReader = apiObjectDocReader;
+    public LivedocReaderBuilder withObjectDocReader(ApiTypeDocReader apiTypeDocReader) {
+        this.apiTypeDocReader = apiTypeDocReader;
         return this;
     }
 
@@ -246,8 +246,8 @@ public class LivedocReaderBuilder {
         if (typeScanner == null) {
             typeScanner = getDefaultTypeScanner(propertyScanner);
         }
-        if (apiObjectDocReader == null) {
-            apiObjectDocReader = getDefaultApiObjectDocReader(propertyScanner);
+        if (apiTypeDocReader == null) {
+            apiTypeDocReader = getDefaultApiObjectDocReader(propertyScanner);
         }
         if (templateProvider == null) {
             templateProvider = getDefaultTemplateProvider(propertyScanner);
@@ -258,7 +258,7 @@ public class LivedocReaderBuilder {
         if (docReaders.isEmpty()) {
             docReaders.add(new LivedocAnnotationDocReader(getAnnotatedTypesFinder()));
         }
-        return new LivedocReader(packages, typeScanner, globalDocReader, apiObjectDocReader, docReaders,
+        return new LivedocReader(packages, typeScanner, globalDocReader, apiTypeDocReader, docReaders,
                 templateProvider);
     }
 
@@ -276,8 +276,8 @@ public class LivedocReaderBuilder {
         return scanner;
     }
 
-    private static ApiObjectDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
-        return new ApiObjectDocReader(propertyScanner);
+    private static ApiTypeDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
+        return new ApiTypeDocReader(propertyScanner);
     }
 
     private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {

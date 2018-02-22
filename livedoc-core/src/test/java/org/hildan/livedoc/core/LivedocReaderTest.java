@@ -57,7 +57,7 @@ public class LivedocReaderTest {
     }
 
     private static void checkObjects(Livedoc livedoc) {
-        Map<String, Set<ApiTypeDoc>> objects = livedoc.getObjects();
+        Map<String, Set<ApiTypeDoc>> objects = livedoc.getTypes();
         assertEquals(2, objects.size());
 
         Set<ApiTypeDoc> apiTypeDocs = objects.get("");

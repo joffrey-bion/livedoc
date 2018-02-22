@@ -1,15 +1,15 @@
 // @flow
 import * as React from 'react';
 import { Card, Table } from 'reactstrap';
-import type { ApiObjectDoc } from '../../../../model/livedoc';
+import type { ApiTypeDoc } from '../../../../model/livedoc';
 import { TypeFieldRow } from './TypeFieldRow';
 
 export type ComplexTypeDetailsProps = {
-  typeDoc: ApiObjectDoc,
+  typeDoc: ApiTypeDoc,
 }
 
 export const ComplexTypeDetails = (props: ComplexTypeDetailsProps) => {
-  const doc: ApiObjectDoc = props.typeDoc;
+  const doc: ApiTypeDoc = props.typeDoc;
 
   let fieldRows = doc.fields.map(f => <TypeFieldRow key={f.name} field={f}/>);
 

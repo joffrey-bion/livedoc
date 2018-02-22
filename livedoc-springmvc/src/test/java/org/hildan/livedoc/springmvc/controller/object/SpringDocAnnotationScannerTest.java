@@ -27,7 +27,7 @@ public class SpringDocAnnotationScannerTest {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
 
-        Map<String, Set<ApiTypeDoc>> objects = doc.getObjects();
+        Map<String, Set<ApiTypeDoc>> objects = doc.getTypes();
         for (Set<ApiTypeDoc> values : objects.values()) {
             assertContainsDoc(values, "NestedObject1");
         }
@@ -38,7 +38,7 @@ public class SpringDocAnnotationScannerTest {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
         Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
 
-        Map<String, Set<ApiTypeDoc>> objects = doc.getObjects();
+        Map<String, Set<ApiTypeDoc>> objects = doc.getTypes();
         for (Set<ApiTypeDoc> values : objects.values()) {
             assertContainsDoc(values, "NestedObject2");
             assertContainsDoc(values, "NestedObject3");

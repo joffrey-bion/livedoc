@@ -12,11 +12,11 @@ import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.util.BeanUtils;
 
-public class ApiObjectDocReader {
+public class ApiTypeDocReader {
 
     private final PropertyScanner propertyScanner;
 
-    public ApiObjectDocReader(PropertyScanner propertyScanner) {
+    public ApiTypeDocReader(PropertyScanner propertyScanner) {
         this.propertyScanner = propertyScanner;
     }
 

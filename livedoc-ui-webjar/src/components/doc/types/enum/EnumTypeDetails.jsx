@@ -1,11 +1,11 @@
 // @flow
 import * as React from 'react';
 import { Card, Table } from 'reactstrap';
-import type { ApiObjectDoc } from '../../../../model/livedoc';
+import type { ApiTypeDoc } from '../../../../model/livedoc';
 import { EnumValueRow } from './EnumValueRow';
 
 export type EnumTypeDetailsProps = {
-  typeDoc: ApiObjectDoc
+  typeDoc: ApiTypeDoc
 }
 
 export const EnumTypeDetails = ({typeDoc}: EnumTypeDetailsProps) => {

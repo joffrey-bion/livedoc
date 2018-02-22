@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import type { ApiObjectDoc, LivedocID } from '../../../model/livedoc';
+import type { ApiTypeDoc, LivedocID } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { getType } from '../../../redux/livedoc';
 import { RouteHelper } from '../../../routing/routeHelpler';
@@ -11,7 +11,7 @@ import { ComplexTypeDetails } from './complex/ComplexTypeDetails';
 import { EnumTypeDetails } from './enum/EnumTypeDetails';
 
 export type TypeDocPanelProps = {
-  typeDoc: ?ApiObjectDoc,
+  typeDoc: ?ApiTypeDoc,
 }
 
 const TypeDocContent = ({isEnum, typeDoc}) => {
