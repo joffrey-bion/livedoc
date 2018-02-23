@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.hildan.livedoc.core.model.doc.AbstractDoc;
-import org.hildan.livedoc.core.model.doc.Groupable;
+import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.model.doc.Scoped;
 import org.hildan.livedoc.core.model.doc.Stage;
 import org.hildan.livedoc.core.model.doc.Staged;

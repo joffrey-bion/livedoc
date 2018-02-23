@@ -5,13 +5,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -20,12 +20,13 @@ import org.hildan.livedoc.core.builders.doc.ApiTypeDocReader;
 import org.hildan.livedoc.core.builders.merger.DocMerger;
 import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
 import org.hildan.livedoc.core.builders.validators.ApiTypeDocValidator;
+import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
-import org.hildan.livedoc.core.model.doc.Groupable;
+import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
@@ -241,14 +242,12 @@ public class LivedocReader {
         return Optional.ofNullable(doc);
     }
 
-    private static <T extends Groupable> Map<String, Set<T>> group(Iterable<T> elements) {
-        Map<String, Set<T>> groupedElements = new TreeMap<>();
-        for (T e : elements) {
-            String groupName = e.getGroup();
-            groupedElements.putIfAbsent(groupName, new TreeSet<>());
-            Set<T> group = groupedElements.get(groupName);
-            group.add(e);
-        }
-        return groupedElements;
+    private static <T extends Groupable & Comparable<T>> List<Group<T>> group(Collection<T> elements) {
+        Map<String, List<T>> groupedElements = elements.stream().collect(Collectors.groupingBy(Groupable::getGroup));
+        return groupedElements.entrySet()
+                              .stream()
+                              .sorted(Comparator.comparing(Entry::getKey))
+                              .map(e -> Group.sorted(e.getKey(), e.getValue()))
+                              .collect(Collectors.toList());
     }
 }

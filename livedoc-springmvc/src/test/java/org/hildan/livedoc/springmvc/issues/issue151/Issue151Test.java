@@ -6,6 +6,8 @@ import java.util.List;
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,9 +21,17 @@ public class Issue151Test {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.issue151");
         LivedocReader builder = SpringLivedocReaderFactory.getReader(packages);
         Livedoc livedoc = builder.read("version", "basePath", true, MethodDisplay.URI);
-        Assert.assertEquals(2, livedoc.getTypes().keySet().size());
-        Assert.assertEquals(1, livedoc.getTypes().get("bargroup").size());
-        Assert.assertEquals(1, livedoc.getTypes().get("foogroup").size());
+
+        List<Group<ApiTypeDoc>> types = livedoc.getTypes();
+        Assert.assertEquals(2, types.size());
+
+        Group<ApiTypeDoc> barGroup = types.get(0);
+        Assert.assertEquals(1, barGroup.getElements().size());
+        Assert.assertEquals("bargroup", barGroup.getGroupName());
+
+        Group<ApiTypeDoc> fooGroup = types.get(1);
+        Assert.assertEquals(1, fooGroup.getElements().size());
+        Assert.assertEquals("foogroup", fooGroup.getGroupName());
     }
 
 }

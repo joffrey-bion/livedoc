@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.model.doc;
+package org.hildan.livedoc.core.model.groups;
 
 public interface Groupable {
 

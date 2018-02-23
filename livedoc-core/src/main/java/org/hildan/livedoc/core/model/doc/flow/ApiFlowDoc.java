@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
-import org.hildan.livedoc.core.model.doc.Groupable;
+import org.hildan.livedoc.core.model.groups.Groupable;
 
 public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
 

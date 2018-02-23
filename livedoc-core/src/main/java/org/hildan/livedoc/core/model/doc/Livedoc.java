@@ -1,8 +1,8 @@
 package org.hildan.livedoc.core.model.doc;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
+import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
@@ -13,14 +13,11 @@ public class Livedoc {
 
     private String basePath;
 
-    // The key is the group these apis belongs to. It can be empty.
-    private Map<String, Set<ApiDoc>> apis;
+    private List<Group<ApiDoc>> apis;
 
-    // The key is the group these types belongs to. It can be empty.
-    private Map<String, Set<ApiTypeDoc>> types;
+    private List<Group<ApiTypeDoc>> types;
 
-    // The key is the group these flows belongs to. It can be empty.
-    private Map<String, Set<ApiFlowDoc>> flows;
+    private List<Group<ApiFlowDoc>> flows;
 
     private ApiGlobalDoc global;
 
@@ -48,19 +45,19 @@ public class Livedoc {
         this.version = version;
     }
 
-    public Map<String, Set<ApiDoc>> getApis() {
+    public List<Group<ApiDoc>> getApis() {
         return apis;
     }
 
-    public void setApis(Map<String, Set<ApiDoc>> apis) {
+    public void setApis(List<Group<ApiDoc>> apis) {
         this.apis = apis;
     }
 
-    public Map<String, Set<ApiTypeDoc>> getTypes() {
+    public List<Group<ApiTypeDoc>> getTypes() {
         return types;
     }
 
-    public void setTypes(Map<String, Set<ApiTypeDoc>> types) {
+    public void setTypes(List<Group<ApiTypeDoc>> types) {
         this.types = types;
     }
 
@@ -72,11 +69,11 @@ public class Livedoc {
         this.basePath = basePath;
     }
 
-    public Map<String, Set<ApiFlowDoc>> getFlows() {
+    public List<Group<ApiFlowDoc>> getFlows() {
         return flows;
     }
 
-    public void setFlows(Map<String, Set<ApiFlowDoc>> flows) {
+    public void setFlows(List<Group<ApiFlowDoc>> flows) {
         this.flows = flows;
     }
 

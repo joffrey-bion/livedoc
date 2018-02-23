@@ -1,26 +1,26 @@
 package org.hildan.livedoc.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.groups.Group;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class LivedocReaderTest {
 
@@ -39,62 +39,77 @@ public class LivedocReaderTest {
     }
 
     private static void checkApis(Livedoc livedoc) {
-        Map<String, Set<ApiDoc>> apis = livedoc.getApis();
+        List<Group<ApiDoc>> apis = livedoc.getApis();
         assertEquals(1, apis.size());
 
-        Set<ApiDoc> apiDocs = apis.get("");
-        assertTrue(apiDocs != null);
+        Group<ApiDoc> apiDocsGroup = apis.get(0);
+        assertNotNull(apiDocsGroup);
+        assertEquals("", apiDocsGroup.getGroupName());
+
+        List<ApiDoc> apiDocs = apiDocsGroup.getElements();
+        assertNotNull(apiDocs);
         assertEquals(5, apiDocs.size());
 
-        Set<String> controllerNames = apiDocs.stream().map(ApiDoc::getName).collect(Collectors.toSet());
-        Set<String> expectedControllers = new HashSet<>();
-        expectedControllers.add("interface services");
+        List<String> controllerNames = apiDocs.stream().map(ApiDoc::getName).collect(Collectors.toList());
+        List<String> expectedControllers = new ArrayList<>(5);
         expectedControllers.add("Test1Controller");
         expectedControllers.add("Test2Controller");
         expectedControllers.add("Test3Controller");
         expectedControllers.add("TestChildController");
+        expectedControllers.add("interface services"); // lowercase comes after
         assertEquals(expectedControllers, controllerNames);
     }
 
     private static void checkObjects(Livedoc livedoc) {
-        Map<String, Set<ApiTypeDoc>> objects = livedoc.getTypes();
-        assertEquals(2, objects.size());
+        List<Group<ApiTypeDoc>> typesGroups = livedoc.getTypes();
+        assertEquals(2, typesGroups.size());
 
-        Set<ApiTypeDoc> apiTypeDocs = objects.get("");
-        assertTrue(apiTypeDocs != null);
+        Group<ApiTypeDoc> anonymousGroup = typesGroups.get(0);
+        assertNotNull(anonymousGroup);
+        assertEquals("", anonymousGroup.getGroupName());
 
-        Set<String> objectNames = apiTypeDocs.stream().map(ApiTypeDoc::getName).collect(Collectors.toSet());
-        Set<String> expectedObjectNames = new HashSet<>();
-        expectedObjectNames.add("parent");
+        List<ApiTypeDoc> anonymousGroupTypes = anonymousGroup.getElements();
+        assertNotNull(anonymousGroupTypes);
+        assertEquals(3, anonymousGroupTypes.size());
+
+        List<String> objectNames = anonymousGroupTypes.stream().map(ApiTypeDoc::getName).collect(Collectors.toList());
+        List<String> expectedObjectNames = new ArrayList<>(3);
         expectedObjectNames.add("child");
         expectedObjectNames.add("gender");
+        expectedObjectNames.add("parent");
         assertEquals(expectedObjectNames, objectNames);
 
-        Set<ApiTypeDoc> apiTypeDocsRestaurant = objects.get("Restaurant");
-        assertTrue(apiTypeDocsRestaurant != null);
-        assertEquals(1, apiTypeDocsRestaurant.size());
+        Group<ApiTypeDoc> restaurantGroup = typesGroups.get(1);
+        assertNotNull(restaurantGroup);
+        assertEquals("Restaurant", restaurantGroup.getGroupName());
 
-        Set<String> restaurantObjectNames = apiTypeDocsRestaurant.stream()
-                                                                 .map(ApiTypeDoc::getName)
-                                                                 .collect(Collectors.toSet());
-        Set<String> expectedRestaurantObjectNames = new HashSet<>();
+        List<ApiTypeDoc> restaurantTypes = restaurantGroup.getElements();
+        assertNotNull(restaurantTypes);
+        assertEquals(1, restaurantTypes.size());
+
+        List<String> restaurantObjectNames = restaurantTypes.stream()
+                                                            .map(ApiTypeDoc::getName)
+                                                            .collect(Collectors.toList());
+        List<String> expectedRestaurantObjectNames = new ArrayList<>();
         expectedRestaurantObjectNames.add("customPizzaObject");
         assertEquals(expectedRestaurantObjectNames, restaurantObjectNames);
     }
 
     private static void checkFlows(Livedoc livedoc) {
-        Map<String, Set<ApiFlowDoc>> flows = livedoc.getFlows();
-        assertEquals(1, flows.size());
+        List<Group<ApiFlowDoc>> flowGroups = livedoc.getFlows();
+        assertEquals(1, flowGroups.size());
 
-        Set<ApiFlowDoc> apiFlowDocs = flows.get("");
-        assertNotNull(apiFlowDocs);
-        assertEquals(2, apiFlowDocs.size());
+        Group<ApiFlowDoc> flowGroup = flowGroups.get(0);
+        assertNotNull(flowGroup);
+        assertEquals("", flowGroup.getGroupName());
+        assertNotNull(flowGroup.getElements());
+        assertEquals(2, flowGroup.getElements().size());
     }
 
     private static void checkAllVerbsUsed(Livedoc livedoc) {
         Set<ApiVerb> verbs = livedoc.getApis()
-                                    .values()
                                     .stream()
+                                    .map(Group::getElements)
                                     .flatMap(Collection::stream)
                                     .distinct()
                                     .map(ApiDoc::getMethods)

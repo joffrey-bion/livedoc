@@ -1,6 +1,6 @@
 // @flow
 import type {
-  ApiDoc, ApiFlowDoc, ApiGlobalDoc, ApiMethodDoc, ApiTypeDoc, Identified, Livedoc, LivedocID,
+  ApiDoc, ApiFlowDoc, ApiGlobalDoc, ApiMethodDoc, ApiTypeDoc, Group, Identified, Livedoc, LivedocID,
 } from '../model/livedoc';
 import type { State } from '../model/state';
 import type { Action } from './actions';
@@ -19,26 +19,13 @@ export default (livedoc: ?Livedoc = null, action: Action) => {
   }
 };
 
-type ElementArray<T> = $ReadOnlyArray<T & Identified>;
-type ElementsById<T> = { [id: LivedocID]: T };
-
-const dictionarize = <T>(elementsByWhatever: { [string]: ElementArray<T> }): ElementsById<T> => {
-  const arraysOfElements: Array<ElementArray<T>> = Object.keys(elementsByWhatever).map(k => elementsByWhatever[k]);
-  return arraysOfElements.reduce((elemsById: ElementsById<T>, elems: ElementArray<T>) => {
-    elems.forEach(e => {
-      elemsById[e.livedocId] = e;
-    });
-    return elemsById;
-  }, {});
-};
-
-const getElementById = <T>(id: ?LivedocID, elements: { [string]: ElementArray<T> }): ?T => {
+const getElementById = <T : Identified>(id: ?LivedocID, groups: Array<Group<T>>): ?T => {
   if (!id) {
     console.error(new Error("No ID provided to retrieve livedoc element"));
     return null;
   }
-  const elementsById = dictionarize(elements);
-  return elementsById[id];
+  const elements: Array<T> = groups.map(g => g.elements).reduce((acc: T[], elt: T[]) => acc.concat(elt), []);
+  return elements.find((e: Identified) => e.livedocId === id);
 };
 
 export function getGlobalDoc(state: State): ?ApiGlobalDoc {

@@ -28,13 +28,18 @@ export type Staged = {
 export type Livedoc = {
   version: string,
   basePath: string,
-  apis: {[groupName: string]: $ReadOnlyArray<ApiDoc>},
-  types: {[groupName: string]: $ReadOnlyArray<ApiTypeDoc>},
-  flows: {[groupName: string]: $ReadOnlyArray<ApiFlowDoc>},
+  apis: Array<Group<ApiDoc>>,
+  types: Array<Group<ApiTypeDoc>>,
+  flows: Array<Group<ApiFlowDoc>>,
   global: ApiGlobalDoc,
   playgroundEnabled: boolean,
   displayMethodAs: MethodDisplay,
 };
+
+export type Group<T> = {
+  groupName: string,
+  elements: Array<T>,
+}
 
 export type ApiAuthDoc = {
   type: ApiAuthType,
