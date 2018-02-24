@@ -36,6 +36,12 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
         return typeFilter;
     }
 
+    /**
+     * Defines a filter to determine which types should be included among the returned types.
+     *
+     * @param typeFilter
+     *         a predicate that is true on types that should be included in the doc, and false otherwise
+     */
     public void setTypeFilter(Predicate<? super Class<?>> typeFilter) {
         this.typeFilter = typeFilter;
     }
@@ -44,6 +50,16 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
         return typeExplorationFilter;
     }
 
+    /**
+     * Defines a filter to determine which types should be recursively explored. The types matching the given predicate
+     * are scanned for properties, and the properties' types are recursively explored. The given predicate is only
+     * called on types that already passed the type inclusion filter.
+     *
+     * @param typeExplorationFilter
+     *         a predicate that is true on types that should be included in the doc, and false otherwise
+     *
+     * @see #setTypeFilter(Predicate)
+     */
     public void setTypeExplorationFilter(Predicate<? super Class<?>> typeExplorationFilter) {
         this.typeExplorationFilter = typeExplorationFilter;
     }
@@ -57,11 +73,9 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
     }
 
     @Override
-    public Set<Class<?>> findTypes(Collection<? extends Type> rootTypes) {
+    public Set<Class<?>> findTypesToDocument(Collection<? extends Type> rootTypes) {
         Set<Class<?>> allTypes = new HashSet<>();
-        for (Type type : rootTypes) {
-            exploreType(type, allTypes);
-        }
+        rootTypes.forEach(type -> exploreType(type, allTypes));
         return allTypes;
     }
 

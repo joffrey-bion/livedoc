@@ -29,13 +29,13 @@ public class RecursivePropertyTypeScannerTest {
     @Test
     public void findTypes_simpleString() {
         Set<Type> rootTypes = Collections.singleton(String.class);
-        assertSetEquals(explorer.findTypes(rootTypes), String.class);
+        assertSetEquals(explorer.findTypesToDocument(rootTypes), String.class);
     }
 
     @Test
     public void findTypes_simpleCharacter() {
         Set<Type> rootTypes = Collections.singleton(Character.class);
-        assertSetEquals(explorer.findTypes(rootTypes), Character.class);
+        assertSetEquals(explorer.findTypesToDocument(rootTypes), Character.class);
     }
 
     private static class Custom {
@@ -45,7 +45,7 @@ public class RecursivePropertyTypeScannerTest {
     @Test
     public void findTypes_customType() {
         Set<Type> rootTypes = Collections.singleton(Custom.class);
-        assertSetEquals(explorer.findTypes(rootTypes), Custom.class, Long.class);
+        assertSetEquals(explorer.findTypesToDocument(rootTypes), Custom.class, Long.class);
     }
 
     private static class Child extends Custom {
@@ -55,7 +55,7 @@ public class RecursivePropertyTypeScannerTest {
     @Test
     public void findTypes_inheritedFields() {
         Set<Type> rootTypes = Collections.singleton(Child.class);
-        assertSetEquals(explorer.findTypes(rootTypes), Child.class, Double.class, Long.class);
+        assertSetEquals(explorer.findTypesToDocument(rootTypes), Child.class, Double.class, Long.class);
     }
 
     private static class TestRoot {
@@ -77,7 +77,7 @@ public class RecursivePropertyTypeScannerTest {
     @Test
     public void findTypes_complexHierarchy() {
         Set<Type> rootTypes = Collections.singleton(TestRoot.class);
-        assertSetEquals(explorer.findTypes(rootTypes), TestRoot.class, WithCustomObject.class, WithPrimitives.class,
+        assertSetEquals(explorer.findTypesToDocument(rootTypes), TestRoot.class, WithCustomObject.class, WithPrimitives.class,
                 Custom.class, Long.class, String.class, int.class);
 
     }

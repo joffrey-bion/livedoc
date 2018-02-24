@@ -20,5 +20,5 @@ public interface TypeScanner {
      *
      * @return the set of all classes mentioned by (and including) the root types
      */
-    Set<Class<?>> findTypeToDocument(Collection<? extends Type> rootTypes);
+    Set<Class<?>> findTypesToDocument(Collection<? extends Type> rootTypes);
 }

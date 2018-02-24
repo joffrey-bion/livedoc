@@ -145,7 +145,7 @@ public class LivedocReader {
 
     private Set<Class<?>> getClassesToDocument(Collection<ApiDoc> apiDocs) {
         Set<Type> rootTypes = getReferencedTypesToDocument(apiDocs);
-        Set<Class<?>> exploredTypes = typeScanner.findTypes(rootTypes);
+        Set<Class<?>> exploredTypes = typeScanner.findTypesToDocument(rootTypes);
         return exploredTypes.stream().filter(this::isInWhiteListedPackage).collect(Collectors.toSet());
     }
 
