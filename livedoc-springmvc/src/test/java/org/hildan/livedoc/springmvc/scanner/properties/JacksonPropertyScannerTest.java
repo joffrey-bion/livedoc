@@ -1,6 +1,7 @@
 package org.hildan.livedoc.springmvc.scanner.properties;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hildan.livedoc.core.scanners.properties.Property;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.reflect.TypeToken;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,6 +23,7 @@ public class JacksonPropertyScannerTest {
     private PropertyScanner scanner;
 
     private interface MyInterface {}
+
     private static class MyImpl implements MyInterface {}
 
     @Before
@@ -36,7 +39,9 @@ public class JacksonPropertyScannerTest {
 
         private int fieldWithGetter;
 
-        @JsonSerialize(as=MyImpl.class)
+        private List<Double> generic;
+
+        @JsonSerialize(as = MyImpl.class)
         private MyInterface interfaceField;
 
         private String writeOnly;
@@ -52,6 +57,10 @@ public class JacksonPropertyScannerTest {
 
         public int getFieldWithGetter() {
             return fieldWithGetter;
+        }
+
+        public List<Double> getGeneric() {
+            return generic;
         }
 
         public String getComputedValue() {
@@ -79,11 +88,14 @@ public class JacksonPropertyScannerTest {
     @Test
     public void getProperties() throws Exception {
         List<Property> properties = scanner.getProperties(MyDto.class);
-        List<Property> expectedProps = new ArrayList<>();
-        expectedProps.add(new Property("fieldWithGetter", int.class, MyDto.class.getDeclaredMethod("getFieldWithGetter")));
-        expectedProps.add(new Property("interfaceField", MyImpl.class, MyDto.class.getDeclaredField("interfaceField")));
-        expectedProps.add(new Property("computedValue", String.class, MyDto.class.getDeclaredMethod("getComputedValue")));
-        expectedProps.add(new Property("publicFieldRenamed", String.class, MyDto.class.getDeclaredField("publicField")));
+
+        Type listDouble = new TypeToken<List<Double>>() {}.getType();
+        List<Property> expectedProps = Arrays.asList(
+                new Property("fieldWithGetter", int.class, MyDto.class.getDeclaredMethod("getFieldWithGetter")),
+                new Property("generic", List.class, listDouble, MyDto.class.getDeclaredMethod("getGeneric")),
+                new Property("interfaceField", MyImpl.class, MyDto.class.getDeclaredField("interfaceField")),
+                new Property("computedValue", String.class, MyDto.class.getDeclaredMethod("getComputedValue")),
+                new Property("publicFieldRenamed", String.class, MyDto.class.getDeclaredField("publicField")));
         assertEquals(expectedProps, properties);
     }
 }
