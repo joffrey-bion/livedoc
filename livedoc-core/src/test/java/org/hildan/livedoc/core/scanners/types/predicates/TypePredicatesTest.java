@@ -1,5 +1,6 @@
 package org.hildan.livedoc.core.scanners.types.predicates;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,13 +12,15 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
+import com.google.common.reflect.TypeToken;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TypePredicatesTest {
 
     @Test
-    public void isBasicType_primitive() {
+    public void isBasicType_trueOnPrimitives() {
         assertTrue(TypePredicates.isBasicType(boolean.class));
         assertTrue(TypePredicates.isBasicType(byte.class));
         assertTrue(TypePredicates.isBasicType(short.class));
@@ -29,7 +32,7 @@ public class TypePredicatesTest {
     }
 
     @Test
-    public void isBasicType_primitiveWrappers() {
+    public void isBasicType_trueOnPrimitiveWrappers() {
         assertTrue(TypePredicates.isBasicType(Boolean.class));
         assertTrue(TypePredicates.isBasicType(Byte.class));
         assertTrue(TypePredicates.isBasicType(Short.class));
@@ -40,16 +43,14 @@ public class TypePredicatesTest {
         assertTrue(TypePredicates.isBasicType(Double.class));
     }
 
-    private static class Custom {
-    }
-
     @Test
-    public void isBasicType_customClass() {
+    public void isBasicType_falseOnCustomClass() {
+        class Custom {}
         assertFalse(TypePredicates.isBasicType(Custom.class));
     }
 
     @Test
-    public void isBasicType_object() {
+    public void isBasicType_falseOnObject() {
         assertFalse(TypePredicates.isBasicType(Object.class));
     }
 
@@ -77,7 +78,7 @@ public class TypePredicatesTest {
     }
 
     @Test
-    public void isContainer_containers() {
+    public void isContainer_rawCollections() {
         assertTrue(TypePredicates.isContainer(Collection.class));
 
         assertTrue(TypePredicates.isContainer(List.class));
@@ -86,10 +87,33 @@ public class TypePredicatesTest {
 
         assertTrue(TypePredicates.isContainer(Set.class));
         assertTrue(TypePredicates.isContainer(HashSet.class));
+    }
 
+    @Test
+    public void isContainer_rawMaps() {
         assertTrue(TypePredicates.isContainer(Map.class));
         assertTrue(TypePredicates.isContainer(HashMap.class));
         assertTrue(TypePredicates.isContainer(TreeMap.class));
         assertTrue(TypePredicates.isContainer(MyMap.class));
+    }
+
+    @Test
+    public void isContainer_parameterizedContainers() {
+        Type collection = new TypeToken<Collection<Integer>>() {}.getType();
+        assertTrue(TypePredicates.isContainer(collection));
+
+        Type list = new TypeToken<List<Integer>>() {}.getType();
+        assertTrue(TypePredicates.isContainer(list));
+
+        Type arrayList = new TypeToken<ArrayList<Integer>>() {}.getType();
+        assertTrue(TypePredicates.isContainer(arrayList));
+
+        Type set = new TypeToken<Set<Integer>>() {}.getType();
+        assertTrue(TypePredicates.isContainer(set));
+        Type hashSet = new TypeToken<HashSet<Integer>>() {}.getType();
+        assertTrue(TypePredicates.isContainer(hashSet));
+
+        Type map = new TypeToken<Map<String, Integer>>() {}.getType();
+        assertTrue(TypePredicates.isContainer(map));
     }
 }

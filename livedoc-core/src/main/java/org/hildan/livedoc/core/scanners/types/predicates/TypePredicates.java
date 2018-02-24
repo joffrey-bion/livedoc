@@ -1,5 +1,6 @@
 package org.hildan.livedoc.core.scanners.types.predicates;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,8 +17,8 @@ public class TypePredicates {
     public static final Predicate<Type> IS_BASIC_TYPE = TypePredicates::isBasicType;
 
     /**
-     * A predicate that matches collection classes and the likes, which we usually don't want to document as independent
-     * types, because the exact implementation of a collection doesn't matter once serialized.
+     * A predicate that matches arrays, collection classes and the likes, which we usually don't want to document as
+     * independent types, because the exact implementation of a collection doesn't matter once serialized.
      */
     public static final Predicate<Type> IS_CONTAINER = TypePredicates::isContainer;
 
@@ -59,10 +60,17 @@ public class TypePredicates {
     }
 
     public static boolean isContainer(Type type) {
-        if (!(type instanceof Class)) {
-            return false;
+        if (type instanceof Class) {
+            return isContainer((Class<?>) type);
         }
-        Class<?> clazz = (Class<?>) type;
+        if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            return isContainer((Class<?>) parameterizedType.getRawType());
+        }
+        return false;
+    }
+
+    public static boolean isContainer(Class<?> clazz) {
         return clazz.isArray() || Arrays.stream(CONTAINERS).anyMatch(c -> c.isAssignableFrom(clazz));
     }
 }
