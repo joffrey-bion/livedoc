@@ -6,7 +6,6 @@ import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,7 +41,7 @@ public class SpringQueryParamBuilderTest {
     @SuppressWarnings("WeakerAccess")
     @Test
     public void testQueryParam() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -84,7 +83,7 @@ public class SpringQueryParamBuilderTest {
 
     @Test
     public void testQueryParam_mergeWithParent() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class);
         Assert.assertEquals("SpringController2", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -120,7 +119,7 @@ public class SpringQueryParamBuilderTest {
     }
     @Test
     public void testQueryParam_springAnnotationOnParam() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController3.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController3.class);
         Assert.assertEquals("SpringController3", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -177,7 +176,7 @@ public class SpringQueryParamBuilderTest {
 
     @Test
     public void testQueryParam_livedocAnnotationOnParam() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController4.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController4.class);
         Assert.assertEquals("SpringController4", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -208,7 +207,7 @@ public class SpringQueryParamBuilderTest {
 
     @Test
     public void testQueryParam_complexType() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController5.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController5.class);
         Assert.assertEquals("SpringController5", apiDoc.getName());
         Assert.assertEquals(1, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

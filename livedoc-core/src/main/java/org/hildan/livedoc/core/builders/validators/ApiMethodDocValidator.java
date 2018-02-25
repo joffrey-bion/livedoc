@@ -2,11 +2,10 @@ package org.hildan.livedoc.core.builders.validators;
 
 import java.util.Collections;
 
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 
 public class ApiMethodDocValidator {
 
@@ -34,11 +33,6 @@ public class ApiMethodDocValidator {
     private static final String HINT_MISSING_METHOD_RESPONSE_OBJECT =
             "Add annotation ApiResponseBodyType to document " + "the returned object";
 
-    private static final String HINT_MISSING_METHOD_SUMMARY =
-            "Method display set to SUMMARY, but summary info has " + "not been specified";
-
-    private static final String MESSAGE_MISSING_METHOD_SUMMARY = "Missing documentation data: summary";
-
     /**
      * This checks that some of the properties are correctly set to produce a meaningful documentation and a working
      * playground. In case this is not the case, an error string is added to the jsondocerrors list in ApiMethodDoc. It
@@ -55,11 +49,6 @@ public class ApiMethodDocValidator {
             apiMethodDoc.addJsondocError(ERROR_MISSING_METHOD_PATH);
         }
 
-        if (apiMethodDoc.getSummary().trim().isEmpty() && requiresSummary(apiMethodDoc)) {
-            apiMethodDoc.setSummary(MESSAGE_MISSING_METHOD_SUMMARY);
-            apiMethodDoc.addJsondocHint(HINT_MISSING_METHOD_SUMMARY);
-        }
-
         if (apiMethodDoc.getDescription().trim().isEmpty()) {
             apiMethodDoc.addJsondocHint(HINT_MISSING_METHOD_DESCRIPTION);
         }
@@ -69,10 +58,6 @@ public class ApiMethodDocValidator {
         validateQueryParams(apiMethodDoc);
         validateRequestBody(apiMethodDoc);
         validateResponse(apiMethodDoc);
-    }
-
-    private static boolean requiresSummary(ApiMethodDoc apiMethodDoc) {
-        return apiMethodDoc.getDisplayMethodAs().equals(MethodDisplay.SUMMARY);
     }
 
     private static void validateHeaders(ApiMethodDoc apiMethodDoc) {

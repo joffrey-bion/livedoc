@@ -20,13 +20,13 @@ import org.hildan.livedoc.core.builders.doc.ApiTypeDocReader;
 import org.hildan.livedoc.core.builders.merger.DocMerger;
 import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
 import org.hildan.livedoc.core.builders.validators.ApiTypeDocValidator;
-import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
-import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.groups.Group;
+import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
@@ -115,7 +115,7 @@ public class LivedocReader {
         livedoc.setDisplayMethodAs(displayMethodAs);
 
         Set<Class<?>> controllers = findControllers();
-        Collection<ApiDoc> apiDocs = readApiDocs(controllers, displayMethodAs);
+        Collection<ApiDoc> apiDocs = readApiDocs(controllers);
         Set<Class<?>> types = getClassesToDocument(apiDocs);
 
         livedoc.setApis(group(apiDocs));
@@ -150,13 +150,12 @@ public class LivedocReader {
     }
 
     private static Set<Type> getReferencedTypesToDocument(Collection<ApiDoc> apiDocs) {
-        Set<Type> types = new HashSet<>();
-        for (ApiDoc apiDoc : apiDocs) {
-            for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-                types.addAll(getReferencedTypes(apiMethodDoc));
-            }
-        }
-        return types;
+        return apiDocs.stream()
+                      .map(ApiDoc::getMethods)
+                      .flatMap(Collection::stream)
+                      .map(LivedocReader::getReferencedTypes)
+                      .flatMap(Collection::stream)
+                      .collect(Collectors.toSet());
     }
 
     private static Set<Type> getReferencedTypes(ApiMethodDoc apiMethodDoc) {
@@ -175,18 +174,18 @@ public class LivedocReader {
         return packageWhiteList.stream().anyMatch(packageName::startsWith);
     }
 
-    private Collection<ApiDoc> readApiDocs(Collection<Class<?>> controllers, MethodDisplay displayMethodAs) {
-        return buildDocs(controllers, c -> readApiDoc(c, displayMethodAs));
+    private Collection<ApiDoc> readApiDocs(Collection<Class<?>> controllers) {
+        return buildDocs(controllers, this::readApiDoc);
     }
 
-    public Optional<ApiDoc> readApiDoc(Class<?> controller, MethodDisplay displayMethodAs) {
+    public Optional<ApiDoc> readApiDoc(Class<?> controller) {
         Optional<ApiDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiDocBase(controller));
-        doc.ifPresent(apiDoc -> apiDoc.setMethods(readApiMethodDocs(controller, apiDoc, displayMethodAs)));
+        doc.ifPresent(apiDoc -> apiDoc.setMethods(readApiMethodDocs(controller, apiDoc)));
         return doc;
     }
 
-    private List<ApiMethodDoc> readApiMethodDocs(Class<?> controller, ApiDoc doc, MethodDisplay displayMethodAs) {
-        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, controller, doc, displayMethodAs));
+    private List<ApiMethodDoc> readApiMethodDocs(Class<?> controller, ApiDoc doc) {
+        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, controller, doc));
     }
 
     private static List<Method> getAllMethods(Class<?> clazz) {
@@ -200,12 +199,10 @@ public class LivedocReader {
         return methods;
     }
 
-    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
-            MethodDisplay displayMethodAs) {
+    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc) {
         Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(
                 r -> r.buildApiMethodDoc(method, controller, parentApiDoc, templateProvider));
         doc.ifPresent(apiMethodDoc -> {
-            apiMethodDoc.setDisplayMethodAs(displayMethodAs);
             ApiMethodDocDefaults.complete(apiMethodDoc);
             ApiMethodDocValidator.validate(apiMethodDoc);
         });

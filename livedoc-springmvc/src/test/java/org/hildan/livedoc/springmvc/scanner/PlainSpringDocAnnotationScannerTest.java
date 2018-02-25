@@ -1,17 +1,13 @@
 package org.hildan.livedoc.springmvc.scanner;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 
-import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
-import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
+import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
+import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,22 +49,14 @@ public class PlainSpringDocAnnotationScannerTest {
         }
     }
 
-    private ApiDoc buildDocFor(Class<?> controller, MethodDisplay methodDisplay) {
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        Optional<ApiDoc> apiDoc = builder.readApiDoc(controller, methodDisplay);
-        assertTrue(apiDoc.isPresent());
-        return apiDoc.get();
-    }
-
     @Test
     public void testMergeApiDoc() {
-        ApiDoc apiDoc = buildDocFor(SpringController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         assertEquals("SpringController", apiDoc.getName());
         assertNotNull(apiDoc.getGroup());
         assertEquals(1, apiDoc.getMethods().size());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            assertEquals(MethodDisplay.URI, apiMethodDoc.getDisplayMethodAs());
             assertNull(apiMethodDoc.getAuth());
             assertNull(apiMethodDoc.getSupportedVersions());
             assertTrue(apiMethodDoc.getApiErrors().isEmpty());

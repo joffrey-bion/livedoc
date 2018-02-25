@@ -18,7 +18,6 @@ import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -58,7 +57,7 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void testMergeApiDoc() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("A spring controller", apiDoc.getDescription());
         Assert.assertEquals("Spring controller", apiDoc.getName());
 

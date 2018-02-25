@@ -4,7 +4,6 @@ import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,7 +42,7 @@ public class SpringRequestBodyBuilderTest {
 
     @Test
     public void testBodyOne() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

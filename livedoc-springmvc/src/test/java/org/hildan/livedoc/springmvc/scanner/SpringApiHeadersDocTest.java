@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class SpringApiHeadersDocTest {
     @SuppressWarnings("unused")
     @Test
     public void testApiHeadersOnClass() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringApiHeadersController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringApiHeadersController.class);
         Assert.assertEquals("SpringApiHeadersController", apiDoc.getName());
         Assert.assertEquals(3, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

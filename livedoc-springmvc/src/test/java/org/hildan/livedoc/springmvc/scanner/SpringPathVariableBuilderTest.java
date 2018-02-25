@@ -6,7 +6,6 @@ import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class SpringPathVariableBuilderTest {
 
     @Test
     public void testPathVariable() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
         Assert.assertEquals(2, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
@@ -83,7 +82,7 @@ public class SpringPathVariableBuilderTest {
 
     @Test
     public void testPathVariableWithJSONDoc() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class, MethodDisplay.URI);
+        ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class);
         Assert.assertEquals("SpringController2", apiDoc.getName());
         Assert.assertEquals(1, apiDoc.getMethods().size());
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {

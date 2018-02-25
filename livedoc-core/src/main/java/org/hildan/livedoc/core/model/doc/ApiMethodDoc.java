@@ -8,15 +8,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.ApiMethod;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
-import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
-
-import com.google.common.collect.Sets;
+import org.hildan.livedoc.core.model.types.LivedocType;
 
 public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc>, Scoped, Secured, Staged, Versioned {
 
@@ -51,8 +48,6 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
     @SpecialDefaultStringValue(ApiMethod.DEFAULT_RESPONSE_STATUS)
     private String responseStatusCode;
 
-    private MethodDisplay displayMethodAs;
-
     private List<ApiErrorDoc> apiErrors;
 
     private Visibility visibility;
@@ -83,7 +78,6 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
         this.apiErrors = new ArrayList<>();
         this.supportedVersions = null;
         this.auth = null;
-        this.displayMethodAs = MethodDisplay.URI;
     }
 
     public String getId() {
@@ -224,26 +218,6 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
     public void setResponseStatusCode(String responseStatusCode) {
         this.responseStatusCode = responseStatusCode;
-    }
-
-    public MethodDisplay getDisplayMethodAs() {
-        return displayMethodAs;
-    }
-
-    public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
-        this.displayMethodAs = displayMethodAs;
-    }
-
-    public Set<String> getDisplayedMethodString() {
-        switch (displayMethodAs) {
-        case METHOD:
-            return Sets.newHashSet(name);
-        case SUMMARY:
-            return Sets.newHashSet(summary);
-        case URI:
-        default:
-            return paths;
-        }
     }
 
     @Override
