@@ -77,8 +77,8 @@ public class RecursivePropertyTypeScannerTest {
     @Test
     public void findTypes_complexHierarchy() {
         Set<Type> rootTypes = Collections.singleton(TestRoot.class);
-        assertSetEquals(explorer.findTypesToDocument(rootTypes), TestRoot.class, WithCustomObject.class, WithPrimitives.class,
-                Custom.class, Long.class, String.class, int.class);
+        assertSetEquals(explorer.findTypesToDocument(rootTypes), TestRoot.class, WithCustomObject.class,
+                WithPrimitives.class, Custom.class, Long.class, String.class, int.class);
 
     }
 

@@ -46,6 +46,7 @@ public class TypePredicatesTest {
     @Test
     public void isBasicType_falseOnCustomClass() {
         class Custom {}
+
         assertFalse(TypePredicates.isBasicType(Custom.class));
     }
 
