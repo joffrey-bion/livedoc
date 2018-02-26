@@ -16,6 +16,8 @@ public class TypeElement {
 
     static final TypeElement EXTENDS = text(" extends ");
 
+    static final TypeElement SUPER = text(" super ");
+
     private final String text;
 
     private final String livedocId;

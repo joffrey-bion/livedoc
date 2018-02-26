@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.hildan.livedoc.core.util.ListJoiner;
 
-public class ParameterizedLivedocType implements LivedocType {
+class ParameterizedLivedocType implements LivedocType {
 
-    private final SimpleLivedocType rawType;
+    private final LivedocType rawType;
 
     private final List<LivedocType> typeParams;
 
-    ParameterizedLivedocType(SimpleLivedocType rawType, List<LivedocType> typeParams) {
+    ParameterizedLivedocType(LivedocType rawType, List<LivedocType> typeParams) {
         this.rawType = rawType;
         this.typeParams = typeParams;
     }

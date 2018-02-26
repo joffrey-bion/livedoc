@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.scanners.types;
+package org.hildan.livedoc.core.scanners.types.generics;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -15,7 +15,7 @@ import com.google.common.reflect.TypeToken;
 
 import static org.junit.Assert.assertEquals;
 
-public class GenericTypeExplorerTest {
+public class MentionedClassesExplorerTest {
 
     private interface MyInterface {}
 
@@ -32,7 +32,7 @@ public class GenericTypeExplorerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getClassesInDeclaration_failsOnNull() {
-        GenericTypeExplorer.getClassesInDeclaration(null);
+        MentionedClassesExplorer.getClassesInDeclaration(null);
     }
 
     @Test
@@ -233,7 +233,7 @@ public class GenericTypeExplorerTest {
     @Test
     public void getClassesInDeclaration_recursiveTypeVariableBound2() throws NoSuchMethodException {
         check("comparableBound", Comparable.class);
-        Method testMethod = GenericTypeExplorerTest.class.getMethod("comparableBound");
+        Method testMethod = MentionedClassesExplorerTest.class.getMethod("comparableBound");
         Type genReturnType = testMethod.getGenericReturnType();
         LivedocTypeBuilder.build(genReturnType).getOneLineText();
     }
@@ -249,13 +249,13 @@ public class GenericTypeExplorerTest {
     }
 
     private static void check(String methodName, Class<?>... expected) throws NoSuchMethodException {
-        Method testMethod = GenericTypeExplorerTest.class.getMethod(methodName);
+        Method testMethod = MentionedClassesExplorerTest.class.getMethod(methodName);
         Type genReturnType = testMethod.getGenericReturnType();
         check(genReturnType, expected);
     }
 
     private static void check(Type typeDeclaration, Class<?>... expectedClasses) {
-        Set<Class<?>> actual = GenericTypeExplorer.getClassesInDeclaration(typeDeclaration);
+        Set<Class<?>> actual = MentionedClassesExplorer.getClassesInDeclaration(typeDeclaration);
         Set<Class<?>> expected = new HashSet<>(Arrays.asList(expectedClasses));
         assertEquals(expected, actual);
     }

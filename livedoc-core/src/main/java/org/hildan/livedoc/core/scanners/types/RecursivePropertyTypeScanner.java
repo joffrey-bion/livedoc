@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.types.generics.MentionedClassesExplorer;
 
 /**
  * An implementation of {@link TypeScanner} that reads the types of the properties of the classes, and recursively
@@ -80,12 +81,12 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
     }
 
     private void exploreType(Type type, Set<Class<?>> exploredClasses) {
-        GenericTypeExplorer.getClassesInDeclaration(type)
-                           .stream()
-                           .filter(typeFilter)
-                           .flatMap(typeMapper.andThen(Collection::stream))
-                           .distinct()
-                           .forEach(c -> exploreClass(c, exploredClasses));
+        MentionedClassesExplorer.getClassesInDeclaration(type)
+                                .stream()
+                                .filter(typeFilter)
+                                .flatMap(typeMapper.andThen(Collection::stream))
+                                .distinct()
+                                .forEach(c -> exploreClass(c, exploredClasses));
     }
 
     private void exploreClass(Class<?> clazz, Set<Class<?>> exploredClasses) {
