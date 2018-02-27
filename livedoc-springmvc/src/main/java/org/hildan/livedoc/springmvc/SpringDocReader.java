@@ -68,7 +68,7 @@ public class SpringDocReader implements DocReader {
      */
     @NotNull
     @Override
-    public Optional<ApiDoc> buildApiDocBase(Class<?> controllerType) {
+    public Optional<ApiDoc> buildApiDocBase(@NotNull Class<?> controllerType) {
         ApiDoc apiDoc = new ApiDoc();
         apiDoc.setName(controllerType.getSimpleName());
         return Optional.of(apiDoc);
@@ -76,8 +76,9 @@ public class SpringDocReader implements DocReader {
 
     @NotNull
     @Override
-    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
-            TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
+    public Optional<ApiMethodDoc> buildApiMethodDoc(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider) {
         if (!canReadInfoFrom(method)) {
             return Optional.empty();
         }
@@ -107,10 +108,10 @@ public class SpringDocReader implements DocReader {
         apiMethodDoc.setConsumes(SpringMediaTypeBuilder.buildConsumes(method, controller));
         apiMethodDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method, controller));
         apiMethodDoc.setPathParameters(SpringPathVariableBuilder.buildPathVariable(method, typeReferenceProvider));
-        apiMethodDoc.setQueryParameters(SpringQueryParamBuilder.buildQueryParams(method, controller,
-                typeReferenceProvider));
-        apiMethodDoc.setRequestBody(SpringRequestBodyBuilder.buildRequestBody(method, typeReferenceProvider,
-                templateProvider));
+        apiMethodDoc.setQueryParameters(
+                SpringQueryParamBuilder.buildQueryParams(method, controller, typeReferenceProvider));
+        apiMethodDoc.setRequestBody(
+                SpringRequestBodyBuilder.buildRequestBody(method, typeReferenceProvider, templateProvider));
         apiMethodDoc.setResponseBodyType(buildResponse(method, typeReferenceProvider));
         apiMethodDoc.setResponseStatusCode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
         return apiMethodDoc;
