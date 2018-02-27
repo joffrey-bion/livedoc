@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 import org.junit.Test;
 
 import com.google.common.reflect.TypeToken;
@@ -154,6 +153,7 @@ public class MentionedClassesExplorerTest {
         check(customGeneric1PWildcard, Custom1P.class);
     }
 
+    @SuppressWarnings("unused")
     public <T> Custom1P<T> customGeneric1PVariable() {
         return null;
     }
@@ -163,6 +163,7 @@ public class MentionedClassesExplorerTest {
         check("customGeneric1PVariable", Custom1P.class);
     }
 
+    @SuppressWarnings("unused")
     public <T extends Custom> Custom1P<T> customGeneric1PBoundVariable() {
         return null;
     }
@@ -172,6 +173,7 @@ public class MentionedClassesExplorerTest {
         check("customGeneric1PBoundVariable", Custom1P.class, Custom.class);
     }
 
+    @SuppressWarnings("unused")
     public Custom1P<List<String>> customGenericNestedList() {
         return null;
     }
@@ -181,6 +183,7 @@ public class MentionedClassesExplorerTest {
         check("customGenericNestedList", Custom1P.class, List.class, String.class);
     }
 
+    @SuppressWarnings("unused")
     public <T> T[] genericArray() {
         return null;
     }
@@ -190,6 +193,7 @@ public class MentionedClassesExplorerTest {
         check("genericArray"); // no types expected
     }
 
+    @SuppressWarnings("unused")
     public <T extends Custom> T[] boundGenericArray() {
         return null;
     }
@@ -199,6 +203,7 @@ public class MentionedClassesExplorerTest {
         check("boundGenericArray", Custom.class);
     }
 
+    @SuppressWarnings("unused")
     public <T> List<T[]> listGenericArray() {
         return null;
     }
@@ -208,6 +213,7 @@ public class MentionedClassesExplorerTest {
         check("listGenericArray", List.class);
     }
 
+    @SuppressWarnings("unused")
     public <T extends Custom> List<T[]> listBoundGenericArray() {
         return null;
     }
@@ -217,6 +223,7 @@ public class MentionedClassesExplorerTest {
         check("listBoundGenericArray", List.class, Custom.class);
     }
 
+    @SuppressWarnings("unused")
     public <T extends Enum<T>> T enumBound() {
         return null;
     }
@@ -226,6 +233,7 @@ public class MentionedClassesExplorerTest {
         check("enumBound", Enum.class);
     }
 
+    @SuppressWarnings("unused")
     public <T extends Comparable<T>> T comparableBound() {
         return null;
     }
@@ -233,11 +241,9 @@ public class MentionedClassesExplorerTest {
     @Test
     public void getClassesInDeclaration_recursiveTypeVariableBound2() throws NoSuchMethodException {
         check("comparableBound", Comparable.class);
-        Method testMethod = MentionedClassesExplorerTest.class.getMethod("comparableBound");
-        Type genReturnType = testMethod.getGenericReturnType();
-        LivedocTypeBuilder.build(genReturnType).getOneLineText();
     }
 
+    @SuppressWarnings("unused")
     public Map<List<String>, Custom2P<Set<?>, Custom3P<Map<Custom2P<Long, Boolean>, Custom>, Float, Short>>> complex() {
         return null;
     }

@@ -6,9 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiPathParam;
-import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -16,7 +16,7 @@ public class SpringPathVariableBuilder {
 
     private static final DefaultParameterNameDiscoverer PARAM_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
-    public static Set<ApiParamDoc> buildPathVariable(Method method) {
+    public static Set<ApiParamDoc> buildPathVariable(Method method, TypeReferenceProvider typeReferenceProvider) {
         Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
 
         Parameter[] parameters = method.getParameters();
@@ -25,7 +25,7 @@ public class SpringPathVariableBuilder {
             PathVariable pathVariable = param.getAnnotation(PathVariable.class);
             ApiPathParam apiPathParam = param.getAnnotation(ApiPathParam.class);
             if (pathVariable != null) {
-                LivedocType livedocType = LivedocTypeBuilder.build(param.getParameterizedType());
+                LivedocType livedocType = typeReferenceProvider.getReference(param.getParameterizedType());
                 String paramName = getSpringParamName(method, pathVariable, i);
                 ApiParamDoc apiParamDoc = new ApiParamDoc(paramName, "", livedocType, "true", new String[0], null, "");
 

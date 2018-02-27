@@ -2,16 +2,16 @@ package org.hildan.livedoc.core.model.types;
 
 public enum BoundType {
     NONE(null),
-    UPPER(TypeElement.EXTENDS),
-    LOWER(TypeElement.SUPER);
+    UPPER(TypeReferenceElement.EXTENDS),
+    LOWER(TypeReferenceElement.SUPER);
 
-    private final TypeElement keyword;
+    private final TypeReferenceElement keyword;
 
-    BoundType(TypeElement keyword) {
+    BoundType(TypeReferenceElement keyword) {
         this.keyword = keyword;
     }
 
-    public TypeElement getKeyword() {
+    public TypeReferenceElement getKeyword() {
         return keyword;
     }
 }

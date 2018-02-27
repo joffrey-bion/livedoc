@@ -10,6 +10,7 @@ import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
 
 public class ApiTypeDocReader {
@@ -20,7 +21,7 @@ public class ApiTypeDocReader {
         this.propertyScanner = propertyScanner;
     }
 
-    public ApiTypeDoc read(Class<?> clazz) {
+    public ApiTypeDoc read(Class<?> clazz, TypeReferenceProvider typeReferenceProvider) {
         ApiTypeDoc apiTypeDoc = new ApiTypeDoc(clazz);
         apiTypeDoc.setName(clazz.getSimpleName());
         apiTypeDoc.setSupportedVersions(ApiVersionDocReader.read(clazz));
@@ -40,18 +41,19 @@ public class ApiTypeDocReader {
             apiTypeDoc.setAllowedValues(BeanUtils.enumConstantsToStringArray(clazz.getEnumConstants()));
         }
 
-        apiTypeDoc.setFields(getFieldDocs(clazz, apiTypeDoc));
+        apiTypeDoc.setFields(getFieldDocs(clazz, apiTypeDoc, typeReferenceProvider));
 
         return apiTypeDoc;
     }
 
-    private Set<ApiFieldDoc> getFieldDocs(Class<?> clazz, ApiTypeDoc apiTypeDoc) {
+    private Set<ApiFieldDoc> getFieldDocs(Class<?> clazz, ApiTypeDoc apiTypeDoc,
+            TypeReferenceProvider typeReferenceProvider) {
         if (clazz.isEnum()) {
             return Collections.emptySet();
         }
         Set<ApiFieldDoc> fieldDocs = new TreeSet<>();
         for (Property property : propertyScanner.getProperties(clazz)) {
-            fieldDocs.add(ApiObjectFieldDocReader.read(property, apiTypeDoc));
+            fieldDocs.add(ApiObjectFieldDocReader.read(property, apiTypeDoc, typeReferenceProvider));
         }
         return fieldDocs;
     }

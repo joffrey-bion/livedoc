@@ -3,19 +3,20 @@ package org.hildan.livedoc.core.builders.doc;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
-import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.properties.Property;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.HibernateValidationProcessor;
 
 public class ApiObjectFieldDocReader {
 
-    public static ApiFieldDoc read(Property property, ApiTypeDoc parentDoc) {
+    public static ApiFieldDoc read(Property property, ApiTypeDoc parentDoc,
+            TypeReferenceProvider typeReferenceProvider) {
         ApiFieldDoc apiFieldDoc = new ApiFieldDoc();
         apiFieldDoc.setName(property.getName());
-        apiFieldDoc.setType(getLivedocType(property));
+        apiFieldDoc.setType(getLivedocType(property, typeReferenceProvider));
         // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
         apiFieldDoc.setRequired(String.valueOf(property.isRequired()));
         apiFieldDoc.setOrder(property.getOrder());
@@ -51,8 +52,8 @@ public class ApiObjectFieldDocReader {
         return null;
     }
 
-    private static LivedocType getLivedocType(Property property) {
-        return LivedocTypeBuilder.build(property.getGenericType());
+    private static LivedocType getLivedocType(Property property, TypeReferenceProvider typeReferenceProvider) {
+        return typeReferenceProvider.getReference(property.getGenericType());
     }
 
     private static ApiVersionDoc getVersionDoc(Property property, ApiTypeDoc parentDoc) {

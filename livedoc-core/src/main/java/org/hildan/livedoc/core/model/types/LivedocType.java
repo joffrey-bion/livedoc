@@ -11,16 +11,16 @@ public interface LivedocType {
      * @return a string representation of this type with all its components
      */
     default String getOneLineText() {
-        return getTypeElements().stream().map(TypeElement::getText).collect(Collectors.joining());
+        return getTypeElements().stream().map(TypeReferenceElement::getText).collect(Collectors.joining());
     }
 
     /**
      * Breaks down this type's declaration into multiple display elements. Some of them are textual elements, other
      * are references to other types.
      *
-     * @return a list of {@link TypeElement}s that compose this type's declaration
+     * @return a list of {@link TypeReferenceElement}s that compose this type's declaration
      */
-    List<TypeElement> getTypeElements();
+    List<TypeReferenceElement> getTypeElements();
 
     /**
      * Returns all classes/interfaces appearing in this type's declaration. It recursively considers type parameters and

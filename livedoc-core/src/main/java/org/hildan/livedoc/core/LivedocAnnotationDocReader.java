@@ -11,6 +11,8 @@ import org.hildan.livedoc.core.builders.doc.ApiMethodDocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An implementation of {@link DocReader} that reads Livedoc annotations to build the documentation. In this
@@ -25,24 +27,28 @@ public class LivedocAnnotationDocReader implements DocReader {
         this.annotatedTypesFinder = annotatedTypesFinder;
     }
 
+    @NotNull
     @Override
     public Collection<Class<?>> findControllerTypes() {
         return annotatedTypesFinder.apply(Api.class);
     }
 
+    @NotNull
     @Override
-    public Optional<ApiDoc> buildApiDocBase(Class<?> controllerType) {
+    public Optional<ApiDoc> buildApiDocBase(@NotNull Class<?> controllerType) {
         return Optional.of(ApiDocReader.read(controllerType));
     }
 
+    @NotNull
     @Override
-    public Optional<ApiMethodDoc> buildApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
-            TemplateProvider templateProvider) {
+    public Optional<ApiMethodDoc> buildApiMethodDoc(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider) {
         ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
         if (methodAnnotation == null) {
             return Optional.empty(); // this basic builder only supports annotated methods
         }
-        ApiMethodDoc apiMethodDoc = ApiMethodDocReader.read(method, parentApiDoc, templateProvider);
-        return Optional.of(apiMethodDoc);
+        ApiMethodDoc doc = ApiMethodDocReader.read(method, parentApiDoc, typeReferenceProvider, templateProvider);
+        return Optional.of(doc);
     }
 }

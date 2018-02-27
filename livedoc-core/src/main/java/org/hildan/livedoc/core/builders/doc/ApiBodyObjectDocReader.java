@@ -4,20 +4,21 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
-import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.model.doc.ApiRequestBodyDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.LivedocUtils;
 
 public class ApiBodyObjectDocReader {
 
-    public static ApiRequestBodyDoc read(Method method, TemplateProvider templateProvider) {
+    public static ApiRequestBodyDoc read(Method method, TypeReferenceProvider typeReferenceProvider,
+            TemplateProvider templateProvider) {
         Type responseType = getBodyType(method);
         if (responseType == null) {
             return null;
         }
-        LivedocType livedocType = LivedocTypeBuilder.build(responseType);
+        LivedocType livedocType = typeReferenceProvider.getReference(responseType);
         Object template = templateProvider.getTemplate(responseType);
         return new ApiRequestBodyDoc(livedocType, template);
     }

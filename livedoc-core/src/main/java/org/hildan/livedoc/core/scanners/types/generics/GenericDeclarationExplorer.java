@@ -54,9 +54,15 @@ public class GenericDeclarationExplorer<T> {
     }
 
     private T exploreClassOrArray(Class<?> clazz) {
+        if (void.class.equals(clazz) || Void.class.equals(clazz)) {
+            return handler.handleVoid();
+        }
         if (clazz.isArray()) {
             T exploredComponentType = explore(clazz.getComponentType());
             return handler.handleArrayClass(clazz, exploredComponentType);
+        }
+        if (clazz.isEnum()) {
+            return handler.handleEnumClass(clazz);
         }
         return handler.handleSimpleClass(clazz);
     }

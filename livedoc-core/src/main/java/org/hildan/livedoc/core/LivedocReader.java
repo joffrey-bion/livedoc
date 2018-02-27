@@ -30,6 +30,8 @@ import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
+import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 
 /**
  * A component able to create an API documentation by inspecting classes and reading their annotations.
@@ -47,6 +49,8 @@ public class LivedocReader {
     private final ApiTypeDocReader apiTypeDocReader;
 
     private final TemplateProvider templateProvider;
+
+    private final TypeReferenceProvider typeReferenceProvider;
 
     private final DocMerger docMerger;
 
@@ -79,7 +83,20 @@ public class LivedocReader {
         this.globalDocReader = globalDocReader;
         this.docReaders = readers;
         this.templateProvider = templateProvider;
+        this.typeReferenceProvider = new DefaultTypeReferenceProvider(this::isInWhiteListedPackage);
         this.docMerger = new DocMerger(new FieldPropertyScanner());
+    }
+
+    private boolean isInWhiteListedPackage(Type type) {
+        if (!(type instanceof Class)) {
+            return true;
+        }
+        if (void.class.equals(type) || Void.class.equals(type)) {
+            return false;
+        }
+        Class<?> clazz = (Class<?>) type;
+        String packageName = clazz.getPackage().getName();
+        return packageWhiteList.stream().anyMatch(packageName::startsWith);
     }
 
     /**
@@ -116,7 +133,7 @@ public class LivedocReader {
 
         Set<Class<?>> controllers = findControllers();
         Collection<ApiDoc> apiDocs = readApiDocs(controllers);
-        Set<Class<?>> types = getClassesToDocument(apiDocs);
+        Set<Class<?>> types = getClassesToDocument();
 
         livedoc.setApis(group(apiDocs));
         livedoc.setTypes(group(getApiTypeDocs(types)));
@@ -143,35 +160,10 @@ public class LivedocReader {
         return controllers;
     }
 
-    private Set<Class<?>> getClassesToDocument(Collection<ApiDoc> apiDocs) {
-        Set<Type> rootTypes = getReferencedTypesToDocument(apiDocs);
+    private Set<Class<?>> getClassesToDocument() {
+        Set<Type> rootTypes = typeReferenceProvider.getProvidedReferences();
         Set<Class<?>> exploredTypes = typeScanner.findTypesToDocument(rootTypes);
         return exploredTypes.stream().filter(this::isInWhiteListedPackage).collect(Collectors.toSet());
-    }
-
-    private static Set<Type> getReferencedTypesToDocument(Collection<ApiDoc> apiDocs) {
-        return apiDocs.stream()
-                      .map(ApiDoc::getMethods)
-                      .flatMap(Collection::stream)
-                      .map(LivedocReader::getReferencedTypes)
-                      .flatMap(Collection::stream)
-                      .collect(Collectors.toSet());
-    }
-
-    private static Set<Type> getReferencedTypes(ApiMethodDoc apiMethodDoc) {
-        Set<Type> types = new HashSet<>();
-        if (apiMethodDoc.getRequestBody() != null) {
-            types.addAll(apiMethodDoc.getRequestBody().getType().getComposingTypes());
-        }
-        if (apiMethodDoc.getResponseBodyType() != null) {
-            types.addAll(apiMethodDoc.getResponseBodyType().getComposingTypes());
-        }
-        return types;
-    }
-
-    private boolean isInWhiteListedPackage(Class<?> clazz) {
-        String packageName = clazz.getPackage().getName();
-        return packageWhiteList.stream().anyMatch(packageName::startsWith);
     }
 
     private Collection<ApiDoc> readApiDocs(Collection<Class<?>> controllers) {
@@ -201,7 +193,7 @@ public class LivedocReader {
 
     private Optional<ApiMethodDoc> readApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc) {
         Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(
-                r -> r.buildApiMethodDoc(method, controller, parentApiDoc, templateProvider));
+                r -> r.buildApiMethodDoc(method, controller, parentApiDoc, typeReferenceProvider, templateProvider));
         doc.ifPresent(apiMethodDoc -> {
             ApiMethodDocDefaults.complete(apiMethodDoc);
             ApiMethodDocValidator.validate(apiMethodDoc);
@@ -214,7 +206,7 @@ public class LivedocReader {
     }
 
     private Optional<ApiTypeDoc> readApiTypeDoc(Class<?> type) {
-        ApiTypeDoc doc = apiTypeDocReader.read(type);
+        ApiTypeDoc doc = apiTypeDocReader.read(type, typeReferenceProvider);
         doc.setTemplate(templateProvider.getTemplate(type));
         ApiTypeDocValidator.validate(doc);
         return Optional.of(doc);

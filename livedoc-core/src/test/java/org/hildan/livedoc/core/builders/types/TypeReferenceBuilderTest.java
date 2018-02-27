@@ -1,7 +1,7 @@
 package org.hildan.livedoc.core.builders.types;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +10,12 @@ import java.util.Set;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.scanners.types.generics.GenericDeclarationExplorer;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LivedocTypeBuilderTest {
+public class TypeReferenceBuilderTest {
 
     public String getString() {
         return null;
@@ -159,8 +160,7 @@ public class LivedocTypeBuilderTest {
     }
 
     @Test
-    public void testReflex() throws NoSuchMethodException, SecurityException, ClassNotFoundException,
-            IOException {
+    public void testReflex() throws NoSuchMethodException, SecurityException {
         LivedocType livedocType;
 
         livedocType = buildReturnTypeFor("getString");
@@ -261,7 +261,8 @@ public class LivedocTypeBuilderTest {
     }
 
     private static LivedocType buildReturnTypeFor(String methodName) throws NoSuchMethodException {
-        Method method = LivedocTypeBuilderTest.class.getMethod(methodName);
-        return LivedocTypeBuilder.build(method.getGenericReturnType());
+        Method method = TypeReferenceBuilderTest.class.getMethod(methodName);
+        Type returnType = method.getGenericReturnType();
+        return GenericDeclarationExplorer.explore(returnType, new TypeReferenceBuilder(c -> true));
     }
 }

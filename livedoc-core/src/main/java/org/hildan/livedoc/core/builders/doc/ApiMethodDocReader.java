@@ -6,26 +6,28 @@ import java.util.LinkedHashSet;
 
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
+import org.hildan.livedoc.core.model.LivedocDefaultType;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
-import org.hildan.livedoc.core.model.LivedocDefaultType;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+import org.jetbrains.annotations.Nullable;
 
 public class ApiMethodDocReader {
 
-    public static ApiMethodDoc read(Method method, ApiDoc parentApiDoc, TemplateProvider templateProvider) {
+    public static ApiMethodDoc read(Method method, ApiDoc parentApiDoc, TypeReferenceProvider typeReferenceProvider,
+            TemplateProvider templateProvider) {
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
         apiMethodDoc.setName(method.getName());
         apiMethodDoc.setApiErrors(ApiErrorDocReader.build(method));
         apiMethodDoc.setSupportedVersions(ApiVersionDocReader.read(method, parentApiDoc.getSupportedVersions()));
         apiMethodDoc.setAuth(ApiAuthDocReader.read(method));
         apiMethodDoc.setHeaders(ApiHeaderDocReader.read(method));
-        apiMethodDoc.setPathParameters(ApiPathParamDocReader.read(method));
-        apiMethodDoc.setQueryParameters(ApiQueryParamDocReader.read(method));
-        apiMethodDoc.setRequestBody(ApiBodyObjectDocReader.read(method, templateProvider));
-        apiMethodDoc.setResponseBodyType(readResponseBodyType(method));
+        apiMethodDoc.setPathParameters(ApiPathParamDocReader.read(method, typeReferenceProvider));
+        apiMethodDoc.setQueryParameters(ApiQueryParamDocReader.read(method, typeReferenceProvider));
+        apiMethodDoc.setRequestBody(ApiBodyObjectDocReader.read(method, typeReferenceProvider, templateProvider));
+        apiMethodDoc.setResponseBodyType(readResponseBodyType(method, typeReferenceProvider));
         apiMethodDoc.setStage(ApiStageReader.read(method, parentApiDoc.getStage()));
         apiMethodDoc.setVisibility(ApiVisibilityReader.read(method, parentApiDoc.getVisibility()));
 
@@ -44,14 +46,15 @@ public class ApiMethodDocReader {
         return apiMethodDoc;
     }
 
-    private static LivedocType readResponseBodyType(Method method) {
+    @Nullable
+    private static LivedocType readResponseBodyType(Method method, TypeReferenceProvider typeReferenceProvider) {
         if (method.isAnnotationPresent(ApiResponseBodyType.class)) {
             ApiResponseBodyType annotation = method.getAnnotation(ApiResponseBodyType.class);
 
             if (annotation.value().isAssignableFrom(LivedocDefaultType.class)) {
-                return LivedocTypeBuilder.build(method.getGenericReturnType());
+                return typeReferenceProvider.getReference(method.getGenericReturnType());
             } else {
-                return LivedocTypeBuilder.build(annotation.value());
+                return typeReferenceProvider.getReference(annotation.value());
             }
         }
         return null;

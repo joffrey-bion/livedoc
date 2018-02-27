@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MentionedClassesExplorer implements GenericTypeHandler<Set<Class<?>>> {
 
     /**
@@ -31,36 +33,46 @@ public class MentionedClassesExplorer implements GenericTypeHandler<Set<Class<?>
     }
 
     @Override
-    public Set<Class<?>> handleSimpleClass(Class<?> clazz) {
+    public Set<Class<?>> handleVoid() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public Set<Class<?>> handleSimpleClass(@NotNull Class<?> clazz) {
         return Collections.singleton(clazz);
     }
 
     @Override
-    public Set<Class<?>> handleArrayClass(Class<?> arrayClass, Set<Class<?>> handledComponentClass) {
+    public Set<Class<?>> handleEnumClass(@NotNull Class<?> clazz) {
+        return handleSimpleClass(clazz);
+    }
+
+    @Override
+    public Set<Class<?>> handleArrayClass(@NotNull Class<?> arrayClass, Set<Class<?>> handledComponentClass) {
         return handledComponentClass;
     }
 
     @Override
-    public Set<Class<?>> handleGenericArray(GenericArrayType type, Set<Class<?>> handledComponentClass) {
+    public Set<Class<?>> handleGenericArray(@NotNull GenericArrayType type, Set<Class<?>> handledComponentClass) {
         return handledComponentClass;
     }
 
     @Override
-    public Set<Class<?>> handleParameterizedType(ParameterizedType type, Set<Class<?>> handledRawType,
-            List<Set<Class<?>>> handledTypeParameters) {
+    public Set<Class<?>> handleParameterizedType(@NotNull ParameterizedType type, Set<Class<?>> handledRawType,
+            @NotNull List<Set<Class<?>>> handledTypeParameters) {
         Set<Class<?>> result = new HashSet<>(handledRawType);
         handledTypeParameters.forEach(result::addAll);
         return result;
     }
 
     @Override
-    public Set<Class<?>> handleTypeVariable(TypeVariable type, List<Set<Class<?>>> handledBounds) {
+    public Set<Class<?>> handleTypeVariable(@NotNull TypeVariable type, @NotNull List<Set<Class<?>>> handledBounds) {
         return handledBounds.stream().flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
     @Override
-    public Set<Class<?>> handleWildcardType(WildcardType type, List<Set<Class<?>>> handledUpperBounds,
-            List<Set<Class<?>>> handledLowerBounds) {
+    public Set<Class<?>> handleWildcardType(@NotNull WildcardType type, @NotNull List<Set<Class<?>>> handledUpperBounds,
+            @NotNull List<Set<Class<?>>> handledLowerBounds) {
         Stream<Set<Class<?>>> upperBoundsStream = handledUpperBounds.stream();
         Stream<Set<Class<?>>> lowerBoundsStream = handledLowerBounds.stream();
         return Stream.concat(upperBoundsStream, lowerBoundsStream)

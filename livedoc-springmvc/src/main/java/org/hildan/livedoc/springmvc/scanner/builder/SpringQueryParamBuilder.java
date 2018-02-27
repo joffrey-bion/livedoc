@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
-import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,19 +28,21 @@ public class SpringQueryParamBuilder {
      * @param method
      * @param controller
      *
+     * @param typeReferenceProvider
      * @return
      */
-    public static Set<ApiParamDoc> buildQueryParams(Method method, Class<?> controller) {
+    public static Set<ApiParamDoc> buildQueryParams(Method method, Class<?> controller,
+            TypeReferenceProvider typeReferenceProvider) {
         Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
 
         RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
         if (requestMapping != null) {
-            apiParamDocs.addAll(getParamDocsFromAnnotation(requestMapping));
+            apiParamDocs.addAll(getParamDocsFromAnnotation(requestMapping, typeReferenceProvider));
         }
 
         requestMapping = method.getAnnotation(RequestMapping.class);
         if (requestMapping != null) {
-            apiParamDocs.addAll(getParamDocsFromAnnotation(requestMapping));
+            apiParamDocs.addAll(getParamDocsFromAnnotation(requestMapping, typeReferenceProvider));
         }
 
         Parameter[] parameters = method.getParameters();
@@ -50,17 +52,16 @@ public class SpringQueryParamBuilder {
             ModelAttribute modelAttributeAnn = param.getAnnotation(ModelAttribute.class);
             ApiQueryParam apiQueryParam = param.getAnnotation(ApiQueryParam.class);
 
-            LivedocType paramType = LivedocTypeBuilder.build(param.getParameterizedType());
+            LivedocType paramType = typeReferenceProvider.getReference(param.getParameterizedType());
             if (requestParamAnn != null) {
-                ApiParamDoc apiParamDoc = getParamDocFromRequestParam(method, i, requestParamAnn,
-                        paramType);
+                ApiParamDoc apiParamDoc = getParamDocFromRequestParam(method, i, requestParamAnn, paramType);
                 mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
                 apiParamDocs.add(apiParamDoc);
             }
 
             if (modelAttributeAnn != null) {
-                ApiParamDoc apiParamDoc = new ApiParamDoc(modelAttributeAnn.value(), "", paramType, "false", new String[] {},
-                        null, null);
+                ApiParamDoc apiParamDoc = new ApiParamDoc(modelAttributeAnn.value(), "", paramType, "false",
+                        new String[] {}, null, null);
                 mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
                 apiParamDocs.add(apiParamDoc);
             }
@@ -69,24 +70,26 @@ public class SpringQueryParamBuilder {
         return apiParamDocs;
     }
 
-    private static Set<ApiParamDoc> getParamDocsFromAnnotation(RequestMapping requestMapping) {
+    private static Set<ApiParamDoc> getParamDocsFromAnnotation(RequestMapping requestMapping,
+            TypeReferenceProvider typeReferenceProvider) {
         return Arrays.stream(requestMapping.params())
-                     .map(SpringQueryParamBuilder::createParamFromSpringDefinition)
+                     .map(param -> createParamFromSpringDefinition(param, typeReferenceProvider))
                      .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    private static ApiParamDoc createParamFromSpringDefinition(String param) {
+    private static ApiParamDoc createParamFromSpringDefinition(String param,
+            TypeReferenceProvider typeReferenceProvider) {
         String[] splitParam = param.split("=");
         if (splitParam.length <= 1) {
-            return createStringParamDoc(param);
+            return createStringParamDoc(typeReferenceProvider, param);
         }
         final String name = splitParam[0];
         final String value = splitParam[1];
-        return createStringParamDoc(name, value);
+        return createStringParamDoc(typeReferenceProvider, name, value);
     }
 
-    private static ApiParamDoc createStringParamDoc(String name, String... values) {
-        LivedocType stringType = LivedocTypeBuilder.build(String.class);
+    private static ApiParamDoc createStringParamDoc(TypeReferenceProvider typeReferenceProvider, String name, String... values) {
+        LivedocType stringType = typeReferenceProvider.getReference(String.class);
         return new ApiParamDoc(name, "", stringType, "true", values, null, null);
     }
 

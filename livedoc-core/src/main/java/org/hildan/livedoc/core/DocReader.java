@@ -6,7 +6,10 @@ import java.util.Optional;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A component able to build documentation objects for controllers and their methods.
@@ -18,6 +21,7 @@ public interface DocReader {
      *
      * @return a collection of controllers identified by this reader
      */
+    @NotNull
     Collection<Class<?>> findControllerTypes();
 
     /**
@@ -32,7 +36,8 @@ public interface DocReader {
      * build a doc for the given controller.
      */
     // TODO create a class without method information and make it the return type of this method to avoid confusion
-    Optional<ApiDoc> buildApiDocBase(Class<?> controllerType);
+    @NotNull
+    Optional<ApiDoc> buildApiDocBase(@NotNull Class<?> controllerType);
 
     /**
      * Builds an {@link ApiMethodDoc} for the given method. Returns an empty optional when not able to build something
@@ -45,12 +50,16 @@ public interface DocReader {
      *         because the method could be inherited from a parent controller.
      * @param parentApiDoc
      *         the {@link ApiDoc} which the given method is part of
+     * @param typeReferenceProvider
+     *         a {@link TypeReferenceProvider} to get {@link LivedocType}s for the request/body types of the method
      * @param templateProvider
      *         a {@link TemplateProvider} for types mentioned in the method's doc
      *
      * @return a new {@link ApiMethodDoc} for the given method, or an empty optional if this reader is not able to build
      * a doc for the given method.
      */
-    Optional<ApiMethodDoc> buildApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
-            TemplateProvider templateProvider);
+    @NotNull
+    Optional<ApiMethodDoc> buildApiMethodDoc(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider);
 }

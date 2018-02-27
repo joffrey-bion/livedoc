@@ -5,16 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.annotations.types.ApiType;
-import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.annotations.ApiStage;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.annotations.ApiVisibility;
-import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.annotations.types.ApiType;
+import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.doc.Stage;
 import org.hildan.livedoc.core.model.doc.Visibility;
+import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
+import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.test.pojo.HibernateValidatorPojo;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +28,12 @@ public class ApiTypeReaderTest {
 
     private ApiTypeDocReader reader;
 
+    private TypeReferenceProvider typeReferenceProvider;
+
     @Before
     public void setUp() {
         reader = new ApiTypeDocReader(new FieldPropertyScanner());
+        typeReferenceProvider = new DefaultTypeReferenceProvider(c -> true);
     }
 
     @SuppressWarnings({"unused", "DefaultAnnotationParam"})
@@ -89,7 +94,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(TestObject.class);
+        ApiTypeDoc doc = reader.read(TestObject.class, typeReferenceProvider);
         assertEquals("test-object", doc.getName());
         assertEquals(14, doc.getFields().size());
         assertEquals("1.0", doc.getSupportedVersions().getSince());
@@ -188,7 +193,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testEnumObjectDoc() {
-        ApiTypeDoc doc = reader.read(TestEnum.class);
+        ApiTypeDoc doc = reader.read(TestEnum.class, typeReferenceProvider);
         assertEquals("test-enum", doc.getName());
         assertEquals(0, doc.getFields().size());
         assertEquals(TestEnum.TESTENUM1.name(), doc.getAllowedValues()[0]);
@@ -205,7 +210,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testNoNameApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(NoNameApiObject.class);
+        ApiTypeDoc doc = reader.read(NoNameApiObject.class, typeReferenceProvider);
         assertEquals("NoNameApiObject", doc.getName());
         assertEquals("id", doc.getFields().iterator().next().getName());
     }
@@ -222,7 +227,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testTemplateApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(TemplateApiObject.class);
+        ApiTypeDoc doc = reader.read(TemplateApiObject.class, typeReferenceProvider);
         assertEquals("TemplateApiObject", doc.getName());
         Iterator<ApiFieldDoc> iterator = doc.getFields().iterator();
         assertEquals("id", iterator.next().getName());
@@ -234,7 +239,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testUndefinedVisibilityAndStageDoc() {
-        ApiTypeDoc doc = reader.read(UndefinedVisibilityAndStage.class);
+        ApiTypeDoc doc = reader.read(UndefinedVisibilityAndStage.class, typeReferenceProvider);
         assertEquals("UndefinedVisibilityAndStage", doc.getName());
         assertNull(doc.getVisibility());
         assertNull(doc.getStage());
@@ -242,7 +247,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testApiObjectDocWithHibernateValidator() {
-        ApiTypeDoc doc = reader.read(HibernateValidatorPojo.class);
+        ApiTypeDoc doc = reader.read(HibernateValidatorPojo.class, typeReferenceProvider);
         Set<ApiFieldDoc> fields = doc.getFields();
         for (ApiFieldDoc fieldDoc : fields) {
             if (fieldDoc.getName().equals("id")) {

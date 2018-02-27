@@ -6,17 +6,25 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface GenericTypeHandler<T> {
 
-    T handleSimpleClass(Class<?> clazz);
+    T handleVoid();
 
-    T handleArrayClass(Class<?> arrayClass, T handledComponentClass);
+    T handleSimpleClass(@NotNull Class<?> clazz);
 
-    T handleGenericArray(GenericArrayType type, T handledComponentClass);
+    T handleEnumClass(@NotNull Class<?> clazz);
 
-    T handleParameterizedType(ParameterizedType type, T handledRawType, List<T> handledTypeParameters);
+    T handleArrayClass(@NotNull Class<?> arrayClass, T handledComponentClass);
 
-    T handleTypeVariable(TypeVariable type, List<T> handledBounds);
+    T handleGenericArray(@NotNull GenericArrayType type, T handledComponentClass);
 
-    T handleWildcardType(WildcardType type, List<T> handledUpperBounds, List<T> handledLowerBounds);
+    T handleParameterizedType(@NotNull ParameterizedType type, T handledRawType,
+            @NotNull List<T> handledTypeParameters);
+
+    T handleTypeVariable(@NotNull TypeVariable type, @NotNull List<T> handledBounds);
+
+    T handleWildcardType(@NotNull WildcardType type, @NotNull List<T> handledUpperBounds,
+            @NotNull List<T> handledLowerBounds);
 }

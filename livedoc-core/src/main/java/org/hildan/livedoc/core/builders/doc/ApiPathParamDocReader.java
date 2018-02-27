@@ -8,18 +8,18 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiParams;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
-import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.model.types.LivedocTypeBuilder;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 
 public class ApiPathParamDocReader {
 
-    public static Set<ApiParamDoc> read(Method method) {
+    public static Set<ApiParamDoc> read(Method method, TypeReferenceProvider typeReferenceProvider) {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
         if (method.isAnnotationPresent(ApiParams.class)) {
             for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathParams()) {
-                LivedocType type = LivedocTypeBuilder.build(apiParam.type());
+                LivedocType type = typeReferenceProvider.getReference(apiParam.type());
                 ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, type);
                 docs.add(apiParamDoc);
             }
@@ -31,7 +31,7 @@ public class ApiPathParamDocReader {
                 if (parametersAnnotations[i][j] instanceof ApiPathParam) {
                     ApiPathParam annotation = (ApiPathParam) parametersAnnotations[i][j];
                     Type type = method.getGenericParameterTypes()[i];
-                    LivedocType livedocType = LivedocTypeBuilder.build(type);
+                    LivedocType livedocType = typeReferenceProvider.getReference(type);
                     ApiParamDoc apiParamDoc = buildFromAnnotation(annotation, livedocType);
                     docs.add(apiParamDoc);
                 }
