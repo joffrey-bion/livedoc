@@ -23,6 +23,7 @@ public class TypePredicates {
     public static final Predicate<Type> IS_CONTAINER = TypePredicates::isContainer;
 
     private static final Class<?>[] PRIMITIVE_WRAPPERS = {
+            Void.class,
             Boolean.class,
             Byte.class,
             Short.class,
@@ -35,6 +36,14 @@ public class TypePredicates {
 
     private static final Class<?>[] CONTAINERS = {Collection.class, Map.class};
 
+    /**
+     * Returns true on primitive types, primitive wrappers, strings, and enums.
+     *
+     * @param type
+     *         the type to test
+     *
+     * @return true on primitive types, primitive wrappers, strings, and enums
+     */
     public static boolean isBasicType(Type type) {
         if (!(type instanceof Class)) {
             return false;
@@ -43,11 +52,27 @@ public class TypePredicates {
         return isPrimitiveOrWrapper(clazz) || isStringLike(clazz) || clazz.isEnum();
     }
 
-    private static boolean isPrimitiveOrWrapper(Type type) {
-        if (!(type instanceof Class)) {
-            return false;
-        }
-        Class<?> clazz = (Class<?>) type;
+    /**
+     * Returns true on primitive types, primitive wrappers, and strings.
+     *
+     * @param type
+     *         the type to test
+     *
+     * @return true on primitive types, primitive wrappers, and strings
+     */
+    public static boolean isPrimitiveLike(Type type) {
+        return type instanceof Class && isPrimitiveLike((Class<?>) type);
+    }
+
+    private static boolean isPrimitiveLike(Class<?> clazz) {
+        return isPrimitiveOrWrapper(clazz) || isStringLike(clazz);
+    }
+
+    public static boolean isPrimitiveOrWrapper(Type type) {
+        return type instanceof Class && isPrimitiveOrWrapper((Class<?>) type);
+    }
+
+    private static boolean isPrimitiveOrWrapper(Class<?> clazz) {
         return clazz.isPrimitive() || isPrimitiveWrapper(clazz);
     }
 

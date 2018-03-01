@@ -30,6 +30,7 @@ import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
+import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
 import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 
@@ -91,7 +92,7 @@ public class LivedocReader {
         if (!(type instanceof Class)) {
             return true;
         }
-        if (void.class.equals(type) || Void.class.equals(type)) {
+        if (TypePredicates.isPrimitiveLike(type)) {
             return false;
         }
         Class<?> clazz = (Class<?>) type;

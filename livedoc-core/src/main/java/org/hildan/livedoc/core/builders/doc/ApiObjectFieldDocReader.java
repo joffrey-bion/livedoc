@@ -1,5 +1,9 @@
 package org.hildan.livedoc.core.builders.doc;
 
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
@@ -24,24 +28,39 @@ public class ApiObjectFieldDocReader {
         String[] allowedvalues = getAllowedValues(property);
         apiFieldDoc.setAllowedValues(allowedvalues);
 
-        ApiTypeProperty annotation = property.getAccessibleObject().getAnnotation(ApiTypeProperty.class);
-        if (annotation != null) {
-            apiFieldDoc.setName(BeanUtils.maybeOverridden(annotation.name(), property.getName()));
-            apiFieldDoc.setDescription(annotation.description());
-            apiFieldDoc.setAllowedValues(BeanUtils.maybeOverridden(annotation.allowedValues(), allowedvalues));
-            // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
-            apiFieldDoc.setRequired(String.valueOf(annotation.required() || property.isRequired()));
-            apiFieldDoc.setOrder(BeanUtils.maybeOverridden(annotation.order(), property.getOrder(), Integer.MAX_VALUE));
-
-            if (!annotation.format().isEmpty()) {
-                apiFieldDoc.addFormat(annotation.format());
-            }
+        Field field = property.getField();
+        if (field != null) {
+            overrideFromMember(apiFieldDoc, field);
         }
+        Method getter = property.getGetter();
+        if (getter != null) {
+            overrideFromMember(apiFieldDoc, getter);
+        }
+
         apiFieldDoc.setSupportedVersions(getVersionDoc(property, parentDoc));
-
-        HibernateValidationProcessor.addConstraintMessages(property.getAccessibleObject(), apiFieldDoc);
-
         return apiFieldDoc;
+    }
+
+    private static void overrideFromMember(ApiFieldDoc apiFieldDoc, AnnotatedElement annotatedElement) {
+        ApiTypeProperty annotation = annotatedElement.getAnnotation(ApiTypeProperty.class);
+        if (annotation != null) {
+            overrideFromAnnotation(apiFieldDoc, annotation);
+        }
+        HibernateValidationProcessor.addConstraintMessages(annotatedElement, apiFieldDoc);
+    }
+
+    private static void overrideFromAnnotation(ApiFieldDoc apiFieldDoc, ApiTypeProperty annotation) {
+        apiFieldDoc.setName(BeanUtils.maybeOverridden(annotation.name(), apiFieldDoc.getName()));
+        apiFieldDoc.setDescription(annotation.description());
+        apiFieldDoc.setAllowedValues(BeanUtils.maybeOverridden(annotation.allowedValues(), apiFieldDoc.getAllowedValues()));
+        // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
+        boolean isRequired = Boolean.valueOf(apiFieldDoc.getRequired());
+        apiFieldDoc.setRequired(String.valueOf(annotation.required() || isRequired));
+        apiFieldDoc.setOrder(BeanUtils.maybeOverridden(annotation.order(), apiFieldDoc.getOrder(), Integer.MAX_VALUE));
+
+        if (!annotation.format().isEmpty()) {
+            apiFieldDoc.addFormat(annotation.format());
+        }
     }
 
     private static String[] getAllowedValues(Property property) {
@@ -57,6 +76,15 @@ public class ApiObjectFieldDocReader {
     }
 
     private static ApiVersionDoc getVersionDoc(Property property, ApiTypeDoc parentDoc) {
-        return ApiVersionDocReader.read(property.getAccessibleObject(), parentDoc.getSupportedVersions());
+        ApiVersionDoc versionDoc = parentDoc.getSupportedVersions();
+        Field field = property.getField();
+        if (field != null) {
+            versionDoc = ApiVersionDocReader.read(field, versionDoc);
+        }
+        Method getter = property.getGetter();
+        if (getter != null) {
+            versionDoc = ApiVersionDocReader.read(getter, versionDoc);
+        }
+        return versionDoc;
     }
 }

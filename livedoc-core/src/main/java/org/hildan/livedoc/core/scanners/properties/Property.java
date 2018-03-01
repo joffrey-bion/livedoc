@@ -1,6 +1,8 @@
 package org.hildan.livedoc.core.scanners.properties;
 
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
@@ -17,6 +19,10 @@ public class Property implements Comparable<Property> {
     private final Type genericType;
 
     private final AccessibleObject accessibleObject;
+
+    private Method getter;
+
+    private Field field;
 
     private boolean required = false;
 
@@ -73,6 +79,22 @@ public class Property implements Comparable<Property> {
 
     public AccessibleObject getAccessibleObject() {
         return accessibleObject;
+    }
+
+    public Method getGetter() {
+        return getter;
+    }
+
+    public void setGetter(Method getter) {
+        this.getter = getter;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
     }
 
     /**

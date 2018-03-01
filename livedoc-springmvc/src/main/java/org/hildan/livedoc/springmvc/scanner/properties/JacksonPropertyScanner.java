@@ -14,7 +14,10 @@ import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyMetadata;
+import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 
 import static java.util.stream.Collectors.toList;
@@ -76,15 +79,26 @@ public class JacksonPropertyScanner implements PropertyScanner {
 
         Class<?> type = getType(member);
         Type genericType = getGenericType(member);
+
         AccessibleObject accessibleObject = getAccessibleObject(member);
 
         Property property = new Property(name, type, genericType, accessibleObject);
         property.setRequired(propDef.isRequired());
-        if (propDef.getMetadata().getIndex() != null) {
-            property.setOrder(propDef.getMetadata().getIndex());
+        PropertyMetadata metadata = propDef.getMetadata();
+        if (metadata.getIndex() != null) {
+            property.setOrder(metadata.getIndex());
         }
-        if (propDef.getMetadata().getDefaultValue() != null) {
-            property.setDefaultValue(propDef.getMetadata().getDefaultValue());
+        if (metadata.getDefaultValue() != null) {
+            property.setDefaultValue(metadata.getDefaultValue());
+        }
+
+        AnnotatedField field = propDef.getField();
+        if (field != null) {
+            property.setField(field.getAnnotated());
+        }
+        AnnotatedMethod getter = propDef.getGetter();
+        if (getter != null) {
+            property.setGetter(getter.getAnnotated());
         }
         return property;
     }
