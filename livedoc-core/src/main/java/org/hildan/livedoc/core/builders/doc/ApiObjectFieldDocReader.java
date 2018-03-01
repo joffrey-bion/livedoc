@@ -52,7 +52,10 @@ public class ApiObjectFieldDocReader {
     private static void overrideFromAnnotation(ApiFieldDoc apiFieldDoc, ApiTypeProperty annotation) {
         apiFieldDoc.setName(BeanUtils.maybeOverridden(annotation.name(), apiFieldDoc.getName()));
         apiFieldDoc.setDescription(annotation.description());
-        apiFieldDoc.setAllowedValues(BeanUtils.maybeOverridden(annotation.allowedValues(), apiFieldDoc.getAllowedValues()));
+
+        String[] allowedValues = BeanUtils.maybeOverridden(annotation.allowedValues(), apiFieldDoc.getAllowedValues());
+        apiFieldDoc.setAllowedValues(allowedValues);
+
         // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
         boolean isRequired = Boolean.valueOf(apiFieldDoc.getRequired());
         apiFieldDoc.setRequired(String.valueOf(annotation.required() || isRequired));
