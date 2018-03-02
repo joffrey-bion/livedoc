@@ -1,5 +1,30 @@
 # Change Log
 
+## [v4.0.0](https://bintray.com/joffrey-bion/maven/livedoc/4.0.0) (2018-03-02)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v3.0.0...v4.0.0)
+
+**Implemented enhancements:**
+
+- Make types clickable and lead to type doc [\#62](https://github.com/joffrey-bion/livedoc/issues/62)
+- Keep doc after refresh using redux local storage [\#60](https://github.com/joffrey-bion/livedoc/issues/60)
+- Add 1 or 2 element\(s\) in examples of arrays [\#54](https://github.com/joffrey-bion/livedoc/issues/54)
+- Negated spring header support [\#37](https://github.com/joffrey-bion/livedoc/issues/37)
+- Create a maintainable UI [\#28](https://github.com/joffrey-bion/livedoc/issues/28)
+
+**Fixed bugs:**
+
+- @PathVariable-annotated param name is empty [\#71](https://github.com/joffrey-bion/livedoc/issues/71)
+- @ApiObjectProperty is not allowed on getters [\#53](https://github.com/joffrey-bion/livedoc/issues/53)
+
+**Closed issues:**
+
+- Add proper redirect when no doc is loaded [\#66](https://github.com/joffrey-bion/livedoc/issues/66)
+
+**Merged pull requests:**
+
+- Ensure the div in a NavGroup also has a key [\#68](https://github.com/joffrey-bion/livedoc/pull/68) ([mebubo](https://github.com/mebubo))
+- Correctly extract value in onChange [\#67](https://github.com/joffrey-bion/livedoc/pull/67) ([mebubo](https://github.com/mebubo))
+
 ## [v3.0.0](https://bintray.com/joffrey-bion/maven/livedoc/3.0.0) (2017-10-04)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.1.1...v3.0.0)
 
@@ -13,15 +38,15 @@
 **Fixed bugs:**
 
 - ObjectMapper custom configuration is ignored by Livedoc [\#43](https://github.com/joffrey-bion/livedoc/issues/43)
+- Jsondoc examples does not use settings from springs ObjectMapper [\#42](https://github.com/joffrey-bion/livedoc/issues/42)
+- NoClassDefFoundError: org/springframework/messaging/MessageHeaders [\#41](https://github.com/joffrey-bion/livedoc/issues/41)
+- Remove hard dependency on spring-boot-starter-web in livedoc-springmvc [\#40](https://github.com/joffrey-bion/livedoc/issues/40)
 
 **Closed issues:**
 
 - Make the version of Livedoc a global variable in the doc [\#51](https://github.com/joffrey-bion/livedoc/issues/51)
 - Use tabs for dependency inclusion with Gradle/Maven [\#50](https://github.com/joffrey-bion/livedoc/issues/50)
 - Add quick-start documentation in the README [\#48](https://github.com/joffrey-bion/livedoc/issues/48)
-- Jsondoc examples does not use settings from springs ObjectMapper [\#42](https://github.com/joffrey-bion/livedoc/issues/42)
-- NoClassDefFoundError: org/springframework/messaging/MessageHeaders [\#41](https://github.com/joffrey-bion/livedoc/issues/41)
-- Remove hard dependency on spring-boot-starter-web in livedoc-springmvc [\#40](https://github.com/joffrey-bion/livedoc/issues/40)
 
 ## [v2.1.1](https://bintray.com/joffrey-bion/maven/livedoc/2.1.1) (2017-09-28)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.1.0...v2.1.1)
@@ -34,10 +59,6 @@
 
 - NoClassDefFoundError: org/springframework/messaging/handler/annotation/MessageMapping [\#36](https://github.com/joffrey-bion/livedoc/issues/36)
 - Type-level path not taken into account for inherited methods [\#34](https://github.com/joffrey-bion/livedoc/issues/34)
-
-**Closed issues:**
-
-- Add negated media-types support [\#38](https://github.com/joffrey-bion/livedoc/issues/38)
 
 ## [v2.1.0](https://bintray.com/joffrey-bion/maven/livedoc/2.1.0) (2017-09-26)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.0.0...v2.1.0)
