@@ -22,14 +22,14 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
 
     private Predicate<? super Class<?>> typeFilter;
 
-    private Predicate<? super Class<?>> typeExplorationFilter;
+    private Predicate<? super Class<?>> typeInspectionFilter;
 
     private Function<Class<?>, Set<Class<?>>> typeMapper;
 
     public RecursivePropertyTypeScanner(PropertyScanner scanner) {
         this.scanner = scanner;
         this.typeFilter = c -> true;
-        this.typeExplorationFilter = c -> true;
+        this.typeInspectionFilter = c -> true;
         this.typeMapper = Collections::singleton;
     }
 
@@ -47,8 +47,8 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
         this.typeFilter = typeFilter;
     }
 
-    public Predicate<? super Class<?>> getTypeExplorationFilter() {
-        return typeExplorationFilter;
+    public Predicate<? super Class<?>> getTypeInspectionFilter() {
+        return typeInspectionFilter;
     }
 
     /**
@@ -56,13 +56,13 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
      * are scanned for properties, and the properties' types are recursively explored. The given predicate is only
      * called on types that already passed the type inclusion filter.
      *
-     * @param typeExplorationFilter
-     *         a predicate that is true on types that should be included in the doc, and false otherwise
+     * @param typeInspectionFilter
+     *         a predicate that is true on types that should be recursively inspected, and false otherwise
      *
      * @see #setTypeFilter(Predicate)
      */
-    public void setTypeExplorationFilter(Predicate<? super Class<?>> typeExplorationFilter) {
-        this.typeExplorationFilter = typeExplorationFilter;
+    public void setTypeInspectionFilter(Predicate<? super Class<?>> typeInspectionFilter) {
+        this.typeInspectionFilter = typeInspectionFilter;
     }
 
     public Function<Class<?>, Set<Class<?>>> getTypeMapper() {
@@ -94,7 +94,7 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
             return; // already explored
         }
         exploredClasses.add(clazz);
-        if (!typeExplorationFilter.test(clazz)) {
+        if (!typeInspectionFilter.test(clazz)) {
             return; // exploration of the inner properties is disabled for the current type
         }
         scanner.getProperties(clazz)
@@ -103,5 +103,4 @@ public class RecursivePropertyTypeScanner implements TypeScanner {
                .distinct()
                .forEach(propType -> exploreType(propType, exploredClasses));
     }
-
 }

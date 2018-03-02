@@ -11,7 +11,7 @@ public class TypePredicates {
 
     /**
      * A predicate that matches simple classes like primitive types, primitive wrappers, strings and enums. It is
-     * intended to be used as a type exploration filter because we don't want to explore the internal properties of
+     * intended to be used as a type inspection filter because we don't want to inspect the internal properties of
      * these types.
      */
     public static final Predicate<Type> IS_BASIC_TYPE = TypePredicates::isBasicType;

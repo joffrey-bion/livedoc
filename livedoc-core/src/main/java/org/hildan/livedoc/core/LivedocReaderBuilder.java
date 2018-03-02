@@ -47,7 +47,7 @@ public class LivedocReaderBuilder {
 
     private Predicate<? super Class<?>> typeFilter = TypePredicates.IS_CONTAINER.negate();
 
-    private Predicate<Type> typeExplorationFilter = TypePredicates.IS_BASIC_TYPE.negate();
+    private Predicate<Type> typeInspectionFilter = TypePredicates.IS_BASIC_TYPE.negate();
 
     private Reflections reflections;
 
@@ -182,8 +182,8 @@ public class LivedocReaderBuilder {
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder withTypeExplorationFilter(Predicate<Type> filter) {
-        this.typeExplorationFilter = filter;
+    public LivedocReaderBuilder withTypeInspectionFilter(Predicate<Type> filter) {
+        this.typeInspectionFilter = filter;
         return this;
     }
 
@@ -271,7 +271,7 @@ public class LivedocReaderBuilder {
         // excludes collections/maps from doc (would just be noise)
         scanner.setTypeFilter(typeFilter);
         // do not explore the fields of simple types like primitive wrappers, strings and enums
-        scanner.setTypeExplorationFilter(typeExplorationFilter);
+        scanner.setTypeInspectionFilter(typeInspectionFilter);
         scanner.setTypeMapper(new ConcreteSubtypesMapper(getReflections()));
         return scanner;
     }
@@ -281,7 +281,7 @@ public class LivedocReaderBuilder {
     }
 
     private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
-        return new RecursiveTemplateProvider(propertyScanner, typeExplorationFilter, defaultTemplates);
+        return new RecursiveTemplateProvider(propertyScanner, typeInspectionFilter, defaultTemplates);
     }
 
     private GlobalDocReader getDefaultGlobalReader() {

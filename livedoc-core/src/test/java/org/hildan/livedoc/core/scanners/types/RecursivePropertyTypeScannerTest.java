@@ -23,7 +23,7 @@ public class RecursivePropertyTypeScannerTest {
         PropertyScanner scanner = new FieldPropertyScanner();
         explorer = new RecursivePropertyTypeScanner(scanner);
         explorer.setTypeFilter(TypePredicates.IS_CONTAINER.negate());
-        explorer.setTypeExplorationFilter(TypePredicates.IS_BASIC_TYPE.negate());
+        explorer.setTypeInspectionFilter(TypePredicates.IS_BASIC_TYPE.negate());
     }
 
     @Test
