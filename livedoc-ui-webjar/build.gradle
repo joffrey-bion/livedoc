@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'base'
 apply plugin: 'idea'
 
+description = 'The Livedoc UI packaged in a webjar'
 buildDir = 'build'
 
 node {
