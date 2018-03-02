@@ -7,9 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used on your controller class or method and represents the possible errors returned by the
- * API endpoints. <p> When the @ApiErrors is present at the class level, defined errors will be applied to all member
- * methods. Member methods can override the errors declared at the class level and provide more specific ones.
+ * Declares the possible errors returned by the API endpoints, or by one method in particular.
+ * <p>
+ * When the {@code @ApiErrors} is present at the class level, the defined errors will be applied to all member methods.
+ * Member methods can override the errors declared at the class level and provide more specific ones.
  *
  * @see ApiError
  */
@@ -19,9 +20,7 @@ import java.lang.annotation.Target;
 public @interface ApiErrors {
 
     /**
-     * An array of ApiError annotations
-     *
-     * @see ApiError
+     * An array of {@link ApiError}s
      */
     ApiError[] value();
 }

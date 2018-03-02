@@ -7,7 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used on your "service" class, for example controller classes in Spring MVC.
+ * Indicates that a class contains API methods that should be inspected, and provides documentation details about the
+ * API defined by that class.
+ * <p>
+ * Livedoc's "APIs" are groups of API methods that interact with similar parts of the system. An API usually corresponds
+ * to a controller, especially in the context of a Spring application. APIs can themselves be grouped, which is what
+ * the {@link #group()} attribute controls.
+ * <p>
+ * Whether or not each method of this class (and the parent classes) is actually included in the doc depends on the
+ * configuration. These methods are logically grouped in the doc because they belong to the same "API", defined by
+ * the {@link Api}-annotated class.
  */
 @Documented
 @Target(ElementType.TYPE)

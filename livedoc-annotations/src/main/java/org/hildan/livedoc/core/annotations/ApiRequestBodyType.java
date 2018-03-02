@@ -10,7 +10,9 @@ import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
 
 /**
- * This annotation is to be used on your method and represents the body object passed the request.
+ * Specifies/overrides the expected type for the request body when calling the annotated method. It can also be used on
+ * a parameter of a method in order to indicate that it represents the request body, but in that case the type cannot be
+ * overridden.
  *
  * @see ApiType
  */
@@ -20,10 +22,10 @@ import org.hildan.livedoc.core.model.LivedocDefaultType;
 public @interface ApiRequestBodyType {
 
     /**
-     * Specify this element if you need to use the ApiRequestBodyType annotation on the method declaration and not
-     * inside the method's signature. This is to be able to document old style servlets' methods like doGet and doPost.
-     * This element, even if specified, is not taken into account when the annotation is put inside the method's
-     * signature.
+     * Specify this element if you need to use the {@code ApiRequestBodyType} annotation on the method declaration and
+     * not on a parameter. This is to be able to document old style servlets' methods like doGet and doPost.
+     * <p>
+     * This element, even if specified, is not taken into account when the annotation is used on a parameter.
      */
     Class<?> value() default LivedocDefaultType.class;
 }

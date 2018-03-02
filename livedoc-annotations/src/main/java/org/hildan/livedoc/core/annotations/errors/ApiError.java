@@ -7,9 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used inside an annotation of type ApiErrors
+ * Describes an error that can be returned by an API endpoint, it should be used inside an {@link ApiErrors}.
+ * <p>
+ * When the {@link @ApiErrors} container is used at the class level, this error will be applied to all member methods.
+ * Member methods can override this error if they declare the same code in their own list.
  *
- * @see ApiErrors
+ * @see ApiError
  */
 @Documented
 @Target(ElementType.ANNOTATION_TYPE)

@@ -10,7 +10,8 @@ import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
 
 /**
- * This annotation is to be used on your method and represents the returned value
+ * Specifies/overrides the type of the response body when calling the annotated method. This is particularly useful when
+ * using old style servlets which return void for methods like doGet and doPost.
  *
  * @see ApiType
  */
@@ -20,7 +21,7 @@ import org.hildan.livedoc.core.model.LivedocDefaultType;
 public @interface ApiResponseBodyType {
 
     /**
-     * Specify this element if are using old style servlets which return void for methods like doGet and doPost
+     * The type of the response body.
      */
     Class<?> value() default LivedocDefaultType.class;
 }

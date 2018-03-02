@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used on your "service" class, for example controller classes in Spring MVC.
+ * Defines the version range for which the annotated element is supported.
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
@@ -15,12 +15,12 @@ import java.lang.annotation.Target;
 public @interface ApiVersion {
 
     /**
-     * The version since the method/object/class is supported
+     * The version in which the annotated method/object/class was introduced.
      */
     String since();
 
     /**
-     * The version until the method/object/class is supported
+     * The last version supporting the annotated method/object/class.
      */
     String until() default "";
 }
