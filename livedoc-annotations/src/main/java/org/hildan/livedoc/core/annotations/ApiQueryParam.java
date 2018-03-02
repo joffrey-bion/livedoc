@@ -9,9 +9,7 @@ import java.lang.annotation.Target;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
 
 /**
- * This annotation is to be used inside an annotation of type ApiParams
- *
- * @see ApiParams
+ * Describes a query parameter of the request. This annotation is to be used inside an {@link ApiParams} annotation.
  */
 @Documented
 @Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
@@ -50,9 +48,9 @@ public @interface ApiQueryParam {
     String defaultValue() default "";
 
     /**
-     * Specify this element if you need to use the ApiParam annotation on the method declaration and not inside the
-     * method's signature. This is to be able to document old style servlets' methods like doGet and doPost. This
-     * element, even if specified, is not taken into account when the annotation is put inside the method's signature.
+     * Specify this element if you need to use the ApiParam annotation on the method declaration and not a method
+     * parameter. This is to be able to document old style servlets' methods like doGet and doPost. This element, even
+     * if specified, is not taken into account when the annotation is put inside the method's signature.
      */
     Class<?> type() default LivedocDefaultType.class;
 }

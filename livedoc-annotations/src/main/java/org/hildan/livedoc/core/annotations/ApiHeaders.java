@@ -7,9 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used on your method and contains an array of ApiHeader
- *
- * @see ApiHeader
+ * Describes the headers that are expected by the annotated method.
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -17,9 +15,7 @@ import java.lang.annotation.Target;
 public @interface ApiHeaders {
 
     /**
-     * An array of ApiHeader annotations
-     *
-     * @see ApiHeader
+     * An array of @{@link ApiHeader}.
      */
     ApiHeader[] headers();
 }

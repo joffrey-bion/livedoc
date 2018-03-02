@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used inside an annotation of type ApiHeaders
+ * Describes a header that is expected in the request. This annotation should be used inside {@link ApiHeaders}.
  *
  * @see ApiHeaders
  */

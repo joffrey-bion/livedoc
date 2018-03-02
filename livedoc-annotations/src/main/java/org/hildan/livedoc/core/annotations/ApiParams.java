@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is to be used on your method and contains the path and query parameters to document.
+ * Describes the path and query parameters to document for a method.
  */
 @Documented
 @Target(ElementType.METHOD)

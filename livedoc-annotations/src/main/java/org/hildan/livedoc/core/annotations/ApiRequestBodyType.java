@@ -6,15 +6,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
 
 /**
  * Specifies/overrides the expected type for the request body when calling the annotated method. It can also be used on
  * a parameter of a method in order to indicate that it represents the request body, but in that case the type cannot be
  * overridden.
- *
- * @see ApiType
  */
 @Documented
 @Target({ElementType.PARAMETER, ElementType.METHOD})

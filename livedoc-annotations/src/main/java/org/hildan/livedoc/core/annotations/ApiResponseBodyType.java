@@ -6,14 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
 
 /**
  * Specifies/overrides the type of the response body when calling the annotated method. This is particularly useful when
  * using old style servlets which return void for methods like doGet and doPost.
- *
- * @see ApiType
  */
 @Documented
 @Target(ElementType.METHOD)
