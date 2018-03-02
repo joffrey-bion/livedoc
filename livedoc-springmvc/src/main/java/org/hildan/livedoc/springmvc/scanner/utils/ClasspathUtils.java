@@ -22,6 +22,10 @@ public class ClasspathUtils {
         return isOnClassPath("org.springframework.web.bind.annotation.RequestMapping");
     }
 
+    public static boolean isGetMappingOnClasspath() {
+        return isOnClassPath("org.springframework.web.bind.annotation.GetMapping");
+    }
+
     private static boolean isOnClassPath(String fullyQualifiedClassName) {
         try {
             Class.forName(fullyQualifiedClassName);

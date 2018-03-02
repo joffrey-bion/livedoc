@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import static org.junit.Assert.assertTrue;
 
-public class SpringPathBuilderTest {
+public class MappingsResolverTest {
 
     @SuppressWarnings("unused")
     @Controller

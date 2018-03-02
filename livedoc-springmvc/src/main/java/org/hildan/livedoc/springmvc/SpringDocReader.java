@@ -15,7 +15,7 @@ import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringHeaderBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringMediaTypeBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringPathBuilder;
+import org.hildan.livedoc.springmvc.scanner.builder.path.MappingsResolver;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringPathVariableBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringQueryParamBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
@@ -28,6 +28,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -89,6 +93,14 @@ public class SpringDocReader implements DocReader {
         if (ClasspathUtils.isRequestMappingOnClasspath() && method.isAnnotationPresent(RequestMapping.class)) {
             return true;
         }
+        if (ClasspathUtils.isGetMappingOnClasspath()) {
+            if (method.isAnnotationPresent(GetMapping.class) //
+                    || method.isAnnotationPresent(PostMapping.class) //
+                    || method.isAnnotationPresent(PutMapping.class) //
+                    || method.isAnnotationPresent(DeleteMapping.class)) {
+                return true;
+            }
+        }
         if (ClasspathUtils.isMessageMappingOnClasspath() && method.isAnnotationPresent(MessageMapping.class)) {
             return true;
         }
@@ -101,7 +113,7 @@ public class SpringDocReader implements DocReader {
     private ApiMethodDoc buildApiMethodDoc(Method method, Class<?> controller,
             TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
         ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-        apiMethodDoc.setPaths(SpringPathBuilder.buildPath(method, controller));
+        apiMethodDoc.setPaths(MappingsResolver.getPathsMappings(method, controller));
         apiMethodDoc.setName(method.getName());
         apiMethodDoc.setVerbs(SpringVerbBuilder.buildVerb(method, controller));
         apiMethodDoc.setProduces(SpringMediaTypeBuilder.buildProduces(method, controller));
