@@ -1,5 +1,17 @@
 # Change Log
 
+## [v4.1.0](https://bintray.com/joffrey-bion/maven/livedoc/4.1.0) (2018-03-03)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.0.0...v4.1.0)
+
+**Implemented enhancements:**
+
+- Remove @ApiVisibility feature [\#74](https://github.com/joffrey-bion/livedoc/issues/74)
+- Add support for other Spring mapping annotations [\#69](https://github.com/joffrey-bion/livedoc/issues/69)
+
+**Closed issues:**
+
+- livedoc-ui-webjar v4 missing from MavenCentral [\#72](https://github.com/joffrey-bion/livedoc/issues/72)
+
 ## [v4.0.0](https://bintray.com/joffrey-bion/maven/livedoc/4.0.0) (2018-03-02)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v3.0.0...v4.0.0)
 
