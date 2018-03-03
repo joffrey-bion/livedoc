@@ -17,8 +17,9 @@ public class ApiPathParamDocReader {
     public static Set<ApiParamDoc> read(Method method, TypeReferenceProvider typeReferenceProvider) {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
-        if (method.isAnnotationPresent(ApiParams.class)) {
-            for (ApiPathParam apiParam : method.getAnnotation(ApiParams.class).pathParams()) {
+        ApiParams apiParams = method.getAnnotation(ApiParams.class);
+        if (apiParams != null) {
+            for (ApiPathParam apiParam : apiParams.pathParams()) {
                 LivedocType type = typeReferenceProvider.getReference(apiParam.type());
                 ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, type);
                 docs.add(apiParamDoc);

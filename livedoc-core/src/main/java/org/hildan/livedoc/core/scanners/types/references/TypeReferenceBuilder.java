@@ -41,16 +41,11 @@ public class TypeReferenceBuilder implements GenericTypeHandler<LivedocType> {
     }
 
     private static String getCustomClassName(Class<?> clazz) {
-        if (clazz.isAnnotationPresent(ApiType.class)) {
-            ApiType annotation = clazz.getAnnotation(ApiType.class);
-            if (annotation.name().isEmpty()) {
-                return clazz.getSimpleName();
-            } else {
-                return annotation.name();
-            }
-        } else {
-            return clazz.getSimpleName();
+        ApiType apiType = clazz.getAnnotation(ApiType.class);
+        if (apiType != null && !apiType.name().isEmpty()) {
+            return apiType.name();
         }
+        return clazz.getSimpleName();
     }
 
     @Override

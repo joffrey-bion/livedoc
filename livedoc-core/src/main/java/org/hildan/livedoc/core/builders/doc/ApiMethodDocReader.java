@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 
 import org.hildan.livedoc.core.annotations.ApiMethod;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
+import org.hildan.livedoc.core.builders.doc.auth.ApiAuthDocReader;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
@@ -22,7 +23,7 @@ public class ApiMethodDocReader {
         apiMethodDoc.setName(method.getName());
         apiMethodDoc.setApiErrors(ApiErrorDocReader.build(method));
         apiMethodDoc.setSupportedVersions(ApiVersionDocReader.read(method, parentApiDoc.getSupportedVersions()));
-        apiMethodDoc.setAuth(ApiAuthDocReader.read(method));
+        apiMethodDoc.setAuth(ApiAuthDocReader.readMethod(method));
         apiMethodDoc.setHeaders(ApiHeaderDocReader.read(method));
         apiMethodDoc.setPathParameters(ApiPathParamDocReader.read(method, typeReferenceProvider));
         apiMethodDoc.setQueryParameters(ApiQueryParamDocReader.read(method, typeReferenceProvider));
@@ -47,15 +48,14 @@ public class ApiMethodDocReader {
 
     @Nullable
     private static LivedocType readResponseBodyType(Method method, TypeReferenceProvider typeReferenceProvider) {
-        if (method.isAnnotationPresent(ApiResponseBodyType.class)) {
-            ApiResponseBodyType annotation = method.getAnnotation(ApiResponseBodyType.class);
-
-            if (annotation.value().isAssignableFrom(LivedocDefaultType.class)) {
-                return typeReferenceProvider.getReference(method.getGenericReturnType());
-            } else {
-                return typeReferenceProvider.getReference(annotation.value());
-            }
+        ApiResponseBodyType annotation = method.getAnnotation(ApiResponseBodyType.class);
+        if (annotation == null) {
+            return null;
         }
-        return null;
+        if (annotation.value().isAssignableFrom(LivedocDefaultType.class)) {
+            return typeReferenceProvider.getReference(method.getGenericReturnType());
+        } else {
+            return typeReferenceProvider.getReference(annotation.value());
+        }
     }
 }

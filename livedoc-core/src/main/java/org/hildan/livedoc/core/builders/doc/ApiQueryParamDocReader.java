@@ -16,8 +16,9 @@ public class ApiQueryParamDocReader {
     public static Set<ApiParamDoc> read(Method method, TypeReferenceProvider typeReferenceProvider) {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
-        if (method.isAnnotationPresent(ApiParams.class)) {
-            for (ApiQueryParam apiParam : method.getAnnotation(ApiParams.class).queryParams()) {
+        ApiParams apiParams = method.getAnnotation(ApiParams.class);
+        if (apiParams != null) {
+            for (ApiQueryParam apiParam : apiParams.queryParams()) {
                 LivedocType livedocType = typeReferenceProvider.getReference(apiParam.type());
                 ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, livedocType);
                 docs.add(apiParamDoc);

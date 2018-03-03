@@ -1,6 +1,7 @@
 package org.hildan.livedoc.core.builders.doc;
 
 import org.hildan.livedoc.core.annotations.Api;
+import org.hildan.livedoc.core.builders.doc.auth.ApiAuthDocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.util.BeanUtils;
 
@@ -10,7 +11,7 @@ public class ApiDocReader {
         ApiDoc apiDoc = new ApiDoc();
         apiDoc.setName(controller.getSimpleName());
         apiDoc.setSupportedVersions(ApiVersionDocReader.read(controller));
-        apiDoc.setAuth(ApiAuthDocReader.read(controller));
+        apiDoc.setAuth(ApiAuthDocReader.readController(controller));
         apiDoc.setStage(ApiStageReader.read(controller));
 
         Api api = controller.getAnnotation(Api.class);

@@ -1,5 +1,6 @@
-package org.hildan.livedoc.core.builders.doc;
+package org.hildan.livedoc.core.builders.doc.auth;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -9,37 +10,43 @@ import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.ApiAuthType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ApiAuthDocReader {
 
     public static final String ANONYMOUS = "anonymous";
 
-    public static ApiAuthDoc read(Class<?> controller) {
-        if (controller.isAnnotationPresent(ApiAuthNone.class)) {
-            return readFromApiAuthNoneAnnotation(controller.getAnnotation(ApiAuthNone.class));
+    public static ApiAuthDoc readController(Class<?> controller) {
+        return readAuthAnnotations(controller);
+    }
+
+    public static ApiAuthDoc readMethod(Method method) {
+        ApiAuthDoc doc = readAuthAnnotations(method);
+        if (doc != null) {
+            return doc;
         }
-        if (controller.isAnnotationPresent(ApiAuthBasic.class)) {
-            return readFromApiAuthBasicAnnotation(controller.getAnnotation(ApiAuthBasic.class));
+        return readController(method.getDeclaringClass());
+    }
+
+    @Nullable
+    private static ApiAuthDoc readAuthAnnotations(AnnotatedElement element) {
+        ApiAuthNone authNone = element.getAnnotation(ApiAuthNone.class);
+        if (authNone != null) {
+            return readFromApiAuthNoneAnnotation(authNone);
         }
-        if (controller.isAnnotationPresent(ApiAuthToken.class)) {
-            return readFromApiAuthTokenAnnotation(controller.getAnnotation(ApiAuthToken.class));
+        ApiAuthBasic authBasic = element.getAnnotation(ApiAuthBasic.class);
+        if (authBasic != null) {
+            return readFromApiAuthBasicAnnotation(authBasic);
+        }
+        ApiAuthToken authToken = element.getAnnotation(ApiAuthToken.class);
+        if (authToken != null) {
+            return readFromApiAuthTokenAnnotation(authToken);
         }
         return null;
     }
 
-    public static ApiAuthDoc read(Method method) {
-        if (method.isAnnotationPresent(ApiAuthNone.class)) {
-            return readFromApiAuthNoneAnnotation(method.getAnnotation(ApiAuthNone.class));
-        }
-        if (method.isAnnotationPresent(ApiAuthBasic.class)) {
-            return readFromApiAuthBasicAnnotation(method.getAnnotation(ApiAuthBasic.class));
-        }
-        if (method.isAnnotationPresent(ApiAuthToken.class)) {
-            return readFromApiAuthTokenAnnotation(method.getAnnotation(ApiAuthToken.class));
-        }
-        return read(method.getDeclaringClass());
-    }
-
+    @NotNull
     private static ApiAuthDoc readFromApiAuthNoneAnnotation(ApiAuthNone annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
         apiAuthDoc.setType(ApiAuthType.NONE);
@@ -47,6 +54,7 @@ public class ApiAuthDocReader {
         return apiAuthDoc;
     }
 
+    @NotNull
     private static ApiAuthDoc readFromApiAuthBasicAnnotation(ApiAuthBasic annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
         apiAuthDoc.setType(ApiAuthType.BASIC_AUTH);
@@ -57,6 +65,7 @@ public class ApiAuthDocReader {
         return apiAuthDoc;
     }
 
+    @NotNull
     private static ApiAuthDoc readFromApiAuthTokenAnnotation(ApiAuthToken annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
         apiAuthDoc.setType(ApiAuthType.TOKEN);

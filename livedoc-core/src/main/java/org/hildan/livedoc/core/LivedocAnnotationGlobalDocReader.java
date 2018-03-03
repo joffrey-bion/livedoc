@@ -36,9 +36,9 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
         for (Class<?> clazz : getClassesWithFlows()) {
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
-                if (method.isAnnotationPresent(ApiFlow.class)) {
-                    ApiFlowDoc apiFlowDoc = getApiFlowDoc(method, apiMethodDocsById);
-                    apiFlowDocs.add(apiFlowDoc);
+                ApiFlow flowAnnotation = method.getAnnotation(ApiFlow.class);
+                if (flowAnnotation != null) {
+                    apiFlowDocs.add(getApiFlowDoc(apiMethodDocsById, flowAnnotation));
                 }
             }
         }
@@ -49,8 +49,8 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
         return annotatedTypesFinder.apply(ApiFlowSet.class);
     }
 
-    private ApiFlowDoc getApiFlowDoc(Method method, Map<String, ? extends ApiMethodDoc> apiMethodDocsById) {
-        return ApiFlowDoc.buildFromAnnotation(method.getAnnotation(ApiFlow.class), apiMethodDocsById);
+    private ApiFlowDoc getApiFlowDoc(Map<String, ? extends ApiMethodDoc> apiMethodDocsById, ApiFlow flowAnnotation) {
+        return ApiFlowDoc.buildFromAnnotation(flowAnnotation, apiMethodDocsById);
     }
 
     @Override

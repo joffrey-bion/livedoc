@@ -24,17 +24,15 @@ public class ApiBodyObjectDocReader {
     }
 
     private static Type getBodyType(Method method) {
-        if (method.isAnnotationPresent(ApiRequestBodyType.class)) {
-            ApiRequestBodyType annotation = method.getAnnotation(ApiRequestBodyType.class);
+        ApiRequestBodyType annotation = method.getAnnotation(ApiRequestBodyType.class);
+        if (annotation != null) {
             return annotation.value();
         }
 
         Integer index = LivedocUtils.getIndexOfParameterWithAnnotation(method, ApiRequestBodyType.class);
         if (index != -1) {
-            Type type = method.getGenericParameterTypes()[index];
-            return type;
+            return method.getGenericParameterTypes()[index];
         }
-
         return null;
     }
 
