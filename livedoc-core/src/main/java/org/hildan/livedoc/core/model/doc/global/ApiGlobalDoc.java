@@ -1,30 +1,30 @@
 package org.hildan.livedoc.core.model.doc.global;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import com.google.common.collect.Sets;
-
 public class ApiGlobalDoc {
+
     public final String livedocId = UUID.randomUUID().toString();
 
-    private Set<ApiGlobalSectionDoc> sections;
+    private List<ApiGlobalSectionDoc> sections;
 
     private ApiChangelogsDoc changelogSet;
 
     private ApiMigrationsDoc migrationSet;
 
     public ApiGlobalDoc() {
-        this.sections = Sets.newLinkedHashSet();
+        this.sections = new ArrayList<>();
         this.changelogSet = new ApiChangelogsDoc();
         this.migrationSet = new ApiMigrationsDoc();
     }
 
-    public Set<ApiGlobalSectionDoc> getSections() {
+    public List<ApiGlobalSectionDoc> getSections() {
         return sections;
     }
 
-    public void setSections(Set<ApiGlobalSectionDoc> sections) {
+    public void setSections(List<ApiGlobalSectionDoc> sections) {
         this.sections = sections;
     }
 
@@ -42,10 +42,6 @@ public class ApiGlobalDoc {
 
     public void setMigrationSet(ApiMigrationsDoc migrationSet) {
         this.migrationSet = migrationSet;
-    }
-
-    public void addApiGlobalSectionDoc(ApiGlobalSectionDoc apiGlobalSectionDoc) {
-        this.sections.add(apiGlobalSectionDoc);
     }
 
 }

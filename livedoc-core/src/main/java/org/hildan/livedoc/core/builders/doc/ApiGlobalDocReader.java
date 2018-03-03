@@ -1,10 +1,13 @@
 package org.hildan.livedoc.core.builders.doc;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.global.ApiChangelog;
 import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
@@ -18,57 +21,76 @@ import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiMigrationDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiMigrationsDoc;
+import org.jetbrains.annotations.NotNull;
 
 public class ApiGlobalDocReader {
+
+    private static final String FILE_PREFIX = "/jsondocfile:";
 
     public static ApiGlobalDoc read(Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
             Collection<Class<?>> migrationClasses) {
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
-        apiGlobalDoc = buildGlobalDoc(apiGlobalDoc, globalClasses);
+        apiGlobalDoc = buildGeneralSections(apiGlobalDoc, globalClasses);
         apiGlobalDoc = buildChangelogDoc(apiGlobalDoc, changelogClasses);
         apiGlobalDoc = buildMigrationDoc(apiGlobalDoc, migrationClasses);
-        if (apiGlobalDoc.getSections().isEmpty() && apiGlobalDoc.getChangelogSet().getChangelogs().isEmpty()
-                && apiGlobalDoc.getMigrationSet().getMigrations().isEmpty()) {
+
+        boolean noGeneralSections = apiGlobalDoc.getSections().isEmpty();
+        boolean noChangeLogs = apiGlobalDoc.getChangelogSet().getChangelogs().isEmpty();
+        boolean noMigrations = apiGlobalDoc.getMigrationSet().getMigrations().isEmpty();
+
+        if (noGeneralSections && noChangeLogs && noMigrations) {
             return null;
-        } else {
-            return apiGlobalDoc;
         }
+        return apiGlobalDoc;
     }
 
-    private static ApiGlobalDoc buildGlobalDoc(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> globalClasses) {
+    private static ApiGlobalDoc buildGeneralSections(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> globalClasses) {
         if (!globalClasses.isEmpty()) {
             Class<?> clazz = globalClasses.iterator().next();
             ApiGlobal apiGlobal = clazz.getAnnotation(ApiGlobal.class);
-
-            for (ApiGlobalSection section : apiGlobal.sections()) {
-                ApiGlobalSectionDoc sectionDoc = new ApiGlobalSectionDoc();
-                sectionDoc.setTitle(section.title());
-                for (String paragraph : section.paragraphs()) {
-                    if (paragraph.startsWith("/jsondocfile:")) {
-                        String path = paragraph.replace("/jsondocfile:", "");
-                        try {
-
-                            InputStream resourceAsStream = ApiGlobalDocReader.class.getResourceAsStream(path);
-                            if (resourceAsStream != null) {
-                                String content = getStringFromInputStream(resourceAsStream);
-                                sectionDoc.addParagraph(content);
-
-                            } else {
-                                sectionDoc.addParagraph("Unable to find file in path: " + path);
-                            }
-
-                        } catch (IOException e) {
-                            sectionDoc.addParagraph("Unable to find file in path: " + path);
-                        }
-
-                    } else {
-                        sectionDoc.addParagraph(paragraph);
-                    }
-                }
-                apiGlobalDoc.addApiGlobalSectionDoc(sectionDoc);
-            }
+            apiGlobalDoc.setSections(readSections(apiGlobal));
         }
         return apiGlobalDoc;
+    }
+
+    private static List<ApiGlobalSectionDoc> readSections(ApiGlobal apiGlobal) {
+        return Arrays.stream(apiGlobal.sections()).map(ApiGlobalDocReader::readSection).collect(Collectors.toList());
+    }
+
+    @NotNull
+    private static ApiGlobalSectionDoc readSection(@NotNull ApiGlobalSection section) {
+        ApiGlobalSectionDoc sectionDoc = new ApiGlobalSectionDoc();
+        sectionDoc.setTitle(section.title());
+        sectionDoc.setParagraphs(readParagraphs(section));
+        return sectionDoc;
+    }
+
+    @NotNull
+    private static List<String> readParagraphs(@NotNull ApiGlobalSection section) {
+        return Arrays.stream(section.paragraphs()).map(ApiGlobalDocReader::readParagraph).collect(Collectors.toList());
+    }
+
+    @NotNull
+    private static String readParagraph(@NotNull String paragraph) {
+        if (paragraph.startsWith(FILE_PREFIX)) {
+            String path = paragraph.replace(FILE_PREFIX, "");
+            return readContentFromResource(path);
+        }
+        return paragraph;
+    }
+
+    @NotNull
+    private static String readContentFromResource(@NotNull String path) {
+        try {
+            InputStream resourceAsStream = ApiGlobalDocReader.class.getResourceAsStream(path);
+            if (resourceAsStream == null) {
+                return "Unable to find file at path: " + path;
+            }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
+            return reader.lines().collect(Collectors.joining());
+        } catch (UncheckedIOException e) {
+            return "Unable to read file at path: " + path + "\n" + e.toString();
+        }
     }
 
     private static ApiGlobalDoc buildChangelogDoc(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> changelogClasses) {
@@ -103,29 +125,4 @@ public class ApiGlobalDocReader {
         }
         return apiGlobalDoc;
     }
-
-    private static String getStringFromInputStream(InputStream is) throws IOException {
-        BufferedReader br = null;
-        StringBuffer sb = new StringBuffer();
-
-        String line;
-        try {
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (IOException e) {
-            throw e;
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    throw e;
-                }
-            }
-        }
-        return sb.toString();
-    }
-
 }

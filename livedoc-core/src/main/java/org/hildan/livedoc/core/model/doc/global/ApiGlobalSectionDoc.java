@@ -1,19 +1,15 @@
 package org.hildan.livedoc.core.model.doc.global;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public class ApiGlobalSectionDoc {
+
     public final String livedocId = UUID.randomUUID().toString();
 
     private String title;
 
-    private Set<String> paragraphs;
-
-    public ApiGlobalSectionDoc() {
-        this.paragraphs = new LinkedHashSet<>();
-    }
+    private List<String> paragraphs;
 
     public String getTitle() {
         return title;
@@ -23,16 +19,11 @@ public class ApiGlobalSectionDoc {
         this.title = title;
     }
 
-    public Set<String> getParagraphs() {
+    public List<String> getParagraphs() {
         return paragraphs;
     }
 
-    public void setParagraphs(Set<String> paragraphs) {
+    public void setParagraphs(List<String> paragraphs) {
         this.paragraphs = paragraphs;
     }
-
-    public void addParagraph(String paragraph) {
-        this.paragraphs.add(paragraph);
-    }
-
 }
