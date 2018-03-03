@@ -26,7 +26,6 @@ public class ApiTypeDocReader {
         apiTypeDoc.setName(clazz.getSimpleName());
         apiTypeDoc.setSupportedVersions(ApiVersionDocReader.read(clazz));
         apiTypeDoc.setShow(Modifier.isAbstract(clazz.getModifiers()));
-        apiTypeDoc.setVisibility(ApiVisibilityReader.read(clazz));
         apiTypeDoc.setStage(ApiStageReader.read(clazz));
 
         ApiType apiType = clazz.getAnnotation(ApiType.class);

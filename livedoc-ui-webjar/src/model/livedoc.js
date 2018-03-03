@@ -13,10 +13,6 @@ export type Versioned = {
   supportedVersions: ApiVersionDoc,
 };
 
-export type Scoped = {
-  visibility: ?ApiVisibility,
-};
-
 export type Secured = {
   auth: ApiAuthDoc,
 };
@@ -65,7 +61,7 @@ export type ApiChangelogDoc = Identified & {
   changes: Array<string>,
 }
 
-export type ApiDoc = Identified & Named & Versioned & Secured & Scoped & Staged & {
+export type ApiDoc = Identified & Named & Versioned & Secured & Staged & {
   description: string,
   group: string,
   methods: Array<ApiMethodDoc>,
@@ -109,7 +105,7 @@ export type ApiHeaderDoc = Identified & Named & {
 
 export type HeaderFilterType = 'REQUIRED_MATCHING' | 'OPTIONAL' | 'FORBIDDEN' | 'DIFFERENT';
 
-export type ApiMethodDoc = Identified & LivedocHints & Versioned & Scoped & Staged & {
+export type ApiMethodDoc = Identified & LivedocHints & Versioned & Staged & {
   id: string,
   paths: Array<string>,
   name: string,
@@ -138,7 +134,7 @@ export type ApiMigrationDoc = Identified & {
   steps: Array<string>,
 }
 
-export type ApiTypeDoc = Identified & Named & LivedocHints & Versioned & Scoped & Staged & {
+export type ApiTypeDoc = Identified & Named & LivedocHints & Versioned & Staged & {
   description: string,
   group: string,
   fields: Array<ApiObjectFieldDoc>,
@@ -171,8 +167,6 @@ export type ApiVersionDoc = {
   since: string,
   until: string,
 };
-
-export type ApiVisibility = 'PRIVATE' | 'PUBLIC';
 
 export type LivedocHints = {
   livedocErrors: Array<string>,

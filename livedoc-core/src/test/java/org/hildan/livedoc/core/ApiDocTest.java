@@ -18,7 +18,6 @@ import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
 import org.hildan.livedoc.core.annotations.ApiStage;
 import org.hildan.livedoc.core.annotations.ApiVersion;
-import org.hildan.livedoc.core.annotations.ApiVisibility;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
@@ -31,7 +30,6 @@ import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.Stage;
-import org.hildan.livedoc.core.model.doc.Visibility;
 import org.hildan.livedoc.core.test.controller.Test3Controller;
 import org.hildan.livedoc.core.test.pojo.Child;
 import org.hildan.livedoc.core.test.pojo.Pizza;
@@ -699,65 +697,56 @@ public class ApiDocTest {
     }
 
     @SuppressWarnings("unused")
-    @Api(name = "test-type-level-visibility-and-stage", description = "Test type level visibility and stage attributes")
-    @ApiVisibility(Visibility.PUBLIC)
+    @Api(name = "test-type-level-stage", description = "Test type level stage attributes")
     @ApiStage(Stage.BETA)
-    private class ControllerWithTypeVisibility {
+    private class ControllerWithStage {
 
         @ApiMethod(path = "/inherit")
         public void inherit() {
         }
 
         @ApiMethod(path = "/override")
-        @ApiVisibility(Visibility.PRIVATE)
         @ApiStage(Stage.GA)
         public void override() {
         }
     }
 
     @Test
-    public void testApiVisibility_typeLevel() {
-        ApiDoc apiDoc = buildDoc(ControllerWithTypeVisibility.class);
-        assertEquals(Visibility.PUBLIC, apiDoc.getVisibility());
+    public void testApiStage_typeLevel() {
+        ApiDoc apiDoc = buildDoc(ControllerWithStage.class);
         assertEquals(Stage.BETA, apiDoc.getStage());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPaths().contains("/inherit")) {
-                assertEquals(Visibility.PUBLIC, apiMethodDoc.getVisibility());
                 assertEquals(Stage.BETA, apiMethodDoc.getStage());
             }
             if (apiMethodDoc.getPaths().contains("/override")) {
-                assertEquals(Visibility.PRIVATE, apiMethodDoc.getVisibility());
                 assertEquals(Stage.GA, apiMethodDoc.getStage());
             }
         }
     }
 
     @SuppressWarnings("unused")
-    @Api(name = "test-method-level-visibility-and-stage",
-            description = "Test method level visibility and stage attributes")
-    private class ControllerWithMethodVisibility {
+    @Api(name = "test-method-level-stage",
+            description = "Test method level stage attributes")
+    private class ControllerWithMethodStage {
 
         @ApiMethod(path = "/only-method")
-        @ApiVisibility(Visibility.PRIVATE)
         @ApiStage(Stage.DEPRECATED)
-        public void testVisibilityAndStage() {
+        public void testStage() {
         }
     }
 
     @Test
-    public void testApiVisibility_methodLevel() {
-        ApiDoc apiDoc = buildDoc(ControllerWithMethodVisibility.class);
-        assertNull(apiDoc.getVisibility());
+    public void testApiStage_methodLevel() {
+        ApiDoc apiDoc = buildDoc(ControllerWithMethodStage.class);
         assertNull(apiDoc.getStage());
 
         for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
             if (apiMethodDoc.getPaths().contains("/only-method")) {
-                assertEquals(Visibility.PRIVATE, apiMethodDoc.getVisibility());
                 assertEquals(Stage.DEPRECATED, apiMethodDoc.getStage());
             }
         }
-
     }
 
     private static ApiDoc buildDoc(Class<?> controller) {

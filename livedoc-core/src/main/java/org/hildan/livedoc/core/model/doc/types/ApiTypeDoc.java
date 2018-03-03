@@ -5,16 +5,13 @@ import java.util.TreeSet;
 
 import org.hildan.livedoc.core.model.doc.AbstractDoc;
 import org.hildan.livedoc.core.model.groups.Groupable;
-import org.hildan.livedoc.core.model.doc.Scoped;
 import org.hildan.livedoc.core.model.doc.Stage;
 import org.hildan.livedoc.core.model.doc.Staged;
-import org.hildan.livedoc.core.model.doc.Visibility;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.util.LivedocUtils;
 
-public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, Groupable, Scoped, Staged,
-        Versioned {
+public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, Groupable, Staged, Versioned {
 
     private final String livedocId;
 
@@ -27,8 +24,6 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
     private String[] allowedValues;
 
     private String group;
-
-    private Visibility visibility;
 
     private Stage stage;
 
@@ -46,7 +41,6 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
         this.allowedValues = new String[] {};
         this.fields = new TreeSet<>();
         this.group = "";
-        this.visibility = null;
         this.stage = null;
         this.show = true;
     }
@@ -110,16 +104,6 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
 
     public void setShow(boolean show) {
         this.show = show;
-    }
-
-    @Override
-    public Visibility getVisibility() {
-        return visibility;
-    }
-
-    @Override
-    public void setVisibility(Visibility visibility) {
-        this.visibility = visibility;
     }
 
     @Override

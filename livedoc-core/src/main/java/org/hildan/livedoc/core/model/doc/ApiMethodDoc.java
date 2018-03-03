@@ -15,7 +15,7 @@ import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.types.LivedocType;
 
-public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc>, Scoped, Secured, Staged, Versioned {
+public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc>, Secured, Staged, Versioned {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -50,8 +50,6 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
     private List<ApiErrorDoc> apiErrors;
 
-    private Visibility visibility;
-
     private ApiAuthDoc auth;
 
     private ApiVersionDoc supportedVersions;
@@ -73,7 +71,6 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
         this.requestBody = null;
         this.responseBodyType = null;
         this.responseStatusCode = ApiMethod.DEFAULT_RESPONSE_STATUS;
-        this.visibility = null;
         this.stage = null;
         this.apiErrors = new ArrayList<>();
         this.supportedVersions = null;
@@ -218,16 +215,6 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
     public void setResponseStatusCode(String responseStatusCode) {
         this.responseStatusCode = responseStatusCode;
-    }
-
-    @Override
-    public Visibility getVisibility() {
-        return visibility;
-    }
-
-    @Override
-    public void setVisibility(Visibility visibility) {
-        this.visibility = visibility;
     }
 
     @Override

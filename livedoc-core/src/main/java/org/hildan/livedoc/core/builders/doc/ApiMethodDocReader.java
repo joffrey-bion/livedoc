@@ -29,7 +29,6 @@ public class ApiMethodDocReader {
         apiMethodDoc.setRequestBody(ApiBodyObjectDocReader.read(method, typeReferenceProvider, templateProvider));
         apiMethodDoc.setResponseBodyType(readResponseBodyType(method, typeReferenceProvider));
         apiMethodDoc.setStage(ApiStageReader.read(method, parentApiDoc.getStage()));
-        apiMethodDoc.setVisibility(ApiVisibilityReader.read(method, parentApiDoc.getVisibility()));
 
         ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
         if (methodAnnotation != null) {

@@ -12,7 +12,6 @@ public class ApiDocReader {
         apiDoc.setSupportedVersions(ApiVersionDocReader.read(controller));
         apiDoc.setAuth(ApiAuthDocReader.read(controller));
         apiDoc.setStage(ApiStageReader.read(controller));
-        apiDoc.setVisibility(ApiVisibilityReader.read(controller));
 
         Api api = controller.getAnnotation(Api.class);
         if (api != null) {

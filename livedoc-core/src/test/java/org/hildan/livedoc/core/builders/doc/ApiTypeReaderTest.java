@@ -7,11 +7,9 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiStage;
 import org.hildan.livedoc.core.annotations.ApiVersion;
-import org.hildan.livedoc.core.annotations.ApiVisibility;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.doc.Stage;
-import org.hildan.livedoc.core.model.doc.Visibility;
 import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
@@ -38,7 +36,6 @@ public class ApiTypeReaderTest {
 
     @SuppressWarnings({"unused", "DefaultAnnotationParam"})
     @ApiType(name = "test-object")
-    @ApiVisibility(Visibility.PUBLIC)
     @ApiStage(Stage.PRE_ALPHA)
     @ApiVersion(since = "1.0", until = "2.12")
     private class TestObject {
@@ -99,7 +96,6 @@ public class ApiTypeReaderTest {
         assertEquals(14, doc.getFields().size());
         assertEquals("1.0", doc.getSupportedVersions().getSince());
         assertEquals("2.12", doc.getSupportedVersions().getUntil());
-        assertEquals(Visibility.PUBLIC, doc.getVisibility());
         assertEquals(Stage.PRE_ALPHA, doc.getStage());
 
         for (ApiFieldDoc fieldDoc : doc.getFields()) {
@@ -235,13 +231,12 @@ public class ApiTypeReaderTest {
     }
 
     @ApiType
-    private class UndefinedVisibilityAndStage {}
+    private class UndefinedStage {}
 
     @Test
-    public void testUndefinedVisibilityAndStageDoc() {
-        ApiTypeDoc doc = reader.read(UndefinedVisibilityAndStage.class, typeReferenceProvider);
-        assertEquals("UndefinedVisibilityAndStage", doc.getName());
-        assertNull(doc.getVisibility());
+    public void testUndefinedStageDoc() {
+        ApiTypeDoc doc = reader.read(UndefinedStage.class, typeReferenceProvider);
+        assertEquals("UndefinedStage", doc.getName());
         assertNull(doc.getStage());
     }
 

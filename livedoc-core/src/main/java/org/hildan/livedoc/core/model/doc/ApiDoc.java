@@ -10,7 +10,7 @@ import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 
-public class ApiDoc implements Comparable<ApiDoc>, Groupable, Scoped, Secured, Staged, Versioned {
+public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, Versioned {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -22,8 +22,6 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Scoped, Secured, S
 
     private List<ApiMethodDoc> methods;
 
-    private Visibility visibility;
-
     private Stage stage;
 
     private ApiVersionDoc supportedVersions;
@@ -33,7 +31,6 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Scoped, Secured, S
     public ApiDoc() {
         this.name = "";
         this.description = "";
-        this.visibility = null;
         this.stage = null;
         this.group = "";
         this.methods = new ArrayList<>();
@@ -92,16 +89,6 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Scoped, Secured, S
     @Override
     public void setAuth(ApiAuthDoc auth) {
         this.auth = auth;
-    }
-
-    @Override
-    public Visibility getVisibility() {
-        return visibility;
-    }
-
-    @Override
-    public void setVisibility(Visibility visibility) {
-        this.visibility = visibility;
     }
 
     @Override
