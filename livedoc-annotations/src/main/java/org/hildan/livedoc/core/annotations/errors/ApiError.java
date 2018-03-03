@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /**
  * Describes an error that can be returned by an API endpoint, it should be used inside an {@link ApiErrors}.
  * <p>
- * When the {@link @ApiErrors} container is used at the class level, this error will be applied to all member methods.
+ * When the {@link ApiErrors} container is used at the class level, this error will be applied to all member methods.
  * Member methods can override this error if they declare the same code in their own list.
  *
  * @see ApiError
