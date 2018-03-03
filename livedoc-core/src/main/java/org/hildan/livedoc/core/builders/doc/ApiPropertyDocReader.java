@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
-import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
@@ -14,55 +14,55 @@ import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.HibernateValidationProcessor;
 
-public class ApiObjectFieldDocReader {
+public class ApiPropertyDocReader {
 
-    public static ApiFieldDoc read(Property property, ApiTypeDoc parentDoc,
+    public static ApiPropertyDoc read(Property property, ApiTypeDoc parentDoc,
             TypeReferenceProvider typeReferenceProvider) {
-        ApiFieldDoc apiFieldDoc = new ApiFieldDoc();
-        apiFieldDoc.setName(property.getName());
-        apiFieldDoc.setType(getLivedocType(property, typeReferenceProvider));
+        ApiPropertyDoc apiPropertyDoc = new ApiPropertyDoc();
+        apiPropertyDoc.setName(property.getName());
+        apiPropertyDoc.setType(getLivedocType(property, typeReferenceProvider));
         // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
-        apiFieldDoc.setRequired(String.valueOf(property.isRequired()));
-        apiFieldDoc.setOrder(property.getOrder());
+        apiPropertyDoc.setRequired(String.valueOf(property.isRequired()));
+        apiPropertyDoc.setOrder(property.getOrder());
 
         String[] allowedvalues = getAllowedValues(property);
-        apiFieldDoc.setAllowedValues(allowedvalues);
+        apiPropertyDoc.setAllowedValues(allowedvalues);
 
         Field field = property.getField();
         if (field != null) {
-            overrideFromMember(apiFieldDoc, field);
+            overrideFromMember(apiPropertyDoc, field);
         }
         Method getter = property.getGetter();
         if (getter != null) {
-            overrideFromMember(apiFieldDoc, getter);
+            overrideFromMember(apiPropertyDoc, getter);
         }
 
-        apiFieldDoc.setSupportedVersions(getVersionDoc(property, parentDoc));
-        return apiFieldDoc;
+        apiPropertyDoc.setSupportedVersions(getVersionDoc(property, parentDoc));
+        return apiPropertyDoc;
     }
 
-    private static void overrideFromMember(ApiFieldDoc apiFieldDoc, AnnotatedElement annotatedElement) {
+    private static void overrideFromMember(ApiPropertyDoc apiPropertyDoc, AnnotatedElement annotatedElement) {
         ApiTypeProperty annotation = annotatedElement.getAnnotation(ApiTypeProperty.class);
         if (annotation != null) {
-            overrideFromAnnotation(apiFieldDoc, annotation);
+            overrideFromAnnotation(apiPropertyDoc, annotation);
         }
-        HibernateValidationProcessor.addConstraintMessages(annotatedElement, apiFieldDoc);
+        HibernateValidationProcessor.addConstraintMessages(annotatedElement, apiPropertyDoc);
     }
 
-    private static void overrideFromAnnotation(ApiFieldDoc apiFieldDoc, ApiTypeProperty annotation) {
-        apiFieldDoc.setName(BeanUtils.maybeOverridden(annotation.name(), apiFieldDoc.getName()));
-        apiFieldDoc.setDescription(annotation.description());
+    private static void overrideFromAnnotation(ApiPropertyDoc apiPropertyDoc, ApiTypeProperty annotation) {
+        apiPropertyDoc.setName(BeanUtils.maybeOverridden(annotation.name(), apiPropertyDoc.getName()));
+        apiPropertyDoc.setDescription(annotation.description());
 
-        String[] allowedValues = BeanUtils.maybeOverridden(annotation.allowedValues(), apiFieldDoc.getAllowedValues());
-        apiFieldDoc.setAllowedValues(allowedValues);
+        String[] allowedValues = BeanUtils.maybeOverridden(annotation.allowedValues(), apiPropertyDoc.getAllowedValues());
+        apiPropertyDoc.setAllowedValues(allowedValues);
 
         // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
-        boolean isRequired = Boolean.valueOf(apiFieldDoc.getRequired());
-        apiFieldDoc.setRequired(String.valueOf(annotation.required() || isRequired));
-        apiFieldDoc.setOrder(BeanUtils.maybeOverridden(annotation.order(), apiFieldDoc.getOrder(), Integer.MAX_VALUE));
+        boolean isRequired = Boolean.valueOf(apiPropertyDoc.getRequired());
+        apiPropertyDoc.setRequired(String.valueOf(annotation.required() || isRequired));
+        apiPropertyDoc.setOrder(BeanUtils.maybeOverridden(annotation.order(), apiPropertyDoc.getOrder(), Integer.MAX_VALUE));
 
         if (!annotation.format().isEmpty()) {
-            apiFieldDoc.addFormat(annotation.format());
+            apiPropertyDoc.addFormat(annotation.format());
         }
     }
 

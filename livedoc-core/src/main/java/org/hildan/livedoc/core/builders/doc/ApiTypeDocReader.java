@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.hildan.livedoc.core.annotations.types.ApiType;
-import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
@@ -45,14 +45,14 @@ public class ApiTypeDocReader {
         return apiTypeDoc;
     }
 
-    private Set<ApiFieldDoc> getFieldDocs(Class<?> clazz, ApiTypeDoc apiTypeDoc,
+    private Set<ApiPropertyDoc> getFieldDocs(Class<?> clazz, ApiTypeDoc apiTypeDoc,
             TypeReferenceProvider typeReferenceProvider) {
         if (clazz.isEnum()) {
             return Collections.emptySet();
         }
-        Set<ApiFieldDoc> fieldDocs = new TreeSet<>();
+        Set<ApiPropertyDoc> fieldDocs = new TreeSet<>();
         for (Property property : propertyScanner.getProperties(clazz)) {
-            fieldDocs.add(ApiObjectFieldDocReader.read(property, apiTypeDoc, typeReferenceProvider));
+            fieldDocs.add(ApiPropertyDocReader.read(property, apiTypeDoc, typeReferenceProvider));
         }
         return fieldDocs;
     }

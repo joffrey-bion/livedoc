@@ -19,7 +19,7 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
 
     private String description;
 
-    private Set<ApiFieldDoc> fields;
+    private Set<ApiPropertyDoc> fields;
 
     private String[] allowedValues;
 
@@ -65,11 +65,11 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
         this.description = description;
     }
 
-    public Set<ApiFieldDoc> getFields() {
+    public Set<ApiPropertyDoc> getFields() {
         return fields;
     }
 
-    public void setFields(Set<ApiFieldDoc> fields) {
+    public void setFields(Set<ApiPropertyDoc> fields) {
         this.fields = fields;
     }
 

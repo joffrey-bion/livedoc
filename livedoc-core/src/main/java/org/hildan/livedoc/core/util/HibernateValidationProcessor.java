@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
-import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 
 public class HibernateValidationProcessor {
 
@@ -68,7 +68,7 @@ public class HibernateValidationProcessor {
 
     private static final String ScriptAssert_message = "script expression %s didn't evaluate to true";
 
-    public static void addConstraintMessages(AnnotatedElement property, ApiFieldDoc apiPojoFieldDoc) {
+    public static void addConstraintMessages(AnnotatedElement property, ApiPropertyDoc apiPojoFieldDoc) {
         try {
             Class.forName("org.hibernate.validator.constraints.NotBlank");
 

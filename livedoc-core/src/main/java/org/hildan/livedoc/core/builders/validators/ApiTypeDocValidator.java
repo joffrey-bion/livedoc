@@ -1,7 +1,7 @@
 package org.hildan.livedoc.core.builders.validators;
 
+import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
 
 public class ApiTypeDocValidator {
 
@@ -9,9 +9,9 @@ public class ApiTypeDocValidator {
 
     public static ApiTypeDoc validate(ApiTypeDoc apiTypeDoc) {
 
-        for (ApiFieldDoc apiFieldDoc : apiTypeDoc.getFields()) {
-            if (apiFieldDoc.getDescription() == null || apiFieldDoc.getDescription().trim().isEmpty()) {
-                String msg = String.format(HINT_MISSING_API_OBJECT_FIELD_DESCRIPTION, apiFieldDoc.getName());
+        for (ApiPropertyDoc apiPropertyDoc : apiTypeDoc.getFields()) {
+            if (apiPropertyDoc.getDescription() == null || apiPropertyDoc.getDescription().trim().isEmpty()) {
+                String msg = String.format(HINT_MISSING_API_OBJECT_FIELD_DESCRIPTION, apiPropertyDoc.getName());
                 apiTypeDoc.addJsondocHint(msg);
             }
         }

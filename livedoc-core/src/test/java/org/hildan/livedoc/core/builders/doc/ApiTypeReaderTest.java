@@ -10,7 +10,7 @@ import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.doc.Stage;
-import org.hildan.livedoc.core.model.doc.types.ApiFieldDoc;
+import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
@@ -98,7 +98,7 @@ public class ApiTypeReaderTest {
         assertEquals("2.12", doc.getSupportedVersions().getUntil());
         assertEquals(Stage.PRE_ALPHA, doc.getStage());
 
-        for (ApiFieldDoc fieldDoc : doc.getFields()) {
+        for (ApiPropertyDoc fieldDoc : doc.getFields()) {
             if (fieldDoc.getName().equals("wildcardParametrized")) {
                 assertEquals("List<?>", fieldDoc.getType().getOneLineText());
             }
@@ -225,7 +225,7 @@ public class ApiTypeReaderTest {
     public void testTemplateApiObjectDoc() {
         ApiTypeDoc doc = reader.read(TemplateApiObject.class, typeReferenceProvider);
         assertEquals("TemplateApiObject", doc.getName());
-        Iterator<ApiFieldDoc> iterator = doc.getFields().iterator();
+        Iterator<ApiPropertyDoc> iterator = doc.getFields().iterator();
         assertEquals("id", iterator.next().getName());
         assertEquals("name", iterator.next().getName());
     }
@@ -243,8 +243,8 @@ public class ApiTypeReaderTest {
     @Test
     public void testApiObjectDocWithHibernateValidator() {
         ApiTypeDoc doc = reader.read(HibernateValidatorPojo.class, typeReferenceProvider);
-        Set<ApiFieldDoc> fields = doc.getFields();
-        for (ApiFieldDoc fieldDoc : fields) {
+        Set<ApiPropertyDoc> fields = doc.getFields();
+        for (ApiPropertyDoc fieldDoc : fields) {
             if (fieldDoc.getName().equals("id")) {
                 Iterator<String> formats = fieldDoc.getFormat().iterator();
                 assertEquals("a not empty id", formats.next());

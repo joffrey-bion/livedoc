@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
+
 /**
  * An abstraction of the concept of property on a type. It could be the fields, or the Java bean properties, or any
  * other user-defined concept. This allows for a unified processing of the information by the documentation builders.
@@ -98,7 +100,7 @@ public class Property implements Comparable<Property> {
     }
 
     /**
-     * This comparison is the same as the one in ApiFieldDoc class
+     * This comparison is the same as the one in {@link ApiPropertyDoc} class
      */
     @Override
     public int compareTo(Property o) {

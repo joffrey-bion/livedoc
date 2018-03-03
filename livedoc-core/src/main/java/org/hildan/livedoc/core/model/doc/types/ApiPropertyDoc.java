@@ -12,7 +12,7 @@ import org.hildan.livedoc.core.model.doc.version.Versioned;
 
 import com.google.common.base.Joiner;
 
-public class ApiFieldDoc extends AbstractDoc implements Comparable<ApiFieldDoc>, Versioned {
+public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropertyDoc>, Versioned {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -33,7 +33,7 @@ public class ApiFieldDoc extends AbstractDoc implements Comparable<ApiFieldDoc>,
     @SpecialDefaultIntValue(Integer.MAX_VALUE)
     private Integer order;
 
-    public ApiFieldDoc() {
+    public ApiPropertyDoc() {
         this.format = new LinkedHashSet<>();
     }
 
@@ -128,7 +128,7 @@ public class ApiFieldDoc extends AbstractDoc implements Comparable<ApiFieldDoc>,
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ApiFieldDoc other = (ApiFieldDoc) obj;
+        ApiPropertyDoc other = (ApiPropertyDoc) obj;
         if (name == null) {
             if (other.name != null) {
                 return false;
@@ -140,10 +140,10 @@ public class ApiFieldDoc extends AbstractDoc implements Comparable<ApiFieldDoc>,
     }
 
     /**
-     * This comparison is the same as the one in ApiFieldDoc class
+     * This comparison is the same as the one in ApiPropertyDoc class
      */
     @Override
-    public int compareTo(ApiFieldDoc o) {
+    public int compareTo(ApiPropertyDoc o) {
         if (this.getOrder().equals(o.getOrder())) {
             return this.getName().compareTo(o.getName());
         } else {
