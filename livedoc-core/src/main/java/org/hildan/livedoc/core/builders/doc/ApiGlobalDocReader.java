@@ -25,8 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class ApiGlobalDocReader {
 
-    private static final String FILE_PREFIX = "/jsondocfile:";
-
     public static ApiGlobalDoc read(Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
             Collection<Class<?>> migrationClasses) {
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
@@ -72,8 +70,8 @@ public class ApiGlobalDocReader {
 
     @NotNull
     private static String readParagraph(@NotNull String paragraph) {
-        if (paragraph.startsWith(FILE_PREFIX)) {
-            String path = paragraph.replace(FILE_PREFIX, "");
+        if (paragraph.startsWith(ApiGlobalSection.FILE_PREFIX)) {
+            String path = paragraph.substring(ApiGlobalSection.FILE_PREFIX.length());
             return readContentFromResource(path);
         }
         return paragraph;
@@ -84,12 +82,12 @@ public class ApiGlobalDocReader {
         try {
             InputStream resourceAsStream = ApiGlobalDocReader.class.getResourceAsStream(path);
             if (resourceAsStream == null) {
-                return "Unable to find file at path: " + path;
+                throw new IllegalArgumentException("Unable to find file at path: " + path);
             }
             BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
             return reader.lines().collect(Collectors.joining());
         } catch (UncheckedIOException e) {
-            return "Unable to read file at path: " + path + "\n" + e.toString();
+            throw new IllegalArgumentException("Unable to read file at path: " + path, e);
         }
     }
 

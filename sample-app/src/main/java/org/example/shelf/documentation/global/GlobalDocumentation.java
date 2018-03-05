@@ -8,13 +8,12 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobalSection;
                 paragraphs = {
                         "HTTP Verbs paragraph 1",
                         "HTTP Verbs paragraph 2",
-                        "/jsondocfile:/jsondoc/global-verbs.html",
+                        "/livedocfile:/doc/global-verbs.html",
                         "HTTP Verbs paragraph 3"
                 }),
-        @ApiGlobalSection(title = "Authentication", paragraphs = {"/jsondocfile:/jsondoc/global-authentication.html"}),
-        @ApiGlobalSection(title = "Headers", paragraphs = {"/jsondocfile:/jsondoc/global-headers.html"}),
-        @ApiGlobalSection(title = "Status codes",
-                paragraphs = {"/jsondocfile:/jsondoc/global-responsestatuscodes.html"})
+        @ApiGlobalSection(title = "Authentication", paragraphs = {"/livedocfile:/doc/global-authentication.html"}),
+        @ApiGlobalSection(title = "Headers", paragraphs = {"/livedocfile:/doc/global-headers.html"}),
+        @ApiGlobalSection(title = "Status codes", paragraphs = {"/livedocfile:/doc/global-responsestatuscodes.html"})
 })
 public class GlobalDocumentation {
 

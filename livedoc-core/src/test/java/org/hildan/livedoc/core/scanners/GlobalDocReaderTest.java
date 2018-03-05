@@ -1,8 +1,10 @@
 package org.hildan.livedoc.core.scanners;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +31,7 @@ import static java.util.stream.Collectors.toSet;
 
 public class GlobalDocReaderTest {
 
-    private ApiGlobalDoc buildGlobalDocFor(Class<?> global, Class<?> changelog, Class<?> migration) {
+    private static ApiGlobalDoc buildGlobalDocFor(Class<?> global, Class<?> changelog, Class<?> migration) {
         GlobalDocReader reader = new LivedocAnnotationGlobalDocReader(ann -> {
             if (ApiGlobal.class.equals(ann)) {
                 return global == null ? Collections.emptyList() : Collections.singletonList(global);
@@ -45,20 +47,39 @@ public class GlobalDocReaderTest {
         return reader.getApiGlobalDoc();
     }
 
-    @ApiGlobal(sections = {
-            @ApiGlobalSection(title = "title",
-                    paragraphs = {"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt"})
-    })
-    private class Global {}
-
     @Test
     public void testApiGlobalDoc_basic() {
+        @ApiGlobal(sections = {
+                @ApiGlobalSection(title = "title", paragraphs = {"Paragraph 1", "Paragraph 2"})
+        })
+        class Global {}
+
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(Global.class, null, null);
         Assert.assertNotNull(apiGlobalDoc);
         Assert.assertEquals(1, apiGlobalDoc.getSections().size());
-        ApiGlobalSectionDoc sectionDoc = apiGlobalDoc.getSections().iterator().next();
+        ApiGlobalSectionDoc sectionDoc = apiGlobalDoc.getSections().get(0);
         Assert.assertEquals("title", sectionDoc.getTitle());
-        Assert.assertEquals(3, sectionDoc.getParagraphs().size());
+
+        List<String> paragraphs = Arrays.asList("Paragraph 1", "Paragraph 2");
+        Assert.assertEquals(paragraphs, sectionDoc.getParagraphs());
+    }
+
+    @Test
+    public void testApiGlobalDoc_fileReference() {
+        @ApiGlobal(sections = {
+                @ApiGlobalSection(title = "title",
+                        paragraphs = {"Paragraph 1", "Paragraph 2", "/livedocfile:/test/path/text.txt"})
+        })
+        class GlobalWithFile {}
+
+        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithFile.class, null, null);
+        Assert.assertNotNull(apiGlobalDoc);
+        Assert.assertEquals(1, apiGlobalDoc.getSections().size());
+        ApiGlobalSectionDoc sectionDoc = apiGlobalDoc.getSections().get(0);
+        Assert.assertEquals("title", sectionDoc.getTitle());
+
+        List<String> paragraphs = Arrays.asList("Paragraph 1", "Paragraph 2", "Paragraph from file");
+        Assert.assertEquals(paragraphs, sectionDoc.getParagraphs());
     }
 
     @ApiGlobal(sections = {
@@ -107,8 +128,7 @@ public class GlobalDocReaderTest {
     }
 
     @ApiGlobal(sections = {
-            @ApiGlobalSection(title = "title",
-                    paragraphs = {"Paragraph 1", "Paragraph 2", "/jsondocfile./src/main/resources/text.txt"})
+            @ApiGlobalSection(title = "title", paragraphs = {"Paragraph 1", "Paragraph 2"})
     })
     @ApiChangelogSet(changelogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
     @ApiMigrationSet(migrations = {@ApiMigration(fromVersion = "1.0", steps = {"Step #1"}, toVersion = "1.1")})

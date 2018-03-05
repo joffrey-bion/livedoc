@@ -17,6 +17,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiGlobalSection {
 
+    String FILE_PREFIX = "/livedocfile:";
+
     /**
      * The title of this section
      */
@@ -24,9 +26,8 @@ public @interface ApiGlobalSection {
 
     /**
      * An array that can be made of two things: a text (may contain html tags) or a path to a file in the classpath,
-     * containing  a text. In this case the array item should have the /jsondocfile prefix, for example:
-     * /jsondocfile./src/main/resources/jsondoc/global-verbs.html
+     * containing  a text. In this case the array item should have the {@value #FILE_PREFIX} prefix, for example:
+     * /livedocfile:/doc/global-verbs.html
      */
     String[] paragraphs() default {};
-
 }
