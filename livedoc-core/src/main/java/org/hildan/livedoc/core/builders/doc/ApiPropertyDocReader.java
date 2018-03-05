@@ -18,51 +18,53 @@ public class ApiPropertyDocReader {
 
     public static ApiPropertyDoc read(Property property, ApiTypeDoc parentDoc,
             TypeReferenceProvider typeReferenceProvider) {
-        ApiPropertyDoc apiPropertyDoc = new ApiPropertyDoc();
-        apiPropertyDoc.setName(property.getName());
-        apiPropertyDoc.setType(getLivedocType(property, typeReferenceProvider));
+        ApiPropertyDoc doc = new ApiPropertyDoc();
+        doc.setName(property.getName());
+        doc.setType(getLivedocType(property, typeReferenceProvider));
         // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
-        apiPropertyDoc.setRequired(String.valueOf(property.isRequired()));
-        apiPropertyDoc.setOrder(property.getOrder());
+        doc.setRequired(String.valueOf(property.isRequired()));
+        doc.setOrder(property.getOrder());
 
         String[] allowedvalues = getAllowedValues(property);
-        apiPropertyDoc.setAllowedValues(allowedvalues);
+        doc.setAllowedValues(allowedvalues);
 
         Field field = property.getField();
         if (field != null) {
-            overrideFromMember(apiPropertyDoc, field);
+            overrideFromMember(doc, field);
         }
         Method getter = property.getGetter();
         if (getter != null) {
-            overrideFromMember(apiPropertyDoc, getter);
+            overrideFromMember(doc, getter);
         }
 
-        apiPropertyDoc.setSupportedVersions(getVersionDoc(property, parentDoc));
-        return apiPropertyDoc;
+        doc.setSupportedVersions(getVersionDoc(property, parentDoc));
+        return doc;
     }
 
-    private static void overrideFromMember(ApiPropertyDoc apiPropertyDoc, AnnotatedElement annotatedElement) {
+    private static void overrideFromMember(ApiPropertyDoc doc, AnnotatedElement annotatedElement) {
         ApiTypeProperty annotation = annotatedElement.getAnnotation(ApiTypeProperty.class);
         if (annotation != null) {
-            overrideFromAnnotation(apiPropertyDoc, annotation);
+            overrideFromAnnotation(doc, annotation);
         }
-        HibernateValidationProcessor.addConstraintMessages(annotatedElement, apiPropertyDoc);
+        HibernateValidationProcessor.addConstraintMessages(annotatedElement, doc);
     }
 
-    private static void overrideFromAnnotation(ApiPropertyDoc apiPropertyDoc, ApiTypeProperty annotation) {
-        apiPropertyDoc.setName(BeanUtils.maybeOverridden(annotation.name(), apiPropertyDoc.getName()));
-        apiPropertyDoc.setDescription(annotation.description());
+    private static void overrideFromAnnotation(ApiPropertyDoc doc, ApiTypeProperty annotation) {
+        doc.setName(BeanUtils.maybeOverridden(annotation.name(), doc.getName()));
+        doc.setDescription(annotation.description());
 
-        String[] allowedValues = BeanUtils.maybeOverridden(annotation.allowedValues(), apiPropertyDoc.getAllowedValues());
-        apiPropertyDoc.setAllowedValues(allowedValues);
+        String[] allowedValues = BeanUtils.maybeOverridden(annotation.allowedValues(), doc.getAllowedValues());
+        doc.setAllowedValues(allowedValues);
 
         // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
-        boolean isRequired = Boolean.valueOf(apiPropertyDoc.getRequired());
-        apiPropertyDoc.setRequired(String.valueOf(annotation.required() || isRequired));
-        apiPropertyDoc.setOrder(BeanUtils.maybeOverridden(annotation.order(), apiPropertyDoc.getOrder(), Integer.MAX_VALUE));
+        boolean isRequired = Boolean.valueOf(doc.getRequired());
+        doc.setRequired(String.valueOf(annotation.required() || isRequired));
+
+        Integer order = BeanUtils.maybeOverridden(annotation.order(), doc.getOrder(), Integer.MAX_VALUE);
+        doc.setOrder(order);
 
         if (!annotation.format().isEmpty()) {
-            apiPropertyDoc.addFormat(annotation.format());
+            doc.addFormat(annotation.format());
         }
     }
 
