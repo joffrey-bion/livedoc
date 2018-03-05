@@ -49,7 +49,8 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
         return annotatedTypesFinder.apply(ApiFlowSet.class);
     }
 
-    private ApiFlowDoc getApiFlowDoc(Map<String, ? extends ApiOperationDoc> apiOperationDocsById, ApiFlow flowAnnotation) {
+    private ApiFlowDoc getApiFlowDoc(Map<String, ? extends ApiOperationDoc> apiOperationDocsById,
+            ApiFlow flowAnnotation) {
         return ApiFlowDoc.buildFromAnnotation(flowAnnotation, apiOperationDocsById);
     }
 

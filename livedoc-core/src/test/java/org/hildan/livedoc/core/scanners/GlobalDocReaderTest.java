@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hildan.livedoc.core.AnnotatedTypesFinder;
+import org.hildan.livedoc.core.GlobalDocReader;
+import org.hildan.livedoc.core.LivedocAnnotationGlobalDocReader;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
@@ -15,9 +18,6 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalSection;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
-import org.hildan.livedoc.core.AnnotatedTypesFinder;
-import org.hildan.livedoc.core.GlobalDocReader;
-import org.hildan.livedoc.core.LivedocAnnotationGlobalDocReader;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
@@ -127,19 +127,20 @@ public class GlobalDocReaderTest {
     private class TestFlow {
 
         @ApiFlow(name = "flow", description = "A test flow", group = "Flows A", steps = {
-                @ApiFlowStep(apiOperationId = "F1"), @ApiFlowStep(apiOperationId = "F2"), @ApiFlowStep(apiOperationId = "F3")
+                @ApiFlowStep(apiOperationId = "F1"),
+                @ApiFlowStep(apiOperationId = "F2"),
+                @ApiFlowStep(apiOperationId = "F3")
         })
         public void flow() {
-
         }
 
         @ApiFlow(name = "flow2", description = "A test flow 2", group = "Flows B", steps = {
-                @ApiFlowStep(apiOperationId = "F4"), @ApiFlowStep(apiOperationId = "F5"), @ApiFlowStep(apiOperationId = "F6")
+                @ApiFlowStep(apiOperationId = "F4"),
+                @ApiFlowStep(apiOperationId = "F5"),
+                @ApiFlowStep(apiOperationId = "F6")
         })
         public void flow2() {
-
         }
-
     }
 
     @Test

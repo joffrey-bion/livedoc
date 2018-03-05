@@ -25,9 +25,9 @@ public @interface ApiOperation {
     String DEFAULT_RESPONSE_STATUS = "200 - OK";
 
     /**
-     * An optional custom identifier to be refer to this method from {@link ApiFlowStep#apiOperationId()}. This string has
-     * to be unique inside the Livedoc documentation. It's the responsibility of the documentation writer to guarantee
-     * this uniqueness.
+     * An optional custom identifier to be refer to this method from {@link ApiFlowStep#apiOperationId()}. This string
+     * has to be unique inside the Livedoc documentation. It's the responsibility of the documentation writer to
+     * guarantee this uniqueness.
      */
     String id() default "";
 
