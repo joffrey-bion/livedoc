@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -6,15 +6,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.hildan.livedoc.core.GlobalDocReader;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
-import org.hildan.livedoc.core.builders.doc.ApiGlobalDocReader;
+import org.hildan.livedoc.core.readers.annotation.ApiGlobalDocReader;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 
 /**
  * An implementation of {@link GlobalDocReader} that reads Livedoc annotations to build the documentation.

@@ -15,11 +15,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.builders.defaults.ApiOperationDocDefaults;
-import org.hildan.livedoc.core.builders.doc.ApiTypeDocReader;
-import org.hildan.livedoc.core.builders.merger.DocMerger;
-import org.hildan.livedoc.core.builders.validators.ApiOperationDocValidator;
-import org.hildan.livedoc.core.builders.validators.ApiTypeDocValidator;
+import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
@@ -27,12 +23,16 @@ import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.groups.Groupable;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
 import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
 import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+import org.hildan.livedoc.core.validators.ApiOperationDocDefaults;
+import org.hildan.livedoc.core.validators.ApiOperationDocValidator;
+import org.hildan.livedoc.core.validators.ApiTypeDocValidator;
 
 /**
  * A component able to create an API documentation by inspecting classes and reading their annotations.

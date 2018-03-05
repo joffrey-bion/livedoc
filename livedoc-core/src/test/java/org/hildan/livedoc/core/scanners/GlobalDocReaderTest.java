@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.GlobalDocReader;
-import org.hildan.livedoc.core.LivedocAnnotationGlobalDocReader;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;

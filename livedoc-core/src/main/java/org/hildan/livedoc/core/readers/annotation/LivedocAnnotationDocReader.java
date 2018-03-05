@@ -1,15 +1,17 @@
-package org.hildan.livedoc.core;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.hildan.livedoc.core.DocReader;
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiOperation;
-import org.hildan.livedoc.core.builders.doc.ApiDocReader;
-import org.hildan.livedoc.core.builders.doc.ApiOperationDocReader;
+import org.hildan.livedoc.core.readers.annotation.ApiDocReader;
+import org.hildan.livedoc.core.readers.annotation.ApiOperationDocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.doc;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

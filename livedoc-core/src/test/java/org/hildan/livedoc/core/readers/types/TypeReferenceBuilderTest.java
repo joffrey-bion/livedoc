@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.types;
+package org.hildan.livedoc.core.readers.types;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;

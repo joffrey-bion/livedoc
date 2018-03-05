@@ -10,7 +10,7 @@ import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 
 /**
  * An abstraction of the concept of property on a type. It could be the fields, or the Java bean properties, or any
- * other user-defined concept. This allows for a unified processing of the information by the documentation builders.
+ * other user-defined concept. This allows for a unified processing of the information by the documentation readers.
  */
 public class Property implements Comparable<Property> {
 

@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.LivedocReader;
+import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;

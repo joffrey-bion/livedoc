@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.doc;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Modifier;
 import java.util.Collections;
@@ -8,6 +8,9 @@ import java.util.TreeSet;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.readers.annotation.ApiPropertyDocReader;
+import org.hildan.livedoc.core.readers.annotation.ApiStageReader;
+import org.hildan.livedoc.core.readers.annotation.ApiVersionDocReader;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;

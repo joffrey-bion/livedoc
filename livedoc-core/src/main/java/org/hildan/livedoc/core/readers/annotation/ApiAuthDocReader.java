@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.doc.auth;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;

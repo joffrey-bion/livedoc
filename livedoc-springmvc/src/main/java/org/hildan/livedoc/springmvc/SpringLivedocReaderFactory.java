@@ -2,17 +2,18 @@ package org.hildan.livedoc.springmvc;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.DocReader;
-import org.hildan.livedoc.core.LivedocAnnotationDocReader;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.LivedocReaderBuilder;
+import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.hildan.livedoc.springmvc.scanner.properties.JacksonPropertyScanner;
 import org.reflections.Reflections;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A helper that internally uses a {@link LivedocReaderBuilder} to configure a {@link LivedocReader} to inspect a

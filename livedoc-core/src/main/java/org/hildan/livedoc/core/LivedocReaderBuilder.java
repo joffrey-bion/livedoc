@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import org.hildan.livedoc.core.builders.doc.ApiTypeDocReader;
+import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
+import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.LivedocPropertyScannerWrapper;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;

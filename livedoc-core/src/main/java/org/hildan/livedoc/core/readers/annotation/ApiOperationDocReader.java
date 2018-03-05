@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.doc;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -6,7 +6,6 @@ import java.util.LinkedHashSet;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
-import org.hildan.livedoc.core.builders.doc.auth.ApiAuthDocReader;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -27,7 +26,7 @@ public class ApiOperationDocReader {
         apiOperationDoc.setHeaders(ApiHeaderDocReader.read(method));
         apiOperationDoc.setPathParameters(ApiPathParamDocReader.read(method, typeReferenceProvider));
         apiOperationDoc.setQueryParameters(ApiQueryParamDocReader.read(method, typeReferenceProvider));
-        apiOperationDoc.setRequestBody(ApiBodyObjectDocReader.read(method, typeReferenceProvider, templateProvider));
+        apiOperationDoc.setRequestBody(ApiRequestBodyDocReader.read(method, typeReferenceProvider, templateProvider));
         apiOperationDoc.setResponseBodyType(readResponseBodyType(method, typeReferenceProvider));
         apiOperationDoc.setStage(ApiStageReader.read(method, parentApiDoc.getStage()));
 

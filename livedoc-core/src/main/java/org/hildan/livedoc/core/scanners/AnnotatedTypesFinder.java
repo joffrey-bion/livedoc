@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core;
+package org.hildan.livedoc.core.scanners;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;

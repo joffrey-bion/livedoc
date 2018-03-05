@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.doc;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -10,7 +10,7 @@ import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.LivedocUtils;
 
-public class ApiBodyObjectDocReader {
+public class ApiRequestBodyDocReader {
 
     public static ApiRequestBodyDoc read(Method method, TypeReferenceProvider typeReferenceProvider,
             TemplateProvider templateProvider) {

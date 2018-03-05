@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.defaults;
+package org.hildan.livedoc.core.validators;
 
 import java.util.Collections;
 import java.util.Set;

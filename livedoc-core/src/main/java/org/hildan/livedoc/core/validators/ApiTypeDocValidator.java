@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.builders.validators;
+package org.hildan.livedoc.core.validators;
 
 import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
