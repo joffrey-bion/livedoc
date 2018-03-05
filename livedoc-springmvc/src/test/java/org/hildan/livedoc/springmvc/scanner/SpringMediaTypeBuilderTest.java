@@ -3,7 +3,7 @@ package org.hildan.livedoc.springmvc.scanner;
 import java.util.Iterator;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,24 +37,24 @@ public class SpringMediaTypeBuilderTest {
     }
 
     @Test
-    public void testApiConsumes_methodLevel() {
+    public void testProduces_methodLevel() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/produces-one")) {
-                Assert.assertEquals(1, apiMethodDoc.getProduces().size());
-                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiMethodDoc.getProduces().iterator().next());
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/produces-one")) {
+                Assert.assertEquals(1, apiOperationDoc.getProduces().size());
+                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiOperationDoc.getProduces().iterator().next());
             }
-            if (apiMethodDoc.getPaths().contains("/produces-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getProduces().size());
-                Iterator<String> iterator = apiMethodDoc.getProduces().iterator();
+            if (apiOperationDoc.getPaths().contains("/produces-two")) {
+                Assert.assertEquals(2, apiOperationDoc.getProduces().size());
+                Iterator<String> iterator = apiOperationDoc.getProduces().iterator();
                 Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, iterator.next());
                 Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, iterator.next());
             }
-            if (apiMethodDoc.getPaths().contains("/produces-three")) {
-                Assert.assertEquals(1, apiMethodDoc.getProduces().size());
-                String produces = apiMethodDoc.getProduces().iterator().next();
+            if (apiOperationDoc.getPaths().contains("/produces-three")) {
+                Assert.assertEquals(1, apiOperationDoc.getProduces().size());
+                String produces = apiOperationDoc.getProduces().iterator().next();
                 Assert.assertEquals("application/json", produces);
             }
         }
@@ -85,24 +85,24 @@ public class SpringMediaTypeBuilderTest {
     }
 
     @Test
-    public void testApiConsumes_typeLevel() {
+    public void testProduces_typeLevel() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class);
         Assert.assertEquals("SpringController2", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/produces-one")) {
-                Assert.assertEquals(1, apiMethodDoc.getProduces().size());
-                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiMethodDoc.getProduces().iterator().next());
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/produces-one")) {
+                Assert.assertEquals(1, apiOperationDoc.getProduces().size());
+                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiOperationDoc.getProduces().iterator().next());
             }
-            if (apiMethodDoc.getPaths().contains("/produces-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getProduces().size());
-                Iterator<String> iterator = apiMethodDoc.getProduces().iterator();
+            if (apiOperationDoc.getPaths().contains("/produces-two")) {
+                Assert.assertEquals(2, apiOperationDoc.getProduces().size());
+                Iterator<String> iterator = apiOperationDoc.getProduces().iterator();
                 Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, iterator.next());
                 Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, iterator.next());
             }
-            if (apiMethodDoc.getPaths().contains("/produces-three")) {
-                Assert.assertEquals(1, apiMethodDoc.getProduces().size());
-                Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, apiMethodDoc.getProduces().iterator().next());
+            if (apiOperationDoc.getPaths().contains("/produces-three")) {
+                Assert.assertEquals(1, apiOperationDoc.getProduces().size());
+                Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, apiOperationDoc.getProduces().iterator().next());
             }
         }
     }
@@ -131,24 +131,24 @@ public class SpringMediaTypeBuilderTest {
     }
 
     @Test
-    public void testApiMethodConsumes_methodLevel() {
+    public void testConsumes_methodLevel() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController3.class);
         Assert.assertEquals("SpringController3", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/consumes-one")) {
-                Assert.assertEquals(1, apiMethodDoc.getConsumes().size());
-                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiMethodDoc.getConsumes().iterator().next());
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/consumes-one")) {
+                Assert.assertEquals(1, apiOperationDoc.getConsumes().size());
+                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiOperationDoc.getConsumes().iterator().next());
             }
-            if (apiMethodDoc.getPaths().contains("/consumes-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getConsumes().size());
-                Iterator<String> iterator = apiMethodDoc.getConsumes().iterator();
+            if (apiOperationDoc.getPaths().contains("/consumes-two")) {
+                Assert.assertEquals(2, apiOperationDoc.getConsumes().size());
+                Iterator<String> iterator = apiOperationDoc.getConsumes().iterator();
                 Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, iterator.next());
                 Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, iterator.next());
             }
-            if (apiMethodDoc.getPaths().contains("/consumes-three")) {
-                Assert.assertEquals(1, apiMethodDoc.getConsumes().size());
-                String consumes = apiMethodDoc.getConsumes().iterator().next();
+            if (apiOperationDoc.getPaths().contains("/consumes-three")) {
+                Assert.assertEquals(1, apiOperationDoc.getConsumes().size());
+                String consumes = apiOperationDoc.getConsumes().iterator().next();
                 Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, consumes);
             }
         }
@@ -178,24 +178,24 @@ public class SpringMediaTypeBuilderTest {
     }
 
     @Test
-    public void testApiMethodConsumes_typeLevel() {
+    public void testConsumes_typeLevel() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController4.class);
         Assert.assertEquals("SpringController4", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/consumes-one")) {
-                Assert.assertEquals(1, apiMethodDoc.getConsumes().size());
-                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiMethodDoc.getConsumes().iterator().next());
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/consumes-one")) {
+                Assert.assertEquals(1, apiOperationDoc.getConsumes().size());
+                Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, apiOperationDoc.getConsumes().iterator().next());
             }
-            if (apiMethodDoc.getPaths().contains("/consumes-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getConsumes().size());
-                Iterator<String> iterator = apiMethodDoc.getConsumes().iterator();
+            if (apiOperationDoc.getPaths().contains("/consumes-two")) {
+                Assert.assertEquals(2, apiOperationDoc.getConsumes().size());
+                Iterator<String> iterator = apiOperationDoc.getConsumes().iterator();
                 Assert.assertEquals(MediaType.APPLICATION_JSON_VALUE, iterator.next());
                 Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, iterator.next());
             }
-            if (apiMethodDoc.getPaths().contains("/consumes-three")) {
-                Assert.assertEquals(1, apiMethodDoc.getConsumes().size());
-                Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, apiMethodDoc.getConsumes().iterator().next());
+            if (apiOperationDoc.getPaths().contains("/consumes-three")) {
+                Assert.assertEquals(1, apiOperationDoc.getConsumes().size());
+                Assert.assertEquals(MediaType.APPLICATION_XML_VALUE, apiOperationDoc.getConsumes().iterator().next());
             }
         }
     }

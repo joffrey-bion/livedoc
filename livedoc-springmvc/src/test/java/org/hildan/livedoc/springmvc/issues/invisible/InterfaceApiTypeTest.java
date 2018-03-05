@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
@@ -30,8 +30,8 @@ public class InterfaceApiTypeTest {
         Group<ApiDoc> apiDocGroup = livedoc.getApis().get(0);
         assertEquals("", apiDocGroup.getGroupName());
         for (ApiDoc apiDoc : apiDocGroup.getElements()) {
-            for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-                assertEquals("Resource Interface", apiMethodDoc.getResponseBodyType().getOneLineText());
+            for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+                assertEquals("Resource Interface", apiOperationDoc.getResponseBodyType().getOneLineText());
             }
         }
 

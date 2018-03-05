@@ -9,13 +9,13 @@ import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
 import org.hildan.livedoc.core.annotations.errors.ApiError;
 import org.hildan.livedoc.core.annotations.errors.ApiErrors;
-import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.springmvc.test.TestUtils;
@@ -41,7 +41,7 @@ public class SpringDocAnnotationScannerTest {
     @ApiErrors({@ApiError(code = "100", description = "error-100")})
     private class SpringController {
 
-        @ApiMethod(description = "Gets a string", path = "/wrongOnPurpose", verbs = ApiVerb.GET)
+        @ApiOperation(description = "Gets a string", path = "/wrongOnPurpose", verbs = ApiVerb.GET)
         @RequestMapping(value = "/string/{name}", headers = "header=test", params = "delete",
                 method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
         @ResponseStatus(HttpStatus.CREATED)
@@ -61,26 +61,26 @@ public class SpringDocAnnotationScannerTest {
         Assert.assertEquals("A spring controller", apiDoc.getDescription());
         Assert.assertEquals("Spring controller", apiDoc.getName());
 
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/api/string/{name}")) {
-                Assert.assertNotNull(apiMethodDoc.getAuth());
-                Assert.assertNotNull(apiMethodDoc.getSupportedVersions());
-                Assert.assertFalse(apiMethodDoc.getApiErrors().isEmpty());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/api/string/{name}")) {
+                Assert.assertNotNull(apiOperationDoc.getAuth());
+                Assert.assertNotNull(apiOperationDoc.getSupportedVersions());
+                Assert.assertFalse(apiOperationDoc.getApiErrors().isEmpty());
 
-                Assert.assertEquals("String", apiMethodDoc.getRequestBody().getType().getOneLineText());
-                Assert.assertEquals("String", apiMethodDoc.getResponseBodyType().getOneLineText());
-                Assert.assertEquals("/api/string/{name}", apiMethodDoc.getPaths().iterator().next());
-                Assert.assertEquals("POST", apiMethodDoc.getVerbs().iterator().next().name());
-                Assert.assertEquals("application/json", apiMethodDoc.getProduces().iterator().next());
-                Assert.assertEquals("application/json", apiMethodDoc.getConsumes().iterator().next());
-                Assert.assertEquals("201 - Created", apiMethodDoc.getResponseStatusCode());
+                Assert.assertEquals("String", apiOperationDoc.getRequestBody().getType().getOneLineText());
+                Assert.assertEquals("String", apiOperationDoc.getResponseBodyType().getOneLineText());
+                Assert.assertEquals("/api/string/{name}", apiOperationDoc.getPaths().iterator().next());
+                Assert.assertEquals("POST", apiOperationDoc.getVerbs().iterator().next().name());
+                Assert.assertEquals("application/json", apiOperationDoc.getProduces().iterator().next());
+                Assert.assertEquals("application/json", apiOperationDoc.getConsumes().iterator().next());
+                Assert.assertEquals("201 - Created", apiOperationDoc.getResponseStatusCode());
 
-                Set<ApiHeaderDoc> headers = apiMethodDoc.getHeaders();
+                Set<ApiHeaderDoc> headers = apiOperationDoc.getHeaders();
                 ApiHeaderDoc header = headers.iterator().next();
                 Assert.assertEquals("header", header.getName());
                 Assert.assertEquals("test", header.getValues().get(0));
 
-                Set<ApiParamDoc> queryparameters = apiMethodDoc.getQueryParameters();
+                Set<ApiParamDoc> queryparameters = apiOperationDoc.getQueryParameters();
                 Assert.assertEquals(3, queryparameters.size());
                 Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();
                 ApiParamDoc apiParamDoc = qpIterator.next();
@@ -97,10 +97,10 @@ public class SpringDocAnnotationScannerTest {
                 Assert.assertEquals("true", apiParamDoc.getRequired());
                 Assert.assertEquals("", apiParamDoc.getDefaultValue());
 
-                Set<ApiParamDoc> pathparameters = apiMethodDoc.getPathParameters();
+                Set<ApiParamDoc> pathparameters = apiOperationDoc.getPathParameters();
                 Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
                 ppIterator.next();
-                apiParamDoc = apiMethodDoc.getPathParameters().iterator().next();
+                apiParamDoc = apiOperationDoc.getPathParameters().iterator().next();
                 Assert.assertEquals("test", apiParamDoc.getName());
             }
         }

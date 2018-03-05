@@ -15,13 +15,13 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.builders.defaults.ApiMethodDocDefaults;
+import org.hildan.livedoc.core.builders.defaults.ApiOperationDocDefaults;
 import org.hildan.livedoc.core.builders.doc.ApiTypeDocReader;
 import org.hildan.livedoc.core.builders.merger.DocMerger;
-import org.hildan.livedoc.core.builders.validators.ApiMethodDocValidator;
+import org.hildan.livedoc.core.builders.validators.ApiOperationDocValidator;
 import org.hildan.livedoc.core.builders.validators.ApiTypeDocValidator;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
@@ -139,18 +139,18 @@ public class LivedocReader {
         livedoc.setApis(group(apiDocs));
         livedoc.setTypes(group(getApiTypeDocs(types)));
 
-        Map<String, ApiMethodDoc> apiMethodDocsById = getAllApiMethodDocsById(apiDocs);
-        livedoc.setFlows(group(globalDocReader.getApiFlowDocs(apiMethodDocsById)));
+        Map<String, ApiOperationDoc> apiOperationDocsById = getAllApiOperationDocsById(apiDocs);
+        livedoc.setFlows(group(globalDocReader.getApiFlowDocs(apiOperationDocsById)));
         livedoc.setGlobal(globalDocReader.getApiGlobalDoc());
 
         return livedoc;
     }
 
-    private Map<String, ApiMethodDoc> getAllApiMethodDocsById(Collection<ApiDoc> apiDocs) {
+    private Map<String, ApiOperationDoc> getAllApiOperationDocsById(Collection<ApiDoc> apiDocs) {
         return apiDocs.stream()
-                      .flatMap(api -> api.getMethods().stream())
+                      .flatMap(api -> api.getOperations().stream())
                       .filter(m -> m.getId() != null && !m.getId().isEmpty())
-                      .collect(Collectors.toMap(ApiMethodDoc::getId, x -> x));
+                      .collect(Collectors.toMap(ApiOperationDoc::getId, x -> x));
     }
 
     private Set<Class<?>> findControllers() {
@@ -173,12 +173,12 @@ public class LivedocReader {
 
     public Optional<ApiDoc> readApiDoc(Class<?> controller) {
         Optional<ApiDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiDocBase(controller));
-        doc.ifPresent(apiDoc -> apiDoc.setMethods(readApiMethodDocs(controller, apiDoc)));
+        doc.ifPresent(apiDoc -> apiDoc.setOperations(readapiOperationDocs(controller, apiDoc)));
         return doc;
     }
 
-    private List<ApiMethodDoc> readApiMethodDocs(Class<?> controller, ApiDoc doc) {
-        return buildDocs(getAllMethods(controller), m -> readApiMethodDoc(m, controller, doc));
+    private List<ApiOperationDoc> readapiOperationDocs(Class<?> controller, ApiDoc doc) {
+        return buildDocs(getAllMethods(controller), m -> readApiOperationDoc(m, controller, doc));
     }
 
     private static List<Method> getAllMethods(Class<?> clazz) {
@@ -192,12 +192,12 @@ public class LivedocReader {
         return methods;
     }
 
-    private Optional<ApiMethodDoc> readApiMethodDoc(Method method, Class<?> controller, ApiDoc parentApiDoc) {
-        Optional<ApiMethodDoc> doc = readFromAllReadersAndMerge(
-                r -> r.buildApiMethodDoc(method, controller, parentApiDoc, typeReferenceProvider, templateProvider));
-        doc.ifPresent(apiMethodDoc -> {
-            ApiMethodDocDefaults.complete(apiMethodDoc);
-            ApiMethodDocValidator.validate(apiMethodDoc);
+    private Optional<ApiOperationDoc> readApiOperationDoc(Method method, Class<?> controller, ApiDoc parentApiDoc) {
+        Optional<ApiOperationDoc> doc = readFromAllReadersAndMerge(
+                r -> r.buildApiOperationDoc(method, controller, parentApiDoc, typeReferenceProvider, templateProvider));
+        doc.ifPresent(apiOperationDoc -> {
+            ApiOperationDocDefaults.complete(apiOperationDoc);
+            ApiOperationDocValidator.validate(apiOperationDoc);
         });
         return doc;
     }

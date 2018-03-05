@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -40,8 +40,8 @@ public interface DocReader {
     Optional<ApiDoc> buildApiDocBase(@NotNull Class<?> controllerType);
 
     /**
-     * Builds an {@link ApiMethodDoc} for the given method. Returns an empty optional when not able to build something
-     * for the given method.
+     * Builds an {@link ApiOperationDoc} for the given method. Returns an empty optional when not able to build
+     * something for the given method.
      *
      * @param method
      *         the method to document
@@ -55,11 +55,11 @@ public interface DocReader {
      * @param templateProvider
      *         a {@link TemplateProvider} for types mentioned in the method's doc
      *
-     * @return a new {@link ApiMethodDoc} for the given method, or an empty optional if this reader is not able to build
-     * a doc for the given method.
+     * @return a new {@link ApiOperationDoc} for the given method, or an empty optional if this reader is not able to
+     * build a doc for the given method.
      */
     @NotNull
-    Optional<ApiMethodDoc> buildApiMethodDoc(@NotNull Method method, @NotNull Class<?> controller,
+    Optional<ApiOperationDoc> buildApiOperationDoc(@NotNull Method method, @NotNull Class<?> controller,
             @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
             @NotNull TemplateProvider templateProvider);
 }

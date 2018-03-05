@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,17 +41,17 @@ public class SpringApiHeadersDocTest {
     public void testApiHeadersOnClass() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringApiHeadersController.class);
         Assert.assertEquals("SpringApiHeadersController", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/spring-api-headers-controller-method-one")) {
-                Assert.assertEquals(2, apiMethodDoc.getHeaders().size());
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/spring-api-headers-controller-method-one")) {
+                Assert.assertEquals(2, apiOperationDoc.getHeaders().size());
             }
-            if (apiMethodDoc.getPaths().contains("/spring-api-headers-controller-method-two")) {
-                Assert.assertEquals(3, apiMethodDoc.getHeaders().size());
+            if (apiOperationDoc.getPaths().contains("/spring-api-headers-controller-method-two")) {
+                Assert.assertEquals(3, apiOperationDoc.getHeaders().size());
             }
-            if (apiMethodDoc.getPaths().contains("/spring-api-headers-controller-method-three")) {
-                Assert.assertEquals(4, apiMethodDoc.getHeaders().size());
-                Iterator<ApiHeaderDoc> headers = apiMethodDoc.getHeaders().iterator();
+            if (apiOperationDoc.getPaths().contains("/spring-api-headers-controller-method-three")) {
+                Assert.assertEquals(4, apiOperationDoc.getHeaders().size());
+                Iterator<ApiHeaderDoc> headers = apiOperationDoc.getHeaders().iterator();
                 ApiHeaderDoc h1 = headers.next();
                 ApiHeaderDoc h2 = headers.next();
                 ApiHeaderDoc h4 = headers.next();

@@ -9,7 +9,7 @@ import org.hildan.livedoc.core.annotations.errors.ApiError;
 import org.hildan.livedoc.core.annotations.errors.ApiErrors;
 import org.hildan.livedoc.core.annotations.ApiHeader;
 import org.hildan.livedoc.core.annotations.ApiHeaders;
-import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
 import org.hildan.livedoc.core.annotations.ApiVersion;
@@ -20,7 +20,7 @@ import org.hildan.livedoc.core.model.doc.ApiVerb;
 @ApiAuthNone
 public class Test1Controller {
 
-    @ApiMethod(path = "/test1", verbs = ApiVerb.GET, description = "test method for controller 1",
+    @ApiOperation(path = "/test1", verbs = ApiVerb.GET, description = "test method for controller 1",
             consumes = {"application/json"}, produces = {"application/json"})
     @ApiVersion(since = "1.0")
     @ApiHeaders(headers = {@ApiHeader(name = "application_id", description = "The application's ID")})

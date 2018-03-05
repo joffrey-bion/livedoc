@@ -7,37 +7,37 @@ import type { State } from '../../../model/state';
 import { getApi } from '../../../redux/livedoc';
 import { RouteHelper } from '../../../routing/routeHelpler';
 import { ContentHeader } from '../../shared/content/ContentHeader';
-import { ApiMethodPanel } from './method/ApiMethodPanel';
+import { ApiOperationPanel } from './method/ApiOperationPanel';
 
 export type ApiDocPanelOwnProps = {
   apiId: ?LivedocID,
-  selectedMethodId: ?LivedocID,
+  selectedOperationId: ?LivedocID,
 }
 
 export type ApiDocPanelProps = {
   apiDoc: ?ApiDoc,
-  selectedMethodId: ?LivedocID,
+  selectedOperationId: ?LivedocID,
 }
 
-const ApiDocPanelPresenter = ({apiDoc, selectedMethodId}: ApiDocPanelProps) => {
+const ApiDocPanelPresenter = ({apiDoc, selectedOperationId}: ApiDocPanelProps) => {
   if (!apiDoc) {
     return <Redirect to={RouteHelper.apisUrl()}/>;
   }
   const api: ApiDoc = apiDoc;
-  const methodPanels = api.methods.map(m => {
-    const open = m.livedocId === selectedMethodId;
-    return <ApiMethodPanel key={m.livedocId} methodDoc={m} open={open} parentApiId={api.livedocId}/>;
+  const operationPanels = api.operations.map(op => {
+    const open = op.livedocId === selectedOperationId;
+    return <ApiOperationPanel key={op.livedocId} operationDoc={op} open={open} parentApiId={api.livedocId}/>;
   });
 
   return <section>
     <ContentHeader title={api.name} description={api.description} stage={api.stage} />
-    {methodPanels}
+    {operationPanels}
   </section>;
 };
 
-const mapStateToProps = (state: State, {apiId, selectedMethodId}: ApiDocPanelOwnProps) => ({
+const mapStateToProps = (state: State, {apiId, selectedOperationId}: ApiDocPanelOwnProps) => ({
   apiDoc: apiId && getApi(apiId, state),
-  selectedMethodId: selectedMethodId,
+  selectedOperationId: selectedOperationId,
 });
 
 const mapDispatchToProps = {};

@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.DocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -80,13 +80,13 @@ public class SpringDocReader implements DocReader {
 
     @NotNull
     @Override
-    public Optional<ApiMethodDoc> buildApiMethodDoc(@NotNull Method method, @NotNull Class<?> controller,
+    public Optional<ApiOperationDoc> buildApiOperationDoc(@NotNull Method method, @NotNull Class<?> controller,
             @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
             @NotNull TemplateProvider templateProvider) {
         if (!canReadInfoFrom(method)) {
             return Optional.empty();
         }
-        return Optional.of(buildApiMethodDoc(method, controller, typeReferenceProvider, templateProvider));
+        return Optional.of(buildApiOperationDoc(method, controller, typeReferenceProvider, templateProvider));
     }
 
     private boolean canReadInfoFrom(Method method) {
@@ -110,23 +110,23 @@ public class SpringDocReader implements DocReader {
         return false;
     }
 
-    private ApiMethodDoc buildApiMethodDoc(Method method, Class<?> controller,
+    private ApiOperationDoc buildApiOperationDoc(Method method, Class<?> controller,
             TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
-        ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-        apiMethodDoc.setPaths(MappingsResolver.getPathsMappings(method, controller));
-        apiMethodDoc.setName(method.getName());
-        apiMethodDoc.setVerbs(SpringVerbBuilder.buildVerb(method, controller));
-        apiMethodDoc.setProduces(SpringMediaTypeBuilder.buildProduces(method, controller));
-        apiMethodDoc.setConsumes(SpringMediaTypeBuilder.buildConsumes(method, controller));
-        apiMethodDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method, controller));
-        apiMethodDoc.setPathParameters(SpringPathVariableBuilder.buildPathVariable(method, typeReferenceProvider));
-        apiMethodDoc.setQueryParameters(
+        ApiOperationDoc apiOperationDoc = new ApiOperationDoc();
+        apiOperationDoc.setPaths(MappingsResolver.getPathsMappings(method, controller));
+        apiOperationDoc.setName(method.getName());
+        apiOperationDoc.setVerbs(SpringVerbBuilder.buildVerb(method, controller));
+        apiOperationDoc.setProduces(SpringMediaTypeBuilder.buildProduces(method, controller));
+        apiOperationDoc.setConsumes(SpringMediaTypeBuilder.buildConsumes(method, controller));
+        apiOperationDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method, controller));
+        apiOperationDoc.setPathParameters(SpringPathVariableBuilder.buildPathVariable(method, typeReferenceProvider));
+        apiOperationDoc.setQueryParameters(
                 SpringQueryParamBuilder.buildQueryParams(method, controller, typeReferenceProvider));
-        apiMethodDoc.setRequestBody(
+        apiOperationDoc.setRequestBody(
                 SpringRequestBodyBuilder.buildRequestBody(method, typeReferenceProvider, templateProvider));
-        apiMethodDoc.setResponseBodyType(buildResponse(method, typeReferenceProvider));
-        apiMethodDoc.setResponseStatusCode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
-        return apiMethodDoc;
+        apiOperationDoc.setResponseBodyType(buildResponse(method, typeReferenceProvider));
+        apiOperationDoc.setResponseStatusCode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
+        return apiOperationDoc;
     }
 
     /**

@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.builders.doc.ApiDocReader;
-import org.hildan.livedoc.core.builders.doc.ApiMethodDocReader;
+import org.hildan.livedoc.core.builders.doc.ApiOperationDocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An implementation of {@link DocReader} that reads Livedoc annotations to build the documentation. In this
  * implementation, controllers are classes annotated with {@link Api}, and methods are only found and documented if
- * annotated with {@link ApiMethod}.
+ * annotated with {@link ApiOperation}.
  */
 public class LivedocAnnotationDocReader implements DocReader {
 
@@ -41,14 +41,14 @@ public class LivedocAnnotationDocReader implements DocReader {
 
     @NotNull
     @Override
-    public Optional<ApiMethodDoc> buildApiMethodDoc(@NotNull Method method, @NotNull Class<?> controller,
+    public Optional<ApiOperationDoc> buildApiOperationDoc(@NotNull Method method, @NotNull Class<?> controller,
             @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
             @NotNull TemplateProvider templateProvider) {
-        ApiMethod methodAnnotation = method.getAnnotation(ApiMethod.class);
+        ApiOperation methodAnnotation = method.getAnnotation(ApiOperation.class);
         if (methodAnnotation == null) {
             return Optional.empty(); // this basic builder only supports annotated methods
         }
-        ApiMethodDoc doc = ApiMethodDocReader.read(method, parentApiDoc, typeReferenceProvider, templateProvider);
+        ApiOperationDoc doc = ApiOperationDocReader.read(method, parentApiDoc, typeReferenceProvider, templateProvider);
         return Optional.of(doc);
     }
 }

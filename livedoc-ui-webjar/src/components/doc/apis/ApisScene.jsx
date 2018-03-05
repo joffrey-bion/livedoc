@@ -20,10 +20,10 @@ export const ApisScene = ({selectedApiId, selectedMethodId}: ApisSceneProps) => 
         <NavPanel/>
       </Col>
       <Col md={5}>
-        <ApiDocPanel apiId={selectedApiId} selectedMethodId={selectedMethodId}/>
+        <ApiDocPanel apiId={selectedApiId} selectedOperationId={selectedMethodId}/>
       </Col>
       <Col md={4}>
-        <Playground selectedApiId={selectedApiId} selectedMethodId={selectedMethodId}/>
+        <Playground selectedApiId={selectedApiId} selectedOperationId={selectedMethodId}/>
       </Col>
     </Row>
   </Container>;

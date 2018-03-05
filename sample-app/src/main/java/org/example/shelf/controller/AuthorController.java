@@ -6,7 +6,7 @@ import org.example.shelf.documentation.DocumentationConstants;
 import org.example.shelf.model.Author;
 import org.example.shelf.repository.AuthorRepository;
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
@@ -40,14 +40,14 @@ public class AuthorController {
         this.authorRepository = authorRepository;
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ALL, description = "Returns the list of all authors")
+    @ApiOperation(id = DocumentationConstants.AUTHOR_FIND_ALL, description = "Returns the list of all authors")
     @GetMapping
     @ApiResponseBodyType
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_FIND_ONE, description = "Gets the author with the given ID")
+    @ApiOperation(id = DocumentationConstants.AUTHOR_FIND_ONE, description = "Gets the author with the given ID")
     @ApiAuthToken
     @GetMapping("/{id}")
     @ApiResponseBodyType
@@ -55,7 +55,7 @@ public class AuthorController {
         return authorRepository.findOne(id);
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_SAVE, description = "Creates a new author with the given data")
+    @ApiOperation(id = DocumentationConstants.AUTHOR_SAVE, description = "Creates a new author with the given data")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponseBodyType
@@ -69,7 +69,7 @@ public class AuthorController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @ApiMethod(id = DocumentationConstants.AUTHOR_DELETE, description = "Deletes the author with the given ID")
+    @ApiOperation(id = DocumentationConstants.AUTHOR_DELETE, description = "Deletes the author with the given ID")
     @DeleteMapping(value = "/{id}", headers = "example=value")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@ApiPathParam(name = "id") @PathVariable Long id) {

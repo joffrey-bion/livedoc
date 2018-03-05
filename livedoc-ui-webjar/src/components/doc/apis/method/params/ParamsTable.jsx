@@ -4,11 +4,11 @@ import { Table } from 'reactstrap';
 import type { ApiParamDoc } from '../../../../../model/livedoc';
 import { ParamRow } from './ParamRow';
 
-export type ApiMethodParamsTableProps = {
+export type ParamsTableProps = {
   params: ApiParamDoc[],
 }
 
-export const ApiMethodParamsTable = (props: ApiMethodParamsTableProps) => {
+export const ParamsTable = (props: ParamsTableProps) => {
   const params: ApiParamDoc[] = props.params;
 
   const paramRows = params.map((p, index) => <ParamRow key={index} param={p}/>);

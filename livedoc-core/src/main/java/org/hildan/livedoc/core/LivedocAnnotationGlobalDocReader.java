@@ -12,7 +12,7 @@ import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.builders.doc.ApiGlobalDocReader;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 
@@ -31,14 +31,14 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
      * Gets the API flow documentation for the set of classes passed as argument
      */
     @Override
-    public Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiMethodDoc> apiMethodDocsById) {
+    public Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
         Set<ApiFlowDoc> apiFlowDocs = new TreeSet<>();
         for (Class<?> clazz : getClassesWithFlows()) {
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
                 ApiFlow flowAnnotation = method.getAnnotation(ApiFlow.class);
                 if (flowAnnotation != null) {
-                    apiFlowDocs.add(getApiFlowDoc(apiMethodDocsById, flowAnnotation));
+                    apiFlowDocs.add(getApiFlowDoc(apiOperationDocsById, flowAnnotation));
                 }
             }
         }
@@ -49,8 +49,8 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
         return annotatedTypesFinder.apply(ApiFlowSet.class);
     }
 
-    private ApiFlowDoc getApiFlowDoc(Map<String, ? extends ApiMethodDoc> apiMethodDocsById, ApiFlow flowAnnotation) {
-        return ApiFlowDoc.buildFromAnnotation(flowAnnotation, apiMethodDocsById);
+    private ApiFlowDoc getApiFlowDoc(Map<String, ? extends ApiOperationDoc> apiOperationDocsById, ApiFlow flowAnnotation) {
+        return ApiFlowDoc.buildFromAnnotation(flowAnnotation, apiOperationDocsById);
     }
 
     @Override

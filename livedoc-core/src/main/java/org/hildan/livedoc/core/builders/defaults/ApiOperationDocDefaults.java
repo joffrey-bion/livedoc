@@ -3,12 +3,12 @@ package org.hildan.livedoc.core.builders.defaults;
 import java.util.Collections;
 import java.util.Set;
 
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 
-public class ApiMethodDocDefaults {
+public class ApiOperationDocDefaults {
 
-    public static void complete(ApiMethodDoc doc) {
+    public static void complete(ApiOperationDoc doc) {
 
         Set<ApiVerb> verbs = doc.getVerbs();
         if (verbs == null || verbs.isEmpty()) {

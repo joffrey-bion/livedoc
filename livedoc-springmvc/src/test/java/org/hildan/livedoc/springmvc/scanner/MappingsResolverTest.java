@@ -37,10 +37,10 @@ public class MappingsResolverTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
 
-        boolean slashPath = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/path"));
+        boolean slashPath = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/path"));
         assertTrue(slashPath);
 
-        boolean slash = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/"));
+        boolean slash = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/"));
         assertTrue(slash);
     }
 
@@ -63,13 +63,13 @@ public class MappingsResolverTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class);
         Assert.assertEquals("SpringController2", apiDoc.getName());
 
-        boolean none = apiDoc.getMethods().stream().anyMatch(input -> {
+        boolean none = apiDoc.getOperations().stream().anyMatch(input -> {
             System.out.println(input.getPaths());
             return input.getPaths().contains("/");
         });
         assertTrue(none);
 
-        boolean test = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/test"));
+        boolean test = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/test"));
         assertTrue(test);
     }
 
@@ -86,10 +86,10 @@ public class MappingsResolverTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringControllerChild.class);
         Assert.assertEquals("SpringControllerChild", apiDoc.getName());
 
-        boolean none = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/child"));
+        boolean none = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/child"));
         assertTrue(none);
 
-        boolean test = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/child/test"));
+        boolean test = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/child/test"));
         assertTrue(test);
     }
 
@@ -108,7 +108,7 @@ public class MappingsResolverTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController3.class);
         Assert.assertEquals("SpringController3", apiDoc.getName());
 
-        boolean allRight = apiDoc.getMethods()
+        boolean allRight = apiDoc.getOperations()
                                  .stream()
                                  .anyMatch(input -> input.getPaths()
                                                          .containsAll(Arrays.asList("/path1/path3", "/path1/path4",
@@ -131,7 +131,7 @@ public class MappingsResolverTest {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController4.class);
         Assert.assertEquals("SpringController4", apiDoc.getName());
 
-        boolean allRight = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().contains("/path"));
+        boolean allRight = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/path"));
         assertTrue(allRight);
     }
 
@@ -151,7 +151,7 @@ public class MappingsResolverTest {
         Assert.assertEquals("SpringController5", apiDoc.getName());
 
         List<String> expectedPaths = Arrays.asList("/path", "/path2", "/val1");
-        boolean allRight = apiDoc.getMethods().stream().anyMatch(input -> input.getPaths().containsAll(expectedPaths));
+        boolean allRight = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().containsAll(expectedPaths));
         assertTrue(allRight);
     }
 }

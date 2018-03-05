@@ -3,7 +3,7 @@ package org.hildan.livedoc.core;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 
@@ -12,7 +12,7 @@ import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
  */
 public interface GlobalDocReader {
 
-    Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiMethodDoc> apiMethodDocsById);
+    Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById);
 
     ApiGlobalDoc getApiGlobalDoc();
 }

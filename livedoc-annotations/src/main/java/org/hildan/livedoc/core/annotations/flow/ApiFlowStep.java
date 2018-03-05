@@ -6,11 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 
 /**
- * This annotation is to be used inside an annotaion of type {@link ApiFlow} and references a method previously
- * documented with the {@link ApiMethod} annotation in which the "id" property is specified
+ * This annotation is to be used inside an annotation of type {@link ApiFlow} and references an operation previously
+ * documented with the {@link ApiOperation} annotation, in which the {@link ApiOperation#id()} property is specified.
  */
 @Documented
 @Target(ElementType.ANNOTATION_TYPE)
@@ -18,7 +18,7 @@ import org.hildan.livedoc.core.annotations.ApiMethod;
 public @interface ApiFlowStep {
 
     /**
-     * The api method identified by this id is the method used in the flow step
+     * References the operation to perform in this step of the flow
      */
-    String apiMethodId();
+    String apiOperationId();
 }

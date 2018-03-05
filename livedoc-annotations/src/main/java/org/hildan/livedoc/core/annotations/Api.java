@@ -7,16 +7,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that a class contains API methods that should be inspected, and provides documentation details about the
- * API defined by that class.
+ * Marks a class as an API resource/controller, and provides additional documentation details.
  * <p>
- * Livedoc's "APIs" are groups of API methods that interact with similar parts of the system. An API usually corresponds
- * to a controller, especially in the context of a Spring application. APIs can themselves be grouped, which is what
- * the {@link #group()} attribute controls.
+ * An {@code Api}-annotated class defines a group of API operations that interact with similar parts of the system.
+ * It usually corresponds to a REST resource. In the context of a Spring application, it usually corresponds to a
+ * controller.
  * <p>
- * Whether or not each method of this class (and the parent classes) is actually included in the doc depends on the
- * configuration. These methods are logically grouped in the doc because they belong to the same "API", defined by
- * the {@link Api}-annotated class.
+ * The {@code Api} annotation is not necessary for a class to be scanned, this depends on the configuration. For
+ * instance, in the context of a Spring application, scanners are defined to look for Spring controllers, and Spring
+ * annotations are sufficient. That being said, this annotation can be used to provide additional documentation
+ * information, like a description for instance.
+ * <p>
+ * The API operations defined in this class are logically grouped in the doc. They correspond to some of the Java
+ * methods of this class (and/or the parent classes). Whether or not the methods are interpreted as API operations is
+ * defined by the configuration. To manually add a method as an API operation, use the {@link ApiOperation} annotation.
+ * <p>
+ * {@code Api}-annotated classes define groups of API operations, but can also be grouped themselves, which is what the
+ * {@link #group()} attribute controls.
  */
 @Documented
 @Target(ElementType.TYPE)

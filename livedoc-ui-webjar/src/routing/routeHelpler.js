@@ -15,7 +15,7 @@ export class RouteHelper {
     return `${apisUrl}/${apiId}`;
   }
 
-  static methodUrl(apiId: LivedocID, methodId: LivedocID): string {
+  static operationUrl(apiId: LivedocID, methodId: LivedocID): string {
     const apiUrl = RouteHelper.apiUrl(apiId);
     return `${apiUrl}/${methodId}`;
   }
@@ -33,7 +33,7 @@ export class RouteHelper {
     return FLOWS;
   }
 
-  static flowMethodUrl(methodId: LivedocID): string {
+  static flowOperationUrl(methodId: LivedocID): string {
     const flowsUrl = RouteHelper.flowsUrl();
     return `${flowsUrl}/${methodId}`;
   }

@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
@@ -43,17 +43,17 @@ public class SpringQueryParamBuilderTest {
     public void testQueryParam() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/param-one")) {
-                Assert.assertEquals(1, apiMethodDoc.getQueryParameters().size());
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/param-one")) {
+                Assert.assertEquals(1, apiOperationDoc.getQueryParameters().size());
             }
-            if (apiMethodDoc.getPaths().contains("/param-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getQueryParameters().size());
+            if (apiOperationDoc.getPaths().contains("/param-two")) {
+                Assert.assertEquals(2, apiOperationDoc.getQueryParameters().size());
             }
-            if (apiMethodDoc.getPaths().contains("/param-three")) {
-                Assert.assertEquals(2, apiMethodDoc.getQueryParameters().size());
-                Iterator<ApiParamDoc> iterator = apiMethodDoc.getQueryParameters().iterator();
+            if (apiOperationDoc.getPaths().contains("/param-three")) {
+                Assert.assertEquals(2, apiOperationDoc.getQueryParameters().size());
+                Iterator<ApiParamDoc> iterator = apiOperationDoc.getQueryParameters().iterator();
                 ApiParamDoc param = iterator.next();
                 Assert.assertEquals("param", param.getName());
                 Assert.assertEquals("value", param.getAllowedValues()[0]);
@@ -85,13 +85,13 @@ public class SpringQueryParamBuilderTest {
     public void testQueryParam_mergeWithParent() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class);
         Assert.assertEquals("SpringController2", apiDoc.getName());
-        Assert.assertEquals(2, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/param-one")) {
-                Assert.assertEquals(2, apiMethodDoc.getQueryParameters().size());
+        Assert.assertEquals(2, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/param-one")) {
+                Assert.assertEquals(2, apiOperationDoc.getQueryParameters().size());
             }
-            if (apiMethodDoc.getPaths().contains("/param-two")) {
-                Assert.assertEquals(3, apiMethodDoc.getQueryParameters().size());
+            if (apiOperationDoc.getPaths().contains("/param-two")) {
+                Assert.assertEquals(3, apiOperationDoc.getQueryParameters().size());
             }
         }
     }
@@ -121,11 +121,11 @@ public class SpringQueryParamBuilderTest {
     public void testQueryParam_springAnnotationOnParam() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController3.class);
         Assert.assertEquals("SpringController3", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/param-one")) {
-                Assert.assertEquals(2, apiMethodDoc.getQueryParameters().size());
-                Iterator<ApiParamDoc> iterator = apiMethodDoc.getQueryParameters().iterator();
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/param-one")) {
+                Assert.assertEquals(2, apiOperationDoc.getQueryParameters().size());
+                Iterator<ApiParamDoc> iterator = apiOperationDoc.getQueryParameters().iterator();
                 iterator.next();
                 ApiParamDoc queryParam = iterator.next();
                 Assert.assertEquals("name", queryParam.getName());
@@ -133,9 +133,9 @@ public class SpringQueryParamBuilderTest {
                 Assert.assertEquals("String", queryParam.getType().getOneLineText());
                 Assert.assertEquals("", queryParam.getDefaultValue());
             }
-            if (apiMethodDoc.getPaths().contains("/param-two")) {
-                Assert.assertEquals(2, apiMethodDoc.getQueryParameters().size());
-                Iterator<ApiParamDoc> iterator = apiMethodDoc.getQueryParameters().iterator();
+            if (apiOperationDoc.getPaths().contains("/param-two")) {
+                Assert.assertEquals(2, apiOperationDoc.getQueryParameters().size());
+                Iterator<ApiParamDoc> iterator = apiOperationDoc.getQueryParameters().iterator();
                 iterator.next();
                 ApiParamDoc queryParam = iterator.next();
                 Assert.assertEquals("otherName", queryParam.getName());
@@ -143,9 +143,9 @@ public class SpringQueryParamBuilderTest {
                 Assert.assertEquals("String", queryParam.getType().getOneLineText());
                 Assert.assertEquals("test", queryParam.getDefaultValue());
             }
-            if (apiMethodDoc.getPaths().contains("/param-three")) {
-                Assert.assertEquals(2, apiMethodDoc.getQueryParameters().size());
-                Iterator<ApiParamDoc> iterator = apiMethodDoc.getQueryParameters().iterator();
+            if (apiOperationDoc.getPaths().contains("/param-three")) {
+                Assert.assertEquals(2, apiOperationDoc.getQueryParameters().size());
+                Iterator<ApiParamDoc> iterator = apiOperationDoc.getQueryParameters().iterator();
                 iterator.next();
                 ApiParamDoc queryParam = iterator.next();
                 Assert.assertEquals("name", queryParam.getName());
@@ -178,15 +178,15 @@ public class SpringQueryParamBuilderTest {
     public void testQueryParam_livedocAnnotationOnParam() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController4.class);
         Assert.assertEquals("SpringController4", apiDoc.getName());
-        Assert.assertEquals(2, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/")) {
-                Assert.assertEquals(1, apiMethodDoc.getQueryParameters().size());
-                ApiParamDoc param = apiMethodDoc.getQueryParameters().iterator().next();
+        Assert.assertEquals(2, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/")) {
+                Assert.assertEquals(1, apiOperationDoc.getQueryParameters().size());
+                ApiParamDoc param = apiOperationDoc.getQueryParameters().iterator().next();
                 Assert.assertEquals("name", param.getName());
             }
-            if (apiMethodDoc.getPaths().contains("/two")) {
-                Assert.assertEquals(2, apiMethodDoc.getQueryParameters().size());
+            if (apiOperationDoc.getPaths().contains("/two")) {
+                Assert.assertEquals(2, apiOperationDoc.getQueryParameters().size());
             }
         }
     }
@@ -209,11 +209,11 @@ public class SpringQueryParamBuilderTest {
     public void testQueryParam_complexType() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController5.class);
         Assert.assertEquals("SpringController5", apiDoc.getName());
-        Assert.assertEquals(1, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/")) {
-                Assert.assertEquals(1, apiMethodDoc.getQueryParameters().size());
-                ApiParamDoc param = apiMethodDoc.getQueryParameters().iterator().next();
+        Assert.assertEquals(1, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/")) {
+                Assert.assertEquals(1, apiOperationDoc.getQueryParameters().size());
+                ApiParamDoc param = apiOperationDoc.getQueryParameters().iterator().next();
                 Assert.assertEquals("modelAttributePojo", param.getName());
                 Assert.assertEquals("ModelAttributePojo", param.getType().getOneLineText());
             }

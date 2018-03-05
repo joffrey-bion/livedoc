@@ -2,29 +2,29 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, CardText, Collapse } from 'reactstrap';
-import type { ApiMethodDoc } from '../../../../model/livedoc';
-import { ApiMethodDetails } from './ApiMethodDetails';
-import './MethodPanel.css';
+import type { ApiOperationDoc } from '../../../../model/livedoc';
+import { ApiOperationDetails } from './ApiOperationDetails';
+import './OperationPanel.css';
 
 export type MethodPanelProps = {
-  methodDoc: ApiMethodDoc,
+  operationDoc: ApiOperationDoc,
   open: boolean,
   collapseUrl: string,
   expandUrl: string,
 }
 
-export const MethodPanel = ({methodDoc, open, collapseUrl, expandUrl}: MethodPanelProps) => {
+export const OperationPanel = ({operationDoc, open, collapseUrl, expandUrl}: MethodPanelProps) => {
 
-  const title = methodDoc.paths || methodDoc.name;
-  const verbs = methodDoc.verbs.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
+  const title = operationDoc.paths || operationDoc.name;
+  const verbs = operationDoc.verbs.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
   const linkUrl = open ? collapseUrl : expandUrl;
 
   return <Card style={{marginBottom: '15px'}}>
     <CardHeader className="api-method-header" tag={Link} to={linkUrl}>{title} {verbs}</CardHeader>
     <Collapse isOpen={open}>
       <CardBody>
-        {methodDoc.description && <CardText>{methodDoc.description}</CardText>}
-        <ApiMethodDetails methodDoc={methodDoc}/>
+        {operationDoc.description && <CardText>{operationDoc.description}</CardText>}
+        <ApiOperationDetails operationDoc={operationDoc}/>
       </CardBody>
     </Collapse>
   </Card>;

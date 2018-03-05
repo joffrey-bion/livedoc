@@ -1,12 +1,12 @@
 // @flow
 import * as React from 'react';
 import {Button, Col, Form, FormGroup, Input, Label} from 'reactstrap';
-import type {ApiRequestBodyDoc, ApiMethodDoc, ApiVerb} from '../../model/livedoc';
+import type {ApiRequestBodyDoc, ApiOperationDoc, ApiVerb} from '../../model/livedoc';
 import type {RequestInfo} from '../../model/playground';
 
 export type PlaygroundFormProps = {
   basePath: string,
-  methodDoc: ApiMethodDoc,
+  operationDoc: ApiOperationDoc,
   onSubmit: RequestInfo => void
 }
 
@@ -58,7 +58,7 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
   }
 
   static getInitialRequestInfo(props: PlaygroundFormProps): PlaygroundFormState {
-    const doc: ApiMethodDoc = props.methodDoc;
+    const doc: ApiOperationDoc = props.operationDoc;
     return {
       url: props.basePath + PlaygroundForm.getFirst(doc.paths, ''),
       method: PlaygroundForm.getFirst(doc.verbs, PlaygroundForm.defaultMethod),
@@ -101,7 +101,7 @@ export class PlaygroundForm extends React.Component<PlaygroundFormProps, Playgro
   }
 
   render() {
-    const doc = this.props.methodDoc;
+    const doc = this.props.operationDoc;
 
     return <Form onSubmit={e => this.handleSubmit(e)}>
       <PlaygroundFormRow label="URL" id="urlInput">

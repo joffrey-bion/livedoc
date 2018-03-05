@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
@@ -15,7 +15,7 @@ import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.types.LivedocType;
 
-public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc>, Secured, Staged, Versioned {
+public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperationDoc>, Secured, Staged, Versioned {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -45,7 +45,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
     private Set<String> produces;
 
-    @SpecialDefaultStringValue(ApiMethod.DEFAULT_RESPONSE_STATUS)
+    @SpecialDefaultStringValue(ApiOperation.DEFAULT_RESPONSE_STATUS)
     private String responseStatusCode;
 
     private List<ApiErrorDoc> apiErrors;
@@ -56,7 +56,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
 
     private Stage stage;
 
-    public ApiMethodDoc() {
+    public ApiOperationDoc() {
         super();
         this.id = null;
         this.description = "";
@@ -70,7 +70,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
         this.queryParameters = new LinkedHashSet<>();
         this.requestBody = null;
         this.responseBodyType = null;
-        this.responseStatusCode = ApiMethod.DEFAULT_RESPONSE_STATUS;
+        this.responseStatusCode = ApiOperation.DEFAULT_RESPONSE_STATUS;
         this.stage = null;
         this.apiErrors = new ArrayList<>();
         this.supportedVersions = null;
@@ -228,7 +228,7 @@ public class ApiMethodDoc extends AbstractDoc implements Comparable<ApiMethodDoc
     }
 
     @Override
-    public int compareTo(ApiMethodDoc o) {
+    public int compareTo(ApiOperationDoc o) {
         int i;
 
         if (this.paths.containsAll(o.getPaths()) && this.paths.size() == o.getPaths().size()) {

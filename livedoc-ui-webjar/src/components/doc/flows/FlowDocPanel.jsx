@@ -7,23 +7,23 @@ import type { State } from '../../../model/state';
 import { getFlow } from '../../../redux/livedoc';
 import { RouteHelper } from '../../../routing/routeHelpler';
 import { ContentHeader } from '../../shared/content/ContentHeader';
-import { FlowMethodPanel } from './FlowMethodPanel';
+import { FlowOperationPanel } from './FlowOperationPanel';
 
 export type ApiFlowPanelProps = {
   flowDoc: ?ApiFlowDoc,
-  selectedMethodId: ?LivedocID,
+  selectedOperationId: ?LivedocID,
 }
 
-const FlowDocPanelPresenter = ({flowDoc, selectedMethodId}: ApiFlowPanelProps) => {
+const FlowDocPanelPresenter = ({flowDoc, selectedOperationId}: ApiFlowPanelProps) => {
   if (!flowDoc) {
     return <Redirect to={RouteHelper.flowsUrl()}/>;
   }
   const flow: ApiFlowDoc = flowDoc;
 
   const preconditions = flow.preconditions.map(cond => <li>{cond}</li>);
-  const methodPanels = flow.methods.map(m => {
-    const open = m.livedocId === selectedMethodId;
-    return <FlowMethodPanel key={m.livedocId} methodDoc={m} open={open}/>;
+  const methodPanels = flow.operations.map(m => {
+    const open = m.livedocId === selectedOperationId;
+    return <FlowOperationPanel key={m.livedocId} operationDoc={m} open={open}/>;
   });
 
   return <section>
@@ -38,12 +38,12 @@ const FlowDocPanelPresenter = ({flowDoc, selectedMethodId}: ApiFlowPanelProps) =
 
 export type FlowDocPanelOwnProps = {
   flowId: LivedocID,
-  selectedMethodId: ?LivedocID,
+  selectedOperationId: ?LivedocID,
 }
 
-const mapStateToProps = (state: State, {flowId, selectedMethodId}: FlowDocPanelOwnProps) => ({
+const mapStateToProps = (state: State, {flowId, selectedOperationId}: FlowDocPanelOwnProps) => ({
   flowDoc: flowId && getFlow(flowId, state),
-  selectedMethodId: selectedMethodId,
+  selectedOperationId: selectedOperationId,
 });
 
 const mapDispatchToProps = {};

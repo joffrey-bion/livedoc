@@ -18,7 +18,7 @@ import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.GlobalDocReader;
 import org.hildan.livedoc.core.LivedocAnnotationGlobalDocReader;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
@@ -127,14 +127,14 @@ public class GlobalDocReaderTest {
     private class TestFlow {
 
         @ApiFlow(name = "flow", description = "A test flow", group = "Flows A", steps = {
-                @ApiFlowStep(apiMethodId = "F1"), @ApiFlowStep(apiMethodId = "F2"), @ApiFlowStep(apiMethodId = "F3")
+                @ApiFlowStep(apiOperationId = "F1"), @ApiFlowStep(apiOperationId = "F2"), @ApiFlowStep(apiOperationId = "F3")
         })
         public void flow() {
 
         }
 
         @ApiFlow(name = "flow2", description = "A test flow 2", group = "Flows B", steps = {
-                @ApiFlowStep(apiMethodId = "F4"), @ApiFlowStep(apiMethodId = "F5"), @ApiFlowStep(apiMethodId = "F6")
+                @ApiFlowStep(apiOperationId = "F4"), @ApiFlowStep(apiOperationId = "F5"), @ApiFlowStep(apiOperationId = "F6")
         })
         public void flow2() {
 
@@ -151,29 +151,29 @@ public class GlobalDocReaderTest {
             return Collections.emptySet();
         };
 
-        Map<String, ApiMethodDoc> apiMethodDocsById = new HashMap<>(1);
-        ApiMethodDoc apiMethodDoc = new ApiMethodDoc();
-        apiMethodDoc.setId("F1");
-        apiMethodDocsById.put("F1", apiMethodDoc);
+        Map<String, ApiOperationDoc> apiOperationDocsById = new HashMap<>(1);
+        ApiOperationDoc apiOperationDoc = new ApiOperationDoc();
+        apiOperationDoc.setId("F1");
+        apiOperationDocsById.put("F1", apiOperationDoc);
 
         GlobalDocReader scanner = new LivedocAnnotationGlobalDocReader(finder);
-        Set<ApiFlowDoc> apiFlowDocs = scanner.getApiFlowDocs(apiMethodDocsById);
+        Set<ApiFlowDoc> apiFlowDocs = scanner.getApiFlowDocs(apiOperationDocsById);
         for (ApiFlowDoc apiFlowDoc : apiFlowDocs) {
             if (apiFlowDoc.getName().equals("flow")) {
                 Assert.assertEquals("A test flow", apiFlowDoc.getDescription());
                 Assert.assertEquals(3, apiFlowDoc.getSteps().size());
-                Assert.assertEquals("F1", apiFlowDoc.getSteps().get(0).getApimethodid());
-                Assert.assertEquals("F2", apiFlowDoc.getSteps().get(1).getApimethodid());
+                Assert.assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationId());
+                Assert.assertEquals("F2", apiFlowDoc.getSteps().get(1).getApiOperationId());
                 Assert.assertEquals("Flows A", apiFlowDoc.getGroup());
-                Assert.assertNotNull(apiFlowDoc.getSteps().get(0).getApimethoddoc());
-                Assert.assertEquals("F1", apiFlowDoc.getSteps().get(0).getApimethoddoc().getId());
+                Assert.assertNotNull(apiFlowDoc.getSteps().get(0).getApiOperationDoc());
+                Assert.assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationDoc().getId());
             }
 
             if (apiFlowDoc.getName().equals("flow2")) {
                 Assert.assertEquals("A test flow 2", apiFlowDoc.getDescription());
                 Assert.assertEquals(3, apiFlowDoc.getSteps().size());
-                Assert.assertEquals("F4", apiFlowDoc.getSteps().get(0).getApimethodid());
-                Assert.assertEquals("F5", apiFlowDoc.getSteps().get(1).getApimethodid());
+                Assert.assertEquals("F4", apiFlowDoc.getSteps().get(0).getApiOperationId());
+                Assert.assertEquals("F5", apiFlowDoc.getSteps().get(1).getApiOperationId());
                 Assert.assertEquals("Flows B", apiFlowDoc.getGroup());
             }
         }

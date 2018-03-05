@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.groups.Groupable;
 
 public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
@@ -22,18 +22,18 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
 
     private List<ApiFlowStepDoc> steps;
 
-    private List<ApiMethodDoc> methods;
+    private List<ApiOperationDoc> operations;
 
     private String group;
 
     public ApiFlowDoc() {
         this.preconditions = new LinkedList<>();
         this.steps = new LinkedList<>();
-        this.methods = new LinkedList<>();
+        this.operations = new LinkedList<>();
     }
 
     public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation,
-            Map<String, ? extends ApiMethodDoc> apiMethodDocsById) {
+            Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
         ApiFlowDoc apiFlowDoc = new ApiFlowDoc();
         apiFlowDoc.setDescription(annotation.description());
         apiFlowDoc.setName(annotation.name());
@@ -42,9 +42,9 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
             apiFlowDoc.addPrecondition(precondition);
         }
         for (ApiFlowStep apiFlowStep : annotation.steps()) {
-            ApiFlowStepDoc apiFlowStepDoc = ApiFlowStepDoc.buildFromAnnotation(apiFlowStep, apiMethodDocsById);
+            ApiFlowStepDoc apiFlowStepDoc = ApiFlowStepDoc.buildFromAnnotation(apiFlowStep, apiOperationDocsById);
             apiFlowDoc.addStep(apiFlowStepDoc);
-            apiFlowDoc.addMethod(apiFlowStepDoc.getApimethoddoc());
+            apiFlowDoc.addMethod(apiFlowStepDoc.getApiOperationDoc());
         }
         return apiFlowDoc;
     }
@@ -98,16 +98,16 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
         this.preconditions.add(precondition);
     }
 
-    public List<ApiMethodDoc> getMethods() {
-        return methods;
+    public List<ApiOperationDoc> getOperations() {
+        return operations;
     }
 
-    public void setMethods(List<ApiMethodDoc> methods) {
-        this.methods = methods;
+    public void setOperations(List<ApiOperationDoc> operations) {
+        this.operations = operations;
     }
 
-    public void addMethod(ApiMethodDoc method) {
-        this.methods.add(method);
+    public void addMethod(ApiOperationDoc method) {
+        this.operations.add(method);
     }
 
     @Override

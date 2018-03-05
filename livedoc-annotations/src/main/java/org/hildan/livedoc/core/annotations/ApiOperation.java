@@ -10,17 +10,22 @@ import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 
 /**
- * Indicates that a method is an exposed service of an API, and provides additional documentation details.
+ * Marks a Java method as an API operation, and provides additional documentation details.
+ * <p>
+ * This annotation is not necessary for a method to be understood as an API operation, this depends on the
+ * configuration. For instance, in the context of a Spring application, scanners are defined to look for request
+ * mappings, in which case Spring annotations are sufficient. That being said, this annotation can be used to provide
+ * additional documentation information, like a description for instance.
  */
 @Documented
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiMethod {
+public @interface ApiOperation {
 
     String DEFAULT_RESPONSE_STATUS = "200 - OK";
 
     /**
-     * An optional custom identifier to be refer to this method from {@link ApiFlowStep#apiMethodId()}. This string has
+     * An optional custom identifier to be refer to this method from {@link ApiFlowStep#apiOperationId()}. This string has
      * to be unique inside the Livedoc documentation. It's the responsibility of the documentation writer to guarantee
      * this uniqueness.
      */

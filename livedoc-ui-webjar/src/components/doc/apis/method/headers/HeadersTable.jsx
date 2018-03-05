@@ -4,11 +4,11 @@ import { Table } from 'reactstrap';
 import type { ApiHeaderDoc } from '../../../../../model/livedoc';
 import { HeaderRow } from './HeaderRow';
 
-export type ApiMethodHeadersTableProps = {
+export type HeadersTableProps = {
   headers: ApiHeaderDoc[],
 }
 
-export const ApiMethodHeadersTable = (props: ApiMethodHeadersTableProps) => {
+export const HeadersTable = (props: HeadersTableProps) => {
   const headers: ApiHeaderDoc[] = props.headers;
 
   const showDescription = headers.filter(h => h.description).length > 0;

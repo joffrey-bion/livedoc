@@ -64,7 +64,7 @@ export type ApiChangelogDoc = Identified & {
 export type ApiDoc = Identified & Named & Versioned & Secured & Staged & {
   description: string,
   group: string,
-  methods: Array<ApiMethodDoc>,
+  operations: Array<ApiOperationDoc>,
 };
 
 export type ApiErrorDoc = Identified & {
@@ -76,13 +76,13 @@ export type ApiFlowDoc = Identified & Named & {
   description: string,
   preconditions: Array<string>,
   steps: Array<ApiFlowStepDoc>,
-  methods: Array<ApiMethodDoc>,
+  operations: Array<ApiOperationDoc>,
   group: string,
 }
 
 export type ApiFlowStepDoc = Identified & {
-  apiMethodId: string,
-  apiMethodDoc: ApiMethodDoc,
+  apiOperationId: string,
+  apiOperationDoc: ApiOperationDoc,
 }
 
 export type ApiGlobalDoc = Identified & {
@@ -105,7 +105,7 @@ export type ApiHeaderDoc = Identified & Named & {
 
 export type HeaderFilterType = 'REQUIRED_MATCHING' | 'OPTIONAL' | 'FORBIDDEN' | 'DIFFERENT';
 
-export type ApiMethodDoc = Identified & LivedocHints & Versioned & Staged & {
+export type ApiOperationDoc = Identified & LivedocHints & Versioned & Staged & {
   id: string,
   paths: Array<string>,
   name: string,

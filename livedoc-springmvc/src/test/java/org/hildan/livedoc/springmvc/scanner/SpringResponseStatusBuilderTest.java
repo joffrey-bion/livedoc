@@ -1,7 +1,7 @@
 package org.hildan.livedoc.springmvc.scanner;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,13 +34,13 @@ public class SpringResponseStatusBuilderTest {
     public void testApiVerb() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
-        Assert.assertEquals(2, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/status-one")) {
-                Assert.assertEquals("201 - Created", apiMethodDoc.getResponseStatusCode());
+        Assert.assertEquals(2, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/status-one")) {
+                Assert.assertEquals("201 - Created", apiOperationDoc.getResponseStatusCode());
             }
-            if (apiMethodDoc.getPaths().contains("/status-two")) {
-                Assert.assertEquals("200 - OK", apiMethodDoc.getResponseStatusCode());
+            if (apiOperationDoc.getPaths().contains("/status-two")) {
+                Assert.assertEquals("200 - OK", apiOperationDoc.getResponseStatusCode());
             }
         }
     }

@@ -20,7 +20,7 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
 
     private String group;
 
-    private List<ApiMethodDoc> methods;
+    private List<ApiOperationDoc> operations;
 
     private Stage stage;
 
@@ -33,7 +33,7 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
         this.description = "";
         this.stage = null;
         this.group = "";
-        this.methods = new ArrayList<>();
+        this.operations = new ArrayList<>();
         this.supportedVersions = null;
         this.auth = null;
     }
@@ -63,12 +63,12 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
         this.group = group;
     }
 
-    public List<ApiMethodDoc> getMethods() {
-        return methods;
+    public List<ApiOperationDoc> getOperations() {
+        return operations;
     }
 
-    public void setMethods(List<ApiMethodDoc> methods) {
-        this.methods = methods;
+    public void setOperations(List<ApiOperationDoc> operations) {
+        this.operations = operations;
     }
 
     @Override

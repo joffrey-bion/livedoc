@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
@@ -112,9 +112,9 @@ public class LivedocReaderTest {
                                     .map(Group::getElements)
                                     .flatMap(Collection::stream)
                                     .distinct()
-                                    .map(ApiDoc::getMethods)
+                                    .map(ApiDoc::getOperations)
                                     .flatMap(Collection::stream)
-                                    .map(ApiMethodDoc::getVerbs)
+                                    .map(ApiOperationDoc::getVerbs)
                                     .flatMap(Collection::stream)
                                     .collect(Collectors.toSet());
         Set<ApiVerb> expectedVerbs = new HashSet<>(Arrays.asList(ApiVerb.values()));

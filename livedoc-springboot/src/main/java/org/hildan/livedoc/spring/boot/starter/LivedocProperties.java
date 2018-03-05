@@ -3,6 +3,7 @@ package org.hildan.livedoc.spring.boot.starter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -30,7 +31,8 @@ public class LivedocProperties {
     private boolean playgroundEnabled = true;
 
     /**
-     * Whether to display methods as URIs or with a short description (summary attribute in the @ApiMethod annotation).
+     * Whether to display methods as URIs or with a short description (summary attribute in the {@link ApiOperation}
+     * annotation).
      * Allowed values are URI and SUMMARY.
      */
     private MethodDisplay displayMethodAs = MethodDisplay.URI;

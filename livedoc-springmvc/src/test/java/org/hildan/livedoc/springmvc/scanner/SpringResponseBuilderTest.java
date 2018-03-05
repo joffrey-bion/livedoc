@@ -3,7 +3,7 @@ package org.hildan.livedoc.springmvc.scanner;
 import java.util.Map;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiMethodDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,17 +39,17 @@ public class SpringResponseBuilderTest {
     public void testApiVerb() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         Assert.assertEquals("SpringController", apiDoc.getName());
-        Assert.assertEquals(3, apiDoc.getMethods().size());
-        for (ApiMethodDoc apiMethodDoc : apiDoc.getMethods()) {
-            if (apiMethodDoc.getPaths().contains("/response-one")) {
-                Assert.assertEquals("String", apiMethodDoc.getResponseBodyType().getOneLineText());
+        Assert.assertEquals(3, apiDoc.getOperations().size());
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            if (apiOperationDoc.getPaths().contains("/response-one")) {
+                Assert.assertEquals("String", apiOperationDoc.getResponseBodyType().getOneLineText());
             }
-            if (apiMethodDoc.getPaths().contains("/response-two")) {
-                Assert.assertEquals("String", apiMethodDoc.getResponseBodyType().getOneLineText());
+            if (apiOperationDoc.getPaths().contains("/response-two")) {
+                Assert.assertEquals("String", apiOperationDoc.getResponseBodyType().getOneLineText());
             }
-            if (apiMethodDoc.getPaths().contains("/response-three")) {
+            if (apiOperationDoc.getPaths().contains("/response-three")) {
                 Assert.assertEquals("Map<String, Integer>",
-                        apiMethodDoc.getResponseBodyType().getOneLineText());
+                        apiOperationDoc.getResponseBodyType().getOneLineText());
             }
         }
     }

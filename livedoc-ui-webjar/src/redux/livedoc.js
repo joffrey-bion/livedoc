@@ -1,6 +1,6 @@
 // @flow
 import type {
-  ApiDoc, ApiFlowDoc, ApiGlobalDoc, ApiMethodDoc, ApiTypeDoc, Group, Identified, Livedoc, LivedocID,
+  ApiDoc, ApiFlowDoc, ApiGlobalDoc, ApiOperationDoc, ApiTypeDoc, Group, Identified, Livedoc, LivedocID,
 } from '../model/livedoc';
 import type { State } from '../model/state';
 import type { Action } from './actions';
@@ -44,13 +44,13 @@ export function getFlow(id: LivedocID, state: State): ?ApiFlowDoc {
   return state.livedoc && getElementById(id, state.livedoc.flows);
 }
 
-export function getMethod(apiId: LivedocID, methodId: LivedocID, state: State): ?ApiMethodDoc {
+export function getMethod(apiId: LivedocID, methodId: LivedocID, state: State): ?ApiOperationDoc {
   const api: ?ApiDoc = getApi(apiId, state);
   if (!api) {
     console.error("API not found for ID " + apiId);
     return;
   }
-  const matchingMethods = api.methods.filter(m => m.livedocId === methodId);
+  const matchingMethods = api.operations.filter(m => m.livedocId === methodId);
   if (matchingMethods.length === 0) {
     console.error("Method not found for ID " + apiId);
     return;

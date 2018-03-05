@@ -7,7 +7,7 @@ import org.example.shelf.model.Book;
 import org.example.shelf.repository.BookRepository;
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
-import org.hildan.livedoc.core.annotations.ApiMethod;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,21 +35,21 @@ public class BookController {
         this.bookRepository = bookRepository;
     }
 
-    @ApiMethod(id = DocumentationConstants.BOOK_FIND_ONE, summary = "Gets a book given the book ID")
+    @ApiOperation(id = DocumentationConstants.BOOK_FIND_ONE, summary = "Gets a book given the book ID")
     @ApiResponseBodyType
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Book findOne(@ApiPathParam(name = "id") @PathVariable Long id) {
         return bookRepository.findOne(id);
     }
 
-    @ApiMethod(id = DocumentationConstants.BOOK_FIND_ALL)
+    @ApiOperation(id = DocumentationConstants.BOOK_FIND_ALL)
     @RequestMapping(method = RequestMethod.GET)
     @ApiResponseBodyType
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
 
-    @ApiMethod(id = DocumentationConstants.BOOK_SAVE)
+    @ApiOperation(id = DocumentationConstants.BOOK_SAVE)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponseBodyType
@@ -61,7 +61,7 @@ public class BookController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @ApiMethod(id = DocumentationConstants.BOOK_DELETE)
+    @ApiOperation(id = DocumentationConstants.BOOK_DELETE)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void delete(@ApiPathParam(name = "id") @PathVariable Long id) {

@@ -1,29 +1,29 @@
 // @flow
 import * as React from 'react';
 import { Table } from 'reactstrap';
-import type { ApiMethodDoc } from '../../../../model/livedoc';
+import type { ApiOperationDoc } from '../../../../model/livedoc';
 import { StageBadge } from '../../../shared/content/StageBadge';
 import { AuthInfo } from './AuthInfo';
-import { ApiMethodHeadersTable } from './headers/ApiMethodHeadersTable';
-import { ApiMethodParamsTable } from './params/ApiMethodParamsTable';
+import { HeadersTable } from './headers/HeadersTable';
+import { ParamsTable } from './params/ParamsTable';
 import { TypeRefWithMime } from './TypeRefWithMime';
 
-export type ApiMethodDetailsProps = {
-  methodDoc: ApiMethodDoc,
+export type ApiOperationDetailsProps = {
+  operationDoc: ApiOperationDoc,
 }
 
-export const ApiMethodDetails = (props: ApiMethodDetailsProps) => {
-  const doc: ApiMethodDoc = props.methodDoc;
+export const ApiOperationDetails = (props: ApiOperationDetailsProps) => {
+  const doc: ApiOperationDoc = props.operationDoc;
 
   let rows = [];
   if (doc.pathParameters && doc.pathParameters.length > 0) {
-    rows.push(row('Path Params', <ApiMethodParamsTable params={doc.pathParameters}/>));
+    rows.push(row('Path Params', <ParamsTable params={doc.pathParameters}/>));
   }
   if (doc.queryParameters && doc.queryParameters.length > 0) {
-    rows.push(row('Query Params', <ApiMethodParamsTable params={doc.queryParameters}/>));
+    rows.push(row('Query Params', <ParamsTable params={doc.queryParameters}/>));
   }
   if (doc.headers && doc.headers.length > 0) {
-    rows.push(row('Headers', <ApiMethodHeadersTable headers={doc.headers}/>));
+    rows.push(row('Headers', <HeadersTable headers={doc.headers}/>));
   }
   if (doc.requestBody) {
     rows.push(row('Request body type', <TypeRefWithMime type={doc.requestBody.type} mimeTypes={doc.consumes}/>));
