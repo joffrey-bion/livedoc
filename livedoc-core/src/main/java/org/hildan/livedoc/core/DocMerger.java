@@ -24,20 +24,20 @@ public class DocMerger {
      * Overrides each property of the given target if the given source has a meaningful (non default) value for the
      * property.
      *
-     * @param overridingSource
+     * @param source
      *         the object to read the property values from
-     * @param baseTarget
+     * @param target
      *         the object to set properties on (if there is something meaningful to put in place of the previous value)
      * @param <T>
      *         the type of objects to manipulate
      */
-    public <T> void merge(T overridingSource, T baseTarget) {
-        assert overridingSource != null;
-        assert baseTarget != null;
-        List<Property> properties = propScanner.getProperties(overridingSource.getClass());
+    public <T> void merge(T source, T target) {
+        assert source != null;
+        assert target != null;
+        List<Property> properties = propScanner.getProperties(source.getClass());
         for (Property prop : properties) {
             Field field = (Field) prop.getAccessibleObject();
-            mergeField(field, overridingSource, baseTarget);
+            mergeField(field, source, target);
         }
     }
 

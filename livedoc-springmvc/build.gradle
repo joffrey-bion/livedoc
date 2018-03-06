@@ -1,7 +1,12 @@
 description = 'The Spring MVC helper of the Livedoc project'
 
+repositories {
+    jcenter()
+}
+
 dependencies {
     compile project(':livedoc-core')
+    compile 'com.github.therapi:therapi-runtime-javadoc:0.2.1'
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'org.springframework:spring-webmvc:4.3.14.RELEASE'
     testCompile 'org.springframework:spring-webmvc:4.3.14.RELEASE'

@@ -3,9 +3,9 @@ package org.hildan.livedoc.springmvc;
 import java.util.List;
 
 import org.hildan.livedoc.core.DocReader;
-import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.LivedocReaderBuilder;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.util.LivedocUtils;

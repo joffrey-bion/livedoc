@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.hildan.livedoc.core.model.types.LivedocType;
 
 public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {
+
     public final String livedocId = UUID.randomUUID().toString();
 
     private LivedocType type;

@@ -10,6 +10,7 @@ import org.hildan.livedoc.core.DocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.springmvc.scanner.utils.JavadocHelper;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -115,6 +116,7 @@ public class SpringDocReader implements DocReader {
         ApiOperationDoc apiOperationDoc = new ApiOperationDoc();
         apiOperationDoc.setPaths(MappingsResolver.getPathsMappings(method, controller));
         apiOperationDoc.setName(method.getName());
+        apiOperationDoc.setDescription(JavadocHelper.getJavadocDescription(method).orElse(""));
         apiOperationDoc.setVerbs(SpringVerbBuilder.buildVerb(method, controller));
         apiOperationDoc.setProduces(SpringMediaTypeBuilder.buildProduces(method, controller));
         apiOperationDoc.setConsumes(SpringMediaTypeBuilder.buildConsumes(method, controller));
