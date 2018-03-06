@@ -11,6 +11,8 @@ import org.hildan.livedoc.core.model.doc.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DocMerger {
 
@@ -60,7 +62,8 @@ public class DocMerger {
         }
     }
 
-    private static boolean shouldReplaceWithoutMerge(Field field, Object sourceValue, Object targetValue) {
+    private static boolean shouldReplaceWithoutMerge(Field field, @Nullable Object sourceValue,
+            @Nullable Object targetValue) {
         if (targetValue == null) {
             return true;
         }
@@ -76,24 +79,24 @@ public class DocMerger {
         return !sameClass(sourceValue, targetValue);
     }
 
-    private static boolean isEmptyContainer(Object nonNullContainer) {
-        if (nonNullContainer instanceof Collection) {
-            return ((Collection) nonNullContainer).isEmpty();
+    private static boolean isEmptyContainer(@NotNull Object container) {
+        if (container instanceof Collection) {
+            return ((Collection) container).isEmpty();
         }
-        if (nonNullContainer instanceof Map) {
-            return ((Map) nonNullContainer).isEmpty();
+        if (container instanceof Map) {
+            return ((Map) container).isEmpty();
         }
-        if (nonNullContainer.getClass().isArray()) {
-            return ((Object[]) nonNullContainer).length == 0;
+        if (container.getClass().isArray()) {
+            return ((Object[]) container).length == 0;
         }
         return false;
     }
 
-    private static boolean sameClass(Object sourceValue, Object targetValue) {
-        return sourceValue == null || targetValue == null || sourceValue.getClass().equals(targetValue.getClass());
+    private static boolean sameClass(@NotNull Object sourceValue, @NotNull Object targetValue) {
+        return sourceValue.getClass().equals(targetValue.getClass());
     }
 
-    private static boolean isDefaultValue(Field field, Object value) {
+    private static boolean isDefaultValue(Field field, @NotNull Object value) {
         SpecialDefaultStringValue specialDefaultStr = field.getAnnotation(SpecialDefaultStringValue.class);
         if (specialDefaultStr != null) {
             return specialDefaultStr.value().equals(value);
@@ -105,7 +108,7 @@ public class DocMerger {
         return isDefaultValueOfItsType(value);
     }
 
-    private static boolean isDefaultValueOfItsType(Object value) {
+    private static boolean isDefaultValueOfItsType(@NotNull Object value) {
         if (value instanceof CharSequence) {
             return ((CharSequence) value).length() == 0;
         }
