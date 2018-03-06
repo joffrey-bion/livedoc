@@ -8,8 +8,8 @@ import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
-import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.ApiAuthType;
+import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

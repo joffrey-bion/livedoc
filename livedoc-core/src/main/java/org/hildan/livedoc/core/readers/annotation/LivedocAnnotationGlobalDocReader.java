@@ -12,7 +12,6 @@ import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
-import org.hildan.livedoc.core.readers.annotation.ApiGlobalDocReader;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;

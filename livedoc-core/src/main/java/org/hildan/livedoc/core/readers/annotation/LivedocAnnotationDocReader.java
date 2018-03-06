@@ -7,8 +7,6 @@ import java.util.Optional;
 import org.hildan.livedoc.core.DocReader;
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiOperation;
-import org.hildan.livedoc.core.readers.annotation.ApiDocReader;
-import org.hildan.livedoc.core.readers.annotation.ApiOperationDocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;

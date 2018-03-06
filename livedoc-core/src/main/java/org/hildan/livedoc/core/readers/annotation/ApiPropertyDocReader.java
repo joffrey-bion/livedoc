@@ -9,7 +9,6 @@ import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.readers.annotation.ApiVersionDocReader;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
