@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 
 import com.github.therapi.runtimejavadoc.ClassJavadoc;

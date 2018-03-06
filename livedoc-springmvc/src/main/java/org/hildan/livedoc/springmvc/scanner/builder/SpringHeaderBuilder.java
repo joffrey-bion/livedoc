@@ -2,13 +2,10 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;

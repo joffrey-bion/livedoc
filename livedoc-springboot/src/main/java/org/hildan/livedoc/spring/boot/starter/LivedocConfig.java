@@ -16,7 +16,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 @ConditionalOnClass(JsonLivedocController.class)
 public class LivedocConfig {
 
-    final static String LIVEDOC_PROPERTIES_PREFIX = "livedoc";
+    public static final String LIVEDOC_PROPERTIES_PREFIX = "livedoc";
 
     @Autowired
     private LivedocProperties properties;

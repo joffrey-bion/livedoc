@@ -42,36 +42,36 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getRequired() {
-        return required;
-    }
-
-    public String[] getAllowedValues() {
-        return allowedValues;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public String getRequired() {
+        return required;
+    }
+
     public void setRequired(String required) {
         this.required = required;
     }
 
+    public String[] getAllowedValues() {
+        return allowedValues;
+    }
+
     public void setAllowedValues(String[] allowedValues) {
         this.allowedValues = allowedValues;
+    }
+
+    public String getFormat() {
+        return format;
     }
 
     public void setFormat(String format) {

@@ -54,14 +54,16 @@ public class SpringPathVariableBuilder {
      * it's empty in the apiParamDoc argument. Description, format and allowedValues are copied in any case.
      *
      * @param apiPathParam
+     *         the annotation to get the new data from
      * @param apiParamDoc
+     *         the {@link ApiParamDoc} object to update
      */
     private static void mergeApiPathParamDoc(ApiPathParam apiPathParam, ApiParamDoc apiParamDoc) {
         if (apiParamDoc.getName().trim().isEmpty()) {
             apiParamDoc.setName(apiPathParam.name());
         }
         if (apiParamDoc.getDescription().trim().isEmpty()) {
-            apiParamDoc.setDescription(apiPathParam.name());
+            apiParamDoc.setDescription(apiPathParam.description());
         }
         apiParamDoc.setAllowedValues(apiPathParam.allowedValues());
         apiParamDoc.setFormat(apiPathParam.format());

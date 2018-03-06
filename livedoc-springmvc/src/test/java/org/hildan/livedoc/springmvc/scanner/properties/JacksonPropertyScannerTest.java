@@ -27,15 +27,18 @@ public class JacksonPropertyScannerTest {
     private static class MyImpl implements MyInterface {}
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         scanner = new JacksonPropertyScanner(new ObjectMapper());
     }
 
+    @SuppressWarnings({"unused", "WeakerAccess"})
     @JsonIgnoreProperties({"ignoredOnClass", "ignoredOnClass2"})
     private static class MyDto {
 
         @JsonProperty("publicFieldRenamed")
         public String publicField;
+
+        public long ignoredOnClass;
 
         private int fieldWithGetter;
 
@@ -51,9 +54,7 @@ public class JacksonPropertyScannerTest {
 
         private long ignoredOnGetter;
 
-        private long ignoredOnClass;
-
-        public long ignoredOnClass2;
+        private long ignoredOnClass2;
 
         public int getFieldWithGetter() {
             return fieldWithGetter;
@@ -80,8 +81,8 @@ public class JacksonPropertyScannerTest {
             return ignoredOnGetter;
         }
 
-        public long getIgnoredOnClass() {
-            return ignoredOnClass;
+        public long getIgnoredOnClass2() {
+            return ignoredOnClass2;
         }
     }
 

@@ -23,19 +23,15 @@ public class SpringQueryParamBuilderTest {
 
         @RequestMapping(value = "/param-one", params = "param")
         public void paramOne() {
-
         }
 
         @RequestMapping(value = "/param-two", params = {"param", "param2"})
         public void paramTwo() {
-
         }
 
         @RequestMapping(value = "/param-three", params = {"param=value", "param2=value2"})
         public void paramThree() {
-
         }
-
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -71,14 +67,11 @@ public class SpringQueryParamBuilderTest {
 
         @RequestMapping("/param-one")
         public void paramOne() {
-
         }
 
         @RequestMapping(value = "/param-two", params = "param3")
         public void paramTwo() {
-
         }
-
     }
 
     @Test
@@ -103,20 +96,17 @@ public class SpringQueryParamBuilderTest {
 
         @RequestMapping("/param-one")
         public void paramOne(@RequestParam("name") String name) {
-
         }
 
         @RequestMapping("/param-two")
         public void paramTwo(@RequestParam(name = "otherName", defaultValue = "test", required = false) String name) {
-
         }
 
         @RequestMapping("/param-three")
         public void paramThree(@RequestParam String name) {
-
         }
-
     }
+
     @Test
     public void testQueryParam_springAnnotationOnParam() {
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController3.class);
@@ -163,15 +153,12 @@ public class SpringQueryParamBuilderTest {
 
         @RequestMapping("/")
         public void paramOne(@RequestParam @ApiQueryParam(name = "name") String name) {
-
         }
 
         @RequestMapping("/two")
         public void paramOne(@RequestParam @ApiQueryParam(name = "name") String name,
                 @RequestParam @ApiQueryParam(name = "test") String test) {
-
         }
-
     }
 
     @Test
@@ -198,11 +185,9 @@ public class SpringQueryParamBuilderTest {
 
         @RequestMapping("/")
         public void paramOne(@ModelAttribute("modelAttributePojo") ModelAttributePojo modelAttributePojo) {
-
         }
 
         public class ModelAttributePojo {}
-
     }
 
     @Test
@@ -218,8 +203,5 @@ public class SpringQueryParamBuilderTest {
                 Assert.assertEquals("ModelAttributePojo", param.getType().getOneLineText());
             }
         }
-
     }
-
-
 }

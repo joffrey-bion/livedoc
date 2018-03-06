@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -78,7 +79,6 @@ public class MappingsResolverTest {
     @RequestMapping("/child")
     private static class SpringControllerChild extends SpringController2 {
 
-
     }
 
     @Test
@@ -151,7 +151,10 @@ public class MappingsResolverTest {
         Assert.assertEquals("SpringController5", apiDoc.getName());
 
         List<String> expectedPaths = Arrays.asList("/path", "/path2", "/val1");
-        boolean allRight = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().containsAll(expectedPaths));
+        boolean allRight = apiDoc.getOperations()
+                                 .stream()
+                                 .map(ApiOperationDoc::getPaths)
+                                 .anyMatch(paths -> paths.containsAll(expectedPaths));
         assertTrue(allRight);
     }
 }

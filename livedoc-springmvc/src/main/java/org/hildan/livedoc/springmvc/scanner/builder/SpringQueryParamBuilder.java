@@ -22,16 +22,6 @@ public class SpringQueryParamBuilder {
 
     private static final DefaultParameterNameDiscoverer PARAM_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
-    /**
-     * From Spring's documentation: Supported at the type level as well as at the method level! When used at the type
-     * level, all method-level mappings inherit this parameter restriction
-     *
-     * @param method
-     * @param controller
-     * @param typeReferenceProvider
-     *
-     * @return
-     */
     public static Set<ApiParamDoc> buildQueryParams(Method method, Class<?> controller,
             TypeReferenceProvider typeReferenceProvider) {
         Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
@@ -103,10 +93,9 @@ public class SpringQueryParamBuilder {
         String name = getSpringParamName(method, requestParamAnn, i);
         String description = JavadocHelper.getJavadocDescription(method, name).orElse("");
         String required = String.valueOf(requestParamAnn.required());
-        String defaultvalue = requestParamAnn.defaultValue().equals(ValueConstants.DEFAULT_NONE) ?
-                "" :
-                requestParamAnn.defaultValue();
-        return new ApiParamDoc(name, description, paramType, required, new String[] {}, null, defaultvalue);
+        boolean hasDefault = requestParamAnn.defaultValue().equals(ValueConstants.DEFAULT_NONE);
+        String defaultvalue = hasDefault ? "" : requestParamAnn.defaultValue();
+        return new ApiParamDoc(name, description, paramType, required, new String[0], null, defaultvalue);
     }
 
     private static String getSpringParamName(Method method, RequestParam requestParam, int index) {
@@ -126,7 +115,9 @@ public class SpringQueryParamBuilder {
      * values of @RequestParam
      *
      * @param apiQueryParam
+     *         the annotation to get the new data from
      * @param apiParamDoc
+     *         the {@link ApiParamDoc} object to update
      */
     private static void mergeApiQueryParamDoc(ApiQueryParam apiQueryParam, ApiParamDoc apiParamDoc) {
         if (apiQueryParam != null) {

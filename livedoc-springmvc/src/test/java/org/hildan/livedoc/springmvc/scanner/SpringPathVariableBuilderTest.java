@@ -22,15 +22,12 @@ public class SpringPathVariableBuilderTest {
 
         @RequestMapping("/param-one/{id}/{string}")
         public void paramOne(@PathVariable Long id, @PathVariable("name") String name) {
-
         }
 
         @RequestMapping("/param-one/{id}/{string}/{test}")
         public void paramTwo(@ApiPathParam(name = "id", description = "my description") @PathVariable Long id,
                 @PathVariable("name") String name, @PathVariable @ApiPathParam Long test) {
-
         }
-
     }
 
     @Test
@@ -75,9 +72,7 @@ public class SpringPathVariableBuilderTest {
         @RequestMapping("/param-one/{id}/{string}")
         public void paramOne(@ApiPathParam(description = "description for id") @PathVariable Long id,
                 @PathVariable("name") String name) {
-
         }
-
     }
 
     @Test
@@ -98,7 +93,5 @@ public class SpringPathVariableBuilderTest {
                 Assert.assertEquals("String", name.getType().getOneLineText());
             }
         }
-
     }
-
 }
