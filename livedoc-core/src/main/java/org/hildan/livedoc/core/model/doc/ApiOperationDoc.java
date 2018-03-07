@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hildan.livedoc.core.DocMerger;
+import org.hildan.livedoc.core.Mergeable;
 import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
@@ -15,7 +17,8 @@ import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.types.LivedocType;
 
-public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperationDoc>, Secured, Staged, Versioned {
+public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperationDoc>, Secured, Staged, Versioned,
+        Mergeable<ApiOperationDoc> {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -27,15 +30,15 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
 
     private String description;
 
-    private Set<String> paths;
+    private List<String> paths;
 
     private Set<ApiVerb> verbs;
 
-    private Set<ApiParamDoc> pathParameters;
+    private List<ApiParamDoc> pathParameters;
 
-    private Set<ApiParamDoc> queryParameters;
+    private List<ApiParamDoc> queryParameters;
 
-    private Set<ApiHeaderDoc> headers;
+    private List<ApiHeaderDoc> headers;
 
     private ApiRequestBodyDoc requestBody;
 
@@ -61,13 +64,13 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.id = null;
         this.description = "";
         this.summary = "";
-        this.paths = new LinkedHashSet<>();
+        this.paths = new ArrayList<>();
         this.verbs = new LinkedHashSet<>();
         this.produces = new LinkedHashSet<>();
         this.consumes = new LinkedHashSet<>();
-        this.headers = new LinkedHashSet<>();
-        this.pathParameters = new LinkedHashSet<>();
-        this.queryParameters = new LinkedHashSet<>();
+        this.headers = new ArrayList<>();
+        this.pathParameters = new ArrayList<>();
+        this.queryParameters = new ArrayList<>();
         this.requestBody = null;
         this.responseBodyType = null;
         this.responseStatusCode = ApiOperation.DEFAULT_RESPONSE_STATUS;
@@ -109,11 +112,11 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.description = description;
     }
 
-    public Set<String> getPaths() {
+    public List<String> getPaths() {
         return paths;
     }
 
-    public void setPaths(Set<String> paths) {
+    public void setPaths(List<String> paths) {
         this.paths = paths;
     }
 
@@ -125,11 +128,11 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.verbs = verbs;
     }
 
-    public Set<ApiHeaderDoc> getHeaders() {
+    public List<ApiHeaderDoc> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(Set<ApiHeaderDoc> headers) {
+    public void setHeaders(List<ApiHeaderDoc> headers) {
         this.headers = headers;
     }
 
@@ -149,19 +152,19 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.consumes = consumes;
     }
 
-    public Set<ApiParamDoc> getPathParameters() {
+    public List<ApiParamDoc> getPathParameters() {
         return pathParameters;
     }
 
-    public void setPathParameters(Set<ApiParamDoc> pathParameters) {
+    public void setPathParameters(List<ApiParamDoc> pathParameters) {
         this.pathParameters = pathParameters;
     }
 
-    public Set<ApiParamDoc> getQueryParameters() {
+    public List<ApiParamDoc> getQueryParameters() {
         return queryParameters;
     }
 
-    public void setQueryParameters(Set<ApiParamDoc> queryParameters) {
+    public void setQueryParameters(List<ApiParamDoc> queryParameters) {
         this.queryParameters = queryParameters;
     }
 
@@ -228,6 +231,21 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     }
 
     @Override
+    public void merge(ApiOperationDoc source, DocMerger merger) {
+        List<ApiParamDoc> pathParams = merger.mergeList(source.pathParameters, pathParameters, ApiParamDoc::getName);
+        List<ApiParamDoc> queryParams = merger.mergeList(source.queryParameters, queryParameters, ApiParamDoc::getName);
+        List<ApiHeaderDoc> headers = merger.mergeList(source.headers, this.headers, ApiHeaderDoc::getName);
+        List<ApiErrorDoc> errors = merger.mergeList(source.apiErrors, this.apiErrors, ApiErrorDoc::getCode);
+
+        merger.mergeProperties(source, this);
+
+        this.pathParameters = pathParams;
+        this.queryParameters = queryParams;
+        this.headers = headers;
+        this.apiErrors = errors;
+    }
+
+    @Override
     public int compareTo(ApiOperationDoc o) {
         int i;
 
@@ -264,5 +282,4 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
 
         return i;
     }
-
 }

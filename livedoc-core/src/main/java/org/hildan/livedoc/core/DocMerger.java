@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.SpecialDefaultIntValue;
 import org.hildan.livedoc.core.model.doc.SpecialDefaultStringValue;
@@ -33,9 +35,19 @@ public class DocMerger {
      * @param <T>
      *         the type of objects to manipulate
      */
-    public <T> void merge(T source, T target) {
-        assert source != null;
-        assert target != null;
+    @NotNull
+    public <T> T merge(@NotNull T source, @NotNull T target) {
+        if (target instanceof Mergeable) {
+            @SuppressWarnings("unchecked")
+            Mergeable<T> mergeableTarget = (Mergeable<T>) target;
+            mergeableTarget.merge(source, this);
+            return target;
+        }
+        mergeProperties(source, target);
+        return target;
+    }
+
+    public <T> void mergeProperties(@NotNull T source, @NotNull T target) {
         List<Property> properties = propScanner.getProperties(source.getClass());
         for (Property prop : properties) {
             Field field = (Field) prop.getAccessibleObject();
@@ -119,6 +131,29 @@ public class DocMerger {
             return Array.getLength(value) == 0;
         }
         return false;
+    }
+
+    public <T, K> List<T> mergeList(List<T> sources, List<T> targets, Function<T, K> keyExtractor) {
+        List<T> overridden = targets;
+        for (T source : sources) {
+            overridden = mergeElementById(overridden, source, keyExtractor);
+        }
+        return targets;
+    }
+
+    private <T, K> List<T> mergeElementById(List<T> targets, T source, Function<T, K> keyExtractor) {
+        return targets.stream().map(t -> overrideIfMatch(source, t, keyExtractor)).collect(Collectors.toList());
+    }
+
+    private <T, K> T overrideIfMatch(T source, T target, Function<T, K> idExtractor) {
+        if (match(source, target, idExtractor)) {
+            return merge(source, target);
+        }
+        return target;
+    }
+
+    private static <T, K> boolean match(T obj1, T obj2, Function<T, K> idExtractor) {
+        return idExtractor.apply(obj1).equals(idExtractor.apply(obj2));
     }
 
     public static class FieldCopyException extends RuntimeException {

@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
@@ -23,6 +22,7 @@ import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.groups.Groupable;
+import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
@@ -218,18 +218,11 @@ public class LivedocReader {
     }
 
     private <D> Optional<D> readFromAllReadersAndMerge(Function<DocReader, Optional<D>> buildDoc) {
-        D doc = null;
-        for (DocReader reader : docReaders) {
-            Optional<D> newDoc = buildDoc.apply(reader);
-            if (newDoc.isPresent()) {
-                if (doc == null) {
-                    doc = newDoc.get();
-                } else {
-                    docMerger.merge(newDoc.get(), doc);
-                }
-            }
-        }
-        return Optional.ofNullable(doc);
+        return docReaders.stream()
+                         .map(buildDoc)
+                         .filter(Optional::isPresent)
+                         .map(Optional::get)
+                         .reduce(docMerger::merge);
     }
 
     private static <T extends Groupable & Comparable<T>> List<Group<T>> group(Collection<T> elements) {
