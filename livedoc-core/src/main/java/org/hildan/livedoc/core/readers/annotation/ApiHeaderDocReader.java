@@ -1,6 +1,7 @@
 package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -13,7 +14,7 @@ import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 
 public class ApiHeaderDocReader {
 
-    public static Set<ApiHeaderDoc> read(Method method) {
+    public static List<ApiHeaderDoc> read(Method method) {
         Set<ApiHeaderDoc> docs = new LinkedHashSet<>();
 
         ApiHeaders typeAnnotation = method.getDeclaringClass().getAnnotation(ApiHeaders.class);
@@ -26,7 +27,7 @@ public class ApiHeaderDocReader {
             docs.addAll(extractHeaders(methodAnnotation));
         }
 
-        return docs;
+        return new ArrayList<>(docs);
     }
 
     private static Set<ApiHeaderDoc> extractHeaders(ApiHeaders annotation) {

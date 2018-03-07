@@ -33,7 +33,7 @@ public class ApiOperationDocReader {
         ApiOperation methodAnnotation = method.getAnnotation(ApiOperation.class);
         if (methodAnnotation != null) {
             apiOperationDoc.setId(methodAnnotation.id());
-            apiOperationDoc.setPaths(new LinkedHashSet<>(Arrays.asList(methodAnnotation.path())));
+            apiOperationDoc.setPaths(Arrays.asList(methodAnnotation.path()));
             apiOperationDoc.setVerbs(new LinkedHashSet<>(Arrays.asList(methodAnnotation.verbs())));
             apiOperationDoc.setSummary(methodAnnotation.summary());
             apiOperationDoc.setDescription(methodAnnotation.description());

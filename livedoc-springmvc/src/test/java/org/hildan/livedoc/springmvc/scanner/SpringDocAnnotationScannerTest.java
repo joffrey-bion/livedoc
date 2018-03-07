@@ -1,23 +1,22 @@
 package org.hildan.livedoc.springmvc.scanner;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
-import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
-import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
-import org.hildan.livedoc.core.annotations.errors.ApiError;
-import org.hildan.livedoc.core.annotations.errors.ApiErrors;
 import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
+import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
+import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
 import org.hildan.livedoc.core.annotations.ApiVersion;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
+import org.hildan.livedoc.core.annotations.errors.ApiError;
+import org.hildan.livedoc.core.annotations.errors.ApiErrors;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
+import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -75,32 +74,31 @@ public class SpringDocAnnotationScannerTest {
                 Assert.assertEquals("application/json", apiOperationDoc.getConsumes().iterator().next());
                 Assert.assertEquals("201 - Created", apiOperationDoc.getResponseStatusCode());
 
-                Set<ApiHeaderDoc> headers = apiOperationDoc.getHeaders();
-                ApiHeaderDoc header = headers.iterator().next();
+                List<ApiHeaderDoc> headers = apiOperationDoc.getHeaders();
+                ApiHeaderDoc header = headers.get(0);
                 Assert.assertEquals("header", header.getName());
                 Assert.assertEquals("test", header.getValues().get(0));
 
-                Set<ApiParamDoc> queryparameters = apiOperationDoc.getQueryParameters();
-                Assert.assertEquals(3, queryparameters.size());
-                Iterator<ApiParamDoc> qpIterator = queryparameters.iterator();
-                ApiParamDoc apiParamDoc = qpIterator.next();
+                List<ApiParamDoc> queryParameters = apiOperationDoc.getQueryParameters();
+                Assert.assertEquals(3, queryParameters.size());
+
+                ApiParamDoc apiParamDoc = queryParameters.get(0);
                 Assert.assertEquals("delete", apiParamDoc.getName());
                 Assert.assertEquals("true", apiParamDoc.getRequired());
-                Assert.assertEquals(null, apiParamDoc.getDefaultValue());
+                Assert.assertNull(apiParamDoc.getDefaultValue());
                 Assert.assertEquals(0, apiParamDoc.getAllowedValues().length);
-                apiParamDoc = qpIterator.next();
+
+                apiParamDoc = queryParameters.get(1);
                 Assert.assertEquals("id", apiParamDoc.getName());
                 Assert.assertEquals("true", apiParamDoc.getRequired());
                 Assert.assertTrue(apiParamDoc.getDefaultValue().isEmpty());
-                apiParamDoc = qpIterator.next();
+
+                apiParamDoc = queryParameters.get(2);
                 Assert.assertEquals("myquery", apiParamDoc.getName());
                 Assert.assertEquals("true", apiParamDoc.getRequired());
                 Assert.assertEquals("", apiParamDoc.getDefaultValue());
 
-                Set<ApiParamDoc> pathparameters = apiOperationDoc.getPathParameters();
-                Iterator<ApiParamDoc> ppIterator = pathparameters.iterator();
-                ppIterator.next();
-                apiParamDoc = apiOperationDoc.getPathParameters().iterator().next();
+                apiParamDoc = apiOperationDoc.getPathParameters().get(0);
                 Assert.assertEquals("test", apiParamDoc.getName());
             }
         }

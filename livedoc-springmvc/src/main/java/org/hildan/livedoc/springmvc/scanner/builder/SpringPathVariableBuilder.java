@@ -2,8 +2,8 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
@@ -17,8 +17,8 @@ public class SpringPathVariableBuilder {
 
     private static final DefaultParameterNameDiscoverer PARAM_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
-    public static Set<ApiParamDoc> buildPathVariable(Method method, TypeReferenceProvider typeReferenceProvider) {
-        Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
+    public static List<ApiParamDoc> buildPathVariable(Method method, TypeReferenceProvider typeReferenceProvider) {
+        List<ApiParamDoc> apiParamDocs = new ArrayList<>();
 
         Parameter[] parameters = method.getParameters();
         for (int i = 0; i < parameters.length; i++) {

@@ -5,9 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
@@ -22,24 +20,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class MappingsResolver {
 
-    public static Set<String> getPathsMappings(Method method, Class<?> controller) {
+    public static List<String> getPathsMappings(Method method, Class<?> controller) {
         // FIXME only call one of the 3 specific methods
-        Set<String> paths = new HashSet<>();
+        List<String> paths = new ArrayList<>();
         paths.addAll(getRequestMappings(method, controller));
         paths.addAll(getMessageMappings(method, controller));
         paths.addAll(getSubscribeMappings(method, controller));
         return paths;
     }
 
-    public static Set<String> getRequestMappings(Method method, Class<?> controller) {
+    public static List<String> getRequestMappings(Method method, Class<?> controller) {
         return getMappingsFromGroup(method, controller, requestPathExtractorGroup());
     }
 
-    public static Set<String> getMessageMappings(Method method, Class<?> controller) {
+    public static List<String> getMessageMappings(Method method, Class<?> controller) {
         return getMappingsFromGroup(method, controller, messagePathExtractorGroup());
     }
 
-    public static Set<String> getSubscribeMappings(Method method, Class<?> controller) {
+    public static List<String> getSubscribeMappings(Method method, Class<?> controller) {
         return getMappingsFromGroup(method, controller, subscribePathExtractorGroup());
     }
 
@@ -76,18 +74,18 @@ public class MappingsResolver {
         return extractors;
     }
 
-    private static Set<String> getMappingsFromGroup(Method method, Class<?> controller,
+    private static List<String> getMappingsFromGroup(Method method, Class<?> controller,
             List<PathExtractor<?>> extractors) {
-        Set<String> prefixes = getAllMappings(controller, extractors);
-        Set<String> suffixes = getAllMappings(method, extractors);
+        List<String> prefixes = getAllMappings(controller, extractors);
+        List<String> suffixes = getAllMappings(method, extractors);
         return PathUtils.joinAll(prefixes, suffixes);
     }
 
-    private static Set<String> getAllMappings(AnnotatedElement element, List<PathExtractor<?>> extractors) {
+    private static List<String> getAllMappings(AnnotatedElement element, List<PathExtractor<?>> extractors) {
         return extractors.stream()
                          .map(e -> e.extractPaths(element))
                          .flatMap(Collection::stream)
-                         .collect(Collectors.toSet());
+                         .collect(Collectors.toList());
     }
 
 }

@@ -2,9 +2,9 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
@@ -22,9 +22,9 @@ public class SpringQueryParamBuilder {
 
     private static final DefaultParameterNameDiscoverer PARAM_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
-    public static Set<ApiParamDoc> buildQueryParams(Method method, Class<?> controller,
+    public static List<ApiParamDoc> buildQueryParams(Method method, Class<?> controller,
             TypeReferenceProvider typeReferenceProvider) {
-        Set<ApiParamDoc> apiParamDocs = new LinkedHashSet<>();
+        List<ApiParamDoc> apiParamDocs = new ArrayList<>();
 
         RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
         if (requestMapping != null) {
@@ -63,11 +63,11 @@ public class SpringQueryParamBuilder {
         return apiParamDocs;
     }
 
-    private static Set<ApiParamDoc> getParamDocsFromAnnotation(Method method, RequestMapping requestMapping,
+    private static List<ApiParamDoc> getParamDocsFromAnnotation(Method method, RequestMapping requestMapping,
             TypeReferenceProvider typeReferenceProvider) {
         return Arrays.stream(requestMapping.params())
                      .map(param -> createParamFromSpringDefinition(method, param, typeReferenceProvider))
-                     .collect(Collectors.toCollection(LinkedHashSet::new));
+                     .collect(Collectors.toList());
     }
 
     private static ApiParamDoc createParamFromSpringDefinition(Method method, String paramStr,

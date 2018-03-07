@@ -1,5 +1,7 @@
 package org.hildan.livedoc.core.model;
 
+import java.util.Collections;
+
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.junit.Assert;
@@ -12,10 +14,10 @@ public class ApiOperationDocTest {
     @Test
     public void testNotEqual() {
         ApiOperationDoc first = new ApiOperationDoc();
-        first.setPaths(Sets.newHashSet("/first"));
+        first.setPaths(Collections.singletonList("/first"));
         first.setVerbs(Sets.newHashSet(ApiVerb.GET));
         ApiOperationDoc second = new ApiOperationDoc();
-        second.setPaths(Sets.newHashSet("/second"));
+        second.setPaths(Collections.singletonList("/second"));
         second.setVerbs(Sets.newHashSet(ApiVerb.GET));
         Assert.assertNotEquals(0, first.compareTo(second));
     }
@@ -23,10 +25,10 @@ public class ApiOperationDocTest {
     @Test
     public void testEqual() {
         ApiOperationDoc first = new ApiOperationDoc();
-        first.setPaths(Sets.newHashSet("/test"));
+        first.setPaths(Collections.singletonList("/test"));
         first.setVerbs(Sets.newHashSet(ApiVerb.GET));
         ApiOperationDoc second = new ApiOperationDoc();
-        second.setPaths(Sets.newHashSet("/test"));
+        second.setPaths(Collections.singletonList("/test"));
         second.setVerbs(Sets.newHashSet(ApiVerb.GET));
         Assert.assertEquals(0, first.compareTo(second));
     }
@@ -34,14 +36,14 @@ public class ApiOperationDocTest {
     @Test
     public void testNotEqualMultipleVerbs() {
         ApiOperationDoc first = new ApiOperationDoc();
-        first.setPaths(Sets.newHashSet("/first"));
+        first.setPaths(Collections.singletonList("/first"));
         first.setVerbs(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
         ApiOperationDoc second = new ApiOperationDoc();
-        second.setPaths(Sets.newHashSet("/second"));
+        second.setPaths(Collections.singletonList("/second"));
         second.setVerbs(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
         Assert.assertNotEquals(0, first.compareTo(second));
 
-        second.setPaths(Sets.newHashSet("/first"));
+        second.setPaths(Collections.singletonList("/first"));
         second.setVerbs(Sets.newHashSet(ApiVerb.PUT, ApiVerb.POST));
         Assert.assertNotEquals(0, first.compareTo(second));
     }
@@ -49,10 +51,10 @@ public class ApiOperationDocTest {
     @Test
     public void testEqualMultipleVerbs() {
         ApiOperationDoc first = new ApiOperationDoc();
-        first.setPaths(Sets.newHashSet("/test"));
+        first.setPaths(Collections.singletonList("/test"));
         first.setVerbs(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
         ApiOperationDoc second = new ApiOperationDoc();
-        second.setPaths(Sets.newHashSet("/test"));
+        second.setPaths(Collections.singletonList("/test"));
         second.setVerbs(Sets.newHashSet(ApiVerb.GET, ApiVerb.POST));
         Assert.assertEquals(0, first.compareTo(second));
 

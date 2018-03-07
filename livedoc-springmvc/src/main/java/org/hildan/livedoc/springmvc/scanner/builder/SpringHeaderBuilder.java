@@ -2,8 +2,9 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
@@ -23,8 +24,8 @@ public class SpringHeaderBuilder {
      *
      * @return the {@link ApiHeaderDoc}s for the given method
      */
-    public static Set<ApiHeaderDoc> buildHeaders(Method method, Class<?> controller) {
-        Set<ApiHeaderDoc> headers = new LinkedHashSet<>();
+    public static List<ApiHeaderDoc> buildHeaders(Method method, Class<?> controller) {
+        List<ApiHeaderDoc> headers = new ArrayList<>();
 
         RequestMapping typeAnnotation = controller.getAnnotation(RequestMapping.class);
         if (typeAnnotation != null) {
@@ -40,8 +41,8 @@ public class SpringHeaderBuilder {
         return headers;
     }
 
-    private static Set<ApiHeaderDoc> extractHeaders(RequestMapping annotation) {
-        Set<ApiHeaderDoc> headers = new HashSet<>();
+    private static List<ApiHeaderDoc> extractHeaders(RequestMapping annotation) {
+        List<ApiHeaderDoc> headers = new ArrayList<>();
         for (String header : annotation.headers()) {
             headers.add(createHeaderDoc(header));
         }

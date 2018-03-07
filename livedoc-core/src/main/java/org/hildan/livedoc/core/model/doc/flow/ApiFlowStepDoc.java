@@ -1,12 +1,11 @@
 package org.hildan.livedoc.core.model.doc.flow;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-
-import com.google.common.collect.Sets;
 
 public class ApiFlowStepDoc {
 
@@ -34,7 +33,7 @@ public class ApiFlowStepDoc {
         if (apiOperationDoc == null) {
             apiOperationDoc = new ApiOperationDoc();
             String missingIdMsg = String.format(ERROR_MISSING_METHOD_ID, annotation.apiOperationId());
-            apiOperationDoc.setPaths(Sets.newHashSet(missingIdMsg));
+            apiOperationDoc.setPaths(Collections.singletonList(missingIdMsg));
             apiOperationDoc.addJsondocError(missingIdMsg);
             apiOperationDoc.addJsondocHint(HINT_MISSING_METHOD_ID);
         }

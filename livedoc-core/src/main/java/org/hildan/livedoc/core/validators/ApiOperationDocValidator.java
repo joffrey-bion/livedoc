@@ -27,11 +27,11 @@ public class ApiOperationDocValidator {
 
     private static final String HINT_MISSING_OPERATION_DESCRIPTION = "Add description to ApiOperation";
 
-    private static final String HINT_MISSING_OPERATION_BODY_OBJECT = "Add annotation ApiRequestBodyType to document "
-            + "the expected body of the request";
+    private static final String HINT_MISSING_OPERATION_BODY_OBJECT =
+            "Add annotation ApiRequestBodyType to document " + "the expected body of the request";
 
-    private static final String HINT_MISSING_OPERATION_RESPONSE_OBJECT = "Add annotation ApiResponseBodyType to "
-            + "document the returned object";
+    private static final String HINT_MISSING_OPERATION_RESPONSE_OBJECT =
+            "Add annotation ApiResponseBodyType to " + "document the returned object";
 
     /**
      * This checks that some of the properties are correctly set to produce a meaningful documentation and a working
@@ -47,7 +47,7 @@ public class ApiOperationDocValidator {
     public static void validate(ApiOperationDoc apiOperationDoc) {
 
         if (apiOperationDoc.getPaths().isEmpty()) {
-            apiOperationDoc.setPaths(Collections.singleton(ERROR_MISSING_OPERATION_PATH));
+            apiOperationDoc.setPaths(Collections.singletonList(ERROR_MISSING_OPERATION_PATH));
             apiOperationDoc.addJsondocError(ERROR_MISSING_OPERATION_PATH);
         }
 

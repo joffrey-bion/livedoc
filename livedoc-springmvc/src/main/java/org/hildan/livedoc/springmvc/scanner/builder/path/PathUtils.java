@@ -1,12 +1,13 @@
 package org.hildan.livedoc.springmvc.scanner.builder.path;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 class PathUtils {
 
-    static Set<String> joinAll(Set<String> pathPrefixes, Set<String> pathsSuffixes) {
-        Set<String> mappings = new HashSet<>();
+    static List<String> joinAll(Collection<String> pathPrefixes, Collection<String> pathsSuffixes) {
+        List<String> mappings = new ArrayList<>();
         for (String controllerPath : pathPrefixes) {
             for (String methodPath : pathsSuffixes) {
                 mappings.add(join(controllerPath, methodPath));

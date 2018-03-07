@@ -24,7 +24,7 @@ public class JavadocHelper {
 
     @NotNull
     public static Optional<String> getJavadocDescription(@NotNull Method method) {
-        return getMethodJavadoc(method).map(jd -> COMMENT_FORMATTER.format(jd.getComment()));
+        return getMethodJavadoc(method).map(jd -> COMMENT_FORMATTER.format(jd.getComment()).trim());
     }
 
     @NotNull
@@ -55,7 +55,7 @@ public class JavadocHelper {
 
     @NotNull
     public static Optional<String> getJavadocDescription(@NotNull Method method, @NotNull String paramName) {
-        return getParamDoc(method, paramName).map(jd -> COMMENT_FORMATTER.format(jd.getComment()));
+        return getParamDoc(method, paramName).map(jd -> COMMENT_FORMATTER.format(jd.getComment()).trim());
     }
 
     @NotNull

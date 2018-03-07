@@ -2,7 +2,9 @@ package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiParams;
@@ -13,7 +15,7 @@ import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 
 public class ApiQueryParamDocReader {
 
-    public static Set<ApiParamDoc> read(Method method, TypeReferenceProvider typeReferenceProvider) {
+    public static List<ApiParamDoc> read(Method method, TypeReferenceProvider typeReferenceProvider) {
         Set<ApiParamDoc> docs = new LinkedHashSet<>();
 
         ApiParams apiParams = method.getAnnotation(ApiParams.class);
@@ -37,7 +39,7 @@ public class ApiQueryParamDocReader {
             }
         }
 
-        return docs;
+        return new ArrayList<>(docs);
     }
 
     private static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType) {
