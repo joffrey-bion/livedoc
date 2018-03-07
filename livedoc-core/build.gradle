@@ -1,31 +1,15 @@
 description = 'The core implementation of the Livedoc project'
 
-apply plugin: 'checkstyle'
-
-repositories {
-    jcenter()
-}
-
-configurations {
-    checkstyleConfig
-}
+apply plugin: 'java-library'
 
 dependencies {
-    compile project(':livedoc-annotations')
-    compile 'org.reflections:reflections:0.9.10'
-    compile 'org.slf4j:slf4j-api:1.7.10'
-    compile 'org.jetbrains:annotations:13.0'
-    compile 'com.github.therapi:therapi-runtime-javadoc:0.2.1'
+    api project(':livedoc-annotations')
+    implementation 'org.reflections:reflections:0.9.10'
+    implementation 'org.slf4j:slf4j-api:1.7.10'
+    implementation 'org.jetbrains:annotations:13.0'
     compileOnly 'org.hibernate:hibernate-validator:5.1.3.Final'
-    testCompile 'org.hibernate:hibernate-validator:5.1.3.Final'
-    testCompile 'org.slf4j:slf4j-log4j12:1.7.10'
-    testCompile 'log4j:log4j:1.2.17'
-    testCompile 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
-    checkstyleConfig 'org.hildan.checkstyle:checkstyle-config:2.1.0'
-}
 
-checkstyle {
-    maxWarnings = 0
-    toolVersion = '8.2'
-    config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, "checkstyle.xml")
+    testImplementation 'junit:junit:4.11'
+    testImplementation 'org.hibernate:hibernate-validator:5.1.3.Final'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
 }

@@ -53,18 +53,27 @@ def pomConfig = {
 apply from: 'gradle/scripts/release.gradle'
 
 subprojects {
-    apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
-
-    sourceCompatibility = 1.8
+    apply plugin: 'checkstyle'
 
     repositories {
         mavenCentral()
+        jcenter()
+    }
+
+    configurations {
+        checkstyleConfig
     }
 
     dependencies {
-        testCompile 'junit:junit:4.11'
+        checkstyleConfig 'org.hildan.checkstyle:checkstyle-config:2.1.0'
+    }
+
+    checkstyle {
+        maxWarnings = 0
+        toolVersion = '8.8'
+        config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, "checkstyle.xml")
     }
 
     tasks.withType(JavaCompile) {

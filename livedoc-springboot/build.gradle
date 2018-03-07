@@ -1,14 +1,9 @@
 description = 'The Spring Boot helper of the Livedoc project'
 
-repositories {
-    jcenter()
-}
+apply plugin: 'java-library'
 
 dependencies {
-    compile project(':livedoc-springmvc')
-    compile 'com.github.therapi:therapi-runtime-javadoc:0.2.1'
+    api project(':livedoc-springmvc')
     compileOnly 'org.springframework.boot:spring-boot-starter-web:1.5.7.RELEASE'
-    testCompile 'org.springframework.boot:spring-boot-starter-web:1.5.7.RELEASE'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor:1.5.7.RELEASE'
-    testCompile 'org.springframework.boot:spring-boot-configuration-processor:1.5.7.RELEASE'
 }

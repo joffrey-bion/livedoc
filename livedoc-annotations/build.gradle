@@ -1,22 +1,3 @@
 description = 'The annotations of the Livedoc project'
 
-apply plugin: 'checkstyle'
-
-repositories {
-    jcenter()
-}
-
-configurations {
-    checkstyleConfig
-}
-
-dependencies {
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.0'
-    checkstyleConfig 'org.hildan.checkstyle:checkstyle-config:2.1.0'
-}
-
-checkstyle {
-    maxWarnings = 0
-    toolVersion = '8.2'
-    config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, "checkstyle.xml")
-}
+apply plugin: 'java-library'
