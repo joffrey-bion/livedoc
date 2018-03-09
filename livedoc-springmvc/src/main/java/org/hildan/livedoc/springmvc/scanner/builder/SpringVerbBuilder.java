@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.ApiVerb;
@@ -32,7 +31,7 @@ public class SpringVerbBuilder {
      *
      * @return the {@link ApiVerb}s (HTTP methods) of the given API method.
      */
-    public static Set<ApiVerb> buildVerb(Method method, Class<?> controller) {
+    public static List<ApiVerb> buildVerb(Method method, Class<?> controller) {
         List<RequestMethod> methods = new ArrayList<>(DEFAULT_METHODS);
 
         List<RequestMethod> methodLevelMethods = getMethods(method);
@@ -45,7 +44,7 @@ public class SpringVerbBuilder {
             methods.retainAll(typeLevelMethods);
         }
 
-        return methods.stream().map(SpringVerbBuilder::toApiVerb).collect(Collectors.toSet());
+        return methods.stream().map(SpringVerbBuilder::toApiVerb).distinct().sorted().collect(Collectors.toList());
     }
 
     private static List<RequestMethod> getMethods(AnnotatedElement element) {

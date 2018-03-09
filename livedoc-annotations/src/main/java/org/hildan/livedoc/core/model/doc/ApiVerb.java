@@ -3,8 +3,8 @@ package org.hildan.livedoc.core.model.doc;
 public enum ApiVerb {
     GET,
     POST,
-    PATCH,
     PUT,
+    PATCH,
     DELETE,
     HEAD,
     OPTIONS,

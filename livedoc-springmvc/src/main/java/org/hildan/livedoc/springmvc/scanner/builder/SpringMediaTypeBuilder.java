@@ -4,8 +4,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.http.MediaType;
@@ -24,7 +23,7 @@ public class SpringMediaTypeBuilder {
      *
      * @return the media types produced by the given method
      */
-    public static Set<String> buildProduces(Method method, Class<?> controller) {
+    public static List<String> buildProduces(Method method, Class<?> controller) {
         return readMediaType(method, controller, RequestMapping::produces);
     }
 
@@ -39,25 +38,25 @@ public class SpringMediaTypeBuilder {
      *
      * @return the media types consumed by the given method
      */
-    public static Set<String> buildConsumes(Method method, Class<?> controller) {
+    public static List<String> buildConsumes(Method method, Class<?> controller) {
         return readMediaType(method, controller, RequestMapping::consumes);
     }
 
-    private static Set<String> readMediaType(Method method, Class<?> controller,
+    private static List<String> readMediaType(Method method, Class<?> controller,
             Function<RequestMapping, String[]> extractor) {
 
         // by definition, method-level values have precedence
         String[] methodLevelValues = extractFrom(method, extractor);
         if (methodLevelValues.length > 0) {
-            return new LinkedHashSet<>(Arrays.asList(methodLevelValues));
+            return Arrays.asList(methodLevelValues);
         }
 
         String[] typeLevelValues = extractFrom(controller, extractor);
         if (typeLevelValues.length > 0) {
-            return new LinkedHashSet<>(Arrays.asList(typeLevelValues));
+            return Arrays.asList(typeLevelValues);
         }
 
-        return Collections.singleton(MediaType.APPLICATION_JSON_VALUE);
+        return Collections.singletonList(MediaType.APPLICATION_JSON_VALUE);
     }
 
     private static String[] extractFrom(AnnotatedElement element, Function<RequestMapping, String[]> extractor) {
