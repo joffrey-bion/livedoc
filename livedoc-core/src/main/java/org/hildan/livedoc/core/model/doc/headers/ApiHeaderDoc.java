@@ -4,19 +4,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class ApiHeaderDoc {
+import org.hildan.livedoc.core.merger.DocMerger;
+import org.hildan.livedoc.core.merger.Mergeable;
+
+public class ApiHeaderDoc implements Mergeable<ApiHeaderDoc> {
 
     public final String livedocId = UUID.randomUUID().toString();
 
-    private final String name;
+    private String name;
 
-    private final String description;
+    private String description;
 
-    private final HeaderFilterType type;
+    private HeaderFilterType type;
 
-    private final List<String> values;
+    private List<String> values;
 
-    private final String defaultValue;
+    private String defaultValue;
+
+    private ApiHeaderDoc() {
+    }
 
     private ApiHeaderDoc(String name, String description, HeaderFilterType type, List<String> values,
             String defaultValue) {
@@ -104,4 +110,10 @@ public class ApiHeaderDoc {
         return true;
     }
 
+    @Override
+    public ApiHeaderDoc merge(ApiHeaderDoc override, DocMerger merger) {
+        ApiHeaderDoc merged = merger.mergeProperties(this, override, new ApiHeaderDoc());
+        merged.values = merger.mergeList(this.values, override.values, s -> s);
+        return merged;
+    }
 }

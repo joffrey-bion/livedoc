@@ -25,33 +25,33 @@ import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 
 public class RecursiveTemplateProvider implements TemplateProvider {
 
-    private static final Map<Class<?>, Object> simpleDefaultValues = new HashMap<>();
+    private static final Map<Class<?>, Object> defaultExamples = new HashMap<>();
 
-    private static final Map<Class<?>, Object> defaultValuesOfParentTypes = new HashMap<>();
+    private static final Map<Class<?>, Object> parentTypesExamples = new HashMap<>();
 
     static {
-        simpleDefaultValues.put(boolean.class, true);
-        simpleDefaultValues.put(Boolean.class, Boolean.TRUE);
-        simpleDefaultValues.put(byte.class, 0);
-        simpleDefaultValues.put(Byte.class, 0);
-        simpleDefaultValues.put(short.class, 0);
-        simpleDefaultValues.put(Short.class, 0);
-        simpleDefaultValues.put(int.class, 0);
-        simpleDefaultValues.put(Integer.class, 0);
-        simpleDefaultValues.put(long.class, 0L);
-        simpleDefaultValues.put(Long.class, 0L);
-        simpleDefaultValues.put(float.class, 0F);
-        simpleDefaultValues.put(Float.class, 0F);
-        simpleDefaultValues.put(double.class, 0d);
-        simpleDefaultValues.put(Double.class, 0d);
-        simpleDefaultValues.put(char.class, ' ');
-        simpleDefaultValues.put(Character.class, ' ');
-        simpleDefaultValues.put(String.class, "");
-        simpleDefaultValues.put(Date.class, new Date());
+        defaultExamples.put(boolean.class, true);
+        defaultExamples.put(Boolean.class, Boolean.TRUE);
+        defaultExamples.put(byte.class, 0);
+        defaultExamples.put(Byte.class, 0);
+        defaultExamples.put(short.class, 0);
+        defaultExamples.put(Short.class, 0);
+        defaultExamples.put(int.class, 0);
+        defaultExamples.put(Integer.class, 0);
+        defaultExamples.put(long.class, 0L);
+        defaultExamples.put(Long.class, 0L);
+        defaultExamples.put(float.class, 0F);
+        defaultExamples.put(Float.class, 0F);
+        defaultExamples.put(double.class, 0d);
+        defaultExamples.put(Double.class, 0d);
+        defaultExamples.put(char.class, ' ');
+        defaultExamples.put(Character.class, ' ');
+        defaultExamples.put(String.class, "");
+        defaultExamples.put(Date.class, new Date());
 
-        defaultValuesOfParentTypes.put(CharSequence.class, "");
-        defaultValuesOfParentTypes.put(TemporalAccessor.class, Instant.now());
-        defaultValuesOfParentTypes.put(TemporalAmount.class, Duration.ofSeconds(5));
+        parentTypesExamples.put(CharSequence.class, "");
+        parentTypesExamples.put(TemporalAccessor.class, Instant.now());
+        parentTypesExamples.put(TemporalAmount.class, Duration.ofSeconds(5));
     }
 
     private final Map<Type, Object> templates;
@@ -65,12 +65,12 @@ public class RecursiveTemplateProvider implements TemplateProvider {
     }
 
     public RecursiveTemplateProvider(PropertyScanner scanner, Predicate<Type> filter,
-            Map<Type, Object> defaultTemplates) {
+            Map<Type, Object> customExamples) {
         this.scanner = scanner;
         this.filter = filter;
         this.templates = new HashMap<>();
-        templates.putAll(simpleDefaultValues);
-        templates.putAll(defaultTemplates);
+        templates.putAll(defaultExamples);
+        templates.putAll(customExamples);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class RecursiveTemplateProvider implements TemplateProvider {
     }
 
     private static Object getDefaultValueOfParentType(Class<?> type) {
-        for (Entry<Class<?>, Object> parentTypeDefault : defaultValuesOfParentTypes.entrySet()) {
+        for (Entry<Class<?>, Object> parentTypeDefault : parentTypesExamples.entrySet()) {
             if (parentTypeDefault.getKey().isAssignableFrom(type)) {
                 return parentTypeDefault.getValue();
             }

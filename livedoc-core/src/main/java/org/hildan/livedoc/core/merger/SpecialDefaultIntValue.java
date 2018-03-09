@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.model.doc;
+package org.hildan.livedoc.core.merger;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

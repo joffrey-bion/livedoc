@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.DocMerger;
-import org.hildan.livedoc.core.Mergeable;
+import org.hildan.livedoc.core.merger.DocMerger;
+import org.hildan.livedoc.core.merger.Mergeable;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
@@ -109,9 +109,9 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
     }
 
     @Override
-    public void merge(ApiDoc source, DocMerger merger) {
-        List<ApiOperationDoc> ops = merger.mergeList(source.operations, this.operations, ApiOperationDoc::getPaths);
-        merger.mergeProperties(source, this);
-        this.operations = ops;
+    public ApiDoc merge(ApiDoc override, DocMerger merger) {
+        ApiDoc merged = merger.mergeProperties(this, override, new ApiDoc());
+        merged.operations = merger.mergeList(this.operations, override.operations, ApiOperationDoc::getPaths);
+        return merged;
     }
 }

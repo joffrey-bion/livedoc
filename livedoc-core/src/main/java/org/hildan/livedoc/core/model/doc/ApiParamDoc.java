@@ -2,9 +2,11 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.UUID;
 
+import org.hildan.livedoc.core.merger.DocMerger;
+import org.hildan.livedoc.core.merger.Mergeable;
 import org.hildan.livedoc.core.model.types.LivedocType;
 
-public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> {
+public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc>, Mergeable<ApiParamDoc> {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -21,6 +23,9 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
     private String format;
 
     private String defaultValue;
+
+    private ApiParamDoc() {
+    }
 
     public ApiParamDoc(String name, String description, LivedocType type, String required, String[] allowedValues,
             String format, String defaultValue) {
@@ -84,6 +89,11 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc> 
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public ApiParamDoc merge(ApiParamDoc override, DocMerger merger) {
+        return merger.mergeProperties(this, override, new ApiParamDoc());
     }
 
     @Override

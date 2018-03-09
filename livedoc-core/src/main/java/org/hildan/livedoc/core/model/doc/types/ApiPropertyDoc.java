@@ -4,15 +4,18 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hildan.livedoc.core.merger.DocMerger;
+import org.hildan.livedoc.core.merger.Mergeable;
+import org.hildan.livedoc.core.merger.SpecialDefaultIntValue;
 import org.hildan.livedoc.core.model.doc.AbstractDoc;
-import org.hildan.livedoc.core.model.doc.SpecialDefaultIntValue;
-import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
+import org.hildan.livedoc.core.model.types.LivedocType;
 
 import com.google.common.base.Joiner;
 
-public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropertyDoc>, Versioned {
+public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropertyDoc>, Versioned,
+        Mergeable<ApiPropertyDoc> {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -107,6 +110,11 @@ public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropert
 
     public Integer getOrder() {
         return order;
+    }
+
+    @Override
+    public ApiPropertyDoc merge(ApiPropertyDoc override, DocMerger merger) {
+        return merger.mergeProperties(this, override, new ApiPropertyDoc());
     }
 
     @Override

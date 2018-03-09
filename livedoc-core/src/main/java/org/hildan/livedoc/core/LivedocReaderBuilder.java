@@ -44,7 +44,7 @@ public class LivedocReaderBuilder {
 
     private TemplateProvider templateProvider;
 
-    private Map<Type, Object> defaultTemplates = new HashMap<>();
+    private Map<Type, Object> customExampleValuesByType = new HashMap<>();
 
     private TypeScanner typeScanner;
 
@@ -216,7 +216,7 @@ public class LivedocReaderBuilder {
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
     public LivedocReaderBuilder addDefaultTemplate(Type type, Object example) {
-        defaultTemplates.put(type, example);
+        customExampleValuesByType.put(type, example);
         return this;
     }
 
@@ -229,7 +229,7 @@ public class LivedocReaderBuilder {
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
     public LivedocReaderBuilder addDefaultTemplates(Map<? extends Type, Object> defaultTemplates) {
-        this.defaultTemplates.putAll(defaultTemplates);
+        this.customExampleValuesByType.putAll(defaultTemplates);
         return this;
     }
 
@@ -284,7 +284,7 @@ public class LivedocReaderBuilder {
     }
 
     private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
-        return new RecursiveTemplateProvider(propertyScanner, typeInspectionFilter, defaultTemplates);
+        return new RecursiveTemplateProvider(propertyScanner, typeInspectionFilter, customExampleValuesByType);
     }
 
     private GlobalDocReader getDefaultGlobalReader() {

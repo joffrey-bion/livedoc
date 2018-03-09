@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.DocMerger;
-import org.hildan.livedoc.core.Mergeable;
 import org.hildan.livedoc.core.annotations.ApiOperation;
+import org.hildan.livedoc.core.merger.DocMerger;
+import org.hildan.livedoc.core.merger.Mergeable;
+import org.hildan.livedoc.core.merger.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
@@ -231,18 +232,13 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     }
 
     @Override
-    public void merge(ApiOperationDoc source, DocMerger merger) {
-        List<ApiParamDoc> pathParams = merger.mergeList(source.pathParameters, pathParameters, ApiParamDoc::getName);
-        List<ApiParamDoc> queryParams = merger.mergeList(source.queryParameters, queryParameters, ApiParamDoc::getName);
-        List<ApiHeaderDoc> headers = merger.mergeList(source.headers, this.headers, ApiHeaderDoc::getName);
-        List<ApiErrorDoc> errors = merger.mergeList(source.apiErrors, this.apiErrors, ApiErrorDoc::getCode);
-
-        merger.mergeProperties(source, this);
-
-        this.pathParameters = pathParams;
-        this.queryParameters = queryParams;
-        this.headers = headers;
-        this.apiErrors = errors;
+    public ApiOperationDoc merge(ApiOperationDoc override, DocMerger merger) {
+        ApiOperationDoc merged = merger.mergeProperties(this, override, new ApiOperationDoc());
+        merged.pathParameters = merger.mergeList(this.pathParameters, override.pathParameters, ApiParamDoc::getName);
+        merged.queryParameters = merger.mergeList(this.queryParameters, override.queryParameters, ApiParamDoc::getName);
+        merged.headers = merger.mergeList(this.headers, override.headers, ApiHeaderDoc::getName);
+        merged.apiErrors = merger.mergeList(this.apiErrors, override.apiErrors, ApiErrorDoc::getCode);
+        return merged;
     }
 
     @Override
