@@ -2,7 +2,6 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -33,7 +32,7 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
 
     private List<String> paths;
 
-    private Set<ApiVerb> verbs;
+    private List<ApiVerb> verbs;
 
     private List<ApiParamDoc> pathParameters;
 
@@ -45,9 +44,9 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
 
     private LivedocType responseBodyType;
 
-    private Set<String> consumes;
+    private List<String> consumes;
 
-    private Set<String> produces;
+    private List<String> produces;
 
     @SpecialDefaultStringValue(ApiOperation.DEFAULT_RESPONSE_STATUS)
     private String responseStatusCode;
@@ -66,9 +65,9 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.description = "";
         this.summary = "";
         this.paths = new ArrayList<>();
-        this.verbs = new LinkedHashSet<>();
-        this.produces = new LinkedHashSet<>();
-        this.consumes = new LinkedHashSet<>();
+        this.verbs = new ArrayList<>();
+        this.produces = new ArrayList<>();
+        this.consumes = new ArrayList<>();
         this.headers = new ArrayList<>();
         this.pathParameters = new ArrayList<>();
         this.queryParameters = new ArrayList<>();
@@ -121,11 +120,11 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.paths = paths;
     }
 
-    public Set<ApiVerb> getVerbs() {
+    public List<ApiVerb> getVerbs() {
         return verbs;
     }
 
-    public void setVerbs(Set<ApiVerb> verbs) {
+    public void setVerbs(List<ApiVerb> verbs) {
         this.verbs = verbs;
     }
 
@@ -137,19 +136,19 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.headers = headers;
     }
 
-    public Set<String> getProduces() {
+    public List<String> getProduces() {
         return produces;
     }
 
-    public void setProduces(Set<String> produces) {
+    public void setProduces(List<String> produces) {
         this.produces = produces;
     }
 
-    public Set<String> getConsumes() {
+    public List<String> getConsumes() {
         return consumes;
     }
 
-    public void setConsumes(Set<String> consumes) {
+    public void setConsumes(List<String> consumes) {
         this.consumes = consumes;
     }
 
@@ -234,6 +233,9 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     @Override
     public ApiOperationDoc merge(ApiOperationDoc override, DocMerger merger) {
         ApiOperationDoc merged = merger.mergeProperties(this, override, new ApiOperationDoc());
+        merged.paths = merger.mergeList(this.paths, override.paths, p -> p);
+        merged.consumes = merger.mergeList(this.consumes, override.consumes, p -> p);
+        merged.produces = merger.mergeList(this.produces, override.produces, p -> p);
         merged.pathParameters = merger.mergeList(this.pathParameters, override.pathParameters, ApiParamDoc::getName);
         merged.queryParameters = merger.mergeList(this.queryParameters, override.queryParameters, ApiParamDoc::getName);
         merged.headers = merger.mergeList(this.headers, override.headers, ApiHeaderDoc::getName);

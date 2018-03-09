@@ -2,7 +2,6 @@ package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
@@ -34,11 +33,11 @@ public class ApiOperationDocReader {
         if (methodAnnotation != null) {
             apiOperationDoc.setId(methodAnnotation.id());
             apiOperationDoc.setPaths(Arrays.asList(methodAnnotation.path()));
-            apiOperationDoc.setVerbs(new LinkedHashSet<>(Arrays.asList(methodAnnotation.verbs())));
+            apiOperationDoc.setVerbs(Arrays.asList(methodAnnotation.verbs()));
             apiOperationDoc.setSummary(methodAnnotation.summary());
             apiOperationDoc.setDescription(methodAnnotation.description());
-            apiOperationDoc.setConsumes(new LinkedHashSet<>(Arrays.asList(methodAnnotation.consumes())));
-            apiOperationDoc.setProduces(new LinkedHashSet<>(Arrays.asList(methodAnnotation.produces())));
+            apiOperationDoc.setConsumes(Arrays.asList(methodAnnotation.consumes()));
+            apiOperationDoc.setProduces(Arrays.asList(methodAnnotation.produces()));
             apiOperationDoc.setResponseStatusCode(methodAnnotation.responseStatusCode());
         }
 
