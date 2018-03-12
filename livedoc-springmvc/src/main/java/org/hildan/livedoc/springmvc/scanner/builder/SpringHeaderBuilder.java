@@ -3,6 +3,7 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,33 +26,32 @@ public class SpringHeaderBuilder {
      * @return the {@link ApiHeaderDoc}s for the given method
      */
     public static List<ApiHeaderDoc> buildHeaders(Method method, Class<?> controller) {
-        List<ApiHeaderDoc> headers = new ArrayList<>();
-
-        RequestMapping typeAnnotation = controller.getAnnotation(RequestMapping.class);
-        if (typeAnnotation != null) {
-            headers.addAll(extractHeaders(typeAnnotation));
-        }
+        Set<ApiHeaderDoc> headers = new HashSet<>(extractHeadersFromParams(method));
 
         RequestMapping methodAnnotation = method.getAnnotation(RequestMapping.class);
         if (methodAnnotation != null) {
             headers.addAll(extractHeaders(methodAnnotation));
         }
 
-        headers.addAll(extractHeadersFromParams(method));
-        return headers;
+        RequestMapping typeAnnotation = controller.getAnnotation(RequestMapping.class);
+        if (typeAnnotation != null) {
+            headers.addAll(extractHeaders(typeAnnotation));
+        }
+
+        return new ArrayList<>(headers);
     }
 
     private static List<ApiHeaderDoc> extractHeaders(RequestMapping annotation) {
         List<ApiHeaderDoc> headers = new ArrayList<>();
         for (String header : annotation.headers()) {
-            headers.add(createHeaderDoc(header));
+            headers.add(createApiHeaderDoc(header));
         }
         return headers;
     }
 
-    private static ApiHeaderDoc createHeaderDoc(String header) {
+    private static ApiHeaderDoc createApiHeaderDoc(String header) {
         if (header.startsWith("!")) {
-            return ApiHeaderDoc.forbidden(header, "");
+            return ApiHeaderDoc.forbidden(header.substring(1), "");
         }
         if (header.contains("!=")) {
             String[] splitHeader = header.split("!=");
