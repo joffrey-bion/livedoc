@@ -22,19 +22,28 @@ public class InterfaceApiTypeTest {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.invisible");
         LivedocReader builder = SpringLivedocReaderFactory.getReader(packages);
         Livedoc livedoc = builder.read("version", "basePath", true, MethodDisplay.URI);
+
         List<Group<ApiTypeDoc>> typeGroups = livedoc.getTypes();
         assertEquals(1, typeGroups.size());
-        for (Group<ApiTypeDoc> typeGroup : typeGroups) {
-            assertEquals(2, typeGroup.getElements().size());
-        }
-        Group<ApiDoc> apiDocGroup = livedoc.getApis().get(0);
-        assertEquals("", apiDocGroup.getGroupName());
-        for (ApiDoc apiDoc : apiDocGroup.getElements()) {
-            for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
-                assertEquals("Resource Interface", apiOperationDoc.getResponseBodyType().getOneLineText());
-            }
-        }
 
+        Group<ApiTypeDoc> typeGroup = typeGroups.get(0);
+        assertEquals(2, typeGroup.getElements().size());
+
+        List<Group<ApiDoc>> apiGroups = livedoc.getApis();
+        assertEquals(1, apiGroups.size());
+
+        Group<ApiDoc> apiGroup = apiGroups.get(0);
+        assertEquals("", apiGroup.getGroupName());
+
+        List<ApiDoc> apiDocs = apiGroup.getElements();
+        assertEquals(1, apiDocs.size());
+
+        ApiDoc apiDoc = apiDocs.get(0);
+        assertEquals(2, apiDoc.getOperations().size());
+
+        for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
+            assertEquals("Resource Interface", apiOperationDoc.getResponseBodyType().getOneLineText());
+        }
     }
 
 }
