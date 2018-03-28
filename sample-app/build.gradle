@@ -10,6 +10,9 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web:1.5.10.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.10.RELEASE'
     compile 'com.h2database:h2:1.4.196'
+
+    // to enable documentation from Javadoc
+    annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.4.0'
 }
 
 bootRun {

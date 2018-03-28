@@ -4,7 +4,6 @@ apply plugin: 'java-library'
 
 dependencies {
     api project(':livedoc-core')
-    api 'com.github.therapi:therapi-runtime-javadoc:0.2.1'
     implementation 'org.reflections:reflections:0.9.10'
     compileOnly 'org.jetbrains:annotations:13.0'
     compileOnly 'javax.servlet:servlet-api:2.5'
@@ -18,4 +17,6 @@ dependencies {
     testImplementation 'org.springframework.data:spring-data-rest-webmvc:2.5.1.RELEASE'
     testImplementation 'org.springframework:spring-test:3.1.2.RELEASE'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
+
+    testAnnotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.4.0'
 }
