@@ -14,6 +14,8 @@ import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
 import org.hildan.livedoc.core.util.HibernateValidationProcessor;
 
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
+
 public class ApiPropertyDocReader {
 
     public static ApiPropertyDoc read(Property property, ApiTypeDoc parentDoc,
@@ -50,8 +52,8 @@ public class ApiPropertyDocReader {
     }
 
     private static void overrideFromAnnotation(ApiPropertyDoc doc, ApiTypeProperty annotation) {
-        doc.setName(BeanUtils.maybeOverridden(annotation.name(), doc.getName()));
-        doc.setDescription(annotation.description());
+        doc.setName(BeanUtils.maybeOverridden(nullifyIfEmpty(annotation.name()), doc.getName()));
+        doc.setDescription(nullifyIfEmpty(annotation.description()));
 
         String[] allowedValues = BeanUtils.maybeOverridden(annotation.allowedValues(), doc.getAllowedValues());
         doc.setAllowedValues(allowedValues);
@@ -88,6 +90,7 @@ public class ApiPropertyDocReader {
         }
         Method getter = property.getGetter();
         if (getter != null) {
+            // FIXME should we really overwrite field information if nothing is on the getter?
             versionDoc = ApiVersionDocReader.read(getter, versionDoc);
         }
         return versionDoc;

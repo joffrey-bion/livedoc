@@ -13,6 +13,8 @@ import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
+
 public class ApiAuthDocReader {
 
     public static final String ANONYMOUS = "anonymous";
@@ -69,7 +71,7 @@ public class ApiAuthDocReader {
     private static ApiAuthDoc readFromApiAuthTokenAnnotation(ApiAuthToken annotation) {
         ApiAuthDoc apiAuthDoc = new ApiAuthDoc();
         apiAuthDoc.setType(ApiAuthType.TOKEN);
-        apiAuthDoc.setScheme(annotation.scheme());
+        apiAuthDoc.setScheme(nullifyIfEmpty(annotation.scheme()));
         apiAuthDoc.setRoles(Arrays.asList(annotation.roles()));
         for (String testtoken : annotation.testTokens()) {
             apiAuthDoc.addTestToken(testtoken);

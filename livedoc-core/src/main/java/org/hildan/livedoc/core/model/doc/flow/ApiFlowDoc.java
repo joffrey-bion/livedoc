@@ -1,14 +1,17 @@
 package org.hildan.livedoc.core.model.doc.flow;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
+import org.hildan.livedoc.core.merger.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.groups.Groupable;
+
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
 public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
 
@@ -18,25 +21,20 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
 
     private String description;
 
-    private List<String> preconditions;
+    private List<String> preconditions = new ArrayList<>();
 
-    private List<ApiFlowStepDoc> steps;
+    private List<ApiFlowStepDoc> steps = new ArrayList<>();
 
-    private List<ApiOperationDoc> operations;
+    private List<ApiOperationDoc> operations = new ArrayList<>();
 
-    private String group;
-
-    public ApiFlowDoc() {
-        this.preconditions = new LinkedList<>();
-        this.steps = new LinkedList<>();
-        this.operations = new LinkedList<>();
-    }
+    @SpecialDefaultStringValue("")
+    private String group = "";
 
     public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation,
             Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
         ApiFlowDoc apiFlowDoc = new ApiFlowDoc();
-        apiFlowDoc.setDescription(annotation.description());
         apiFlowDoc.setName(annotation.name());
+        apiFlowDoc.setDescription(nullifyIfEmpty(annotation.description()));
         apiFlowDoc.setGroup(annotation.group());
         for (String precondition : annotation.preconditions()) {
             apiFlowDoc.addPrecondition(precondition);

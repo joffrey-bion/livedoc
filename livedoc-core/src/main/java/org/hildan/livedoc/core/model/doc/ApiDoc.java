@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.hildan.livedoc.core.merger.DocMerger;
 import org.hildan.livedoc.core.merger.Mergeable;
+import org.hildan.livedoc.core.merger.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
@@ -20,6 +21,7 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
 
     private String description;
 
+    @SpecialDefaultStringValue("")
     private String group;
 
     private List<ApiOperationDoc> operations;
@@ -31,8 +33,8 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
     private ApiAuthDoc auth;
 
     public ApiDoc() {
-        this.name = "";
-        this.description = "";
+        this.name = null;
+        this.description = null;
         this.stage = null;
         this.group = "";
         this.operations = new ArrayList<>();

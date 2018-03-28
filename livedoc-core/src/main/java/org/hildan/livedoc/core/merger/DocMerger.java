@@ -3,6 +3,7 @@ package org.hildan.livedoc.core.merger;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,8 +50,8 @@ public class DocMerger {
         if (override == null || override.equals(neutralValue)) {
             return base;
         }
-        if (TypePredicates.isContainer(override.getClass()) && !isEmptyContainer(override)) {
-            return override;
+        if (TypePredicates.isContainer(override.getClass()) && isEmptyContainer(override)) {
+            return base;
         }
         if (base instanceof Mergeable) {
             @SuppressWarnings("unchecked")
@@ -123,6 +124,10 @@ public class DocMerger {
             overridden.add(merged);
         }
         overridden.addAll(basePool);
+        if (!overridden.isEmpty() && overridden.get(0) instanceof Comparable) {
+            //noinspection unchecked
+            Collections.sort((List<Comparable>) overridden);
+        }
         return overridden;
     }
 

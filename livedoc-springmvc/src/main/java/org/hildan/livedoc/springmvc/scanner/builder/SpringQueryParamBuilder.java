@@ -11,12 +11,14 @@ import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
-import org.hildan.livedoc.springmvc.scanner.utils.JavadocHelper;
+import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
+
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
 public class SpringQueryParamBuilder {
 
@@ -51,10 +53,7 @@ public class SpringQueryParamBuilder {
             }
 
             if (modelAttributeAnn != null) {
-                String name = modelAttributeAnn.value();
-                String description = JavadocHelper.getJavadocDescription(method, name).orElse("");
-                ApiParamDoc apiParamDoc = new ApiParamDoc(name, description, paramType, "false", new String[] {}, null,
-                        null);
+                ApiParamDoc apiParamDoc = getParamDocFromModelAttribute(method, i, modelAttributeAnn, paramType);
                 mergeApiQueryParamDoc(apiQueryParam, apiParamDoc);
                 apiParamDocs.add(apiParamDoc);
             }
@@ -83,7 +82,7 @@ public class SpringQueryParamBuilder {
 
     private static ApiParamDoc createStringParamDoc(TypeReferenceProvider typeReferenceProvider, String name,
             Method method, String... values) {
-        String description = JavadocHelper.getJavadocDescription(method, name).orElse("");
+        String description = JavadocHelper.getJavadocDescription(method, name).orElse(null);
         LivedocType stringType = typeReferenceProvider.getReference(String.class);
         return new ApiParamDoc(name, description, stringType, "true", values, null, null);
     }
@@ -91,10 +90,10 @@ public class SpringQueryParamBuilder {
     private static ApiParamDoc getParamDocFromRequestParam(Method method, int i, RequestParam requestParamAnn,
             LivedocType paramType) {
         String name = getSpringParamName(method, requestParamAnn, i);
-        String description = JavadocHelper.getJavadocDescription(method, name).orElse("");
+        String description = JavadocHelper.getJavadocDescription(method, name).orElse(null);
         String required = String.valueOf(requestParamAnn.required());
         boolean hasDefault = requestParamAnn.defaultValue().equals(ValueConstants.DEFAULT_NONE);
-        String defaultvalue = hasDefault ? "" : requestParamAnn.defaultValue();
+        String defaultvalue = hasDefault ? null : requestParamAnn.defaultValue();
         return new ApiParamDoc(name, description, paramType, required, new String[0], null, defaultvalue);
     }
 
@@ -104,6 +103,23 @@ public class SpringQueryParamBuilder {
         }
         if (!requestParam.value().isEmpty()) {
             return requestParam.value();
+        }
+        return PARAM_NAME_DISCOVERER.getParameterNames(method)[index];
+    }
+
+    private static ApiParamDoc getParamDocFromModelAttribute(Method method, int i, ModelAttribute modelAttributeAnn,
+            LivedocType paramType) {
+        String name = getSpringParamName(method, modelAttributeAnn, i);
+        String description = JavadocHelper.getJavadocDescription(method, name).orElse(null);
+        return new ApiParamDoc(name, description, paramType, "false", new String[0], null, null);
+    }
+
+    private static String getSpringParamName(Method method, ModelAttribute modelAttribute, int index) {
+        if (!modelAttribute.name().isEmpty()) {
+            return modelAttribute.name();
+        }
+        if (!modelAttribute.value().isEmpty()) {
+            return modelAttribute.value();
         }
         return PARAM_NAME_DISCOVERER.getParameterNames(method)[index];
     }
@@ -121,11 +137,12 @@ public class SpringQueryParamBuilder {
      */
     private static void mergeApiQueryParamDoc(ApiQueryParam apiQueryParam, ApiParamDoc apiParamDoc) {
         if (apiQueryParam != null) {
-            if (apiParamDoc.getName().trim().isEmpty()) {
-                apiParamDoc.setName(apiQueryParam.name());
+            String livedocName = nullifyIfEmpty(apiQueryParam.name());
+            if (livedocName != null) {
+                apiParamDoc.setName(livedocName);
             }
-            if (apiParamDoc.getDescription().trim().isEmpty()) {
-                apiParamDoc.setDescription(apiQueryParam.description());
+            if (apiParamDoc.getDescription() == null) {
+                apiParamDoc.setDescription(nullifyIfEmpty(apiQueryParam.description()));
             }
             apiParamDoc.setAllowedValues(apiQueryParam.allowedValues());
             apiParamDoc.setFormat(apiQueryParam.format());

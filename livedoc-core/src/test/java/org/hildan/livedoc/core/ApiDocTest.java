@@ -366,13 +366,13 @@ public class ApiDocTest {
     public void testApiAuthToken() {
         ApiDoc apiDoc = buildDoc(TestControllerWithAuthToken.class);
         assertEquals(ApiAuthType.TOKEN, apiDoc.getAuth().getType());
-        assertEquals("", apiDoc.getAuth().getScheme());
+        assertEquals(null, apiDoc.getAuth().getScheme());
         assertEquals("abc", apiDoc.getAuth().getTesttokens().iterator().next());
 
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
             if (apiOperationDoc.getPaths().contains("/inherit")) {
                 assertEquals(ApiAuthType.TOKEN, apiOperationDoc.getAuth().getType());
-                assertEquals("", apiOperationDoc.getAuth().getScheme());
+                assertEquals(null, apiOperationDoc.getAuth().getScheme());
                 assertEquals("abc", apiOperationDoc.getAuth().getTesttokens().iterator().next());
             }
             if (apiOperationDoc.getPaths().contains("/override")) {

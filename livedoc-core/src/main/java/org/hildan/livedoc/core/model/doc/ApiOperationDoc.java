@@ -62,8 +62,8 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     public ApiOperationDoc() {
         super();
         this.id = null;
-        this.description = "";
-        this.summary = "";
+        this.description = null;
+        this.summary = null;
         this.paths = new ArrayList<>();
         this.verbs = new ArrayList<>();
         this.produces = new ArrayList<>();
@@ -233,18 +233,16 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     @Override
     public ApiOperationDoc merge(ApiOperationDoc override, DocMerger merger) {
         ApiOperationDoc merged = merger.mergeProperties(this, override, new ApiOperationDoc());
-        merged.paths = merger.mergeList(this.paths, override.paths, p -> p);
-        merged.consumes = merger.mergeList(this.consumes, override.consumes, p -> p);
-        merged.produces = merger.mergeList(this.produces, override.produces, p -> p);
+        // For paths, consumes, produces, and errors, we want the last non empty list to win, no merge
         merged.pathParameters = merger.mergeList(this.pathParameters, override.pathParameters, ApiParamDoc::getName);
         merged.queryParameters = merger.mergeList(this.queryParameters, override.queryParameters, ApiParamDoc::getName);
         merged.headers = merger.mergeList(this.headers, override.headers, ApiHeaderDoc::getName);
-        merged.apiErrors = merger.mergeList(this.apiErrors, override.apiErrors, ApiErrorDoc::getCode);
         return merged;
     }
 
     @Override
     public int compareTo(ApiOperationDoc o) {
+
         int i;
 
         if (this.paths.containsAll(o.getPaths()) && this.paths.size() == o.getPaths().size()) {

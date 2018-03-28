@@ -35,8 +35,8 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
 
     public ApiTypeDoc(Class<?> clazz) {
         this.livedocId = LivedocUtils.getLivedocId(clazz);
-        this.name = "";
-        this.description = "";
+        this.name = null;
+        this.description = null;
         this.supportedVersions = null;
         this.allowedValues = new String[] {};
         this.fields = new TreeSet<>();

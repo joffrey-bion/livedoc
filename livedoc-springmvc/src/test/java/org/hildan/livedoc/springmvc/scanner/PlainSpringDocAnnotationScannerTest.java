@@ -61,8 +61,8 @@ public class PlainSpringDocAnnotationScannerTest {
             assertNull(apiOperationDoc.getSupportedVersions());
             assertTrue(apiOperationDoc.getApiErrors().isEmpty());
             assertNull(apiOperationDoc.getId());
-            assertEquals("", apiOperationDoc.getSummary());
-            assertEquals("", apiOperationDoc.getDescription());
+            assertNull(apiOperationDoc.getSummary());
+            assertNull(apiOperationDoc.getDescription());
 
             if (apiOperationDoc.getPaths().contains("/api/string/{name}")) {
                 assertEquals(2, apiOperationDoc.getHeaders().size());
@@ -98,7 +98,7 @@ public class PlainSpringDocAnnotationScannerTest {
                 apiParamDoc = queryparameters.get(2);
                 assertEquals("query", apiParamDoc.getName());
                 assertEquals("true", apiParamDoc.getRequired());
-                assertEquals("", apiParamDoc.getDefaultValue());
+                assertNull(apiParamDoc.getDefaultValue());
 
                 apiParamDoc = apiOperationDoc.getPathParameters().get(0);
                 assertEquals("test", apiParamDoc.getName());

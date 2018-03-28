@@ -1,6 +1,7 @@
 package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
@@ -11,7 +12,10 @@ import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
 public class ApiOperationDocReader {
 
@@ -31,11 +35,11 @@ public class ApiOperationDocReader {
 
         ApiOperation methodAnnotation = method.getAnnotation(ApiOperation.class);
         if (methodAnnotation != null) {
-            apiOperationDoc.setId(methodAnnotation.id());
+            apiOperationDoc.setId(nullifyIfEmpty(methodAnnotation.id()));
             apiOperationDoc.setPaths(Arrays.asList(methodAnnotation.path()));
             apiOperationDoc.setVerbs(Arrays.asList(methodAnnotation.verbs()));
-            apiOperationDoc.setSummary(methodAnnotation.summary());
-            apiOperationDoc.setDescription(methodAnnotation.description());
+            apiOperationDoc.setSummary(nullifyIfEmpty(methodAnnotation.summary()));
+            apiOperationDoc.setDescription(nullifyIfEmpty(methodAnnotation.description()));
             apiOperationDoc.setConsumes(Arrays.asList(methodAnnotation.consumes()));
             apiOperationDoc.setProduces(Arrays.asList(methodAnnotation.produces()));
             apiOperationDoc.setResponseStatusCode(methodAnnotation.responseStatusCode());
@@ -50,10 +54,16 @@ public class ApiOperationDocReader {
         if (annotation == null) {
             return null;
         }
-        if (annotation.value().isAssignableFrom(LivedocDefaultType.class)) {
-            return typeReferenceProvider.getReference(method.getGenericReturnType());
-        } else {
-            return typeReferenceProvider.getReference(annotation.value());
+        Type type = extractResponseBodyType(method, annotation);
+        return typeReferenceProvider.getReference(type);
+    }
+
+    @NotNull
+    private static Type extractResponseBodyType(@NotNull Method method, @NotNull ApiResponseBodyType annotation) {
+        Class<?> type = annotation.value();
+        if (type.equals(LivedocDefaultType.class)) {
+            return method.getGenericReturnType();
         }
+        return type;
     }
 }

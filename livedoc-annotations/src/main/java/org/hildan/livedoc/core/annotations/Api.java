@@ -31,14 +31,14 @@ import java.lang.annotation.Target;
 public @interface Api {
 
     /**
-     * A description of what the API does
-     */
-    String description();
-
-    /**
      * The name of the API
      */
-    String name();
+    String name() default "";
+
+    /**
+     * A description of what the API does
+     */
+    String description() default "";
 
     /**
      * With this it is possible to specify the logical grouping of this API. For example, if you have APIs like city

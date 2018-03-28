@@ -9,7 +9,7 @@ import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
-import org.hildan.livedoc.springmvc.scanner.utils.JavadocHelper;
+import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -30,7 +30,7 @@ public class SpringPathVariableBuilder {
                 String paramName = getSpringParamName(method, pathVariable, i);
                 String description = JavadocHelper.getJavadocDescription(method, paramName).orElse("");
                 ApiParamDoc apiParamDoc = new ApiParamDoc(paramName, description, livedocType, "true", new String[0],
-                        null, "");
+                        null, null);
 
                 if (apiPathParam != null) {
                     mergeApiPathParamDoc(apiPathParam, apiParamDoc);

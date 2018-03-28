@@ -13,6 +13,8 @@ import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
 
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
+
 public class ApiTypeDocReader {
 
     private final PropertyScanner propertyScanner;
@@ -30,8 +32,8 @@ public class ApiTypeDocReader {
 
         ApiType apiType = clazz.getAnnotation(ApiType.class);
         if (apiType != null) {
-            apiTypeDoc.setName(BeanUtils.maybeOverridden(apiType.name(), clazz.getSimpleName()));
-            apiTypeDoc.setDescription(apiType.description());
+            apiTypeDoc.setName(BeanUtils.maybeOverridden(nullifyIfEmpty(apiType.name()), clazz.getSimpleName()));
+            apiTypeDoc.setDescription(nullifyIfEmpty(apiType.description()));
             apiTypeDoc.setGroup(apiType.group());
             apiTypeDoc.setShow(apiType.show());
         }

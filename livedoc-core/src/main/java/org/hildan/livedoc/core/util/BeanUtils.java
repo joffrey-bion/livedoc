@@ -13,7 +13,7 @@ public class BeanUtils {
     }
 
     public static String maybeOverridden(String overridingValue, String initialValue) {
-        return maybeOverridden(overridingValue, initialValue, "");
+        return maybeOverridden(overridingValue, initialValue, null);
     }
 
     public static String[] maybeOverridden(String[] overridingValue, String[] initialValue) {

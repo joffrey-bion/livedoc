@@ -5,6 +5,8 @@ import java.lang.reflect.AnnotatedElement;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
+
 public class ApiVersionDocReader {
 
     public static ApiVersionDoc read(Class<?> clazz) {
@@ -33,7 +35,7 @@ public class ApiVersionDocReader {
     private static ApiVersionDoc buildFromAnnotation(ApiVersion annotation) {
         ApiVersionDoc apiVersionDoc = new ApiVersionDoc();
         apiVersionDoc.setSince(annotation.since());
-        apiVersionDoc.setUntil(annotation.until());
+        apiVersionDoc.setUntil(nullifyIfEmpty(annotation.until()));
         return apiVersionDoc;
     }
 }

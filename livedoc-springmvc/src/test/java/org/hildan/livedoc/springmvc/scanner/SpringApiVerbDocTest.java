@@ -1,8 +1,7 @@
 package org.hildan.livedoc.springmvc.scanner;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -38,7 +37,7 @@ public class SpringApiVerbDocTest {
         Assert.assertEquals(2, apiDoc.getOperations().size());
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
             if (apiOperationDoc.getPaths().contains("/api-verb/spring-api-verb-controller-method-one")) {
-                Set<ApiVerb> expectedVerbs = new HashSet<>(Arrays.asList(ApiVerb.values()));
+                List<ApiVerb> expectedVerbs = Arrays.asList(ApiVerb.values());
                 Assert.assertEquals(expectedVerbs, apiOperationDoc.getVerbs());
             }
             if (apiOperationDoc.getPaths().contains("/api-verb/spring-api-verb-controller-method-two")) {

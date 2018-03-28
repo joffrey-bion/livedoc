@@ -51,7 +51,8 @@ public class ApiOperationDocValidator {
             apiOperationDoc.addJsondocError(ERROR_MISSING_OPERATION_PATH);
         }
 
-        if (apiOperationDoc.getDescription().trim().isEmpty()) {
+        String description = apiOperationDoc.getDescription();
+        if (description == null || description.isEmpty()) {
             apiOperationDoc.addJsondocHint(HINT_MISSING_OPERATION_DESCRIPTION);
         }
 
@@ -64,7 +65,7 @@ public class ApiOperationDocValidator {
 
     private static void validateHeaders(ApiOperationDoc apiOperationDoc) {
         for (ApiHeaderDoc apiHeaderDoc : apiOperationDoc.getHeaders()) {
-            if (apiHeaderDoc.getName().trim().isEmpty()) {
+            if (apiHeaderDoc.getName() == null) {
                 apiOperationDoc.addJsondocError(ERROR_MISSING_HEADER_NAME);
             }
         }
@@ -72,11 +73,11 @@ public class ApiOperationDocValidator {
 
     private static void validatePathParams(ApiOperationDoc apiOperationDoc) {
         for (ApiParamDoc apiParamDoc : apiOperationDoc.getPathParameters()) {
-            if (apiParamDoc.getName().trim().isEmpty()) {
+            if (apiParamDoc.getName() == null) {
                 apiOperationDoc.addJsondocError(ERROR_MISSING_PATH_PARAM_NAME);
             }
 
-            if (apiParamDoc.getDescription().trim().isEmpty()) {
+            if (apiParamDoc.getDescription() == null) {
                 apiOperationDoc.addJsondocHint(HINT_MISSING_PATH_PARAM_DESCRIPTION);
             }
         }
@@ -84,10 +85,10 @@ public class ApiOperationDocValidator {
 
     private static void validateQueryParams(ApiOperationDoc apiOperationDoc) {
         for (ApiParamDoc apiParamDoc : apiOperationDoc.getQueryParameters()) {
-            if (apiParamDoc.getName().trim().isEmpty()) {
+            if (apiParamDoc.getName() == null) {
                 apiOperationDoc.addJsondocError(ERROR_MISSING_QUERY_PARAM_NAME);
             }
-            if (apiParamDoc.getDescription().trim().isEmpty()) {
+            if (apiParamDoc.getDescription() == null) {
                 apiOperationDoc.addJsondocHint(HINT_MISSING_QUERY_PARAM_DESCRIPTION);
             }
         }

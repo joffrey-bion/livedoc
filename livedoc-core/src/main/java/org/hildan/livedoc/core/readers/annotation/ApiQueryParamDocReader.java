@@ -3,6 +3,7 @@ package org.hildan.livedoc.core.readers.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,8 @@ import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+
+import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
 public class ApiQueryParamDocReader {
 
@@ -34,17 +37,26 @@ public class ApiQueryParamDocReader {
                     ApiQueryParam annotation = (ApiQueryParam) parametersAnnotations[i][j];
                     LivedocType livedocType = typeReferenceProvider.getReference(method.getGenericParameterTypes()[i]);
                     ApiParamDoc apiParamDoc = buildFromAnnotation(annotation, livedocType);
-                    docs.add(apiParamDoc);
+                    // if not named, it serves no purpose and can't be merged with a param from another reader
+                    if (apiParamDoc.getName() != null) {
+                        docs.add(apiParamDoc);
+                    }
                 }
             }
         }
 
-        return new ArrayList<>(docs);
+        ArrayList<ApiParamDoc> apiParamDocs = new ArrayList<>(docs);
+        Collections.sort(apiParamDocs);
+        return apiParamDocs;
     }
 
     private static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType) {
-        return new ApiParamDoc(annotation.name(), annotation.description(), livedocType,
-                String.valueOf(annotation.required()), annotation.allowedValues(), annotation.format(),
-                annotation.defaultValue());
+        String name = nullifyIfEmpty(annotation.name());
+        String description = nullifyIfEmpty(annotation.description());
+        String format = nullifyIfEmpty(annotation.format());
+        boolean hasDefault = annotation.defaultValue().equals(ApiQueryParam.DEFAULT_NONE);
+        String defaultValue = hasDefault ? null : annotation.defaultValue();
+        return new ApiParamDoc(name, description, livedocType, String.valueOf(annotation.required()),
+                annotation.allowedValues(), format, defaultValue);
     }
 }

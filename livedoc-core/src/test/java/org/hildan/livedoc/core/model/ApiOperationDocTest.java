@@ -8,8 +8,6 @@ import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.collect.Sets;
-
 public class ApiOperationDocTest {
 
     @Test
