@@ -39,16 +39,17 @@ public class LivedocAnnotationDocReader implements DocReader {
         return Optional.of(ApiDocReader.read(controllerType));
     }
 
+    @Override
+    public boolean isApiOperation(@NotNull Method method, @NotNull Class<?> controller) {
+        return method.isAnnotationPresent(ApiOperation.class);
+    }
+
     @NotNull
     @Override
     public Optional<ApiOperationDoc> buildApiOperationDoc(@NotNull Method method, @NotNull Class<?> controller,
             @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
             @NotNull TemplateProvider templateProvider) {
-        ApiOperation methodAnnotation = method.getAnnotation(ApiOperation.class);
-        if (methodAnnotation == null) {
-            return Optional.empty(); // this basic builder only supports annotated methods
-        }
         ApiOperationDoc doc = ApiOperationDocReader.read(method, parentApiDoc, typeReferenceProvider, templateProvider);
-        return Optional.of(doc);
+        return Optional.ofNullable(doc);
     }
 }

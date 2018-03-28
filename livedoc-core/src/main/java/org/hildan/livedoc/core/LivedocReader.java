@@ -174,12 +174,22 @@ public class LivedocReader {
 
     public Optional<ApiDoc> readApiDoc(Class<?> controller) {
         Optional<ApiDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiDocBase(controller));
-        doc.ifPresent(apiDoc -> apiDoc.setOperations(readapiOperationDocs(controller, apiDoc)));
+        doc.ifPresent(apiDoc -> apiDoc.setOperations(readApiOperationDocs(controller, apiDoc)));
         return doc;
     }
 
-    private List<ApiOperationDoc> readapiOperationDocs(Class<?> controller, ApiDoc doc) {
-        return buildDocs(getAllMethods(controller), m -> readApiOperationDoc(m, controller, doc));
+    private List<ApiOperationDoc> readApiOperationDocs(Class<?> controller, ApiDoc doc) {
+        return buildDocs(getApiOperationMethods(controller), m -> readApiOperationDoc(m, controller, doc));
+    }
+
+    private List<Method> getApiOperationMethods(Class<?> controller) {
+        return getAllMethods(controller).stream()
+                                        .filter(m -> isApiOperation(m, controller))
+                                        .collect(Collectors.toList());
+    }
+
+    private boolean isApiOperation(Method method, Class<?> controller) {
+        return docReaders.stream().anyMatch(r -> r.isApiOperation(method, controller));
     }
 
     private static List<Method> getAllMethods(Class<?> clazz) {
@@ -214,8 +224,14 @@ public class LivedocReader {
         return Optional.of(doc);
     }
 
-    private static <T, D> List<D> buildDocs(Collection<T> objects, Function<T, Optional<D>> read) {
-        return objects.stream().map(read).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+    private static <T, D extends Comparable<D>> List<D> buildDocs(Collection<T> objects,
+            Function<T, Optional<D>> read) {
+        return objects.stream()
+                      .map(read)
+                      .filter(Optional::isPresent)
+                      .map(Optional::get)
+                      .sorted()
+                      .collect(Collectors.toList());
     }
 
     private <D> Optional<D> readFromAllReadersAndMerge(Function<DocReader, Optional<D>> buildDoc) {

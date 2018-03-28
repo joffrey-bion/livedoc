@@ -22,7 +22,6 @@ import org.hildan.livedoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.SpringVerbBuilder;
 import org.hildan.livedoc.springmvc.scanner.builder.path.MappingsResolver;
 import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
-import org.hildan.livedoc.springmvc.scanner.utils.JavadocHelper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
@@ -79,18 +78,8 @@ public class SpringDocReader implements DocReader {
         return Optional.of(apiDoc);
     }
 
-    @NotNull
     @Override
-    public Optional<ApiOperationDoc> buildApiOperationDoc(@NotNull Method method, @NotNull Class<?> controller,
-            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
-            @NotNull TemplateProvider templateProvider) {
-        if (!canReadInfoFrom(method)) {
-            return Optional.empty();
-        }
-        return Optional.of(buildApiOperationDoc(method, controller, typeReferenceProvider, templateProvider));
-    }
-
-    private boolean canReadInfoFrom(Method method) {
+    public boolean isApiOperation(@NotNull Method method, @NotNull Class<?> controller) {
         if (ClasspathUtils.isRequestMappingOnClasspath() && method.isAnnotationPresent(RequestMapping.class)) {
             return true;
         }
@@ -111,12 +100,22 @@ public class SpringDocReader implements DocReader {
         return false;
     }
 
+    @NotNull
+    @Override
+    public Optional<ApiOperationDoc> buildApiOperationDoc(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider) {
+        if (!isApiOperation(method, controller)) {
+            return Optional.empty();
+        }
+        return Optional.of(buildApiOperationDoc(method, controller, typeReferenceProvider, templateProvider));
+    }
+
     private ApiOperationDoc buildApiOperationDoc(Method method, Class<?> controller,
             TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
         ApiOperationDoc apiOperationDoc = new ApiOperationDoc();
         apiOperationDoc.setPaths(MappingsResolver.getPathsMappings(method, controller));
         apiOperationDoc.setName(method.getName());
-        apiOperationDoc.setDescription(JavadocHelper.getJavadocDescription(method).orElse(""));
         apiOperationDoc.setVerbs(SpringVerbBuilder.buildVerb(method, controller));
         apiOperationDoc.setProduces(SpringMediaTypeBuilder.buildProduces(method, controller));
         apiOperationDoc.setConsumes(SpringMediaTypeBuilder.buildConsumes(method, controller));

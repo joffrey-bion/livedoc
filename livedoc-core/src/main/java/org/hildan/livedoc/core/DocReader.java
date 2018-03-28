@@ -40,8 +40,23 @@ public interface DocReader {
     Optional<ApiDoc> buildApiDocBase(@NotNull Class<?> controllerType);
 
     /**
-     * Builds an {@link ApiOperationDoc} for the given method. Returns an empty optional when not able to build
-     * something for the given method.
+     * Returns whether this reader identifies the given method as an API operation. A method will be considered an API
+     * operation if at least one reader identifies it as such. Returning false here does not mean the given method is
+     * not an API operation, it simply means that this particular reader doesn't see it as such.
+     *
+     * @param method
+     *         the method to check
+     * @param controller
+     *         the controller the given method belongs to
+     *
+     * @return true if this reader identifies the given method as an API operation, false otherwise.
+     */
+    boolean isApiOperation(@NotNull Method method, @NotNull Class<?> controller);
+
+    /**
+     * Builds an {@link ApiOperationDoc} for the given method. Any method could be passed on here, even the ones for
+     * which this reader's {@link #isApiOperation(Method, Class)} returned false. If this reader can't read any
+     * documentation data for the given method, it should return an emtpy optional.
      *
      * @param method
      *         the method to document
