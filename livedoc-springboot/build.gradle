@@ -4,6 +4,8 @@ apply plugin: 'java-library'
 
 dependencies {
     api project(':livedoc-springmvc')
+
     compileOnly 'org.springframework.boot:spring-boot-starter-web:1.5.7.RELEASE'
-    compileOnly 'org.springframework.boot:spring-boot-configuration-processor:1.5.7.RELEASE'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:1.5.7.RELEASE'
 }

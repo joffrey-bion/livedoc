@@ -4,7 +4,9 @@ apply plugin: 'java-library'
 
 dependencies {
     api project(':livedoc-core')
+
     implementation 'org.reflections:reflections:0.9.10'
+
     compileOnly 'org.jetbrains:annotations:13.0'
     compileOnly 'javax.servlet:servlet-api:2.5'
     compileOnly 'org.springframework:spring-webmvc:4.3.14.RELEASE'
