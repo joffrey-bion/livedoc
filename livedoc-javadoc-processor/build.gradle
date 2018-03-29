@@ -1,0 +1,7 @@
+description = 'The annotation processor to allow Livedoc to read Javadoc at runtime'
+
+apply plugin: 'java-library'
+
+dependencies {
+    implementation 'com.github.therapi:therapi-runtime-javadoc-scribe:0.4.0'
+}

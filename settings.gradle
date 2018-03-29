@@ -1,8 +1,9 @@
 rootProject.name = 'livedoc'
 include ':livedoc-annotations'
 include ':livedoc-core'
+include ':livedoc-javadoc-processor'
 include ':livedoc-springmvc'
 include ':livedoc-springboot'
 include ':livedoc-ui-webjar'
-include 'sample-app'
+include ':sample-app'
 

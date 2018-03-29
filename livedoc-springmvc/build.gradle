@@ -20,5 +20,5 @@ dependencies {
     testImplementation 'org.springframework:spring-test:3.1.2.RELEASE'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
 
-    testAnnotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.4.0'
+    testAnnotationProcessor project(':livedoc-javadoc-processor')
 }
