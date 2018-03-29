@@ -13,6 +13,7 @@ import org.hildan.livedoc.core.model.doc.Stage;
 import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.test.pojo.HibernateValidatorPojo;
@@ -21,6 +22,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 public class ApiTypeReaderTest {
 
@@ -28,10 +30,13 @@ public class ApiTypeReaderTest {
 
     private TypeReferenceProvider typeReferenceProvider;
 
+    private TemplateProvider templateProvider;
+
     @Before
     public void setUp() {
         reader = new ApiTypeDocReader(new FieldPropertyScanner());
         typeReferenceProvider = new DefaultTypeReferenceProvider(c -> true);
+        templateProvider = type -> null;
     }
 
     @SuppressWarnings({"unused", "DefaultAnnotationParam"})
@@ -91,12 +96,14 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(TestObject.class, typeReferenceProvider);
+        Object mockTemplate = new Object();
+        ApiTypeDoc doc = reader.read(TestObject.class, typeReferenceProvider, type -> mockTemplate);
         assertEquals("test-object", doc.getName());
         assertEquals(14, doc.getFields().size());
         assertEquals("1.0", doc.getSupportedVersions().getSince());
         assertEquals("2.12", doc.getSupportedVersions().getUntil());
         assertEquals(Stage.PRE_ALPHA, doc.getStage());
+        assertSame(mockTemplate, doc.getTemplate());
 
         for (ApiPropertyDoc fieldDoc : doc.getFields()) {
             if (fieldDoc.getName().equals("wildcardParametrized")) {
@@ -189,7 +196,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testEnumObjectDoc() {
-        ApiTypeDoc doc = reader.read(TestEnum.class, typeReferenceProvider);
+        ApiTypeDoc doc = reader.read(TestEnum.class, typeReferenceProvider, templateProvider);
         assertEquals("test-enum", doc.getName());
         assertEquals(0, doc.getFields().size());
         assertEquals(TestEnum.TESTENUM1.name(), doc.getAllowedValues()[0]);
@@ -206,7 +213,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testNoNameApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(NoNameApiObject.class, typeReferenceProvider);
+        ApiTypeDoc doc = reader.read(NoNameApiObject.class, typeReferenceProvider, templateProvider);
         assertEquals("NoNameApiObject", doc.getName());
         assertEquals("id", doc.getFields().iterator().next().getName());
     }
@@ -223,7 +230,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testTemplateApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(TemplateApiObject.class, typeReferenceProvider);
+        ApiTypeDoc doc = reader.read(TemplateApiObject.class, typeReferenceProvider, templateProvider);
         assertEquals("TemplateApiObject", doc.getName());
         Iterator<ApiPropertyDoc> iterator = doc.getFields().iterator();
         assertEquals("id", iterator.next().getName());
@@ -235,14 +242,14 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testUndefinedStageDoc() {
-        ApiTypeDoc doc = reader.read(UndefinedStage.class, typeReferenceProvider);
+        ApiTypeDoc doc = reader.read(UndefinedStage.class, typeReferenceProvider, templateProvider);
         assertEquals("UndefinedStage", doc.getName());
         assertNull(doc.getStage());
     }
 
     @Test
     public void testApiObjectDocWithHibernateValidator() {
-        ApiTypeDoc doc = reader.read(HibernateValidatorPojo.class, typeReferenceProvider);
+        ApiTypeDoc doc = reader.read(HibernateValidatorPojo.class, typeReferenceProvider, templateProvider);
         Set<ApiPropertyDoc> fields = doc.getFields();
         for (ApiPropertyDoc fieldDoc : fields) {
             if (fieldDoc.getName().equals("id")) {

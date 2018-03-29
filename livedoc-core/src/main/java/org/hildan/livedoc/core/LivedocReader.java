@@ -200,8 +200,7 @@ public class LivedocReader {
     }
 
     private Optional<ApiTypeDoc> readApiTypeDoc(Class<?> type) {
-        ApiTypeDoc doc = apiTypeDocReader.read(type, typeReferenceProvider);
-        doc.setTemplate(templateProvider.getTemplate(type));
+        ApiTypeDoc doc = apiTypeDocReader.read(type, typeReferenceProvider, templateProvider);
         ApiTypeDocValidator.validate(doc);
         return Optional.of(doc);
     }

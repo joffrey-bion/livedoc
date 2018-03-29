@@ -10,6 +10,7 @@ import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
+import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
 
@@ -23,7 +24,8 @@ public class ApiTypeDocReader {
         this.propertyScanner = propertyScanner;
     }
 
-    public ApiTypeDoc read(Class<?> clazz, TypeReferenceProvider typeReferenceProvider) {
+    public ApiTypeDoc read(Class<?> clazz, TypeReferenceProvider typeReferenceProvider,
+            TemplateProvider templateProvider) {
         ApiTypeDoc apiTypeDoc = new ApiTypeDoc(clazz);
         apiTypeDoc.setName(clazz.getSimpleName());
         apiTypeDoc.setSupportedVersions(ApiVersionDocReader.read(clazz));
@@ -43,6 +45,7 @@ public class ApiTypeDocReader {
         }
 
         apiTypeDoc.setFields(getFieldDocs(clazz, apiTypeDoc, typeReferenceProvider));
+        apiTypeDoc.setTemplate(templateProvider.getTemplate(clazz));
 
         return apiTypeDoc;
     }
