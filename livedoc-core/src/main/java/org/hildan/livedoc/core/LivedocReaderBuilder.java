@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
+import org.hildan.livedoc.core.readers.combined.CombinedDocReader;
 import org.hildan.livedoc.core.readers.javadoc.JavadocDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
@@ -263,7 +264,8 @@ public class LivedocReaderBuilder {
             docReaders.add(new JavadocDocReader());
             docReaders.add(new LivedocAnnotationDocReader(getAnnotatedTypesFinder()));
         }
-        return new LivedocReader(packages, typeScanner, globalDocReader, apiTypeDocReader, docReaders,
+        DocReader combinedReader = new CombinedDocReader(docReaders);
+        return new LivedocReader(packages, typeScanner, globalDocReader, apiTypeDocReader, combinedReader,
                 templateProvider);
     }
 

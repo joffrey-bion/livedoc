@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,7 +14,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.merger.DocMerger;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
@@ -25,7 +23,6 @@ import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
-import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
 import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
@@ -44,7 +41,7 @@ public class LivedocReader {
 
     private final GlobalDocReader globalDocReader;
 
-    private final List<DocReader> docReaders;
+    private final DocReader docReader;
 
     private final TypeScanner typeScanner;
 
@@ -53,8 +50,6 @@ public class LivedocReader {
     private final TemplateProvider templateProvider;
 
     private final TypeReferenceProvider typeReferenceProvider;
-
-    private final DocMerger docMerger;
 
     /**
      * Creates a new {@link LivedocReader} with the given configuration.
@@ -69,8 +64,8 @@ public class LivedocReader {
      *         flows, migrations)
      * @param apiTypeDocReader
      *         the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API
-     * @param readers
-     *         the {@link DocReader}s to use to create documentation objects using reflection. They are called in the
+     * @param docReader
+     *         the {@link DocReader} to use to create documentation objects using reflection. They are called in the
      *         given order, and the last reader's output has precedence over previous ones. This is why, by default, the
      *         {@link LivedocAnnotationDocReader} is last, so that Livedoc annotations override default framework
      *         documentations.
@@ -78,15 +73,14 @@ public class LivedocReader {
      *         the {@link TemplateProvider} to use to create example objects for the types used in the API
      */
     public LivedocReader(List<String> packageWhiteList, TypeScanner typeScanner, GlobalDocReader globalDocReader,
-            ApiTypeDocReader apiTypeDocReader, List<DocReader> readers, TemplateProvider templateProvider) {
+            ApiTypeDocReader apiTypeDocReader, DocReader docReader, TemplateProvider templateProvider) {
         this.packageWhiteList = packageWhiteList;
         this.typeScanner = typeScanner;
         this.apiTypeDocReader = apiTypeDocReader;
         this.globalDocReader = globalDocReader;
-        this.docReaders = readers;
+        this.docReader = docReader;
         this.templateProvider = templateProvider;
         this.typeReferenceProvider = new DefaultTypeReferenceProvider(this::isInWhiteListedPackage);
-        this.docMerger = new DocMerger(new FieldPropertyScanner());
     }
 
     private boolean isInWhiteListedPackage(Type type) {
@@ -133,7 +127,7 @@ public class LivedocReader {
         livedoc.setPlaygroundEnabled(playgroundEnabled);
         livedoc.setDisplayMethodAs(displayMethodAs);
 
-        Set<Class<?>> controllers = findControllers();
+        Collection<Class<?>> controllers = docReader.findControllerTypes();
         Collection<ApiDoc> apiDocs = readApiDocs(controllers);
         Set<Class<?>> types = getClassesToDocument();
 
@@ -154,14 +148,6 @@ public class LivedocReader {
                       .collect(Collectors.toMap(ApiOperationDoc::getId, x -> x));
     }
 
-    private Set<Class<?>> findControllers() {
-        Set<Class<?>> controllers = new HashSet<>();
-        for (DocReader reader : docReaders) {
-            controllers.addAll(reader.findControllerTypes());
-        }
-        return controllers;
-    }
-
     private Set<Class<?>> getClassesToDocument() {
         Set<Type> rootTypes = typeReferenceProvider.getProvidedReferences();
         Set<Class<?>> exploredTypes = typeScanner.findTypesToDocument(rootTypes);
@@ -173,7 +159,7 @@ public class LivedocReader {
     }
 
     public Optional<ApiDoc> readApiDoc(Class<?> controller) {
-        Optional<ApiDoc> doc = readFromAllReadersAndMerge(r -> r.buildApiDocBase(controller));
+        Optional<ApiDoc> doc = docReader.buildApiDocBase(controller);
         doc.ifPresent(apiDoc -> apiDoc.setOperations(readApiOperationDocs(controller, apiDoc)));
         return doc;
     }
@@ -184,12 +170,8 @@ public class LivedocReader {
 
     private List<Method> getApiOperationMethods(Class<?> controller) {
         return getAllMethods(controller).stream()
-                                        .filter(m -> isApiOperation(m, controller))
+                                        .filter(m -> docReader.isApiOperation(m, controller))
                                         .collect(Collectors.toList());
-    }
-
-    private boolean isApiOperation(Method method, Class<?> controller) {
-        return docReaders.stream().anyMatch(r -> r.isApiOperation(method, controller));
     }
 
     private static List<Method> getAllMethods(Class<?> clazz) {
@@ -204,8 +186,8 @@ public class LivedocReader {
     }
 
     private Optional<ApiOperationDoc> readApiOperationDoc(Method method, Class<?> controller, ApiDoc parentApiDoc) {
-        Optional<ApiOperationDoc> doc = readFromAllReadersAndMerge(
-                r -> r.buildApiOperationDoc(method, controller, parentApiDoc, typeReferenceProvider, templateProvider));
+        Optional<ApiOperationDoc> doc = docReader.buildApiOperationDoc(method, controller, parentApiDoc,
+                typeReferenceProvider, templateProvider);
         doc.ifPresent(apiOperationDoc -> {
             ApiOperationDocDefaults.complete(apiOperationDoc);
             ApiOperationDocValidator.validate(apiOperationDoc);
@@ -232,14 +214,6 @@ public class LivedocReader {
                       .map(Optional::get)
                       .sorted()
                       .collect(Collectors.toList());
-    }
-
-    private <D> Optional<D> readFromAllReadersAndMerge(Function<DocReader, Optional<D>> buildDoc) {
-        return docReaders.stream()
-                         .map(buildDoc)
-                         .filter(Optional::isPresent)
-                         .map(Optional::get)
-                         .reduce(docMerger::merge);
     }
 
     private static <T extends Groupable & Comparable<T>> List<Group<T>> group(Collection<T> elements) {
