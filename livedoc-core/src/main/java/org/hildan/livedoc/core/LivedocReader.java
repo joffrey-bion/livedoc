@@ -2,9 +2,7 @@ package org.hildan.livedoc.core;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +26,7 @@ import org.hildan.livedoc.core.scanners.types.TypeScanner;
 import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
 import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+import org.hildan.livedoc.core.util.LivedocUtils;
 import org.hildan.livedoc.core.validators.ApiOperationDocDefaults;
 import org.hildan.livedoc.core.validators.ApiOperationDocValidator;
 import org.hildan.livedoc.core.validators.ApiTypeDocValidator;
@@ -169,20 +168,9 @@ public class LivedocReader {
     }
 
     private List<Method> getApiOperationMethods(Class<?> controller) {
-        return getAllMethods(controller).stream()
-                                        .filter(m -> docReader.isApiOperation(m, controller))
-                                        .collect(Collectors.toList());
-    }
-
-    private static List<Method> getAllMethods(Class<?> clazz) {
-        List<Method> methods = new ArrayList<>();
-        Class<?> currentClass = clazz;
-        while (currentClass != null) {
-            Method[] declaredMethods = currentClass.getDeclaredMethods();
-            Collections.addAll(methods, declaredMethods);
-            currentClass = currentClass.getSuperclass();
-        }
-        return methods;
+        return LivedocUtils.getAllMethods(controller).stream()
+                           .filter(m -> docReader.isApiOperation(m, controller))
+                           .collect(Collectors.toList());
     }
 
     private Optional<ApiOperationDoc> readApiOperationDoc(Method method, Class<?> controller, ApiDoc parentApiDoc) {
