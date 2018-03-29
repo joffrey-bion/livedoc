@@ -3,9 +3,11 @@ package org.hildan.livedoc.core.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
@@ -55,5 +57,26 @@ public class LivedocUtils {
 
     public static AnnotatedTypesFinder createAnnotatedTypesFinder(Reflections reflections) {
         return annotationClass -> reflections.getTypesAnnotatedWith(annotationClass, true);
+    }
+
+    public static <T, U extends Comparable<? super U>> Comparator<T> comparingFirstItem(
+            Function<? super T, List<? extends U>> keyExtractor) {
+        return (a, b) -> {
+            List<? extends U> list1 = keyExtractor.apply(a);
+            List<? extends U> list2 = keyExtractor.apply(b);
+            if (list1.isEmpty()) {
+                if (list2.isEmpty()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else {
+                if (list2.isEmpty()) {
+                    return 1;
+                } else {
+                    return list1.get(0).compareTo(list2.get(0));
+                }
+            }
+        };
     }
 }

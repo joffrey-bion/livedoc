@@ -1,9 +1,9 @@
 package org.hildan.livedoc.core.model.doc;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
@@ -16,9 +16,23 @@ import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.util.LivedocUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperationDoc>, Secured, Staged, Versioned,
         Mergeable<ApiOperationDoc> {
+
+    private static final Comparator<ApiOperationDoc> PATHS_COMPARATOR = LivedocUtils.comparingFirstItem(
+            ApiOperationDoc::getPaths);
+
+    private static final Comparator<ApiOperationDoc> VERBS_COMPARATOR = LivedocUtils.comparingFirstItem(
+            ApiOperationDoc::getVerbs);
+
+    private static final Comparator<ApiOperationDoc> PARAMS_COMPARATOR = LivedocUtils.comparingFirstItem(
+            ApiOperationDoc::getQueryParameters);
+
+    private static final Comparator<ApiOperationDoc> COMPARATOR = PATHS_COMPARATOR.thenComparing(VERBS_COMPARATOR)
+                                                                                  .thenComparing(PARAMS_COMPARATOR);
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -125,7 +139,8 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     }
 
     public void setVerbs(List<ApiVerb> verbs) {
-        this.verbs = verbs;
+        this.verbs = new ArrayList<>(verbs);
+        Collections.sort(this.verbs);
     }
 
     public List<ApiHeaderDoc> getHeaders() {
@@ -241,41 +256,7 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     }
 
     @Override
-    public int compareTo(ApiOperationDoc o) {
-
-        int i;
-
-        if (this.paths.containsAll(o.getPaths()) && this.paths.size() == o.getPaths().size()) {
-            i = 0;
-        } else {
-            i = 1;
-        }
-
-        if (i != 0) {
-            return i;
-        }
-
-        if (this.verbs.containsAll(o.getVerbs()) && this.verbs.size() == o.getVerbs().size()) {
-            i = 0;
-        } else {
-            i = 1;
-        }
-
-        if (i != 0) {
-            return i;
-        }
-
-        if (this.queryParameters.size() == o.getQueryParameters().size()) {
-            Set<ApiParamDoc> bothQueryParameters = new HashSet<>();
-            bothQueryParameters.addAll(this.queryParameters);
-            bothQueryParameters.addAll(o.getQueryParameters());
-            if (bothQueryParameters.size() > this.queryParameters.size()) {
-                i = 1;
-            }
-        } else {
-            i = 1;
-        }
-
-        return i;
+    public int compareTo(@NotNull ApiOperationDoc o) {
+        return COMPARATOR.compare(this, o);
     }
 }

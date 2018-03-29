@@ -61,7 +61,7 @@ public class SpringDocAnnotationScannerTest {
             return 0;
         }
 
-        @ApiOperation(description = "Gets a string", path = "/wrongOnPurpose", verbs = ApiVerb.GET)
+        @ApiOperation(description = "Gets a string", path = "/overridden", verbs = ApiVerb.GET)
         @RequestMapping(value = "/string/{name}",
                 headers = "header=test",
                 params = "delete",
@@ -87,8 +87,8 @@ public class SpringDocAnnotationScannerTest {
         List<ApiOperationDoc> operations = apiDoc.getOperations();
         assertEquals(2, operations.size());
 
-        checkStringOperation(operations.get(0));
-        checkIntegerOperation(operations.get(1));
+        checkIntegerOperation(operations.get(0));
+        checkStringOperation(operations.get(1));
     }
 
     private static void checkIntegerOperation(ApiOperationDoc opDoc) {
@@ -128,7 +128,7 @@ public class SpringDocAnnotationScannerTest {
         assertEquals("String", opDoc.getResponseBodyType().getOneLineText());
 
         // livedoc annotations override Spring config
-        assertEquals("/wrongOnPurpose", opDoc.getPaths().get(0));
+        assertEquals("/overridden", opDoc.getPaths().get(0));
         assertEquals(1, opDoc.getVerbs().size());
         assertEquals(ApiVerb.GET, opDoc.getVerbs().get(0));
 
