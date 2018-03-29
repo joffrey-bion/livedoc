@@ -5,8 +5,9 @@ layout: default
 
 # Quickstart: Spring MVC
 
-`livedoc-springmvc` knows Spring annotations and is able to generate a documentation without a single Livedoc 
-annotation. Of course, it is recommended to add Livedoc annotations in order to provide more details about the API.
+`livedoc-springmvc` knows Spring annotations and is able to generate a documentation without further configuration. 
+Combined with [Javadoc processing](../javadoc-processing), it allows you to generate a complete documentation without
+ a single Livedoc annotation.
 
 If you're not familiar with [Spring Boot](https://projects.spring.io/spring-boot), I recommend taking a look, as the 
 integration with Livedoc is even faster than plain Spring MVC. 
@@ -14,6 +15,9 @@ integration with Livedoc is even faster than plain Spring MVC.
 ## Add a dependency on `livedoc-springmvc`
 
 {% include dependency.md artifactId="livedoc-springmvc" %}
+
+If you want to generate part of your documentation (descriptions) from your Javadoc, you also need to 
+[add the Livedoc Javadoc processor](../javadoc-processing).
 
 ## Use the provided controller via XML
 

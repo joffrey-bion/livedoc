@@ -5,11 +5,18 @@ layout: default
 
 # Quickstart: Spring Boot
 
-`livedoc-springboot` is almost identical to the Spring MVC flavour, but you have even less work to do! 
+`livedoc-springboot` is almost identical to the Spring MVC flavour, but you have even less work to do!
+
+Like `livedoc-springmvc`, it knows Spring annotations and is able to generate a documentation without further 
+configuration. Combined with [Javadoc processing](../javadoc-processing), it allows you to generate a complete 
+documentation without a single Livedoc annotation.
 
 ## Add a dependency on `livedoc-springboot`
 
 {% include dependency.md artifactId="livedoc-springboot" %}
+
+If you want to generate part of your documentation (descriptions) from your Javadoc, you also need to 
+[add the Livedoc Javadoc processor](../javadoc-processing).
 
 ## Add the required configuration in `application.properties`
 
