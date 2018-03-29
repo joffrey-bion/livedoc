@@ -1,5 +1,12 @@
 # Change Log
 
+## [v4.2.0](https://bintray.com/joffrey-bion/maven/livedoc/4.2.0) (2018-03-29)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.1.0...v4.2.0)
+
+**Implemented enhancements:**
+
+- Add support for reading some kind of JSON javadoc [\#70](https://github.com/joffrey-bion/livedoc/issues/70)
+
 ## [v4.1.0](https://bintray.com/joffrey-bion/maven/livedoc/4.1.0) (2018-03-03)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.0.0...v4.1.0)
 
