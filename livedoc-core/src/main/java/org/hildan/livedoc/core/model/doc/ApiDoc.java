@@ -12,6 +12,7 @@ import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.groups.Groupable;
+import org.jetbrains.annotations.NotNull;
 
 public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, Versioned, Mergeable<ApiDoc> {
 
@@ -106,14 +107,14 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
     }
 
     @Override
-    public int compareTo(ApiDoc o) {
+    public int compareTo(@NotNull ApiDoc o) {
         return name.compareTo(o.getName());
     }
 
     @Override
     public ApiDoc merge(ApiDoc override, DocMerger merger) {
         ApiDoc merged = merger.mergeProperties(this, override, new ApiDoc());
-        merged.operations = merger.mergeList(this.operations, override.operations, ApiOperationDoc::getPaths);
+        merged.operations = merger.mergeAndSort(this.operations, override.operations, ApiOperationDoc::getPaths);
         return merged;
     }
 }

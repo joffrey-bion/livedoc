@@ -249,8 +249,8 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     public ApiOperationDoc merge(ApiOperationDoc override, DocMerger merger) {
         ApiOperationDoc merged = merger.mergeProperties(this, override, new ApiOperationDoc());
         // For paths, consumes, produces, and errors, we want the last non empty list to win, no merge
-        merged.pathParameters = merger.mergeList(this.pathParameters, override.pathParameters, ApiParamDoc::getName);
-        merged.queryParameters = merger.mergeList(this.queryParameters, override.queryParameters, ApiParamDoc::getName);
+        merged.pathParameters = merger.mergeAndSort(this.pathParameters, override.pathParameters, ApiParamDoc::getName);
+        merged.queryParameters = merger.mergeAndSort(this.queryParameters, override.queryParameters, ApiParamDoc::getName);
         merged.headers = merger.mergeList(this.headers, override.headers, ApiHeaderDoc::getName);
         return merged;
     }

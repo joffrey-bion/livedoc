@@ -81,39 +81,28 @@ public class ApiHeaderDoc implements Mergeable<ApiHeaderDoc> {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ApiHeaderDoc that = (ApiHeaderDoc) o;
+
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        ApiHeaderDoc other = (ApiHeaderDoc) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override
     public ApiHeaderDoc merge(ApiHeaderDoc override, DocMerger merger) {
         ApiHeaderDoc merged = merger.mergeProperties(this, override, new ApiHeaderDoc());
-        merged.values = merger.mergeList(this.values, override.values, s -> s);
+        merged.values = merger.mergeAndSort(this.values, override.values, s -> s);
         return merged;
     }
 }

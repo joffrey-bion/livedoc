@@ -114,6 +114,15 @@ public class DocMerger {
         return Defaults.defaultValueFor(field.getType());
     }
 
+    @NotNull
+    public <T extends Comparable<T>, K> List<T> mergeAndSort(List<T> base, List<T> overrides,
+            Function<T, K> keyExtractor) {
+        List<T> overridden = mergeList(base, overrides, keyExtractor);
+        Collections.sort(overridden);
+        return overridden;
+    }
+
+    @NotNull
     public <T, K> List<T> mergeList(List<T> base, List<T> overrides, Function<T, K> keyExtractor) {
         List<T> basePool = new ArrayList<>(base);
         List<T> overridden = new ArrayList<>();
@@ -124,10 +133,6 @@ public class DocMerger {
             overridden.add(merged);
         }
         overridden.addAll(basePool);
-        if (!overridden.isEmpty() && overridden.get(0) instanceof Comparable) {
-            //noinspection unchecked
-            Collections.sort((List<Comparable>) overridden);
-        }
         return overridden;
     }
 
