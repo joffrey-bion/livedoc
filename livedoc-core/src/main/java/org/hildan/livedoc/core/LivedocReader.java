@@ -32,7 +32,7 @@ import org.hildan.livedoc.core.validators.ApiOperationDocValidator;
 import org.hildan.livedoc.core.validators.ApiTypeDocValidator;
 
 /**
- * A component able to create an API documentation by inspecting classes and reading their annotations.
+ * Builds a {@link Livedoc} object representing an API documentation by reading java classes and their annotations.
  */
 public class LivedocReader {
 
@@ -59,11 +59,13 @@ public class LivedocReader {
      *         the {@link GlobalDocReader} to use to generate the global documentation of a project (general info,
      *         flows, migrations)
      * @param typeScanner
-     *         the {@link TypeScanner} to use to explore the types to document, starting from the types used in the API
+     *         the {@link TypeScanner} to use to retrieve all the types that should be documented, starting from the
+     *         types that are directly referenced in the API (as request or response body, mainly)
      * @param templateProvider
      *         the {@link TemplateProvider} to use to create example objects for the types used in the API
      * @param typeReferenceProvider
-     *         the {@link TypeReferenceProvider} to use to build {@link LivedocType}s for documentation elements
+     *         the {@link TypeReferenceProvider} to use to build {@link LivedocType}s for documentation elements,
+     *         such as request or response bodies
      */
     public LivedocReader(DocReader docReader, ApiTypeDocReader apiTypeDocReader, GlobalDocReader globalDocReader,
             TypeScanner typeScanner, TemplateProvider templateProvider, TypeReferenceProvider typeReferenceProvider) {

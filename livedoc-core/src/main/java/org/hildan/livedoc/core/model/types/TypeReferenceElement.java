@@ -1,5 +1,9 @@
 package org.hildan.livedoc.core.model.types;
 
+/**
+ * Represents an element in a {@link LivedocType}. An element can either be a textual element for display purposes,
+ * such as "[]" for arrays, or a reference to a documented class, in the form of its livedoc ID.
+ */
 public class TypeReferenceElement {
 
     static final TypeReferenceElement VOID = text("void");

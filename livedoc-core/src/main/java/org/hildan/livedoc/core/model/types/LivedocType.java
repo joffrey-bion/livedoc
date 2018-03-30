@@ -3,6 +3,12 @@ package org.hildan.livedoc.core.model.types;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Represents the declaration of a type. It provides the list of {@link TypeReferenceElement}s composing this type's
+ * declaration. Each of these elements may in turn contain a reference to the documentation of the corresponding class.
+ *
+ * @see TypeReferenceElement
+ */
 public interface LivedocType {
 
     /**
@@ -15,8 +21,8 @@ public interface LivedocType {
     }
 
     /**
-     * Breaks down this type's declaration into multiple display elements. Some of them are textual elements, other
-     * are references to other types.
+     * Breaks down this type's declaration into multiple display elements. Some of them are textual elements, other are
+     * references to other types.
      *
      * @return a list of {@link TypeReferenceElement}s that compose this type's declaration
      */
