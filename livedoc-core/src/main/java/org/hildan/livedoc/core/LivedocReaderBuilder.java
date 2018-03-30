@@ -23,7 +23,10 @@ import org.hildan.livedoc.core.scanners.types.RecursivePropertyTypeScanner;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
 import org.hildan.livedoc.core.scanners.types.mappers.ConcreteSubtypesMapper;
 import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
+import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.LivedocUtils;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
 /**
@@ -50,7 +53,7 @@ public class LivedocReaderBuilder {
 
     private TypeScanner typeScanner;
 
-    private Predicate<? super Class<?>> typeFilter = TypePredicates.IS_CONTAINER.negate();
+    private Predicate<Type> documentedTypesFilter = TypePredicates.IS_CONTAINER.negate();
 
     private Predicate<Type> typeInspectionFilter = TypePredicates.IS_BASIC_TYPE.negate();
 
@@ -136,8 +139,8 @@ public class LivedocReaderBuilder {
     }
 
     /**
-     * Defines the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API. <p>
-     * The default uses the configured {@link PropertyScanner}, so it should not usually need to be replaced.
+     * Defines the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API. <p> The
+     * default uses the configured {@link PropertyScanner}, so it should not usually need to be replaced.
      *
      * @param apiTypeDocReader
      *         the {@link ApiTypeDocReader} to use
@@ -150,7 +153,8 @@ public class LivedocReaderBuilder {
     }
 
     /**
-     * Defines the {@link TypeScanner} to use to explore the types to document, starting from the types used in the API.
+     * Defines the {@link TypeScanner} to use to explore the types to document, starting from the types used in the
+     * API.
      * <p>The default uses the configured {@link PropertyScanner}, so it should not usually need to be replaced.
      *
      * @param typeScanner
@@ -166,29 +170,29 @@ public class LivedocReaderBuilder {
     /**
      * Defines a filter for documented types. Any type that doesn't match the given predicate will not be documented.
      *
-     * @param filter
+     * @param shouldBeDocumented
      *         the predicate that types need to verify to be documented
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder withTypeFilter(Predicate<Type> filter) {
-        this.typeFilter = filter;
+    public LivedocReaderBuilder withTypeFilter(Predicate<Type> shouldBeDocumented) {
+        this.documentedTypesFilter = shouldBeDocumented;
         return this;
     }
 
     /**
      * Defines a filter for recursion in type exploration. Any type that doesn't match the given predicate will not have
-     * its properties inspected. This is useful for classes that express a simple concept and are usually serialized
-     * in a single element, but internally encapsulates a lot of complexity (fields/getters). For instance, we could
-     * use this to filter out Date objects.
+     * its properties inspected. This is useful for classes that express a simple concept and are usually serialized in
+     * a single element, but internally encapsulates a lot of complexity (fields/getters). For instance, we could use
+     * this to filter out dates, strings, or enums.
      *
-     * @param filter
-     *         the predicate that types need to verify to be documented
+     * @param canBeIntrospected
+     *         the predicate that types need to verify to be introspected
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder withTypeInspectionFilter(Predicate<Type> filter) {
-        this.typeInspectionFilter = filter;
+    public LivedocReaderBuilder withTypeInspectionFilter(Predicate<Type> canBeIntrospected) {
+        this.typeInspectionFilter = canBeIntrospected;
         return this;
     }
 
@@ -245,64 +249,73 @@ public class LivedocReaderBuilder {
         if (packages == null) {
             throw new IllegalStateException("No packages white list provided");
         }
+        documentedTypesFilter = documentedTypesFilter.and(TypePredicates.isInPackage(packages));
         if (propertyScanner == null) {
             propertyScanner = getDefaultPropertyScanner();
         }
         if (typeScanner == null) {
-            typeScanner = getDefaultTypeScanner(propertyScanner);
+            typeScanner = getDefaultTypeScanner(propertyScanner, documentedTypesFilter, typeInspectionFilter, packages);
         }
         if (apiTypeDocReader == null) {
             apiTypeDocReader = getDefaultApiObjectDocReader(propertyScanner);
         }
         if (templateProvider == null) {
-            templateProvider = getDefaultTemplateProvider(propertyScanner);
+            templateProvider = getDefaultTemplateProvider(propertyScanner, typeInspectionFilter);
         }
         if (globalDocReader == null) {
-            globalDocReader = getDefaultGlobalReader();
+            globalDocReader = getDefaultGlobalReader(packages);
         }
         if (docReaders.isEmpty()) {
             docReaders.add(new JavadocDocReader());
-            docReaders.add(new LivedocAnnotationDocReader(getAnnotatedTypesFinder()));
+            docReaders.add(new LivedocAnnotationDocReader(getAnnotatedTypesFinder(packages)));
         }
         DocReader combinedReader = new CombinedDocReader(docReaders);
-        return new LivedocReader(packages, typeScanner, globalDocReader, apiTypeDocReader, combinedReader,
-                templateProvider);
+        TypeReferenceProvider typeRefProvider = getDefaultTypeReferenceProvider(documentedTypesFilter);
+        return new LivedocReader(combinedReader, apiTypeDocReader, globalDocReader, typeScanner, templateProvider,
+                typeRefProvider);
     }
 
     private static LivedocPropertyScannerWrapper getDefaultPropertyScanner() {
         return new LivedocPropertyScannerWrapper(new FieldPropertyScanner());
     }
 
-    private TypeScanner getDefaultTypeScanner(PropertyScanner propertyScanner) {
+    private TypeScanner getDefaultTypeScanner(PropertyScanner propertyScanner, Predicate<? super Class<?>> typeFilter,
+            Predicate<Type> typeInspectionFilter, List<String> packages) {
         RecursivePropertyTypeScanner scanner = new RecursivePropertyTypeScanner(propertyScanner);
         // excludes collections/maps from doc (would just be noise)
         scanner.setTypeFilter(typeFilter);
         // do not explore the fields of simple types like primitive wrappers, strings and enums
         scanner.setTypeInspectionFilter(typeInspectionFilter);
-        scanner.setTypeMapper(new ConcreteSubtypesMapper(getReflections()));
+        scanner.setTypeMapper(new ConcreteSubtypesMapper(getReflections(packages)));
         return scanner;
+    }
+
+    @NotNull
+    private static DefaultTypeReferenceProvider getDefaultTypeReferenceProvider(Predicate<? super Type> typeFilter) {
+        return new DefaultTypeReferenceProvider(typeFilter);
     }
 
     private static ApiTypeDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
         return new ApiTypeDocReader(propertyScanner);
     }
 
-    private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner) {
+    private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner,
+            Predicate<Type> typeInspectionFilter) {
         return new RecursiveTemplateProvider(propertyScanner, typeInspectionFilter, customExampleValuesByType);
     }
 
-    private GlobalDocReader getDefaultGlobalReader() {
-        return new LivedocAnnotationGlobalDocReader(getAnnotatedTypesFinder());
+    private GlobalDocReader getDefaultGlobalReader(List<String> packages) {
+        return new LivedocAnnotationGlobalDocReader(getAnnotatedTypesFinder(packages));
     }
 
-    private AnnotatedTypesFinder getAnnotatedTypesFinder() {
+    private AnnotatedTypesFinder getAnnotatedTypesFinder(List<String> packages) {
         if (annotatedTypesFinder == null) {
-            annotatedTypesFinder = LivedocUtils.createAnnotatedTypesFinder(getReflections());
+            annotatedTypesFinder = LivedocUtils.createAnnotatedTypesFinder(getReflections(packages));
         }
         return annotatedTypesFinder;
     }
 
-    private Reflections getReflections() {
+    private Reflections getReflections(List<String> packages) {
         if (reflections == null) {
             reflections = LivedocUtils.newReflections(packages);
         }

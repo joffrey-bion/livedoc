@@ -16,15 +16,15 @@ import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
+import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
+import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.groups.Groupable;
+import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
-import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
-import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
-import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.hildan.livedoc.core.validators.ApiOperationDocDefaults;
@@ -35,8 +35,6 @@ import org.hildan.livedoc.core.validators.ApiTypeDocValidator;
  * A component able to create an API documentation by inspecting classes and reading their annotations.
  */
 public class LivedocReader {
-
-    private final List<String> packageWhiteList;
 
     private final GlobalDocReader globalDocReader;
 
@@ -53,45 +51,28 @@ public class LivedocReader {
     /**
      * Creates a new {@link LivedocReader} with the given configuration.
      *
-     * @param packageWhiteList
-     *         the packages that should be scanned to find the classes to document. The given list will be used to find
-     *         controllers and to filter the types to document.
-     * @param typeScanner
-     *         the {@link TypeScanner} to use to explore the types to document, starting from the types used in the API
+     * @param docReader
+     *         the {@link DocReader} to use to generate the documentation for API operations
+     * @param apiTypeDocReader
+     *         the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API
      * @param globalDocReader
      *         the {@link GlobalDocReader} to use to generate the global documentation of a project (general info,
      *         flows, migrations)
-     * @param apiTypeDocReader
-     *         the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API
-     * @param docReader
-     *         the {@link DocReader} to use to create documentation objects using reflection. They are called in the
-     *         given order, and the last reader's output has precedence over previous ones. This is why, by default, the
-     *         {@link LivedocAnnotationDocReader} is last, so that Livedoc annotations override default framework
-     *         documentations.
+     * @param typeScanner
+     *         the {@link TypeScanner} to use to explore the types to document, starting from the types used in the API
      * @param templateProvider
      *         the {@link TemplateProvider} to use to create example objects for the types used in the API
+     * @param typeReferenceProvider
+     *         the {@link TypeReferenceProvider} to use to build {@link LivedocType}s for documentation elements
      */
-    public LivedocReader(List<String> packageWhiteList, TypeScanner typeScanner, GlobalDocReader globalDocReader,
-            ApiTypeDocReader apiTypeDocReader, DocReader docReader, TemplateProvider templateProvider) {
-        this.packageWhiteList = packageWhiteList;
+    public LivedocReader(DocReader docReader, ApiTypeDocReader apiTypeDocReader, GlobalDocReader globalDocReader,
+            TypeScanner typeScanner, TemplateProvider templateProvider, TypeReferenceProvider typeReferenceProvider) {
         this.typeScanner = typeScanner;
         this.apiTypeDocReader = apiTypeDocReader;
         this.globalDocReader = globalDocReader;
         this.docReader = docReader;
         this.templateProvider = templateProvider;
-        this.typeReferenceProvider = new DefaultTypeReferenceProvider(this::isInWhiteListedPackage);
-    }
-
-    private boolean isInWhiteListedPackage(Type type) {
-        if (!(type instanceof Class)) {
-            return true;
-        }
-        if (TypePredicates.isPrimitiveLike(type)) {
-            return false;
-        }
-        Class<?> clazz = (Class<?>) type;
-        String packageName = clazz.getPackage().getName();
-        return packageWhiteList.stream().anyMatch(packageName::startsWith);
+        this.typeReferenceProvider = typeReferenceProvider;
     }
 
     /**
@@ -122,21 +103,25 @@ public class LivedocReader {
      * @return a new {@link Livedoc} object representing the API
      */
     public Livedoc read(String version, String basePath, boolean playgroundEnabled, MethodDisplay displayMethodAs) {
-        Livedoc livedoc = new Livedoc(version, basePath);
-        livedoc.setPlaygroundEnabled(playgroundEnabled);
-        livedoc.setDisplayMethodAs(displayMethodAs);
 
         Collection<Class<?>> controllers = docReader.findControllerTypes();
         Collection<ApiDoc> apiDocs = readApiDocs(controllers);
-        Set<Class<?>> types = getClassesToDocument();
 
-        livedoc.setApis(group(apiDocs));
-        livedoc.setTypes(group(getApiTypeDocs(types)));
+        Set<Class<?>> types = getClassesToDocument();
+        List<ApiTypeDoc> apiTypeDocs = readApiTypeDocs(types);
 
         Map<String, ApiOperationDoc> apiOperationDocsById = getAllApiOperationDocsById(apiDocs);
-        livedoc.setFlows(group(globalDocReader.getApiFlowDocs(apiOperationDocsById)));
-        livedoc.setGlobal(globalDocReader.getApiGlobalDoc());
+        Set<ApiFlowDoc> apiFlowDocs = globalDocReader.getApiFlowDocs(apiOperationDocsById);
 
+        ApiGlobalDoc apiGlobalDoc = globalDocReader.getApiGlobalDoc();
+
+        Livedoc livedoc = new Livedoc(version, basePath);
+        livedoc.setPlaygroundEnabled(playgroundEnabled);
+        livedoc.setDisplayMethodAs(displayMethodAs);
+        livedoc.setApis(group(apiDocs));
+        livedoc.setTypes(group(apiTypeDocs));
+        livedoc.setFlows(group(apiFlowDocs));
+        livedoc.setGlobal(apiGlobalDoc);
         return livedoc;
     }
 
@@ -149,8 +134,7 @@ public class LivedocReader {
 
     private Set<Class<?>> getClassesToDocument() {
         Set<Type> rootTypes = typeReferenceProvider.getProvidedReferences();
-        Set<Class<?>> exploredTypes = typeScanner.findTypesToDocument(rootTypes);
-        return exploredTypes.stream().filter(this::isInWhiteListedPackage).collect(Collectors.toSet());
+        return typeScanner.findTypesToDocument(rootTypes);
     }
 
     private Collection<ApiDoc> readApiDocs(Collection<Class<?>> controllers) {
@@ -168,7 +152,8 @@ public class LivedocReader {
     }
 
     private List<Method> getApiOperationMethods(Class<?> controller) {
-        return LivedocUtils.getAllMethods(controller).stream()
+        return LivedocUtils.getAllMethods(controller)
+                           .stream()
                            .filter(m -> docReader.isApiOperation(m, controller))
                            .collect(Collectors.toList());
     }
@@ -183,7 +168,7 @@ public class LivedocReader {
         return doc;
     }
 
-    private List<ApiTypeDoc> getApiTypeDocs(Collection<Class<?>> types) {
+    private List<ApiTypeDoc> readApiTypeDocs(Collection<Class<?>> types) {
         return buildDocs(types, this::readApiTypeDoc);
     }
 

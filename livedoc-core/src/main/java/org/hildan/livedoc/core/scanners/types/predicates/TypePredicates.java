@@ -4,6 +4,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -97,5 +98,24 @@ public class TypePredicates {
 
     public static boolean isContainer(Class<?> clazz) {
         return clazz.isArray() || Arrays.stream(CONTAINERS).anyMatch(c -> c.isAssignableFrom(clazz));
+    }
+
+    public static Predicate<Type> isInPackage(List<String> packages) {
+        return type -> isInPackage(packages, type);
+    }
+
+    public static boolean isInPackage(List<String> packages, Type type) {
+        if (!(type instanceof Class)) {
+            return true;
+        }
+        if (TypePredicates.isPrimitiveLike(type)) {
+            return false;
+        }
+        return isInPackage(packages, (Class<?>) type);
+    }
+
+    public static boolean isInPackage(List<String> packages, Class<?> clazz) {
+        String packageName = clazz.getPackage().getName();
+        return packages.stream().anyMatch(packageName::startsWith);
     }
 }
