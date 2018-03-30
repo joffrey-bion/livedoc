@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.hildan.generics.GenericDeclarationExplorer;
 import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.scanners.types.generics.GenericDeclarationExplorer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

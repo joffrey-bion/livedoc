@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hildan.generics.GenericDeclarationExplorer;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.scanners.types.generics.GenericDeclarationExplorer;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceBuilder;
 import org.junit.Assert;
 import org.junit.Test;

@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.hildan.generics.MentionedClassesExplorer;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
-import org.hildan.livedoc.core.scanners.types.generics.MentionedClassesExplorer;
 
 /**
  * An implementation of {@link TypeScanner} that reads the types of the properties of the classes, and recursively

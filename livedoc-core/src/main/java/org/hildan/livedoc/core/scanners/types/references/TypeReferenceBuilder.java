@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.hildan.generics.GenericTypeHandler;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.types.ArrayTypeReference;
 import org.hildan.livedoc.core.model.types.BoundType;
@@ -17,7 +18,6 @@ import org.hildan.livedoc.core.model.types.SimpleClassReference;
 import org.hildan.livedoc.core.model.types.TypeVariableReference;
 import org.hildan.livedoc.core.model.types.VoidTypeReference;
 import org.hildan.livedoc.core.model.types.WildcardTypeReference;
-import org.hildan.livedoc.core.scanners.types.generics.GenericTypeHandler;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.jetbrains.annotations.NotNull;
 
