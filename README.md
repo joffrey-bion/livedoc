@@ -5,8 +5,12 @@
 [![Build Status](https://travis-ci.org/joffrey-bion/livedoc.svg?branch=master)](https://travis-ci.org/joffrey-bion/livedoc)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/joffrey-bion/fx-gson/blob/master/LICENSE)
 
-[Livedoc](https://joffrey-bion.github.io/livedoc) is an annotation-based documentation generator for REST and websocket 
-services, inspired by the [JSONDoc](http://jsondoc.org) project.
+[Livedoc](https://joffrey-bion.github.io/livedoc) is a documentation generator for REST and websocket services, 
+inspired by the [JSONDoc](http://jsondoc.org) project. 
+
+Livedoc's main aim is to allow the generation of a complete documentation with as little extra effort as possible. In
+ particular, using Livedoc annotations should be a last resort to override a piece of documentation that does not 
+ match the user's needs.
 
 ## How does it work?
 
@@ -23,10 +27,14 @@ Check out the [official documentation](https://joffrey-bion.github.io/livedoc) t
 
 ## Credits
 
-Credits to Fabio Maffioletti for his great work on the original JSONDoc project, and to all contributors that helped 
-him build JSONDoc up to version 1.2.17, which I started from.
+Credits to [@fabiomaffioletti](https://github.com/fabiomaffioletti) for his great work on the original JSONDoc project, 
+and to all contributors that helped him build JSONDoc up to version 1.2.17, which I started from.
 
-Special thanks to @ST-DDT for his very constructive feedback, both on the original project and on Livedoc.
+Special thanks to [@ST-DDT](https://github.com/ST-DDT) for his very constructive feedback, both on the original project 
+and on Livedoc.
+
+Livedoc uses the [therapi-runtime-javadoc](https://github.com/dnault/therapi-runtime-javadoc) library by 
+[@dnault](https://github.com/dnault) for its Javadoc-related processing.
 
 ## License
 
