@@ -20,6 +20,7 @@ import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
+import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -36,9 +37,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 public class SpringDocAnnotationScannerTest {
 
+    /**
+     * Test controller.
+     */
     @SuppressWarnings("unused")
     @Api(description = "A spring controller", name = "Spring controller")
     @RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -80,6 +85,9 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void testMergeApiDoc() {
+        if (!JavadocHelper.getJavadocDescription(SpringController.class).isPresent()) {
+            fail("Javadoc processor was not enabled");
+        }
         ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
         assertEquals("A spring controller", apiDoc.getDescription());
         assertEquals("Spring controller", apiDoc.getName());
