@@ -120,6 +120,10 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         if (Collection.class.isAssignableFrom(rawType)) {
             Type componentType = typeParams[0];
             Object exampleElement = getTemplate(componentType, containingClasses);
+            if (exampleElement == null) {
+                // a null element in a list is ugly, better use empty list in this case
+                return Collections.emptyList();
+            }
             return Collections.singletonList(exampleElement);
         }
         if (Map.class.isAssignableFrom(rawType)) {
@@ -127,6 +131,10 @@ public class RecursiveTemplateProvider implements TemplateProvider {
             Type valueType = typeParams[1];
             Object exampleKey = getTemplate(keyType, containingClasses);
             Object exampleValue = getTemplate(valueType, containingClasses);
+            if (exampleKey == null) {
+                // JSON does not support null keys in maps
+                return Collections.emptyMap();
+            }
             return Collections.singletonMap(exampleKey, exampleValue);
         }
         return createBeanExample(type, rawType, containingClasses);
@@ -136,6 +144,9 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         Object defaultValueOfParentType = getDefaultValueOfParentType(type);
         if (defaultValueOfParentType != null) {
             return defaultValueOfParentType;
+        }
+        if (void.class.equals(type)) {
+            return null;
         }
         if (type.isEnum()) {
             return getEnumDefaultValue(type);
@@ -169,10 +180,6 @@ public class RecursiveTemplateProvider implements TemplateProvider {
 
     private Object getPropertyExample(Property property, Set<Type> containingClasses) {
         Type type = property.getGenericType();
-        if (containingClasses.contains(type)) {
-            // avoid infinite recursion of templates
-            return null;
-        }
         Object defaultValue = property.getDefaultValue();
         if (defaultValue != null) {
             return defaultValue;
@@ -180,12 +187,12 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         return getTemplate(type, containingClasses);
     }
 
-    private static <T> String getEnumDefaultValue(Class<T> enumType) {
+    private static <T> T getEnumDefaultValue(Class<T> enumType) {
         T[] values = enumType.getEnumConstants();
         if (values == null || values.length == 0) {
             return null;
         }
-        return values[0].toString();
+        return values[0];
     }
 
     private static Object getDefaultValueOfParentType(Class<?> type) {

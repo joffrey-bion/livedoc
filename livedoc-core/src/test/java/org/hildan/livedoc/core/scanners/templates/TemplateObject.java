@@ -81,4 +81,10 @@ public class TemplateObject {
     @ApiTypeProperty
     private Map<Integer, List<TemplateSubSubObject>> mapintegerlistsubsubobj;
 
+    @ApiTypeProperty
+    private Map<TemplateEnum, String> mapEnumString;
+
+    @ApiTypeProperty
+    private Map<TemplateEnumEmpty, String> mapEmptyEnumString;
+
 }
