@@ -19,6 +19,12 @@ public class LivedocPropertyScannerWrapper implements PropertyScanner {
 
     private final PropertyScanner scanner;
 
+    /**
+     * Wraps the given {@link PropertyScanner} to add support for {@link ApiTypeProperty} annotation.
+     *
+     * @param scanner
+     *         the scanner to wrap
+     */
     public LivedocPropertyScannerWrapper(PropertyScanner scanner) {
         this.scanner = scanner;
     }
