@@ -1,6 +1,8 @@
-node_modules
-
 # gradle
 build
 build.gradle
 .gradle
+
+# intellij idea
+out
+
