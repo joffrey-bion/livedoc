@@ -7,7 +7,7 @@ import { actions, FETCH_DOC } from '../redux/actions/loader';
 function* fetchDoc(action: FetchDocAction): * {
   try {
     console.log('Fetching documentation at', action.url);
-    const response: Response = yield call(fetch, action.url, {mode: 'cors'});
+    const response: Response = yield call(fetch, action.url, {mode: 'cors', credentials: 'include'});
     if (response.ok) {
       const data = yield apply(response, response.json);
       console.log('Fetched documentation:', data);
