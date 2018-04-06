@@ -19,7 +19,9 @@ function computeInitialUrl(): string {
   if (specifiedUrl) {
     return specifiedUrl;
   }
-  return window.location.origin + '/jsondoc';
+  // if using the webjar, then the doc endpoint in on the same server at /jsondoc, so "/jsondoc" is sufficient
+  // if using an independent UI, then it is likely that the app server URL ends in /jsondoc, so this string helps anyway
+  return '/jsondoc';
 }
 
 export type PlaygroundState = {
