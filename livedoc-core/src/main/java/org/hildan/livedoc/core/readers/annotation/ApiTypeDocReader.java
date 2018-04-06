@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
@@ -26,8 +27,10 @@ public class ApiTypeDocReader {
 
     public ApiTypeDoc read(Class<?> clazz, TypeReferenceProvider typeReferenceProvider,
             TemplateProvider templateProvider) {
+        String javadoc = JavadocHelper.getJavadocDescription(clazz).orElse(null);
         ApiTypeDoc apiTypeDoc = new ApiTypeDoc(clazz);
         apiTypeDoc.setName(clazz.getSimpleName());
+        apiTypeDoc.setDescription(javadoc);
         apiTypeDoc.setSupportedVersions(ApiVersionDocReader.read(clazz));
         apiTypeDoc.setShow(Modifier.isAbstract(clazz.getModifiers()));
         apiTypeDoc.setStage(ApiStageReader.read(clazz));
@@ -35,7 +38,7 @@ public class ApiTypeDocReader {
         ApiType apiType = clazz.getAnnotation(ApiType.class);
         if (apiType != null) {
             apiTypeDoc.setName(BeanUtils.maybeOverridden(nullifyIfEmpty(apiType.name()), clazz.getSimpleName()));
-            apiTypeDoc.setDescription(nullifyIfEmpty(apiType.description()));
+            apiTypeDoc.setDescription(BeanUtils.maybeOverridden(nullifyIfEmpty(apiType.description()), javadoc));
             apiTypeDoc.setGroup(apiType.group());
             apiTypeDoc.setShow(apiType.show());
         }
