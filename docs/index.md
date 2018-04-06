@@ -3,7 +3,7 @@ title: Home
 layout: default
 ---
 
-# What is Livedoc ?
+## What is Livedoc ?
 
 Livedoc is a Java library that inspects the Java code of your API and builds its documentation based on what it 
 found. It was [inspired by JSONDoc](about-jsondoc), and aims at allowing users to generate a documentation with the 
@@ -16,10 +16,23 @@ Moreover, Livedoc is [able to read the Javadoc](javadoc-processing), thus removi
 
 Last but not least, Livedoc also provides a [UI](livedoc-ui) that you can use to visualize the documentation.
 
-# Get started with Livedoc
+## Get started with Livedoc
 
 Choose your Livedoc flavour:
 
 - [Spring Boot](quickstart/springboot) (recommended)
 - [Spring MVC](quickstart/springmvc)
 - [Other framework](quickstart/plain)
+
+Then you may check out how to serve the documentation with [the provided UI](livedoc-ui).
+
+## Credits
+
+Credits to [@fabiomaffioletti](https://github.com/fabiomaffioletti) for his great work on the original JSONDoc project, 
+and to all contributors that helped him build JSONDoc up to version 1.2.17, which I started from.
+
+Special thanks to [@ST-DDT](https://github.com/ST-DDT) for his very constructive feedback, both on the original project 
+and on Livedoc.
+
+Livedoc uses the [therapi-runtime-javadoc](https://github.com/dnault/therapi-runtime-javadoc) library by 
+[@dnault](https://github.com/dnault) for its Javadoc-related processing.
