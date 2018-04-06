@@ -1,11 +1,23 @@
 # Change Log
 
+## [v4.3.0](https://bintray.com/joffrey-bion/maven/livedoc/4.3.0) (2018-04-06)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.2.0...v4.3.0)
+
+**Implemented enhancements:**
+
+- Properly handle authentication [\#82](https://github.com/joffrey-bion/livedoc/issues/82)
+
+**Closed issues:**
+
+- Livedoc-UI forgets the url if an error occurs during loading [\#80](https://github.com/joffrey-bion/livedoc/issues/80)
+- Remove deprecated stuff from Gradle build [\#77](https://github.com/joffrey-bion/livedoc/issues/77)
+
 ## [v4.2.0](https://bintray.com/joffrey-bion/maven/livedoc/4.2.0) (2018-03-29)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.1.0...v4.2.0)
 
 **Implemented enhancements:**
 
-- Add support for reading some kind of JSON javadoc [\#70](https://github.com/joffrey-bion/livedoc/issues/70)
+- Add support for reading documentation from the Javadoc [\#70](https://github.com/joffrey-bion/livedoc/issues/70)
 
 ## [v4.1.0](https://bintray.com/joffrey-bion/maven/livedoc/4.1.0) (2018-03-03)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.0.0...v4.1.0)
