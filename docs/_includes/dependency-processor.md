@@ -4,7 +4,9 @@
 
 {% capture gradle_snippet %}
 ```groovy
-annotationProcessor '{{groupId}}:{{artifactId}}:{{version}}'
+dependencies {
+    annotationProcessor '{{groupId}}:{{artifactId}}:{{version}}'
+}
 ```
 
 *Please note that the `annotationProcessor` configuration is only available in Gradle 4.6+. If you're using a 

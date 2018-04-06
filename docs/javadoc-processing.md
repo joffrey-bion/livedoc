@@ -9,8 +9,8 @@ the doc generation at runtime.
 
 ## Enable Javadoc processing
 
-To enable javadoc processing, you'll need to somehow add Livedoc's javadoc processor on the processor classpath 
-during the build of your project.
+To enable javadoc processing, you'll need to add Livedoc's javadoc processor on the processor classpath during the 
+build of your project.
 
 It can be done this way:
 
