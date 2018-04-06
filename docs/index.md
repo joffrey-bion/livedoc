@@ -24,7 +24,10 @@ Choose your Livedoc flavour:
 - [Spring MVC](quickstart/springmvc)
 - [Other framework](quickstart/plain)
 
-Then you may check out how to serve the documentation with [the provided UI](livedoc-ui).
+Then you may then check out:
+ 
+- how to read some documentation [from the javadoc](javadoc-processing)
+- how to serve the documentation with [the provided UI](livedoc-ui)
 
 ## Credits
 
