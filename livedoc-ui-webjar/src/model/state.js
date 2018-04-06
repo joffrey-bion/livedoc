@@ -10,8 +10,17 @@ export type LoaderState = {
 export const newLoaderState = () => ({
   loading: false,
   loadingError: null,
-  url: null,
+  url: computeInitialUrl(),
 });
+
+function computeInitialUrl(): string {
+  const url = new URL(window.location.href);
+  const specifiedUrl = url.searchParams.get('url');
+  if (specifiedUrl) {
+    return specifiedUrl;
+  }
+  return window.location.origin + '/jsondoc';
+}
 
 export type PlaygroundState = {
   +waitingResponse: boolean,

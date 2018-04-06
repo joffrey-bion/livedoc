@@ -11,7 +11,7 @@ import { InlineForm } from './InlineForm';
 type Props = {
   loading: boolean,
   loadingError: ?string,
-  url: ?string,
+  url: string,
   fetchDoc: (url: string) => void,
 }
 
@@ -25,8 +25,8 @@ const absoluteCenter = {
   left: 0,
 };
 
-const Form = ({fetchDoc, ...props}) => <InlineForm hintText='URL to JSON documentation' btnLabel='Get Doc'
-                                                   initialValue={computeInitialUrl()}
+const Form = ({fetchDoc, url, ...props}) => <InlineForm hintText='URL to JSON documentation' btnLabel='Get Doc'
+                                                   initialValue={url}
                                                    onSubmit={fetchDoc} {...props}/>;
 const FetchError = ({loadingError}) => {
   if (loadingError === null) {
@@ -36,7 +36,7 @@ const FetchError = ({loadingError}) => {
 };
 
 const DocFetcherPresenter = (props: Props) => {
-  if (props.loading && props.url) {
+  if (props.loading) {
     return <CircularProgress style={absoluteCenter} size={370} thickness={0.4}/>;
   } else {
     return <Container style={{height: '10rem'}}>
@@ -47,17 +47,6 @@ const DocFetcherPresenter = (props: Props) => {
     </Container>;
   }
 };
-
-const DEFAULT_FETCH_URL = 'http://localhost:8080/jsondoc';
-
-function computeInitialUrl(): string {
-  const url = new URL(window.location.href);
-  const specifiedUrl = url.searchParams.get('url');
-  if (specifiedUrl) {
-    return specifiedUrl;
-  }
-  return DEFAULT_FETCH_URL;
-}
 
 const mapStateToProps = (state: State) => ({
   loading: state.loader.loading,
