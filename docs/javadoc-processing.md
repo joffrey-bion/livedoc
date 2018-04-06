@@ -16,5 +16,4 @@ It can be done this way:
 
 {% include dependency-processor.md artifactId="livedoc-javadoc-processor" %}
 
-*Note: I'm no maven expert, and I would appreciate any feedback about Livedoc annotation processing configuration 
-with Maven.*
+This is all you need to do. Livedoc will then find the Javadoc and use it to get methods and parameter descriptions.

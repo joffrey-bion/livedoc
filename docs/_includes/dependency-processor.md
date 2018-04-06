@@ -6,6 +6,9 @@
 ```groovy
 annotationProcessor '{{groupId}}:{{artifactId}}:{{version}}'
 ```
+
+*Please note that the `annotationProcessor` configuration is only available in Gradle 4.6+. If you're using a 
+previous version, you should use the `compileOnly` configuration instead.*
 {% endcapture %}
 
 {% capture maven_snippet %}
@@ -29,6 +32,9 @@ annotationProcessor '{{groupId}}:{{artifactId}}:{{version}}'
     </plugins>
 </pluginManagement>
 ```
+
+*Note: I'm no Maven expert, and I would appreciate any feedback about this annotation processing configuration 
+using Maven.*
 {% endcapture %}
 
 {% capture set_name %} 
