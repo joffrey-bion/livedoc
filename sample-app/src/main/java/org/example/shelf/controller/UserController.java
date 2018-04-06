@@ -7,6 +7,8 @@ import org.example.shelf.exception.ItemNotFoundException;
 import org.example.shelf.model.User;
 import org.example.shelf.repository.UserRepository;
 import org.hildan.livedoc.core.annotations.Api;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
+import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
 import org.hildan.livedoc.core.annotations.errors.ApiError;
 import org.hildan.livedoc.core.annotations.errors.ApiErrors;
 import org.hildan.livedoc.core.annotations.ApiOperation;
@@ -17,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(description = "The user services", name = "User services")
+@ApiAuthBasic(testUsers = {
+        @ApiAuthBasicUser(username = "testuser", password = "password")
+})
 @RestController
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(description = "The user services", name = "User services")
 public class UserController {
 
     private final UserRepository userRepository;

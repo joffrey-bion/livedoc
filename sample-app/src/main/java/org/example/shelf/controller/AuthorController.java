@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@RestController
-@RequestMapping(value = "/authors", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(description = "The author services", name = "Author services", group = DocumentationConstants.GROUP_LIBRARY)
 @ApiAuthToken(roles = {"*"}, testTokens = "abc", scheme = "Bearer")
+@RestController
+@RequestMapping(value = "/authors", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthorController {
 
     private final AuthorRepository authorRepository;
