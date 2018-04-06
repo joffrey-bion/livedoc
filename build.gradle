@@ -28,6 +28,7 @@ ext {
     githubRepoUrl = "https://github.com/$githubSlug"
     ossrhUserToken = getPropOrEnv('ossrhUserToken', 'OSSRH_USER_TOKEN')
     ossrhKey = getPropOrEnv('ossrhKey', 'OSSRH_KEY')
+    dockerUser = getPropOrEnv('dockerUser', 'DOCKER_USER')
 }
 
 def pomConfig = {
