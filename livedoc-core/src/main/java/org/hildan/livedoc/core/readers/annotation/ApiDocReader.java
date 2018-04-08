@@ -16,7 +16,10 @@ public class ApiDocReader {
 
         Api api = controller.getAnnotation(Api.class);
         if (api != null) {
-            apiDoc.setName(BeanUtils.maybeOverridden(nullifyIfEmpty(api.name()), apiDoc.getName()));
+            String name = nullifyIfEmpty(api.name());
+            if (name != null) {
+                apiDoc.setName(name);
+            }
             apiDoc.setDescription(nullifyIfEmpty(api.description()));
             apiDoc.setGroup(api.group());
         }

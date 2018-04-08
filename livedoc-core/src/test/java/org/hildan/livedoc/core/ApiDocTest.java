@@ -22,7 +22,6 @@ import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
-import org.hildan.livedoc.core.readers.annotation.ApiAuthDocReader;
 import org.hildan.livedoc.core.model.doc.ApiAuthType;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiErrorDoc;
@@ -30,6 +29,7 @@ import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.Stage;
+import org.hildan.livedoc.core.readers.annotation.ApiAuthDocReader;
 import org.hildan.livedoc.core.test.controller.Test3Controller;
 import org.hildan.livedoc.core.test.pojo.Child;
 import org.hildan.livedoc.core.test.pojo.Pizza;
@@ -366,13 +366,13 @@ public class ApiDocTest {
     public void testApiAuthToken() {
         ApiDoc apiDoc = buildDoc(TestControllerWithAuthToken.class);
         assertEquals(ApiAuthType.TOKEN, apiDoc.getAuth().getType());
-        assertEquals(null, apiDoc.getAuth().getScheme());
+        assertNull(apiDoc.getAuth().getScheme());
         assertEquals("abc", apiDoc.getAuth().getTesttokens().iterator().next());
 
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
             if (apiOperationDoc.getPaths().contains("/inherit")) {
                 assertEquals(ApiAuthType.TOKEN, apiOperationDoc.getAuth().getType());
-                assertEquals(null, apiOperationDoc.getAuth().getScheme());
+                assertNull(apiOperationDoc.getAuth().getScheme());
                 assertEquals("abc", apiOperationDoc.getAuth().getTesttokens().iterator().next());
             }
             if (apiOperationDoc.getPaths().contains("/override")) {
