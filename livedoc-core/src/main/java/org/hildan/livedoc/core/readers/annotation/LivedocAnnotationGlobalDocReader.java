@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.hildan.livedoc.core.GlobalDocReader;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
@@ -15,6 +14,7 @@ import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 
 /**

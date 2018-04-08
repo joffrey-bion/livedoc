@@ -1,6 +1,5 @@
 package org.hildan.livedoc.core;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Comparator;
@@ -22,14 +21,13 @@ import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
+import org.hildan.livedoc.core.readers.DocReader;
+import org.hildan.livedoc.core.readers.GlobalDocReader;
+import org.hildan.livedoc.core.readers.TypeDocReader;
+import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
-import org.hildan.livedoc.core.util.LivedocUtils;
-import org.hildan.livedoc.core.validators.ApiOperationDocDefaults;
-import org.hildan.livedoc.core.validators.ApiOperationDocValidator;
-import org.hildan.livedoc.core.validators.ApiTypeDocValidator;
 
 /**
  * Builds a {@link Livedoc} object representing an API documentation by reading java classes and their annotations.
@@ -38,11 +36,11 @@ public class LivedocReader {
 
     private final GlobalDocReader globalDocReader;
 
-    private final DocReader docReader;
+    private final MasterApiDocReader masterApiDocReader;
 
     private final TypeScanner typeScanner;
 
-    private final ApiTypeDocReader apiTypeDocReader;
+    private final MasterTypeDocReader masterTypeDocReader;
 
     private final TemplateProvider templateProvider;
 
@@ -53,26 +51,27 @@ public class LivedocReader {
      *
      * @param docReader
      *         the {@link DocReader} to use to generate the documentation for API operations
-     * @param apiTypeDocReader
-     *         the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API
+     * @param typeDocReader
+     *         the {@link TypeDocReader} to use to generate the documentation for the types used in the API
      * @param globalDocReader
      *         the {@link GlobalDocReader} to use to generate the global documentation of a project (general info,
      *         flows, migrations)
      * @param typeScanner
      *         the {@link TypeScanner} to use to retrieve all the types that should be documented, starting from the
      *         types that are directly referenced in the API (as request or response body, mainly)
+     * @param propertyScanner
      * @param templateProvider
      *         the {@link TemplateProvider} to use to create example objects for the types used in the API
      * @param typeReferenceProvider
      *         the {@link TypeReferenceProvider} to use to build {@link LivedocType}s for documentation elements,
-     *         such as request or response bodies
      */
-    public LivedocReader(DocReader docReader, ApiTypeDocReader apiTypeDocReader, GlobalDocReader globalDocReader,
-            TypeScanner typeScanner, TemplateProvider templateProvider, TypeReferenceProvider typeReferenceProvider) {
-        this.typeScanner = typeScanner;
-        this.apiTypeDocReader = apiTypeDocReader;
+    public LivedocReader(DocReader docReader, TypeDocReader typeDocReader, GlobalDocReader globalDocReader,
+            TypeScanner typeScanner, PropertyScanner propertyScanner, TemplateProvider templateProvider,
+            TypeReferenceProvider typeReferenceProvider) {
+        this.masterApiDocReader = new MasterApiDocReader(docReader);
+        this.masterTypeDocReader = new MasterTypeDocReader(typeDocReader, propertyScanner);
         this.globalDocReader = globalDocReader;
-        this.docReader = docReader;
+        this.typeScanner = typeScanner;
         this.templateProvider = templateProvider;
         this.typeReferenceProvider = typeReferenceProvider;
     }
@@ -106,8 +105,7 @@ public class LivedocReader {
      */
     public Livedoc read(String version, String basePath, boolean playgroundEnabled, MethodDisplay displayMethodAs) {
 
-        Collection<Class<?>> controllers = docReader.findControllerTypes();
-        Collection<ApiDoc> apiDocs = readApiDocs(controllers);
+        Collection<ApiDoc> apiDocs = masterApiDocReader.readApiDocs(typeReferenceProvider, templateProvider);
 
         Set<Class<?>> types = getClassesToDocument();
         List<ApiTypeDoc> apiTypeDocs = readApiTypeDocs(types);
@@ -139,35 +137,9 @@ public class LivedocReader {
         return typeScanner.findTypesToDocument(rootTypes);
     }
 
-    private Collection<ApiDoc> readApiDocs(Collection<Class<?>> controllers) {
-        return buildDocs(controllers, this::readApiDoc);
-    }
-
+    // for testing purposes only
     public Optional<ApiDoc> readApiDoc(Class<?> controller) {
-        Optional<ApiDoc> doc = docReader.buildApiDocBase(controller);
-        doc.ifPresent(apiDoc -> apiDoc.setOperations(readApiOperationDocs(controller, apiDoc)));
-        return doc;
-    }
-
-    private List<ApiOperationDoc> readApiOperationDocs(Class<?> controller, ApiDoc doc) {
-        return buildDocs(getApiOperationMethods(controller), m -> readApiOperationDoc(m, controller, doc));
-    }
-
-    private List<Method> getApiOperationMethods(Class<?> controller) {
-        return LivedocUtils.getAllMethods(controller)
-                           .stream()
-                           .filter(m -> docReader.isApiOperation(m, controller))
-                           .collect(Collectors.toList());
-    }
-
-    private Optional<ApiOperationDoc> readApiOperationDoc(Method method, Class<?> controller, ApiDoc parentApiDoc) {
-        Optional<ApiOperationDoc> doc = docReader.buildApiOperationDoc(method, controller, parentApiDoc,
-                typeReferenceProvider, templateProvider);
-        doc.ifPresent(apiOperationDoc -> {
-            ApiOperationDocDefaults.complete(apiOperationDoc);
-            ApiOperationDocValidator.validate(apiOperationDoc);
-        });
-        return doc;
+        return masterApiDocReader.readApiDoc(controller, typeReferenceProvider, templateProvider);
     }
 
     private List<ApiTypeDoc> readApiTypeDocs(Collection<Class<?>> types) {
@@ -175,9 +147,7 @@ public class LivedocReader {
     }
 
     private Optional<ApiTypeDoc> readApiTypeDoc(Class<?> type) {
-        ApiTypeDoc doc = apiTypeDocReader.read(type, typeReferenceProvider, templateProvider);
-        ApiTypeDocValidator.validate(doc);
-        return Optional.of(doc);
+        return masterTypeDocReader.buildTypeDoc(type, typeReferenceProvider, templateProvider);
     }
 
     private static <T, D extends Comparable<D>> List<D> buildDocs(Collection<T> objects,

@@ -1,32 +1,46 @@
 package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Modifier;
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Optional;
 
+import org.hildan.livedoc.core.annotations.Api;
+import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.readers.DocReader;
+import org.hildan.livedoc.core.readers.TypeDocReader;
 import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.hildan.livedoc.core.scanners.properties.Property;
-import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.util.BeanUtils;
+import org.jetbrains.annotations.NotNull;
 
 import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
-public class ApiTypeDocReader {
+/**
+ * An implementation of {@link DocReader} that reads Livedoc annotations to build the documentation. In this
+ * implementation, controllers are classes annotated with {@link Api}, and methods are only found and documented if
+ * annotated with {@link ApiOperation}.
+ */
+public class LivedocAnnotationTypeDocReader implements TypeDocReader {
 
-    private final PropertyScanner propertyScanner;
-
-    public ApiTypeDocReader(PropertyScanner propertyScanner) {
-        this.propertyScanner = propertyScanner;
+    @NotNull
+    @Override
+    public Optional<ApiTypeDoc> buildTypeDocBase(@NotNull Class<?> clazz,
+            @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
+        return Optional.of(read(clazz, templateProvider));
     }
 
-    public ApiTypeDoc read(Class<?> clazz, TypeReferenceProvider typeReferenceProvider,
-            TemplateProvider templateProvider) {
+    @NotNull
+    @Override
+    public Optional<ApiPropertyDoc> buildPropertyDoc(Property property, ApiTypeDoc parentDoc,
+            TypeReferenceProvider typeReferenceProvider) {
+        return Optional.of(ApiPropertyDocReader.read(property, parentDoc, typeReferenceProvider));
+    }
+
+    public ApiTypeDoc read(Class<?> clazz, TemplateProvider templateProvider) {
         String javadoc = JavadocHelper.getJavadocDescription(clazz).orElse(null);
         ApiTypeDoc apiTypeDoc = new ApiTypeDoc(clazz);
         apiTypeDoc.setName(clazz.getSimpleName());
@@ -47,21 +61,8 @@ public class ApiTypeDocReader {
             apiTypeDoc.setAllowedValues(BeanUtils.enumConstantsToStringArray(clazz.getEnumConstants()));
         }
 
-        apiTypeDoc.setFields(getFieldDocs(clazz, apiTypeDoc, typeReferenceProvider));
         apiTypeDoc.setTemplate(templateProvider.getTemplate(clazz));
 
         return apiTypeDoc;
-    }
-
-    private Set<ApiPropertyDoc> getFieldDocs(Class<?> clazz, ApiTypeDoc apiTypeDoc,
-            TypeReferenceProvider typeReferenceProvider) {
-        if (clazz.isEnum()) {
-            return Collections.emptySet();
-        }
-        Set<ApiPropertyDoc> fieldDocs = new TreeSet<>();
-        for (Property property : propertyScanner.getProperties(clazz)) {
-            fieldDocs.add(ApiPropertyDocReader.read(property, apiTypeDoc, typeReferenceProvider));
-        }
-        return fieldDocs;
     }
 }

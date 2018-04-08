@@ -7,11 +7,11 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.DocReader;
 import org.hildan.livedoc.core.LivedocReaderBuilder;
 import org.hildan.livedoc.core.merger.DocMerger;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;

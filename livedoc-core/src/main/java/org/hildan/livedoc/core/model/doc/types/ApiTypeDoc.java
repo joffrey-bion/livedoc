@@ -1,14 +1,14 @@
 package org.hildan.livedoc.core.model.doc.types;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hildan.livedoc.core.model.doc.AbstractDoc;
-import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.model.doc.Stage;
 import org.hildan.livedoc.core.model.doc.Staged;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
+import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.util.LivedocUtils;
 
 public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, Groupable, Staged, Versioned {
@@ -19,7 +19,7 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
 
     private String description;
 
-    private Set<ApiPropertyDoc> fields;
+    private List<ApiPropertyDoc> fields;
 
     private String[] allowedValues;
 
@@ -39,7 +39,7 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
         this.description = null;
         this.supportedVersions = null;
         this.allowedValues = new String[] {};
-        this.fields = new TreeSet<>();
+        this.fields = new ArrayList<>();
         this.group = "";
         this.stage = null;
         this.show = true;
@@ -65,11 +65,11 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
         this.description = description;
     }
 
-    public Set<ApiPropertyDoc> getFields() {
+    public List<ApiPropertyDoc> getFields() {
         return fields;
     }
 
-    public void setFields(Set<ApiPropertyDoc> fields) {
+    public void setFields(List<ApiPropertyDoc> fields) {
         this.fields = fields;
     }
 

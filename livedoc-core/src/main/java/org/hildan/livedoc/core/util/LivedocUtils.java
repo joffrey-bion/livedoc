@@ -3,8 +3,6 @@ package org.hildan.livedoc.core.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -27,17 +25,6 @@ public class LivedocUtils {
 
     public static String getLivedocId(Class<?> clazz) {
         return clazz.getCanonicalName();
-    }
-
-    public static List<Method> getAllMethods(Class<?> clazz) {
-        List<Method> methods = new ArrayList<>();
-        Class<?> currentClass = clazz;
-        while (currentClass != null) {
-            Method[] declaredMethods = currentClass.getDeclaredMethods();
-            Collections.addAll(methods, declaredMethods);
-            currentClass = currentClass.getSuperclass();
-        }
-        return methods;
     }
 
     public static int getIndexOfParameterWithAnnotation(Method method, Class<? extends Annotation> annotationClass) {

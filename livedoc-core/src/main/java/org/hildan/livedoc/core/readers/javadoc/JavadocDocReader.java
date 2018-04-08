@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-import org.hildan.livedoc.core.DocReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;

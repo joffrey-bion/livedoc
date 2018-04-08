@@ -3,8 +3,9 @@ package org.hildan.livedoc.core.readers.annotation;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Optional;
 
+import org.hildan.livedoc.core.MasterTypeDocReader;
 import org.hildan.livedoc.core.annotations.ApiStage;
 import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.annotations.types.ApiType;
@@ -23,10 +24,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-public class ApiTypeReaderTest {
+public class LivedocAnnotationTypeDocReaderTest {
 
-    private ApiTypeDocReader reader;
+    private MasterTypeDocReader reader;
 
     private TypeReferenceProvider typeReferenceProvider;
 
@@ -34,9 +36,15 @@ public class ApiTypeReaderTest {
 
     @Before
     public void setUp() {
-        reader = new ApiTypeDocReader(new FieldPropertyScanner());
+        reader = new MasterTypeDocReader(new LivedocAnnotationTypeDocReader(), new FieldPropertyScanner());
         typeReferenceProvider = new DefaultTypeReferenceProvider(c -> true);
         templateProvider = type -> null;
+    }
+
+    private ApiTypeDoc buildDoc(Class<?> typeToDocument, TemplateProvider templateProvider) {
+        Optional<ApiTypeDoc> optionalDoc = reader.buildTypeDoc(typeToDocument, typeReferenceProvider, templateProvider);
+        assertTrue(optionalDoc.isPresent());
+        return optionalDoc.get();
     }
 
     @SuppressWarnings({"unused", "DefaultAnnotationParam"})
@@ -44,6 +52,7 @@ public class ApiTypeReaderTest {
     @ApiStage(Stage.PRE_ALPHA)
     @ApiVersion(since = "1.0", until = "2.12")
     private class TestObject {
+
 
         @ApiTypeProperty(description = "the test name", required = true)
         private String name;
@@ -89,15 +98,15 @@ public class ApiTypeReaderTest {
         @ApiTypeProperty(name = "test-enum-with-allowed-values", description = "a test enum with allowed values",
                 allowedValues = {"A", "B", "C"})
         private TestEnum testEnumWithAllowedValues;
-
         @ApiTypeProperty(name = "orderedProperty", order = 1)
         private String orderedProperty;
+
     }
 
     @Test
     public void testApiObjectDoc() {
         Object mockTemplate = new Object();
-        ApiTypeDoc doc = reader.read(TestObject.class, typeReferenceProvider, type -> mockTemplate);
+        ApiTypeDoc doc = buildDoc(TestObject.class, type -> mockTemplate);
         assertEquals("test-object", doc.getName());
         assertEquals(14, doc.getFields().size());
         assertEquals("1.0", doc.getSupportedVersions().getSince());
@@ -196,7 +205,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testEnumObjectDoc() {
-        ApiTypeDoc doc = reader.read(TestEnum.class, typeReferenceProvider, templateProvider);
+        ApiTypeDoc doc = buildDoc(TestEnum.class, templateProvider);
         assertEquals("test-enum", doc.getName());
         assertEquals(0, doc.getFields().size());
         assertEquals(TestEnum.TESTENUM1.name(), doc.getAllowedValues()[0]);
@@ -213,7 +222,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testNoNameApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(NoNameApiObject.class, typeReferenceProvider, templateProvider);
+        ApiTypeDoc doc = buildDoc(NoNameApiObject.class, templateProvider);
         assertEquals("NoNameApiObject", doc.getName());
         assertEquals("id", doc.getFields().iterator().next().getName());
     }
@@ -230,7 +239,7 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testTemplateApiObjectDoc() {
-        ApiTypeDoc doc = reader.read(TemplateApiObject.class, typeReferenceProvider, templateProvider);
+        ApiTypeDoc doc = buildDoc(TemplateApiObject.class, templateProvider);
         assertEquals("TemplateApiObject", doc.getName());
         Iterator<ApiPropertyDoc> iterator = doc.getFields().iterator();
         assertEquals("id", iterator.next().getName());
@@ -242,15 +251,15 @@ public class ApiTypeReaderTest {
 
     @Test
     public void testUndefinedStageDoc() {
-        ApiTypeDoc doc = reader.read(UndefinedStage.class, typeReferenceProvider, templateProvider);
+        ApiTypeDoc doc = buildDoc(UndefinedStage.class, templateProvider);
         assertEquals("UndefinedStage", doc.getName());
         assertNull(doc.getStage());
     }
 
     @Test
     public void testApiObjectDocWithHibernateValidator() {
-        ApiTypeDoc doc = reader.read(HibernateValidatorPojo.class, typeReferenceProvider, templateProvider);
-        Set<ApiPropertyDoc> fields = doc.getFields();
+        ApiTypeDoc doc = buildDoc(HibernateValidatorPojo.class, templateProvider);
+        List<ApiPropertyDoc> fields = doc.getFields();
         for (ApiPropertyDoc fieldDoc : fields) {
             if (fieldDoc.getName().equals("id")) {
                 Iterator<String> formats = fieldDoc.getFormat().iterator();

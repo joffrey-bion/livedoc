@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.GlobalDocReader;
-import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
@@ -23,6 +21,8 @@ import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
+import org.hildan.livedoc.core.readers.GlobalDocReader;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -8,11 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import org.hildan.livedoc.core.readers.annotation.ApiTypeDocReader;
+import org.hildan.livedoc.core.readers.DocReader;
+import org.hildan.livedoc.core.readers.GlobalDocReader;
+import org.hildan.livedoc.core.readers.TypeDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
+import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationTypeDocReader;
 import org.hildan.livedoc.core.readers.combined.CombinedDocReader;
+import org.hildan.livedoc.core.readers.combined.CombinedTypeDocReader;
 import org.hildan.livedoc.core.readers.javadoc.JavadocDocReader;
+import org.hildan.livedoc.core.readers.javadoc.JavadocTypeDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.LivedocPropertyScannerWrapper;
@@ -45,7 +50,7 @@ public class LivedocReaderBuilder {
 
     private List<DocReader> docReaders = new ArrayList<>();
 
-    private ApiTypeDocReader apiTypeDocReader;
+    private List<TypeDocReader> typeDocReaders = new ArrayList<>();
 
     private TemplateProvider templateProvider;
 
@@ -139,16 +144,17 @@ public class LivedocReaderBuilder {
     }
 
     /**
-     * Defines the {@link ApiTypeDocReader} to use to generate the documentation for the types used in the API. <p> The
-     * default uses the configured {@link PropertyScanner}, so it should not usually need to be replaced.
+     * Adds a {@link TypeDocReader} to the configuration. {@link TypeDocReader}s are used to generate the documentation
+     * for the types used in the API. <p> The default uses the configured {@link PropertyScanner}, so it should not
+     * usually need to be replaced.
      *
      * @param apiTypeDocReader
-     *         the {@link ApiTypeDocReader} to use
+     *         the {@link TypeDocReader} to add to the list
      *
      * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
      */
-    public LivedocReaderBuilder withObjectDocReader(ApiTypeDocReader apiTypeDocReader) {
-        this.apiTypeDocReader = apiTypeDocReader;
+    public LivedocReaderBuilder addTypeDocReader(TypeDocReader apiTypeDocReader) {
+        this.typeDocReaders.add(apiTypeDocReader);
         return this;
     }
 
@@ -256,8 +262,9 @@ public class LivedocReaderBuilder {
         if (typeScanner == null) {
             typeScanner = getDefaultTypeScanner(propertyScanner, documentedTypesFilter, typeInspectionFilter, packages);
         }
-        if (apiTypeDocReader == null) {
-            apiTypeDocReader = getDefaultApiObjectDocReader(propertyScanner);
+        if (typeDocReaders.isEmpty()) {
+            typeDocReaders.add(new JavadocTypeDocReader());
+            typeDocReaders.add(new LivedocAnnotationTypeDocReader());
         }
         if (templateProvider == null) {
             templateProvider = getDefaultTemplateProvider(propertyScanner, typeInspectionFilter);
@@ -269,10 +276,11 @@ public class LivedocReaderBuilder {
             docReaders.add(new JavadocDocReader());
             docReaders.add(new LivedocAnnotationDocReader(getAnnotatedTypesFinder(packages)));
         }
-        DocReader combinedReader = new CombinedDocReader(docReaders);
+        DocReader combinedDocReader = new CombinedDocReader(docReaders);
+        TypeDocReader combinedTypeDocReader = new CombinedTypeDocReader(typeDocReaders);
         TypeReferenceProvider typeRefProvider = getDefaultTypeReferenceProvider(documentedTypesFilter);
-        return new LivedocReader(combinedReader, apiTypeDocReader, globalDocReader, typeScanner, templateProvider,
-                typeRefProvider);
+        return new LivedocReader(combinedDocReader, combinedTypeDocReader, globalDocReader, typeScanner,
+                propertyScanner, templateProvider, typeRefProvider);
     }
 
     private static LivedocPropertyScannerWrapper getDefaultPropertyScanner() {
@@ -295,8 +303,8 @@ public class LivedocReaderBuilder {
         return new DefaultTypeReferenceProvider(typeFilter);
     }
 
-    private static ApiTypeDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
-        return new ApiTypeDocReader(propertyScanner);
+    private static TypeDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
+        return new LivedocAnnotationTypeDocReader();
     }
 
     private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner,
