@@ -48,6 +48,7 @@ public class RecursiveTemplateProvider implements TemplateProvider {
         defaultExamples.put(Character.class, ' ');
         defaultExamples.put(String.class, "");
         defaultExamples.put(Date.class, new Date());
+        defaultExamples.put(Object.class, new HashMap<>());
 
         parentTypesExamples.put(CharSequence.class, "");
         parentTypesExamples.put(TemporalAccessor.class, Instant.now());
