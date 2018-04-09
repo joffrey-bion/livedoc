@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.reflect.TypeToken;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class JacksonPropertyScannerTest {
 
@@ -27,6 +28,11 @@ public class JacksonPropertyScannerTest {
     @Before
     public void setUp() {
         scanner = new JacksonPropertyScanner(new ObjectMapper());
+    }
+
+    @Test
+    public void getProperties_primitive() {
+        assertTrue(scanner.getProperties(int.class).isEmpty());
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
@@ -85,7 +91,7 @@ public class JacksonPropertyScannerTest {
     }
 
     @Test
-    public void getProperties() throws Exception {
+    public void getProperties_customPojo() throws Exception {
         List<Property> properties = scanner.getProperties(MyDto.class);
 
         Type listDouble = new TypeToken<List<Double>>() {}.getType();
