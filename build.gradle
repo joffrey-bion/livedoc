@@ -54,13 +54,10 @@ def pomConfig = {
 apply from: 'gradle/scripts/release.gradle'
 
 subprojects {
-    apply plugin: 'maven-publish'
-    apply plugin: 'com.jfrog.bintray'
     apply plugin: 'checkstyle'
 
     repositories {
         mavenCentral()
-        jcenter()
     }
 
     configurations {
@@ -81,6 +78,11 @@ subprojects {
         // detailed messages for unchecked operations
         options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
+}
+
+configure(subprojects.findAll {it.name != 'sample-app'}) {
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
 
     afterEvaluate {
         task sourcesJar(type: Jar, dependsOn: classes) {
