@@ -68,7 +68,8 @@ public class RecursiveTemplateProviderTest {
     }
 
     @Test
-    public void testJson_customClass() throws JsonProcessingException {
+    public void testJson_complexTypes() throws JsonProcessingException {
+        assertTemplate("{}", Object.class);
         assertTemplate("{\"id\":\"\",\"name\":\"\"}", TemplateSubSubObject.class);
         assertTemplate("{\"id\":0,\"subSubObj\":{\"id\":\"\",\"name\":\"\"},\"test\":\"\"}", TemplateSubObject.class);
     }
