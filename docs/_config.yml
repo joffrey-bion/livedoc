@@ -3,7 +3,7 @@ theme: jekyll-theme-cayman
 
 # for dependencies inclusion doc
 groupId: org.hildan.livedoc
-latestVersion: 4.3.0
+latestVersion: 4.3.1
 
 # to use in tabs
 emptyArray: []
