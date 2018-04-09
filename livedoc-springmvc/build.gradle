@@ -18,7 +18,6 @@ dependencies {
     testImplementation 'org.springframework:spring-messaging:4.3.14.RELEASE'
     testImplementation 'org.springframework.data:spring-data-rest-webmvc:2.5.1.RELEASE'
     testImplementation 'org.springframework:spring-test:3.1.2.RELEASE'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.6.5'
 
     testAnnotationProcessor project(':livedoc-javadoc-processor')
 }

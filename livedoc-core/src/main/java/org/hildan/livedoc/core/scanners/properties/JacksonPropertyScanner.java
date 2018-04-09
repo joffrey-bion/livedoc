@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner.properties;
+package org.hildan.livedoc.core.scanners.properties;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
@@ -6,9 +6,6 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.hildan.livedoc.core.scanners.properties.Property;
-import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.BeanDescription;
@@ -44,9 +41,9 @@ public class JacksonPropertyScanner implements PropertyScanner {
     @Override
     public List<Property> getProperties(Type type) {
         return getJacksonProperties(type).stream()
-                                          .filter(JacksonPropertyScanner::isReadable)
-                                          .map(this::convertProp)
-                                          .collect(toList());
+                                         .filter(JacksonPropertyScanner::isReadable)
+                                         .map(this::convertProp)
+                                         .collect(toList());
     }
 
     private List<BeanPropertyDefinition> getJacksonProperties(Type type) {

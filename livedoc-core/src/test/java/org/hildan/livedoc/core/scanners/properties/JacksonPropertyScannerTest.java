@@ -1,11 +1,9 @@
-package org.hildan.livedoc.springmvc.scanner.properties;
+package org.hildan.livedoc.core.scanners.properties;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hildan.livedoc.core.scanners.properties.Property;
-import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.junit.Before;
 import org.junit.Test;
 
