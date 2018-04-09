@@ -8,22 +8,21 @@
 [Livedoc](https://joffrey-bion.github.io/livedoc) is a documentation generator for REST and websocket services, 
 inspired by the [JSONDoc](http://jsondoc.org) project. 
 
-Livedoc's main aim is to allow the generation of a complete documentation with as little extra effort as possible. In
- particular, using Livedoc annotations should be a last resort to override a piece of documentation that does not 
- match the user's needs.
-
-## How does it work?
-
-Livedoc's goal is to generate a documentation of your API from your code. It comes in multiple flavours, depending 
-on whether you are developing a standard Spring MVC app, a Spring Boot app, or using another framework.
-
-Livedoc uses reflection to read your annotated classes and output a Java model representing the documentation. In 
-most cases, this documentation is serialized to JSON, and may then be used by Livedoc's UI that you can host on your 
-server to display a good-looking documentation to your users.
+Livedoc tries to read all the doc from the code and the Javadoc. Annotations are considered a failure of Livedoc to 
+grasp an aspect of the code. They should mostly be used to add what Livedoc couldn't read from the code, or override a
+ piece of documentation that does not match the user's needs.
+ 
+This is one of the reasons why it should be quick to add Livedoc to your project.
 
 ## Get started
 
 Check out the [official documentation](https://joffrey-bion.github.io/livedoc) to get started with Livedoc.
+
+## Livedoc UI Demo
+
+Check out the [live demo of Livedoc's UI](http://livedoc-demo.hildan.org:8080/livedoc/index.html) to see what it looks 
+like. You can see the code directly in this Github repository as the
+ [sample-app subproject](https://github.com/joffrey-bion/livedoc/tree/master/sample-app).
 
 ## Credits
 
