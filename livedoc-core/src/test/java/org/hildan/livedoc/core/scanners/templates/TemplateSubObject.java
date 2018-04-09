@@ -2,9 +2,9 @@ package org.hildan.livedoc.core.scanners.templates;
 
 public class TemplateSubObject {
 
-    private Integer id;
+    public Integer id;
 
-    private String test;
+    public String test;
 
-    private TemplateSubSubObject subSubObj;
+    public TemplateSubSubObject subSubObj;
 }
