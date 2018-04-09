@@ -33,8 +33,8 @@ public class RecursiveTemplateProviderTest {
     @DataPoints
     public static TemplateProvider[] templateProviders() {
         return new TemplateProvider[] {
-            new RecursiveTemplateProvider(createFieldPropScanner(), c -> true),
-            new RecursiveTemplateProvider(createJacksonPropertyScanner(), c -> true),
+                new RecursiveTemplateProvider(createFieldPropScanner(), c -> true),
+                new RecursiveTemplateProvider(createJacksonPropertyScanner(), c -> true),
         };
     }
 
@@ -50,7 +50,8 @@ public class RecursiveTemplateProviderTest {
         return new LivedocPropertyScannerWrapper(new JacksonPropertyScanner(mapper));
     }
 
-    private void assertTemplate(String expectedJson, Type type, TemplateProvider templateProvider) throws JsonProcessingException {
+    private void assertTemplate(String expectedJson, Type type, TemplateProvider templateProvider)
+            throws JsonProcessingException {
         Object template = templateProvider.getTemplate(type);
         String actualJson = new ObjectMapper().writeValueAsString(template);
         assertEquals(expectedJson, actualJson);
