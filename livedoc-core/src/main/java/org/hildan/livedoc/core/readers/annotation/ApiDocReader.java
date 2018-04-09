@@ -2,7 +2,6 @@ package org.hildan.livedoc.core.readers.annotation;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.util.BeanUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class ApiDocReader {

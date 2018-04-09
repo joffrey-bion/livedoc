@@ -60,6 +60,7 @@ public class LivedocReader {
      *         the {@link TypeScanner} to use to retrieve all the types that should be documented, starting from the
      *         types that are directly referenced in the API (as request or response body, mainly)
      * @param propertyScanner
+     *         defines the properties of a type
      * @param templateProvider
      *         the {@link TemplateProvider} to use to create example objects for the types used in the API
      * @param typeReferenceProvider
