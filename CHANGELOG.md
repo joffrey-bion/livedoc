@@ -1,5 +1,17 @@
 # Change Log
 
+## [v4.3.1](https://bintray.com/joffrey-bion/maven/livedoc/4.3.1) (2018-04-09)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.0...v4.3.1)
+
+**Fixed bugs:**
+
+- Livedoc generates malformed JSON  [\#79](https://github.com/joffrey-bion/livedoc/issues/79)
+
+**Closed issues:**
+
+- Bad template for field of type Object [\#83](https://github.com/joffrey-bion/livedoc/issues/83)
+- Host a demo for users to have a feel of the UI [\#49](https://github.com/joffrey-bion/livedoc/issues/49)
+
 ## [v4.3.0](https://bintray.com/joffrey-bion/maven/livedoc/4.3.0) (2018-04-06)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.2.0...v4.3.0)
 
