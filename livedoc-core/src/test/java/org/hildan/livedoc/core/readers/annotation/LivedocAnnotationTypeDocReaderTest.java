@@ -42,7 +42,7 @@ public class LivedocAnnotationTypeDocReaderTest {
     }
 
     private ApiTypeDoc buildDoc(Class<?> typeToDocument, TemplateProvider templateProvider) {
-        Optional<ApiTypeDoc> optionalDoc = reader.buildTypeDoc(typeToDocument, typeReferenceProvider, templateProvider);
+        Optional<ApiTypeDoc> optionalDoc = reader.readTypeDoc(typeToDocument, typeReferenceProvider, templateProvider);
         assertTrue(optionalDoc.isPresent());
         return optionalDoc.get();
     }

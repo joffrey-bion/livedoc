@@ -2,13 +2,10 @@ package org.hildan.livedoc.core;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.config.LivedocConfiguration;
@@ -21,7 +18,6 @@ import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
-import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
@@ -36,13 +32,13 @@ import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
  */
 public class LivedocReader {
 
-    private final GlobalDocReader globalDocReader;
-
     private final MasterApiDocReader masterApiDocReader;
 
-    private final TypeScanner typeScanner;
-
     private final MasterTypeDocReader masterTypeDocReader;
+
+    private final GlobalDocReader globalDocReader;
+
+    private final TypeScanner typeScanner;
 
     private final TemplateProvider templateProvider;
 
@@ -105,22 +101,18 @@ public class LivedocReader {
     public Livedoc read(ApiMetaData apiInfo, LivedocConfiguration configuration) {
 
         Collection<ApiDoc> apiDocs = masterApiDocReader.readApiDocs(typeReferenceProvider, templateProvider);
-
         Set<Class<?>> types = getClassesToDocument();
-        List<ApiTypeDoc> apiTypeDocs = readApiTypeDocs(types);
-
-        Map<String, ApiOperationDoc> apiOperationDocsById = getAllApiOperationDocsById(apiDocs);
-        Set<ApiFlowDoc> apiFlowDocs = globalDocReader.getApiFlowDocs(apiOperationDocsById);
-
-        ApiGlobalDoc apiGlobalDoc = globalDocReader.getApiGlobalDoc();
+        List<ApiTypeDoc> typeDocs = masterTypeDocReader.readApiTypeDocs(types, typeReferenceProvider, templateProvider);
+        Set<ApiFlowDoc> flowDocs = globalDocReader.getApiFlowDocs(getAllApiOperationDocsById(apiDocs));
+        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc();
 
         Livedoc livedoc = new Livedoc(LivedocMetaDataReader.read(), apiInfo);
         livedoc.setPlaygroundEnabled(configuration.isPlaygroundEnabled());
         livedoc.setDisplayMethodAs(configuration.getDisplayMethodAs());
-        livedoc.setApis(group(apiDocs));
-        livedoc.setTypes(group(apiTypeDocs));
-        livedoc.setFlows(group(apiFlowDocs));
-        livedoc.setGlobal(apiGlobalDoc);
+        livedoc.setApis(Group.groupAndSort(apiDocs));
+        livedoc.setTypes(Group.groupAndSort(typeDocs));
+        livedoc.setFlows(Group.groupAndSort(flowDocs));
+        livedoc.setGlobal(globalDoc);
         return livedoc;
     }
 
@@ -139,32 +131,5 @@ public class LivedocReader {
     // for testing purposes only
     public Optional<ApiDoc> readApiDoc(Class<?> controller) {
         return masterApiDocReader.readApiDoc(controller, typeReferenceProvider, templateProvider);
-    }
-
-    private List<ApiTypeDoc> readApiTypeDocs(Collection<Class<?>> types) {
-        return buildDocs(types, this::readApiTypeDoc);
-    }
-
-    private Optional<ApiTypeDoc> readApiTypeDoc(Class<?> type) {
-        return masterTypeDocReader.buildTypeDoc(type, typeReferenceProvider, templateProvider);
-    }
-
-    private static <T, D extends Comparable<D>> List<D> buildDocs(Collection<T> objects,
-            Function<T, Optional<D>> read) {
-        return objects.stream()
-                      .map(read)
-                      .filter(Optional::isPresent)
-                      .map(Optional::get)
-                      .sorted()
-                      .collect(Collectors.toList());
-    }
-
-    private static <T extends Groupable & Comparable<T>> List<Group<T>> group(Collection<T> elements) {
-        Map<String, List<T>> groupedElements = elements.stream().collect(Collectors.groupingBy(Groupable::getGroup));
-        return groupedElements.entrySet()
-                              .stream()
-                              .sorted(Comparator.comparing(Entry::getKey))
-                              .map(e -> Group.sorted(e.getKey(), e.getValue()))
-                              .collect(Collectors.toList());
     }
 }
