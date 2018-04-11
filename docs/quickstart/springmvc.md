@@ -34,7 +34,7 @@ If you want to generate part of your documentation (descriptions) from your Java
             <value>org.example.external.model</value> <!-- they can also belong to external jars -->
         </list>
     </constructor-arg>
-    <property name="basePath" value="http://localhost:8080/api" /> <!-- optional -->
+    <property name="baseUrl" value="http://localhost:8080/api" /> <!-- optional -->
     <property name="playgroundEnabled" value="true" /> <!-- optional -->
     <property name="displayMethodAs" value="URI" /> <!-- optional -->
 </bean>

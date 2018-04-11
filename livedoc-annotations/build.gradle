@@ -1,3 +1,2 @@
 description = 'The annotations of the Livedoc project'
 
-apply plugin: 'java-library'

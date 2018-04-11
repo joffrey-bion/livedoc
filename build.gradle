@@ -80,6 +80,22 @@ subprojects {
     }
 }
 
+// configure java-library
+configure(subprojects.findAll {it.name != 'sample-app'}) {
+    apply plugin: 'java-library'
+
+    processResources {
+        expand(projectVersion: project.version, buildDate: getDate())
+    }
+}
+
+def static getDate() {
+    def date = new Date()
+    def formattedDate = date.format('MMM d, yyyy')
+    return formattedDate
+}
+
+// configure bintray/maven artifacts upload
 configure(subprojects.findAll {it.name != 'sample-app'}) {
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'

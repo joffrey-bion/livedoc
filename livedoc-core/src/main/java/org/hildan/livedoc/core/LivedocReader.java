@@ -11,10 +11,12 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.meta.LivedocMetaDataReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
@@ -93,18 +95,14 @@ public class LivedocReader {
     /**
      * Reads a {@link Livedoc} object by inspecting classes as configured.
      *
-     * @param version
+     * @param apiInfo
      *         the current version of the API
-     * @param basePath
-     *         the base path to use for the playground
-     * @param playgroundEnabled
-     *         whether the playground is enabled or not
-     * @param displayMethodAs
-     *         the way methods should be displayed in the UI
+     * @param configuration
+     *         the configuration to use to generate the doc
      *
      * @return a new {@link Livedoc} object representing the API
      */
-    public Livedoc read(String version, String basePath, boolean playgroundEnabled, MethodDisplay displayMethodAs) {
+    public Livedoc read(ApiMetaData apiInfo, LivedocConfiguration configuration) {
 
         Collection<ApiDoc> apiDocs = masterApiDocReader.readApiDocs(typeReferenceProvider, templateProvider);
 
@@ -116,9 +114,9 @@ public class LivedocReader {
 
         ApiGlobalDoc apiGlobalDoc = globalDocReader.getApiGlobalDoc();
 
-        Livedoc livedoc = new Livedoc(version, basePath);
-        livedoc.setPlaygroundEnabled(playgroundEnabled);
-        livedoc.setDisplayMethodAs(displayMethodAs);
+        Livedoc livedoc = new Livedoc(LivedocMetaDataReader.read(), apiInfo);
+        livedoc.setPlaygroundEnabled(configuration.isPlaygroundEnabled());
+        livedoc.setDisplayMethodAs(configuration.getDisplayMethodAs());
         livedoc.setApis(group(apiDocs));
         livedoc.setTypes(group(apiTypeDocs));
         livedoc.setFlows(group(apiFlowDocs));

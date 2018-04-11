@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
@@ -26,11 +27,9 @@ public class LivedocReaderTest {
 
     @Test
     public void getLivedoc() {
-        String version = "1.0";
-        String basePath = "http://localhost:8080/api";
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.test");
         LivedocReader livedocReader = LivedocReader.basicAnnotationReader(packages);
-        Livedoc livedoc = livedocReader.read(version, basePath, true, MethodDisplay.URI);
+        Livedoc livedoc = livedocReader.read(new ApiMetaData(), new LivedocConfiguration());
 
         checkApis(livedoc);
         checkObjects(livedoc);

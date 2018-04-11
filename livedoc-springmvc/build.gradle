@@ -1,7 +1,5 @@
 description = 'The Spring MVC helper of the Livedoc project'
 
-apply plugin: 'java-library'
-
 dependencies {
     api project(':livedoc-core')
 

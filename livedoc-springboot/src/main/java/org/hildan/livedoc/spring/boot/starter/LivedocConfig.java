@@ -2,7 +2,8 @@ package org.hildan.livedoc.spring.boot.starter;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.springmvc.controller.JsonLivedocController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -10,6 +11,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableConfigurationProperties(LivedocProperties.class)
@@ -28,15 +31,29 @@ public class LivedocConfig {
 
     @Bean
     public JsonLivedocController jsonLivedocController() {
-        String version = properties.getVersion();
+        ApiMetaData apiInfo = getApiMetaData(properties);
+        LivedocConfiguration config = getLivedocConfiguration(properties);
+
         List<String> packages = properties.getPackages();
         ObjectMapper objectMapper = getObjectMapper();
 
-        JsonLivedocController controller = new JsonLivedocController(version, packages, objectMapper);
-        controller.setBasePath(properties.getBasePath());
-        controller.setPlaygroundEnabled(properties.isPlaygroundEnabled());
-        controller.setDisplayMethodAs(properties.getDisplayMethodAs());
+        JsonLivedocController controller = new JsonLivedocController(apiInfo, packages, objectMapper);
+        controller.setConfig(config);
         return controller;
+    }
+
+    private static LivedocConfiguration getLivedocConfiguration(LivedocProperties properties) {
+        LivedocConfiguration config = new LivedocConfiguration();
+        config.setPlaygroundEnabled(properties.isPlaygroundEnabled());
+        config.setDisplayMethodAs(properties.getDisplayMethodAs());
+        return config;
+    }
+
+    private static ApiMetaData getApiMetaData(LivedocProperties properties) {
+        ApiMetaData apiInfo = new ApiMetaData();
+        apiInfo.setVersion(properties.getVersion());
+        apiInfo.setBaseUrl(properties.getBaseUrl());
+        return apiInfo;
     }
 
     private ObjectMapper getObjectMapper() {

@@ -30,7 +30,7 @@ livedoc.packages[0]=com.mycompany.controller #packages in which you have your sp
 livedoc.packages[1]=com.mycompany.model #packages in which you have your model classes
 livedoc.packages[2]=org.example.external.model #they can also belong to external jars
 # optional configuration
-livedoc.basePath=http://localhost:8080/api #defaults to local server and context path
+livedoc.baseUrl=http://localhost:8080/api #defaults to current server and context path
 livedoc.playgroundEnabled=true
 livedoc.displayMethodAs=URI
 ```

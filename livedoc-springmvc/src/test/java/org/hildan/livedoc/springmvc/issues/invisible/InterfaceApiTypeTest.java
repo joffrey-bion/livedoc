@@ -4,10 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hildan.livedoc.core.LivedocReader;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
@@ -21,7 +22,7 @@ public class InterfaceApiTypeTest {
     public void testInvisible() {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.invisible");
         LivedocReader builder = SpringLivedocReaderFactory.getReader(packages);
-        Livedoc livedoc = builder.read("version", "basePath", true, MethodDisplay.URI);
+        Livedoc livedoc = builder.read(new ApiMetaData(), new LivedocConfiguration());
 
         List<Group<ApiTypeDoc>> typeGroups = livedoc.getTypes();
         assertEquals(1, typeGroups.size());

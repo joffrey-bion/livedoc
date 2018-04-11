@@ -16,9 +16,9 @@ public class LivedocProperties {
     private String version;
 
     /**
-     * The base path of your API, for example http://localhost:8080.
+     * The base path of your API, for example http://your.host.com/api.
      */
-    private String basePath;
+    private String baseUrl;
 
     /**
      * The list of packages that to scan to look for annotated classes to be documented.
@@ -45,12 +45,12 @@ public class LivedocProperties {
         this.version = version;
     }
 
-    public String getBasePath() {
-        return basePath;
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
     public List<String> getPackages() {

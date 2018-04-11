@@ -4,8 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hildan.livedoc.core.LivedocReader;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.junit.Assert;
@@ -19,7 +20,7 @@ public class Issue151Test {
     public void testIssue151() {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.issues.issue151");
         LivedocReader reader = LivedocReader.basicAnnotationReader(packages);
-        Livedoc livedoc = reader.read("", "", true, MethodDisplay.URI);
+        Livedoc livedoc = reader.read(new ApiMetaData(), new LivedocConfiguration());
         List<Group<ApiTypeDoc>> types = livedoc.getTypes();
         Assert.assertEquals(2, types.size());
 

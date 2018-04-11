@@ -22,8 +22,8 @@ export type Staged = {
 };
 
 export type Livedoc = {
-  version: string,
-  basePath: string,
+  livedocInfo: LivedocMetaData,
+  apiInfo: ApiMetaData,
   apis: Array<Group<ApiDoc>>,
   types: Array<Group<ApiTypeDoc>>,
   flows: Array<Group<ApiFlowDoc>>,
@@ -31,6 +31,16 @@ export type Livedoc = {
   playgroundEnabled: boolean,
   displayMethodAs: MethodDisplay,
 };
+
+export type ApiMetaData = {
+  version: string,
+  baseUrl: string,
+}
+
+export type LivedocMetaData = {
+  version: string,
+  buildDate: string,
+}
 
 export type Group<T> = {
   groupName: string,

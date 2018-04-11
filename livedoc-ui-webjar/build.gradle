@@ -3,7 +3,6 @@ plugins {
 }
 
 apply plugin: 'base'
-apply plugin: 'java-library' // for jar task
 
 description = 'The Livedoc UI packaged in a webjar'
 buildDir = 'build'

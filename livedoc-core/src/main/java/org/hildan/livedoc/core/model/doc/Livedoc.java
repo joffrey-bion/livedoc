@@ -2,16 +2,16 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.List;
 
-import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.groups.Group;
 
 public class Livedoc {
 
-    private String version;
+    private final LivedocMetaData livedocInfo;
 
-    private String basePath;
+    private final ApiMetaData apiInfo;
 
     private List<Group<ApiDoc>> apis;
 
@@ -31,18 +31,17 @@ public class Livedoc {
         METHOD
     }
 
-    public Livedoc(String version, String basePath) {
-        super();
-        this.version = version;
-        this.basePath = basePath;
+    public Livedoc(LivedocMetaData livedocInfo, ApiMetaData apiInfo) {
+        this.livedocInfo = livedocInfo;
+        this.apiInfo = apiInfo;
     }
 
-    public String getVersion() {
-        return version;
+    public LivedocMetaData getLivedocInfo() {
+        return livedocInfo;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public ApiMetaData getApiInfo() {
+        return apiInfo;
     }
 
     public List<Group<ApiDoc>> getApis() {
@@ -59,14 +58,6 @@ public class Livedoc {
 
     public void setTypes(List<Group<ApiTypeDoc>> types) {
         this.types = types;
-    }
-
-    public String getBasePath() {
-        return basePath;
-    }
-
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
     }
 
     public List<Group<ApiFlowDoc>> getFlows() {
@@ -103,9 +94,8 @@ public class Livedoc {
 
     @Override
     public String toString() {
-        return "Livedoc [version=" + version + ", basePath=" + basePath + ", apis=" + apis + ", types=" + types
-                + ", flows=" + flows + ", global=" + global + ", playgroundEnabled=" + playgroundEnabled
-                + ", displayMethodAs=" + displayMethodAs + "]";
+        return "Livedoc [apiInfo=" + apiInfo + ", apis=" + apis + ", types=" + types + ", flows=" + flows + ", global="
+                + global + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + "]";
     }
 
 }

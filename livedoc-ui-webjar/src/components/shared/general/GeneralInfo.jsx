@@ -20,11 +20,11 @@ const GeneralInfoPresenter = (props: GeneralInfoProps) => {
         <tbody>
         <tr>
           <th scope="row">Base path</th>
-          <td>{props.livedoc.basePath}</td>
+          <td>{props.livedoc.apiInfo.baseUrl}</td>
         </tr>
         <tr>
           <th scope="row">Version</th>
-          <td>{props.livedoc.version}</td>
+          <td>{props.livedoc.apiInfo.version}</td>
         </tr>
         </tbody>
       </Table>

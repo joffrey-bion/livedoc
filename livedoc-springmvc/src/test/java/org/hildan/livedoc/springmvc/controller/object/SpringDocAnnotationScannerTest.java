@@ -4,8 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hildan.livedoc.core.LivedocReader;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
@@ -15,14 +16,10 @@ import static org.junit.Assert.fail;
 
 public class SpringDocAnnotationScannerTest {
 
-    private static final String VERSION = "1.0";
-
-    private static final String BASE_PATH = "http://localhost:8080/api";
-
     @Test
-    public void findsNestedObject() throws Exception {
+    public void findsNestedObject() {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
+        Livedoc doc = builder.read(new ApiMetaData(), new LivedocConfiguration());
 
         List<Group<ApiTypeDoc>> typeGroups = doc.getTypes();
         for (Group<ApiTypeDoc> types : typeGroups) {
@@ -31,9 +28,9 @@ public class SpringDocAnnotationScannerTest {
     }
 
     @Test
-    public void findsDeeplyNestedObjects() throws Exception {
+    public void findsDeeplyNestedObjects() {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        Livedoc doc = builder.read(VERSION, BASE_PATH, true, MethodDisplay.URI);
+        Livedoc doc = builder.read(new ApiMetaData(), new LivedocConfiguration());
 
         List<Group<ApiTypeDoc>> typeGroups = doc.getTypes();
         for (Group<ApiTypeDoc> types : typeGroups) {

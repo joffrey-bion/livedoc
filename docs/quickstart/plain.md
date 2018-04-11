@@ -26,10 +26,13 @@ To generate the documentation, you need a `LivedocReader` to inspect your code. 
  the `LivedocReader.basicAnnotationReader(packages)` method:
  
  ```java
-String apiVersion = "1.0";
-String basePath = "http://mycompany.com/api";
-boolean playgroundEnabled = true;
-MethodDisplay displayMethodAs = MethodDisplay.URI;
+ApiMetaData apiInfo = new ApiMetaData();
+apiInfo.setVersion("1.0");
+apiInfo.setBaseUrl("http://mycompany.com/api");
+
+LivedocConfiguration config = new LivedocConfiguration();
+config.setPlaygroundEnabled(true);
+config.setDisplayMethodAs(MethodDisplay.URI);
 
 List<String> packages = new ArrayList<>();
 pakcages.add("com.mycompany.controllers"); // packages in which you have your spring controllers
@@ -37,7 +40,7 @@ packages.add("com.mycompany.model"); // packages in which you have your model cl
 packages.add("org.example.external.model"); // they can also belong to external jars
 
 LivedocReader livedocReader = LivedocReader.basicAnnotationReader(packages);
-Livedoc livedoc = livedocReader.read(apiVersion, basePath, playgroundEnabled, displayMethodAs);
+Livedoc livedoc = livedocReader.read(apiInfo, config);
 ```
 
 If you want to customize how the `LivedocReader` inspects your classes, you may use a `LivedocReaderBuilder` to 
