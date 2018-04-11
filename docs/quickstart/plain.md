@@ -27,6 +27,7 @@ To generate the documentation, you need a `LivedocReader` to inspect your code. 
  
  ```java
 ApiMetaData apiInfo = new ApiMetaData();
+apiInfo.setName("My API");
 apiInfo.setVersion("1.0");
 apiInfo.setBaseUrl("http://mycompany.com/api");
 

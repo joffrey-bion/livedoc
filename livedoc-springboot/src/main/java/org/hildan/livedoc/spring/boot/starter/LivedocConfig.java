@@ -44,6 +44,7 @@ public class LivedocConfig {
 
     private static LivedocConfiguration getLivedocConfiguration(LivedocProperties properties) {
         LivedocConfiguration config = new LivedocConfiguration();
+        config.setPackages(properties.getPackages());
         config.setPlaygroundEnabled(properties.isPlaygroundEnabled());
         config.setDisplayMethodAs(properties.getDisplayMethodAs());
         return config;
@@ -51,6 +52,7 @@ public class LivedocConfig {
 
     private static ApiMetaData getApiMetaData(LivedocProperties properties) {
         ApiMetaData apiInfo = new ApiMetaData();
+        apiInfo.setName(properties.getName());
         apiInfo.setVersion(properties.getVersion());
         apiInfo.setBaseUrl(properties.getBaseUrl());
         return apiInfo;

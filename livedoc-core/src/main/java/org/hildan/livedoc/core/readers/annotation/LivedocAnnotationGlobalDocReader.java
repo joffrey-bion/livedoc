@@ -13,7 +13,10 @@ import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.model.doc.LivedocMetaData;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
@@ -33,11 +36,11 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
 
     @NotNull
     @Override
-    public ApiGlobalDoc getApiGlobalDoc() {
+    public ApiGlobalDoc getApiGlobalDoc(ApiMetaData apiInfo, LivedocMetaData livedocInfo, LivedocConfiguration config) {
         Collection<Class<?>> global = annotatedTypesFinder.apply(ApiGlobal.class);
         Collection<Class<?>> changelogs = annotatedTypesFinder.apply(ApiChangelogSet.class);
         Collection<Class<?>> migrations = annotatedTypesFinder.apply(ApiMigrationSet.class);
-        return ApiGlobalDocReader.read(global, changelogs, migrations);
+        return new ApiGlobalDocReader(apiInfo, livedocInfo, config).read(global, changelogs, migrations);
     }
 
     @NotNull

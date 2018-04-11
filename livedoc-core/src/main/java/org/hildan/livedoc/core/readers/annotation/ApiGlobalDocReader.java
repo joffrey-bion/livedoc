@@ -1,13 +1,17 @@
 package org.hildan.livedoc.core.readers.annotation;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.global.ApiChangelog;
@@ -16,6 +20,9 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalSection;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
+import org.hildan.livedoc.core.model.doc.LivedocMetaData;
 import org.hildan.livedoc.core.model.doc.global.ApiChangelogDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiChangelogsDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
@@ -25,10 +32,27 @@ import org.hildan.livedoc.core.model.doc.global.ApiMigrationsDoc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
 public class ApiGlobalDocReader {
 
+    private final Configuration templateConfig;
+
+    private final Map<String, Object> model;
+
+    public ApiGlobalDocReader(ApiMetaData apiInfo, LivedocMetaData livedocInfo, LivedocConfiguration config) {
+        templateConfig = new Configuration();
+        templateConfig.setClassForTemplateLoading(ApiGlobalDocReader.class, "");
+        model = new HashMap<>();
+        model.put("apiInfo", apiInfo);
+        model.put("livedocInfo", livedocInfo);
+        model.put("config", config);
+    }
+
     @NotNull
-    public static ApiGlobalDoc read(Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
+    public ApiGlobalDoc read(Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
             Collection<Class<?>> migrationClasses) {
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
         apiGlobalDoc.setSections(buildGeneralSections(globalClasses));
@@ -38,22 +62,43 @@ public class ApiGlobalDocReader {
     }
 
     @NotNull
-    private static List<ApiGlobalSectionDoc> buildGeneralSections(Collection<Class<?>> globalClasses) {
+    private List<ApiGlobalSectionDoc> buildGeneralSections(Collection<Class<?>> globalClasses) {
         if (globalClasses.isEmpty()) {
-            return Collections.emptyList();
+            return Collections.singletonList(loadDefaultGlobalSectionDoc());
         }
         Class<?> clazz = globalClasses.iterator().next();
         ApiGlobal apiGlobal = clazz.getAnnotation(ApiGlobal.class);
         return readSections(apiGlobal);
     }
 
-    @NotNull
-    private static List<ApiGlobalSectionDoc> readSections(ApiGlobal apiGlobal) {
-        return Arrays.stream(apiGlobal.sections()).map(ApiGlobalDocReader::readSection).collect(Collectors.toList());
+    private ApiGlobalSectionDoc loadDefaultGlobalSectionDoc() {
+        ApiGlobalSectionDoc section = new ApiGlobalSectionDoc();
+        section.setParagraphs(Collections.singletonList(loadDefaultGlobalDoc()));
+        return section;
+    }
+
+    private String loadDefaultGlobalDoc() {
+        try {
+            Template template = templateConfig.getTemplate("default_global.ftl");
+            StringWriter out = new StringWriter();
+            template.process(model, out);
+            return out.toString();
+        } catch (IOException e) {
+            return "Error: default global doc template missing.\n"
+                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
+        } catch (TemplateException e) {
+            return "Error: malformed default global doc template.\n"
+                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
+        }
     }
 
     @NotNull
-    private static ApiGlobalSectionDoc readSection(@NotNull ApiGlobalSection section) {
+    private List<ApiGlobalSectionDoc> readSections(ApiGlobal apiGlobal) {
+        return Arrays.stream(apiGlobal.sections()).map(this::readSection).collect(Collectors.toList());
+    }
+
+    @NotNull
+    private ApiGlobalSectionDoc readSection(@NotNull ApiGlobalSection section) {
         ApiGlobalSectionDoc sectionDoc = new ApiGlobalSectionDoc();
         sectionDoc.setTitle(section.title());
         sectionDoc.setParagraphs(readParagraphs(section));

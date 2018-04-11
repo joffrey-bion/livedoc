@@ -26,6 +26,7 @@ If you want to generate part of your documentation (descriptions) from your Java
 
 ```xml
 <bean id="documentationController" class="org.hildan.livedoc.springmvc.controller.JsonLivedocController">
+    <constructor-arg name="name" value="My API" />
     <constructor-arg name="version" value="1.0" />
     <constructor-arg name="packages">
         <list>

@@ -25,6 +25,7 @@ package), and add the following content:
 
 ```properties
 # mandatory configuration
+livedoc.name=My API
 livedoc.version=1.0
 livedoc.packages[0]=com.mycompany.controller #packages in which you have your spring controllers
 livedoc.packages[1]=com.mycompany.model #packages in which you have your model classes

@@ -17,7 +17,10 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalSection;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.model.doc.LivedocMetaData;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
@@ -43,7 +46,7 @@ public class GlobalDocReaderTest {
             }
             return Collections.emptyList();
         });
-        return reader.getApiGlobalDoc();
+        return reader.getApiGlobalDoc(new ApiMetaData(), new LivedocMetaData(), new LivedocConfiguration());
     }
 
     @Test

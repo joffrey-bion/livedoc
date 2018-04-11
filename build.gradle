@@ -85,7 +85,9 @@ configure(subprojects.findAll {it.name != 'sample-app'}) {
     apply plugin: 'java-library'
 
     processResources {
-        expand(projectVersion: project.version, buildDate: getDate())
+        filesMatching('**/*.properties') {
+            expand(projectVersion: project.version, buildDate: getDate())
+        }
     }
 }
 

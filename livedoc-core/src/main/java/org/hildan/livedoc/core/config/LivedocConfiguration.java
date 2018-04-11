@@ -1,8 +1,15 @@
 package org.hildan.livedoc.core.config;
 
+import java.util.List;
+
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 
 public class LivedocConfiguration {
+
+    /**
+     * Whitelist of packages to scan.
+     */
+    private List<String> packages;
 
     /**
      * Whether the playground is enabled or not
@@ -13,6 +20,14 @@ public class LivedocConfiguration {
      * The way methods should be displayed in the UI
      */
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
+
+    public List<String> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<String> packages) {
+        this.packages = packages;
+    }
 
     public boolean isPlaygroundEnabled() {
         return playgroundEnabled;

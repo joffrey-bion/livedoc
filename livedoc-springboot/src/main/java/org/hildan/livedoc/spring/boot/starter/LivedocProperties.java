@@ -11,6 +11,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class LivedocProperties {
 
     /**
+     * The name of your API.
+     */
+    private String name;
+
+    /**
      * The version of your API.
      */
     private String version;
@@ -36,6 +41,14 @@ public class LivedocProperties {
      * Allowed values are URI and SUMMARY.
      */
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getVersion() {
         return version;

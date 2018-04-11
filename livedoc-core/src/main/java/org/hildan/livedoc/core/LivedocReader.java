@@ -14,6 +14,7 @@ import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
+import org.hildan.livedoc.core.model.doc.LivedocMetaData;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
@@ -99,14 +100,15 @@ public class LivedocReader {
      * @return a new {@link Livedoc} object representing the API
      */
     public Livedoc read(ApiMetaData apiInfo, LivedocConfiguration configuration) {
+        LivedocMetaData livedocInfo = LivedocMetaDataReader.read();
 
         Collection<ApiDoc> apiDocs = masterApiDocReader.readApiDocs(typeReferenceProvider, templateProvider);
         Set<Class<?>> types = getClassesToDocument();
         List<ApiTypeDoc> typeDocs = masterTypeDocReader.readApiTypeDocs(types, typeReferenceProvider, templateProvider);
         Set<ApiFlowDoc> flowDocs = globalDocReader.getApiFlowDocs(getAllApiOperationDocsById(apiDocs));
-        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc();
+        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(apiInfo, livedocInfo, configuration);
 
-        Livedoc livedoc = new Livedoc(LivedocMetaDataReader.read(), apiInfo);
+        Livedoc livedoc = new Livedoc(livedocInfo, apiInfo);
         livedoc.setPlaygroundEnabled(configuration.isPlaygroundEnabled());
         livedoc.setDisplayMethodAs(configuration.getDisplayMethodAs());
         livedoc.setApis(Group.groupAndSort(apiDocs));
