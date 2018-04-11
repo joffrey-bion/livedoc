@@ -1,5 +1,12 @@
 # Change Log
 
+## [v4.3.2](https://bintray.com/joffrey-bion/maven/livedoc/4.3.2) (2018-04-11)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.1...v4.3.2)
+
+**Fixed bugs:**
+
+- \[web-ui\] TypeError: Cannot read property 'sections' of null [\#87](https://github.com/joffrey-bion/livedoc/issues/87)
+
 ## [v4.3.1](https://bintray.com/joffrey-bion/maven/livedoc/4.3.1) (2018-04-09)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.0...v4.3.1)
 
