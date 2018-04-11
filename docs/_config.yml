@@ -3,7 +3,7 @@ theme: jekyll-theme-cayman
 
 # for dependencies inclusion doc
 groupId: org.hildan.livedoc
-latestVersion: 4.3.1
+latestVersion: 4.3.2
 
 demo_url: http://livedoc-demo.hildan.org:8080/livedoc/index.html
 
