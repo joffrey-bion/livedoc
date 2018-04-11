@@ -1,6 +1,5 @@
 package org.hildan.livedoc.core.model.doc.global;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,12 +12,6 @@ public class ApiGlobalDoc {
     private ApiChangelogsDoc changelogSet;
 
     private ApiMigrationsDoc migrationSet;
-
-    public ApiGlobalDoc() {
-        this.sections = new ArrayList<>();
-        this.changelogSet = new ApiChangelogsDoc();
-        this.migrationSet = new ApiMigrationsDoc();
-    }
 
     public List<ApiGlobalSectionDoc> getSections() {
         return sections;

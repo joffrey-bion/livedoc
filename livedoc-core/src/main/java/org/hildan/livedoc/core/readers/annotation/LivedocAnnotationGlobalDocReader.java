@@ -1,10 +1,12 @@
 package org.hildan.livedoc.core.readers.annotation;
 
-import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
@@ -16,6 +18,7 @@ import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An implementation of {@link GlobalDocReader} that reads Livedoc annotations to build the documentation.
@@ -28,26 +31,26 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
         this.annotatedTypesFinder = annotatedTypesFinder;
     }
 
-    /**
-     * Gets the API flow documentation for the set of classes passed as argument
-     */
+    @NotNull
     @Override
-    public Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
-        Set<ApiFlowDoc> apiFlowDocs = new TreeSet<>();
-        for (Class<?> clazz : getClassesWithFlows()) {
-            Method[] methods = clazz.getMethods();
-            for (Method method : methods) {
-                ApiFlow flowAnnotation = method.getAnnotation(ApiFlow.class);
-                if (flowAnnotation != null) {
-                    apiFlowDocs.add(getApiFlowDoc(apiOperationDocsById, flowAnnotation));
-                }
-            }
-        }
-        return apiFlowDocs;
+    public ApiGlobalDoc getApiGlobalDoc() {
+        Collection<Class<?>> global = annotatedTypesFinder.apply(ApiGlobal.class);
+        Collection<Class<?>> changelogs = annotatedTypesFinder.apply(ApiChangelogSet.class);
+        Collection<Class<?>> migrations = annotatedTypesFinder.apply(ApiMigrationSet.class);
+        return ApiGlobalDocReader.read(global, changelogs, migrations);
     }
 
-    private Iterable<Class<?>> getClassesWithFlows() {
-        return annotatedTypesFinder.apply(ApiFlowSet.class);
+    @NotNull
+    @Override
+    public Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
+        Collection<Class<?>> classesWithFlows = annotatedTypesFinder.apply(ApiFlowSet.class);
+        return classesWithFlows.stream()
+                               .map(Class::getMethods)
+                               .flatMap(Arrays::stream)
+                               .map(method -> method.getAnnotation(ApiFlow.class))
+                               .filter(Objects::nonNull)
+                               .map(flowAnnotation -> getApiFlowDoc(apiOperationDocsById, flowAnnotation))
+                               .collect(Collectors.toCollection(TreeSet::new));
     }
 
     private ApiFlowDoc getApiFlowDoc(Map<String, ? extends ApiOperationDoc> apiOperationDocsById,
@@ -55,23 +58,4 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
         return ApiFlowDoc.buildFromAnnotation(flowAnnotation, apiOperationDocsById);
     }
 
-    @Override
-    public ApiGlobalDoc getApiGlobalDoc() {
-        Collection<Class<?>> global = getClassesWithGlobalDoc();
-        Collection<Class<?>> changelogs = getClassesWithChangelogs();
-        Collection<Class<?>> migrations = getClassesWithMigrations();
-        return ApiGlobalDocReader.read(global, changelogs, migrations);
-    }
-
-    private Collection<Class<?>> getClassesWithGlobalDoc() {
-        return annotatedTypesFinder.apply(ApiGlobal.class);
-    }
-
-    private Collection<Class<?>> getClassesWithChangelogs() {
-        return annotatedTypesFinder.apply(ApiChangelogSet.class);
-    }
-
-    private Collection<Class<?>> getClassesWithMigrations() {
-        return annotatedTypesFinder.apply(ApiMigrationSet.class);
-    }
 }

@@ -12,8 +12,9 @@ export type GlobalNavSectionProps = {
 
 export const GlobalNavSection = ({globalDoc, ...otherProps}: GlobalNavSectionProps) => {
   const hasGeneral = globalDoc.sections.length > 0;
-  const hasChangeLogs = globalDoc.changelogSet.changelogs.length > 0;
-  const hasMigrations = globalDoc.migrationSet.migrations.length > 0;
+  // this checks for null AND undefined with "!=" on purpose
+  const hasChangeLogs = globalDoc.changelogSet != null && globalDoc.changelogSet.changelogs.length > 0;
+  const hasMigrations = globalDoc.migrationSet != null && globalDoc.migrationSet.migrations.length > 0;
 
   const globalElements: NavElementDescription[] = [];
   globalElements.push(navElementDesc('general', 'General', hasGeneral));

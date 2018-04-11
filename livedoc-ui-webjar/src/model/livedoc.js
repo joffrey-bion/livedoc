@@ -87,8 +87,8 @@ export type ApiFlowStepDoc = Identified & {
 
 export type ApiGlobalDoc = Identified & {
   sections: Array<ApiGlobalSectionDoc>,
-  changelogSet: ApiChangelogsDoc,
-  migrationSet: ApiMigrationsDoc,
+  changelogSet: ?ApiChangelogsDoc,
+  migrationSet: ?ApiMigrationsDoc,
 }
 
 export type ApiGlobalSectionDoc = Identified & {

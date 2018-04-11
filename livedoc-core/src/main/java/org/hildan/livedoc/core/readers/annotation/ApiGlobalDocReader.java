@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,35 +23,31 @@ import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiMigrationDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiMigrationsDoc;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ApiGlobalDocReader {
 
+    @NotNull
     public static ApiGlobalDoc read(Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
             Collection<Class<?>> migrationClasses) {
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
-        apiGlobalDoc = buildGeneralSections(apiGlobalDoc, globalClasses);
-        apiGlobalDoc = buildChangelogDoc(apiGlobalDoc, changelogClasses);
-        apiGlobalDoc = buildMigrationDoc(apiGlobalDoc, migrationClasses);
-
-        boolean noGeneralSections = apiGlobalDoc.getSections().isEmpty();
-        boolean noChangeLogs = apiGlobalDoc.getChangelogSet().getChangelogs().isEmpty();
-        boolean noMigrations = apiGlobalDoc.getMigrationSet().getMigrations().isEmpty();
-
-        if (noGeneralSections && noChangeLogs && noMigrations) {
-            return null;
-        }
+        apiGlobalDoc.setSections(buildGeneralSections(globalClasses));
+        apiGlobalDoc.setChangelogSet(buildChangelogDoc(changelogClasses));
+        apiGlobalDoc.setMigrationSet(buildMigrationDoc(migrationClasses));
         return apiGlobalDoc;
     }
 
-    private static ApiGlobalDoc buildGeneralSections(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> globalClasses) {
-        if (!globalClasses.isEmpty()) {
-            Class<?> clazz = globalClasses.iterator().next();
-            ApiGlobal apiGlobal = clazz.getAnnotation(ApiGlobal.class);
-            apiGlobalDoc.setSections(readSections(apiGlobal));
+    @NotNull
+    private static List<ApiGlobalSectionDoc> buildGeneralSections(Collection<Class<?>> globalClasses) {
+        if (globalClasses.isEmpty()) {
+            return Collections.emptyList();
         }
-        return apiGlobalDoc;
+        Class<?> clazz = globalClasses.iterator().next();
+        ApiGlobal apiGlobal = clazz.getAnnotation(ApiGlobal.class);
+        return readSections(apiGlobal);
     }
 
+    @NotNull
     private static List<ApiGlobalSectionDoc> readSections(ApiGlobal apiGlobal) {
         return Arrays.stream(apiGlobal.sections()).map(ApiGlobalDocReader::readSection).collect(Collectors.toList());
     }
@@ -91,23 +88,25 @@ public class ApiGlobalDocReader {
         }
     }
 
-    private static ApiGlobalDoc buildChangelogDoc(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> changelogClasses) {
-        if (!changelogClasses.isEmpty()) {
-            Class<?> clazz = changelogClasses.iterator().next();
-            ApiChangelogSet apiChangelogSet = clazz.getAnnotation(ApiChangelogSet.class);
-            ApiChangelogsDoc apiChangelogsDoc = new ApiChangelogsDoc();
-            for (ApiChangelog apiChangelog : apiChangelogSet.changelogs()) {
-                ApiChangelogDoc apiChangelogDoc = new ApiChangelogDoc();
-                apiChangelogDoc.setVersion(apiChangelog.version());
-                apiChangelogDoc.setChanges(apiChangelog.changes());
-                apiChangelogsDoc.addChangelog(apiChangelogDoc);
-            }
-            apiGlobalDoc.setChangelogSet(apiChangelogsDoc);
+    @Nullable
+    private static ApiChangelogsDoc buildChangelogDoc(Collection<Class<?>> changelogClasses) {
+        if (changelogClasses.isEmpty()) {
+            return null;
         }
-        return apiGlobalDoc;
+        Class<?> clazz = changelogClasses.iterator().next();
+        ApiChangelogSet apiChangelogSet = clazz.getAnnotation(ApiChangelogSet.class);
+        ApiChangelogsDoc apiChangelogsDoc = new ApiChangelogsDoc();
+        for (ApiChangelog apiChangelog : apiChangelogSet.changelogs()) {
+            ApiChangelogDoc apiChangelogDoc = new ApiChangelogDoc();
+            apiChangelogDoc.setVersion(apiChangelog.version());
+            apiChangelogDoc.setChanges(apiChangelog.changes());
+            apiChangelogsDoc.addChangelog(apiChangelogDoc);
+        }
+        return apiChangelogsDoc;
     }
 
-    private static ApiGlobalDoc buildMigrationDoc(ApiGlobalDoc apiGlobalDoc, Collection<Class<?>> migrationClasses) {
+    @Nullable
+    private static ApiMigrationsDoc buildMigrationDoc(Collection<Class<?>> migrationClasses) {
         if (!migrationClasses.isEmpty()) {
             Class<?> clazz = migrationClasses.iterator().next();
             ApiMigrationSet apiMigrationSet = clazz.getAnnotation(ApiMigrationSet.class);
@@ -119,8 +118,8 @@ public class ApiGlobalDocReader {
                 apiMigrationDoc.setSteps(apiMigration.steps());
                 apiMigrationsDoc.addMigration(apiMigrationDoc);
             }
-            apiGlobalDoc.setMigrationSet(apiMigrationsDoc);
+            return apiMigrationsDoc;
         }
-        return apiGlobalDoc;
+        return null;
     }
 }
