@@ -5,15 +5,17 @@ import { ContentHeader } from '../../../shared/content/ContentHeader';
 import { ChangeLog } from './ChangeLog';
 
 export type ChangeLogsProps = {
-  changeLogs: ApiChangelogsDoc,
+  changeLogs: ?ApiChangelogsDoc,
 }
 
-export const ChangeLogs = (props: ChangeLogsProps) => {
-
-  const changeLogs = props.changeLogs.changelogs.map(cl => <ChangeLog key={cl.livedocId} changeLog={cl}/>);
+export const ChangeLogs = ({changeLogs}: ChangeLogsProps) => {
+  if (changeLogs == null) {
+    return null;
+  }
+  const changeLogsElts = changeLogs.changelogs.map(cl => <ChangeLog key={cl.livedocId} changeLog={cl}/>);
 
   return <div>
     <ContentHeader title='Change Log'/>
-    {changeLogs}
+    {changeLogsElts}
   </div>;
 };
