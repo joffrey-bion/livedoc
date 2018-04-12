@@ -6,8 +6,8 @@ import type { ApiGlobalDoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { getGlobalDoc } from '../../../redux/livedoc';
 import { ChangeLogs } from './changelog/ChangeLogs';
+import { GlobalHome } from './home/GlobalHome';
 import { Migrations } from './migrations/Migrations';
-import { GlobalDocSections } from './sections/GlobalDocSections';
 
 export type GlobalDocPanelProps = {
   globalDoc: ApiGlobalDoc,
@@ -15,7 +15,7 @@ export type GlobalDocPanelProps = {
 
 const GlobalDocPanelPresenter = ({globalDoc}: GlobalDocPanelProps) => {
   return <Switch>
-    <Route path="/global/general" render={() => <GlobalDocSections sections={globalDoc.sections}/>}/>
+    <Route path="/global/general" render={() => <GlobalHome content={globalDoc.general}/>}/>
     <Route path="/global/changelog" render={() => <ChangeLogs changeLogs={globalDoc.changelogSet}/>}/>
     <Route path="/global/migrations" render={() => <Migrations migrations={globalDoc.migrationSet}/>}/>
     <Redirect to="/global/general"/>

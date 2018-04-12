@@ -2,10 +2,8 @@ package org.hildan.livedoc.core.model.doc.global;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class ApiMigrationsDoc {
-    public final String livedocId = UUID.randomUUID().toString();
 
     private Set<ApiMigrationDoc> migrations;
 

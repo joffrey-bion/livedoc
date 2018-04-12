@@ -14,9 +14,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiGlobal {
 
+    String FILE_PREFIX = "/livedocfile:";
+
     /**
-     * An array of {@link ApiGlobalSection} annotations
+     * The content of the global doc, as an HTML string. You may also use a reference to a freemarker template.
      */
-    ApiGlobalSection[] sections();
+    String value();
 
 }

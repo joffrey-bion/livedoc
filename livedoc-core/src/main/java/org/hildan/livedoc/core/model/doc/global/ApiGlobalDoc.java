@@ -1,24 +1,19 @@
 package org.hildan.livedoc.core.model.doc.global;
 
-import java.util.List;
-import java.util.UUID;
-
 public class ApiGlobalDoc {
 
-    public final String livedocId = UUID.randomUUID().toString();
-
-    private List<ApiGlobalSectionDoc> sections;
+    private String general;
 
     private ApiChangelogsDoc changelogSet;
 
     private ApiMigrationsDoc migrationSet;
 
-    public List<ApiGlobalSectionDoc> getSections() {
-        return sections;
+    public String getGeneral() {
+        return general;
     }
 
-    public void setSections(List<ApiGlobalSectionDoc> sections) {
-        this.sections = sections;
+    public void setGeneral(String general) {
+        this.general = general;
     }
 
     public ApiChangelogsDoc getChangelogSet() {

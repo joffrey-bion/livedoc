@@ -1,10 +1,7 @@
 package org.hildan.livedoc.core.scanners;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +11,6 @@ import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.annotations.global.ApiChangelog;
 import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
-import org.hildan.livedoc.core.annotations.global.ApiGlobalSection;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
@@ -23,13 +19,14 @@ import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.LivedocMetaData;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiGlobalSectionDoc;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
-import org.junit.Assert;
 import org.junit.Test;
 
-import static java.util.stream.Collectors.toSet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class GlobalDocReaderTest {
 
@@ -50,99 +47,71 @@ public class GlobalDocReaderTest {
     }
 
     @Test
-    public void testApiGlobalDoc_basic() {
-        @ApiGlobal(sections = {
-                @ApiGlobalSection(title = "title", paragraphs = {"Paragraph 1", "Paragraph 2"})
-        })
+    public void getApiGlobalDoc_defaultGlobal() {
+        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(null, null, null);
+        assertNotNull(apiGlobalDoc);
+        assertNotNull(apiGlobalDoc.getGeneral());
+        assertNotEquals("", apiGlobalDoc.getGeneral()); // default doc should be loaded
+        assertNull(apiGlobalDoc.getChangelogSet());
+        assertNull(apiGlobalDoc.getMigrationSet());
+    }
+
+    @Test
+    public void getApiGlobalDoc_basic() {
+        @ApiGlobal("<h1>Title</h1><p>Description</p>")
         class Global {}
 
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(Global.class, null, null);
-        Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(1, apiGlobalDoc.getSections().size());
-        ApiGlobalSectionDoc sectionDoc = apiGlobalDoc.getSections().get(0);
-        Assert.assertEquals("title", sectionDoc.getTitle());
-
-        List<String> paragraphs = Arrays.asList("Paragraph 1", "Paragraph 2");
-        Assert.assertEquals(paragraphs, sectionDoc.getParagraphs());
+        assertNotNull(apiGlobalDoc);
+        assertEquals("<h1>Title</h1><p>Description</p>", apiGlobalDoc.getGeneral());
+        assertNull(apiGlobalDoc.getChangelogSet());
+        assertNull(apiGlobalDoc.getMigrationSet());
     }
 
     @Test
-    public void testApiGlobalDoc_fileReference() {
-        @ApiGlobal(sections = {
-                @ApiGlobalSection(title = "title",
-                        paragraphs = {"Paragraph 1", "Paragraph 2", "/livedocfile:/test/path/text.txt"})
-        })
+    public void getApiGlobalDoc_fileReference() {
+        @ApiGlobal("/livedocfile:/test/path/text.txt")
         class GlobalWithFile {}
 
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithFile.class, null, null);
-        Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(1, apiGlobalDoc.getSections().size());
-        ApiGlobalSectionDoc sectionDoc = apiGlobalDoc.getSections().get(0);
-        Assert.assertEquals("title", sectionDoc.getTitle());
-
-        List<String> paragraphs = Arrays.asList("Paragraph 1", "Paragraph 2", "Paragraph from file");
-        Assert.assertEquals(paragraphs, sectionDoc.getParagraphs());
-    }
-
-    @ApiGlobal(sections = {
-            @ApiGlobalSection(title = "section1", paragraphs = {"Paragraph 1"}),
-            @ApiGlobalSection(title = "abc", paragraphs = {"Paragraph 1", "Paragraph2"}),
-            @ApiGlobalSection(title = "198xyz", paragraphs = {"Paragraph 1", "Paragraph2", "Paragraph3", "Paragraph4"}),
-    })
-    private class MultipleGlobalSections {}
-
-    @Test
-    public void testApiGlobalDoc_multipleSections() {
-        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(MultipleGlobalSections.class, null, null);
-        Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(3, apiGlobalDoc.getSections().size());
-
-        Set<String> expectedTitles = new HashSet<>();
-        expectedTitles.add("section1");
-        expectedTitles.add("abc");
-        expectedTitles.add("198xyz");
-
-        Set<String> actualTitles = apiGlobalDoc.getSections()
-                                               .stream()
-                                               .map(ApiGlobalSectionDoc::getTitle)
-                                               .collect(toSet());
-        Assert.assertEquals(expectedTitles, actualTitles);
+        assertNotNull(apiGlobalDoc);
+        assertEquals("Paragraph from file", apiGlobalDoc.getGeneral());
+        assertNull(apiGlobalDoc.getChangelogSet());
+        assertNull(apiGlobalDoc.getMigrationSet());
     }
 
     @ApiChangelogSet(changelogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
     private class Changelog {}
 
     @Test
-    public void testApiGlobalDoc_changelog() {
+    public void getApiGlobalDoc_changelog() {
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(null, Changelog.class, null);
-        Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(1, apiGlobalDoc.getChangelogSet().getChangelogs().size());
+        assertNotNull(apiGlobalDoc);
+        assertEquals(1, apiGlobalDoc.getChangelogSet().getChangelogs().size());
     }
 
     @ApiMigrationSet(migrations = {@ApiMigration(fromVersion = "1.0", steps = {"Step #1"}, toVersion = "1.1")})
     private class Migration {}
 
     @Test
-    public void testApiGlobalDoc_migration() {
+    public void getApiGlobalDoc_migration() {
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(null, null, Migration.class);
-        Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(1, apiGlobalDoc.getMigrationSet().getMigrations().size());
+        assertNotNull(apiGlobalDoc);
+        assertEquals(1, apiGlobalDoc.getMigrationSet().getMigrations().size());
     }
 
-    @ApiGlobal(sections = {
-            @ApiGlobalSection(title = "title", paragraphs = {"Paragraph 1", "Paragraph 2"})
-    })
+    @ApiGlobal("General doc")
     @ApiChangelogSet(changelogs = {@ApiChangelog(changes = {"Change #1"}, version = "1.0")})
     @ApiMigrationSet(migrations = {@ApiMigration(fromVersion = "1.0", steps = {"Step #1"}, toVersion = "1.1")})
     private class AllTogether {}
 
     @Test
-    public void testApiGlobalDoc_allTogether() {
+    public void getApiGlobalDoc_allTogether() {
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(AllTogether.class, AllTogether.class, AllTogether.class);
-        Assert.assertNotNull(apiGlobalDoc);
-        Assert.assertEquals(1, apiGlobalDoc.getSections().size());
-        Assert.assertEquals(1, apiGlobalDoc.getMigrationSet().getMigrations().size());
-        Assert.assertEquals(1, apiGlobalDoc.getChangelogSet().getChangelogs().size());
+        assertNotNull(apiGlobalDoc);
+        assertEquals("General doc", apiGlobalDoc.getGeneral());
+        assertEquals(1, apiGlobalDoc.getMigrationSet().getMigrations().size());
+        assertEquals(1, apiGlobalDoc.getChangelogSet().getChangelogs().size());
     }
 
     @ApiFlowSet
@@ -183,21 +152,21 @@ public class GlobalDocReaderTest {
         Set<ApiFlowDoc> apiFlowDocs = scanner.getApiFlowDocs(apiOperationDocsById);
         for (ApiFlowDoc apiFlowDoc : apiFlowDocs) {
             if (apiFlowDoc.getName().equals("flow")) {
-                Assert.assertEquals("A test flow", apiFlowDoc.getDescription());
-                Assert.assertEquals(3, apiFlowDoc.getSteps().size());
-                Assert.assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationId());
-                Assert.assertEquals("F2", apiFlowDoc.getSteps().get(1).getApiOperationId());
-                Assert.assertEquals("Flows A", apiFlowDoc.getGroup());
-                Assert.assertNotNull(apiFlowDoc.getSteps().get(0).getApiOperationDoc());
-                Assert.assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationDoc().getId());
+                assertEquals("A test flow", apiFlowDoc.getDescription());
+                assertEquals(3, apiFlowDoc.getSteps().size());
+                assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationId());
+                assertEquals("F2", apiFlowDoc.getSteps().get(1).getApiOperationId());
+                assertEquals("Flows A", apiFlowDoc.getGroup());
+                assertNotNull(apiFlowDoc.getSteps().get(0).getApiOperationDoc());
+                assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationDoc().getId());
             }
 
             if (apiFlowDoc.getName().equals("flow2")) {
-                Assert.assertEquals("A test flow 2", apiFlowDoc.getDescription());
-                Assert.assertEquals(3, apiFlowDoc.getSteps().size());
-                Assert.assertEquals("F4", apiFlowDoc.getSteps().get(0).getApiOperationId());
-                Assert.assertEquals("F5", apiFlowDoc.getSteps().get(1).getApiOperationId());
-                Assert.assertEquals("Flows B", apiFlowDoc.getGroup());
+                assertEquals("A test flow 2", apiFlowDoc.getDescription());
+                assertEquals(3, apiFlowDoc.getSteps().size());
+                assertEquals("F4", apiFlowDoc.getSteps().get(0).getApiOperationId());
+                assertEquals("F5", apiFlowDoc.getSteps().get(1).getApiOperationId());
+                assertEquals("Flows B", apiFlowDoc.getGroup());
             }
         }
     }
