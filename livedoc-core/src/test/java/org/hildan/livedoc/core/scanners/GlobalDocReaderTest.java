@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.scanners;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +15,6 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.model.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.LivedocMetaData;
@@ -22,6 +22,7 @@ import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
+import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -44,9 +45,9 @@ public class GlobalDocReaderTest {
             }
             return Collections.emptyList();
         });
-        LivedocConfiguration configuration = new LivedocConfiguration(Collections.emptyList());
-        GlobalTemplateData templateData = new GlobalTemplateData(new ApiMetaData(), new LivedocMetaData(),
-                configuration);
+        List<String> packages = Collections.emptyList();
+        LivedocConfiguration configuration = new LivedocConfiguration(packages);
+        GlobalTemplateData templateData = new GlobalTemplateData(new ApiMetaData(), new LivedocMetaData(), packages);
         return reader.getApiGlobalDoc(configuration, templateData);
     }
 

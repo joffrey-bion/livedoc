@@ -4,44 +4,44 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.global.ApiChangelog;
 import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalTemplate;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.model.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.global.ApiChangelogDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiChangelogsDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiMigrationDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiMigrationsDoc;
+import org.hildan.livedoc.core.templating.FreeMarkerUtils;
+import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class ApiGlobalDocReader {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiGlobalDocReader.class);
 
-    private final Configuration templateConfig;
+    private final Supplier<Configuration> freemarkerConfigSupplier;
 
     private final GlobalTemplateData templateData;
 
     private ApiGlobalDocReader(LivedocConfiguration config, GlobalTemplateData templateData) {
-        this.templateConfig = new Configuration();
-        this.templateConfig.setClassForTemplateLoading(ApiGlobalDocReader.class, "");
+        this.freemarkerConfigSupplier = config::getFreemarkerConfig;
         this.templateData = templateData;
     }
 
@@ -60,25 +60,14 @@ public class ApiGlobalDocReader {
     @NotNull
     private String buildHomePage(Collection<Class<?>> globalClasses) {
         ApiGlobal apiGlobal = extractSingleAnnotation(ApiGlobal.class, globalClasses);
-        if (apiGlobal == null) {
-            return loadDefaultGlobalDoc();
+        if (apiGlobal != null) {
+            return readContent(apiGlobal.value());
         }
-        return readContent(apiGlobal.value());
-    }
-
-    private String loadDefaultGlobalDoc() {
-        try {
-            Template template = templateConfig.getTemplate("default_global.ftl");
-            StringWriter out = new StringWriter();
-            template.process(templateData, out);
-            return out.toString();
-        } catch (IOException e) {
-            return "Error: default global doc template missing.\n"
-                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
-        } catch (TemplateException e) {
-            return "Error: malformed default global doc template.\n"
-                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
+        ApiGlobalTemplate apiGlobalTemplate = extractSingleAnnotation(ApiGlobalTemplate.class, globalClasses);
+        if (apiGlobalTemplate != null) {
+            return readTemplate(apiGlobalTemplate.value());
         }
+        return loadDefaultGlobalDoc();
     }
 
     @NotNull
@@ -101,6 +90,33 @@ public class ApiGlobalDocReader {
             return reader.lines().collect(Collectors.joining());
         } catch (UncheckedIOException e) {
             throw new IllegalArgumentException("Unable to read file at path: " + path, e);
+        }
+    }
+
+    private String readTemplate(String templateName) {
+        Configuration config = freemarkerConfigSupplier.get();
+        if (config == null) {
+            throw new RuntimeException("Missing FreeMarker configuration");
+        }
+        try {
+            return FreeMarkerUtils.loadTemplateAsString(config, templateData, templateName);
+        } catch (IOException e) {
+            throw new RuntimeException(String.format("FreeMarker template '%s' not found", templateName), e);
+        } catch (TemplateException e) {
+            throw new RuntimeException(String.format("Invalid FreeMarker template '%s'", templateName), e);
+        }
+    }
+
+    private String loadDefaultGlobalDoc() {
+        try {
+            Configuration config = FreeMarkerUtils.createDefaultFreeMarkerConfig();
+            return FreeMarkerUtils.loadTemplateAsString(config, templateData, "default_global.ftl");
+        } catch (IOException e) {
+            return "Error: default global doc template missing.\n"
+                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
+        } catch (TemplateException e) {
+            return "Error: malformed default global doc template.\n"
+                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
         }
     }
 

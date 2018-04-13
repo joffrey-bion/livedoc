@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.meta.LivedocMetaDataReader;
-import org.hildan.livedoc.core.model.GlobalTemplateData;
+import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -113,8 +113,8 @@ public class LivedocReader {
         List<ApiTypeDoc> typeDocs = masterTypeDocReader.readApiTypeDocs(types, typeReferenceProvider, templateProvider);
         Set<ApiFlowDoc> flowDocs = globalDocReader.getApiFlowDocs(getAllApiOperationDocsById(apiDocs));
 
-        GlobalTemplateData globalTemplateData = new GlobalTemplateData(apiInfo, livedocInfo, configuration);
-        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(configuration, globalTemplateData);
+        GlobalTemplateData templateData = new GlobalTemplateData(apiInfo, livedocInfo, configuration.getPackages());
+        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(configuration, templateData);
 
         Livedoc livedoc = new Livedoc(livedocInfo, apiInfo);
         livedoc.setPlaygroundEnabled(configuration.isPlaygroundEnabled());

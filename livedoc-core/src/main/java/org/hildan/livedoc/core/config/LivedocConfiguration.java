@@ -5,6 +5,8 @@ import java.util.List;
 import org.hildan.livedoc.core.LivedocReaderBuilder;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 
+import freemarker.template.Configuration;
+
 /**
  * The configuration for the doc generation. This only contains the elements that are usually customized by the
  * developers of applications using Livedoc. For a more in-depth configuration of Livedoc generation, one must use a
@@ -27,6 +29,8 @@ public class LivedocConfiguration {
      * The way methods should be displayed in the UI
      */
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
+
+    private Configuration freemarkerConfig;
 
     /**
      * Creates a new {@code LivedocConfiguration} with the given package white list.
@@ -61,5 +65,13 @@ public class LivedocConfiguration {
 
     public void setDisplayMethodAs(MethodDisplay displayMethodAs) {
         this.displayMethodAs = displayMethodAs;
+    }
+
+    public Configuration getFreemarkerConfig() {
+        return freemarkerConfig;
+    }
+
+    public void setFreemarkerConfig(Configuration freemarkerConfig) {
+        this.freemarkerConfig = freemarkerConfig;
     }
 }

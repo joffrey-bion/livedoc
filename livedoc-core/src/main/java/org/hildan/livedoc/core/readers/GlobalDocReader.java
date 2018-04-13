@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.model.GlobalTemplateData;
+import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;

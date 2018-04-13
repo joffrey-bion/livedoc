@@ -7,19 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation has to be used on a class dedicated to global api documentation
+ * This annotation has to be used on a class dedicated to global api documentation. It similar to {@link ApiGlobal}
+ * but references a file to process with FreeMarker.
  */
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiGlobal {
-
-    String FILE_PREFIX = "/livedocfile:";
+public @interface ApiGlobalTemplate {
 
     /**
-     * The content of the global doc, as an HTML string. You may also use a reference to a file using the
-     * {@link #FILE_PREFIX} followed by an absolute resource path.
+     * A reference to a FreeMarker template, in a format that corresponds to the FreeMarker configuration.
      */
     String value();
-
 }

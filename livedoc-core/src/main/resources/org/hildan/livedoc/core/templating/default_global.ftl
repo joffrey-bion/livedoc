@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="" type="org.hildan.livedoc.core.model.GlobalTemplateData" -->
+<#-- @ftlvariable name="" type="org.hildan.livedoc.core.templating.GlobalTemplateData" -->
 <h1>${apiInfo.name!"About this documentation"}</h1>
 <hr>
 <p>
@@ -6,8 +6,8 @@
     the code in the following packages:
 </p>
 <ul>
-    <#list livedocConfig.packages as package>
-        <li>${package}</li>
+    <#list scannedPackages as pkg>
+        <li>${pkg}</li>
     </#list>
 </ul>
 <p>
