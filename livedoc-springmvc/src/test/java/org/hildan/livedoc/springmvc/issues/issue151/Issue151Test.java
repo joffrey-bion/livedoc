@@ -20,8 +20,8 @@ public class Issue151Test {
     @Test
     public void testIssue151() {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.issue151");
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(packages);
-        Livedoc livedoc = builder.read(new ApiMetaData(), new LivedocConfiguration());
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(new LivedocConfiguration(packages), null);
+        Livedoc livedoc = builder.read(new ApiMetaData());
 
         List<Group<ApiTypeDoc>> types = livedoc.getTypes();
         Assert.assertEquals(2, types.size());

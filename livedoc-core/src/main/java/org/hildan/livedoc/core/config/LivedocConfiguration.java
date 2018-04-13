@@ -2,12 +2,19 @@ package org.hildan.livedoc.core.config;
 
 import java.util.List;
 
+import org.hildan.livedoc.core.LivedocReaderBuilder;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 
+/**
+ * The configuration for the doc generation. This only contains the elements that are usually customized by the
+ * developers of applications using Livedoc. For a more in-depth configuration of Livedoc generation, one must use a
+ * {@link LivedocReaderBuilder}.
+ */
 public class LivedocConfiguration {
 
     /**
-     * Whitelist of packages to scan.
+     * Defines the packages that should be scanned to find the classes to document. The given list will be used to find
+     * controllers and to filter the types to document.
      */
     private List<String> packages;
 
@@ -20,6 +27,17 @@ public class LivedocConfiguration {
      * The way methods should be displayed in the UI
      */
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
+
+    /**
+     * Creates a new {@code LivedocConfiguration} with the given package white list.
+     *
+     * @param packages
+     *         the packages that should be scanned to find the classes to document. The given list will be used to find
+     *         controllers and to filter the types to document.
+     */
+    public LivedocConfiguration(List<String> packages) {
+        this.packages = packages;
+    }
 
     public List<String> getPackages() {
         return packages;

@@ -22,6 +22,7 @@ import org.hildan.livedoc.core.annotations.auth.ApiAuthBasic;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthBasicUser;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthToken;
+import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiAuthType;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiErrorDoc;
@@ -750,7 +751,7 @@ public class ApiDocTest {
     }
 
     private static ApiDoc buildDoc(Class<?> controller) {
-        LivedocReader reader = LivedocReader.basicAnnotationReader(Collections.emptyList());
+        LivedocReader reader = LivedocReader.basicAnnotationReader(new LivedocConfiguration(Collections.emptyList()));
         Optional<ApiDoc> apiDoc = reader.readApiDoc(controller);
         assertTrue(apiDoc.isPresent());
         return apiDoc.get();

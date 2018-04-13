@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.meta.LivedocMetaDataReader;
+import org.hildan.livedoc.core.model.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -33,6 +34,8 @@ import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
  */
 public class LivedocReader {
 
+    private final LivedocConfiguration configuration;
+
     private final MasterApiDocReader masterApiDocReader;
 
     private final MasterTypeDocReader masterTypeDocReader;
@@ -46,8 +49,11 @@ public class LivedocReader {
     private final TypeReferenceProvider typeReferenceProvider;
 
     /**
-     * Creates a new {@link LivedocReader} with the given configuration.
+     * Creates a new {@link LivedocReader} with the given configuration. Using this constructor directly is not
+     * recommended. Please consider using a {@link LivedocReaderBuilder} instead.
      *
+     * @param configuration
+     *         the configuration for the doc generation (including the packages to scan)
      * @param docReader
      *         the {@link DocReader} to use to generate the documentation for API operations
      * @param typeDocReader
@@ -63,11 +69,14 @@ public class LivedocReader {
      * @param templateProvider
      *         the {@link TemplateProvider} to use to create example objects for the types used in the API
      * @param typeReferenceProvider
-     *         the {@link TypeReferenceProvider} to use to build {@link LivedocType}s for documentation elements,
+     *         the {@link TypeReferenceProvider} to use to build {@link LivedocType}s for documentation elements
+     *
+     * @see LivedocReaderBuilder
      */
-    public LivedocReader(DocReader docReader, TypeDocReader typeDocReader, GlobalDocReader globalDocReader,
-            TypeScanner typeScanner, PropertyScanner propertyScanner, TemplateProvider templateProvider,
-            TypeReferenceProvider typeReferenceProvider) {
+    public LivedocReader(LivedocConfiguration configuration, DocReader docReader, TypeDocReader typeDocReader,
+            GlobalDocReader globalDocReader, TypeScanner typeScanner, PropertyScanner propertyScanner,
+            TemplateProvider templateProvider, TypeReferenceProvider typeReferenceProvider) {
+        this.configuration = configuration;
         this.masterApiDocReader = new MasterApiDocReader(docReader);
         this.masterTypeDocReader = new MasterTypeDocReader(typeDocReader, propertyScanner);
         this.globalDocReader = globalDocReader;
@@ -77,16 +86,15 @@ public class LivedocReader {
     }
 
     /**
-     * Creates a new {@link LivedocReader} with a default configuration.
+     * Creates a new {@link LivedocReader} based on the given {@link LivedocConfiguration}.
      *
-     * @param packages
-     *         the packages that should be scanned to find the classes to document. The given list will be used to find
-     *         controllers and to filter the types to document.
+     * @param configuration
+     *         the configuration for the doc generation (including the packages to scan)
      *
      * @return the newly created {@link LivedocReader}
      */
-    public static LivedocReader basicAnnotationReader(List<String> packages) {
-        return new LivedocReaderBuilder().scanningPackages(packages).build();
+    public static LivedocReader basicAnnotationReader(LivedocConfiguration configuration) {
+        return new LivedocReaderBuilder(configuration).build();
     }
 
     /**
@@ -94,19 +102,19 @@ public class LivedocReader {
      *
      * @param apiInfo
      *         the current version of the API
-     * @param configuration
-     *         the configuration to use to generate the doc
      *
      * @return a new {@link Livedoc} object representing the API
      */
-    public Livedoc read(ApiMetaData apiInfo, LivedocConfiguration configuration) {
+    public Livedoc read(ApiMetaData apiInfo) {
         LivedocMetaData livedocInfo = LivedocMetaDataReader.read();
 
         Collection<ApiDoc> apiDocs = masterApiDocReader.readApiDocs(typeReferenceProvider, templateProvider);
         Set<Class<?>> types = getClassesToDocument();
         List<ApiTypeDoc> typeDocs = masterTypeDocReader.readApiTypeDocs(types, typeReferenceProvider, templateProvider);
         Set<ApiFlowDoc> flowDocs = globalDocReader.getApiFlowDocs(getAllApiOperationDocsById(apiDocs));
-        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(apiInfo, livedocInfo, configuration);
+
+        GlobalTemplateData globalTemplateData = new GlobalTemplateData(apiInfo, livedocInfo, configuration);
+        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(configuration, globalTemplateData);
 
         Livedoc livedoc = new Livedoc(livedocInfo, apiInfo);
         livedoc.setPlaygroundEnabled(configuration.isPlaygroundEnabled());

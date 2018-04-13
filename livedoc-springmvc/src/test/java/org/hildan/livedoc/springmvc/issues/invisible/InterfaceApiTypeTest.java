@@ -21,8 +21,9 @@ public class InterfaceApiTypeTest {
     @Test
     public void testInvisible() {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.springmvc.issues.invisible");
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(packages);
-        Livedoc livedoc = builder.read(new ApiMetaData(), new LivedocConfiguration());
+        LivedocConfiguration config = new LivedocConfiguration(packages);
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(config, null);
+        Livedoc livedoc = builder.read(new ApiMetaData());
 
         List<Group<ApiTypeDoc>> typeGroups = livedoc.getTypes();
         assertEquals(1, typeGroups.size());

@@ -18,8 +18,9 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void findsNestedObject() {
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        Livedoc doc = builder.read(new ApiMetaData(), new LivedocConfiguration());
+        LivedocConfiguration config = new LivedocConfiguration(Collections.emptyList());
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(config, null);
+        Livedoc doc = builder.read(new ApiMetaData());
 
         List<Group<ApiTypeDoc>> typeGroups = doc.getTypes();
         for (Group<ApiTypeDoc> types : typeGroups) {
@@ -29,8 +30,9 @@ public class SpringDocAnnotationScannerTest {
 
     @Test
     public void findsDeeplyNestedObjects() {
-        LivedocReader builder = SpringLivedocReaderFactory.getReader(Collections.emptyList());
-        Livedoc doc = builder.read(new ApiMetaData(), new LivedocConfiguration());
+        LivedocConfiguration config = new LivedocConfiguration(Collections.emptyList());
+        LivedocReader builder = SpringLivedocReaderFactory.getReader(config, null);
+        Livedoc doc = builder.read(new ApiMetaData());
 
         List<Group<ApiTypeDoc>> typeGroups = doc.getTypes();
         for (Group<ApiTypeDoc> types : typeGroups) {

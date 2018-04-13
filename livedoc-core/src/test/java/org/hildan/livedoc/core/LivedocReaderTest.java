@@ -28,8 +28,9 @@ public class LivedocReaderTest {
     @Test
     public void getLivedoc() {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.test");
-        LivedocReader livedocReader = LivedocReader.basicAnnotationReader(packages);
-        Livedoc livedoc = livedocReader.read(new ApiMetaData(), new LivedocConfiguration());
+        LivedocConfiguration configuration = new LivedocConfiguration(packages);
+        LivedocReader livedocReader = LivedocReader.basicAnnotationReader(configuration);
+        Livedoc livedoc = livedocReader.read(new ApiMetaData());
 
         checkApis(livedoc);
         checkObjects(livedoc);

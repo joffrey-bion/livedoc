@@ -1,11 +1,12 @@
-<h1>${apiInfo.name}</h1>
+<#-- @ftlvariable name="" type="org.hildan.livedoc.core.model.GlobalTemplateData" -->
+<h1>${apiInfo.name!"About this documentation"}</h1>
 <hr>
 <p>
-    This is a generated documentation for ${apiInfo.name} v${apiInfo.version}, based on the code in the following 
-    packages:
+    This is a generated documentation for <#if apiInfo.version??>version ${apiInfo.version} of </#if>this API, based on
+    the code in the following packages:
 </p>
 <ul>
-    <#list config.packages as package>
+    <#list livedocConfig.packages as package>
         <li>${package}</li>
     </#list>
 </ul>

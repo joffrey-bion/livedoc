@@ -14,6 +14,7 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.LivedocMetaData;
@@ -43,7 +44,10 @@ public class GlobalDocReaderTest {
             }
             return Collections.emptyList();
         });
-        return reader.getApiGlobalDoc(new ApiMetaData(), new LivedocMetaData(), new LivedocConfiguration());
+        LivedocConfiguration configuration = new LivedocConfiguration(Collections.emptyList());
+        GlobalTemplateData templateData = new GlobalTemplateData(new ApiMetaData(), new LivedocMetaData(),
+                configuration);
+        return reader.getApiGlobalDoc(configuration, templateData);
     }
 
     @Test
@@ -114,6 +118,7 @@ public class GlobalDocReaderTest {
         assertEquals(1, apiGlobalDoc.getChangelogSet().getChangelogs().size());
     }
 
+    @SuppressWarnings("unused")
     @ApiFlowSet
     private class TestFlow {
 

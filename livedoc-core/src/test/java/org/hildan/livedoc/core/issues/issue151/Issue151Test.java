@@ -19,8 +19,9 @@ public class Issue151Test {
     @Test
     public void testIssue151() {
         List<String> packages = Collections.singletonList("org.hildan.livedoc.core.issues.issue151");
-        LivedocReader reader = LivedocReader.basicAnnotationReader(packages);
-        Livedoc livedoc = reader.read(new ApiMetaData(), new LivedocConfiguration());
+        LivedocConfiguration configuration = new LivedocConfiguration(packages);
+        LivedocReader reader = LivedocReader.basicAnnotationReader(configuration);
+        Livedoc livedoc = reader.read(new ApiMetaData());
         List<Group<ApiTypeDoc>> types = livedoc.getTypes();
         Assert.assertEquals(2, types.size());
 

@@ -8,8 +8,6 @@ import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.global.ApiChangelog;
@@ -18,8 +16,7 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiMigration;
 import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.model.doc.ApiMetaData;
-import org.hildan.livedoc.core.model.doc.LivedocMetaData;
+import org.hildan.livedoc.core.model.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.global.ApiChangelogDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiChangelogsDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
@@ -40,22 +37,21 @@ public class ApiGlobalDocReader {
 
     private final Configuration templateConfig;
 
-    private final Map<String, Object> model;
+    private final GlobalTemplateData templateData;
 
-    public ApiGlobalDocReader(ApiMetaData apiInfo, LivedocMetaData livedocInfo, LivedocConfiguration config) {
-        templateConfig = new Configuration();
-        templateConfig.setClassForTemplateLoading(ApiGlobalDocReader.class, "");
-        model = new HashMap<>();
-        model.put("apiInfo", apiInfo);
-        model.put("livedocInfo", livedocInfo);
-        model.put("config", config);
+    private ApiGlobalDocReader(LivedocConfiguration config, GlobalTemplateData templateData) {
+        this.templateConfig = new Configuration();
+        this.templateConfig.setClassForTemplateLoading(ApiGlobalDocReader.class, "");
+        this.templateData = templateData;
     }
 
     @NotNull
-    public ApiGlobalDoc read(Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
+    public static ApiGlobalDoc read(LivedocConfiguration config, GlobalTemplateData globalTemplateData,
+            Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
             Collection<Class<?>> migrationClasses) {
+        ApiGlobalDocReader reader = new ApiGlobalDocReader(config, globalTemplateData);
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
-        apiGlobalDoc.setGeneral(buildHomePage(globalClasses));
+        apiGlobalDoc.setGeneral(reader.buildHomePage(globalClasses));
         apiGlobalDoc.setChangelogSet(buildChangelogsDoc(changelogClasses));
         apiGlobalDoc.setMigrationSet(buildMigrationsDoc(migrationClasses));
         return apiGlobalDoc;
@@ -74,7 +70,7 @@ public class ApiGlobalDocReader {
         try {
             Template template = templateConfig.getTemplate("default_global.ftl");
             StringWriter out = new StringWriter();
-            template.process(model, out);
+            template.process(templateData, out);
             return out.toString();
         } catch (IOException e) {
             return "Error: default global doc template missing.\n"

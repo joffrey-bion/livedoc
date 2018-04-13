@@ -17,9 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @EnableConfigurationProperties(LivedocProperties.class)
 @ConditionalOnClass(JsonLivedocController.class)
-public class LivedocConfig {
+public class LivedocSpringBootConfig {
 
-    public static final String LIVEDOC_PROPERTIES_PREFIX = "livedoc";
+    static final String LIVEDOC_PROPERTIES_PREFIX = "livedoc";
 
     @Autowired
     private LivedocProperties properties;
@@ -33,18 +33,17 @@ public class LivedocConfig {
     public JsonLivedocController jsonLivedocController() {
         ApiMetaData apiInfo = getApiMetaData(properties);
         LivedocConfiguration config = getLivedocConfiguration(properties);
-
-        List<String> packages = properties.getPackages();
         ObjectMapper objectMapper = getObjectMapper();
-
-        JsonLivedocController controller = new JsonLivedocController(apiInfo, packages, objectMapper);
-        controller.setConfig(config);
-        return controller;
+        return new JsonLivedocController(apiInfo, config, objectMapper);
     }
 
     private static LivedocConfiguration getLivedocConfiguration(LivedocProperties properties) {
-        LivedocConfiguration config = new LivedocConfiguration();
-        config.setPackages(properties.getPackages());
+        List<String> packages = properties.getPackages();
+        if (packages == null) {
+            throw new IllegalStateException("No package white list provided. Please add some packages to your "
+                    + "application.properties (refer to Livedoc Spring Boot documentation)");
+        }
+        LivedocConfiguration config = new LivedocConfiguration(packages);
         config.setPlaygroundEnabled(properties.isPlaygroundEnabled());
         config.setDisplayMethodAs(properties.getDisplayMethodAs());
         return config;

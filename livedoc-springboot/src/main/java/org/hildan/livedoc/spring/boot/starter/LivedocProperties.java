@@ -7,7 +7,7 @@ import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = LivedocConfig.LIVEDOC_PROPERTIES_PREFIX)
+@ConfigurationProperties(prefix = LivedocSpringBootConfig.LIVEDOC_PROPERTIES_PREFIX)
 public class LivedocProperties {
 
     /**

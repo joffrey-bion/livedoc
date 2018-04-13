@@ -1,6 +1,5 @@
 package org.hildan.livedoc.springmvc.controller;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hildan.livedoc.core.LivedocReader;
@@ -25,34 +24,28 @@ public class JsonLivedocController {
 
     private static final String JSON_DOC_ENDPOINT = "/jsondoc";
 
-    private ApiMetaData apiInfo;
+    private final ApiMetaData apiInfo;
 
-    private LivedocConfiguration config;
-
-    private LivedocReader livedocReader;
+    private final LivedocReader livedocReader;
 
     /**
      * Creates a new {@code JsonLivedocController} with the given parameters.
      *
      * @param apiInfo
      *         some meta data about the documented API (name, version, baseUrl...)
-     * @param packages
-     *         the packages to scan
+     * @param config
+     *         the configuration for the doc generation (including the packages to scan)
      * @param jacksonObjectMapper
      *         the {@link ObjectMapper} to use for property exploration and template generation, or null to use a new
      *         mapper with Spring defaults.
      */
-    public JsonLivedocController(ApiMetaData apiInfo, List<String> packages, ObjectMapper jacksonObjectMapper) {
-        this(apiInfo, SpringLivedocReaderFactory.getReader(packages, jacksonObjectMapper));
+    public JsonLivedocController(ApiMetaData apiInfo, LivedocConfiguration config, ObjectMapper jacksonObjectMapper) {
+        this(apiInfo, SpringLivedocReaderFactory.getReader(config, jacksonObjectMapper));
     }
 
     public JsonLivedocController(ApiMetaData apiInfo, LivedocReader livedocReader) {
         this.apiInfo = apiInfo;
         this.livedocReader = livedocReader;
-    }
-
-    public void setConfig(LivedocConfiguration config) {
-        this.config = config;
     }
 
     @RequestMapping(value = JsonLivedocController.JSON_DOC_ENDPOINT,
@@ -65,7 +58,7 @@ public class JsonLivedocController {
         if (userDefinedBaseUrl == null) {
             apiInfo.setBaseUrl(getBaseUrl(request));
         }
-        return livedocReader.read(apiInfo, config);
+        return livedocReader.read(apiInfo);
     }
 
     private static String getBaseUrl(HttpServletRequest request) {

@@ -2,12 +2,12 @@ package org.hildan.livedoc.core;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.readers.TypeDocReader;
@@ -37,12 +37,11 @@ import org.reflections.Reflections;
 /**
  * A builder to ease the configuration of a {@link LivedocReader}. It provides multiple configuration methods to
  * customize the behaviour of the future {@link LivedocReader}, which is created by calling {@link #build()}. <p>Only
- * the relevant configuration methods need to be called, because this builder already provides sensible defaults, with
- * the exception of {@link #scanningPackages(List)}, which must be called before building the reader.
+ * the relevant configuration methods need to be called, because this builder already provides sensible defaults.
  */
 public class LivedocReaderBuilder {
 
-    private List<String> packages;
+    private final LivedocConfiguration configuration;
 
     private PropertyScanner propertyScanner;
 
@@ -67,36 +66,13 @@ public class LivedocReaderBuilder {
     private AnnotatedTypesFinder annotatedTypesFinder;
 
     /**
-     * Defines the packages that should be scanned to find the classes to document. The given list will be used to find
-     * controllers and to filter the types to document.
+     * Creates a new {@code LivedocReaderBuilder} based on the given {@link LivedocConfiguration}.
      *
-     * @param packages
-     *         the array of packages to scan. These are considered package prefixes, subpackages are implicitly
-     *         included. If {@code com.example} is in the list, {@code com.example.controllers.MyController} will be
-     *         found.
-     *
-     * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
+     * @param configuration
+     *         the configuration for the doc generation (including the packages to scan)
      */
-    public LivedocReaderBuilder scanningPackages(String... packages) {
-        return scanningPackages(Arrays.asList(packages));
-    }
-
-    /**
-     * Defines the packages that should be scanned to find the classes to document. The given list will be used to find
-     * controllers and to filter the types to document.
-     *
-     * @param packages
-     *         the list of packages to scan. These are considered package prefixes, subpackages are implicitly included.
-     *         If {@code com.example} is in the list, {@code com.example.controllers.MyController} will be found.
-     *
-     * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
-     */
-    public LivedocReaderBuilder scanningPackages(List<String> packages) {
-        if (packages == null) {
-            throw new IllegalArgumentException("The given package list may not be null");
-        }
-        this.packages = packages;
-        return this;
+    public LivedocReaderBuilder(LivedocConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     /**
@@ -114,8 +90,8 @@ public class LivedocReaderBuilder {
     }
 
     /**
-     * Defines the {@link GlobalDocReader} to use to generate the global documentation of a project (general info,
-     * flows, migrations).
+     * Defines the {@link GlobalDocReader} to use to generate the global documentation of the API (general info, flows,
+     * migrations).
      *
      * @param reader
      *         the {@link GlobalDocReader} to use
@@ -246,15 +222,12 @@ public class LivedocReaderBuilder {
     }
 
     /**
-     * Creates a new {@link LivedocReader} using the current configuration. Please note that {@link
-     * #scanningPackages(List)} should be called before this method.
+     * Creates a new {@link LivedocReader} using the current configuration.
      *
-     * @return this {@code LivedocReaderBuilder}, to satisfy the builder pattern for easy chaining
+     * @return the newly created {@link LivedocReader}
      */
     public LivedocReader build() {
-        if (packages == null) {
-            throw new IllegalStateException("No packages white list provided");
-        }
+        List<String> packages = configuration.getPackages();
         documentedTypesFilter = documentedTypesFilter.and(TypePredicates.isInPackage(packages));
         if (propertyScanner == null) {
             propertyScanner = getDefaultPropertyScanner();
@@ -279,7 +252,7 @@ public class LivedocReaderBuilder {
         DocReader combinedDocReader = new CombinedDocReader(docReaders);
         TypeDocReader combinedTypeDocReader = new CombinedTypeDocReader(typeDocReaders);
         TypeReferenceProvider typeRefProvider = getDefaultTypeReferenceProvider(documentedTypesFilter);
-        return new LivedocReader(combinedDocReader, combinedTypeDocReader, globalDocReader, typeScanner,
+        return new LivedocReader(configuration, combinedDocReader, combinedTypeDocReader, globalDocReader, typeScanner,
                 propertyScanner, templateProvider, typeRefProvider);
     }
 
@@ -301,10 +274,6 @@ public class LivedocReaderBuilder {
     @NotNull
     private static DefaultTypeReferenceProvider getDefaultTypeReferenceProvider(Predicate<? super Type> typeFilter) {
         return new DefaultTypeReferenceProvider(typeFilter);
-    }
-
-    private static TypeDocReader getDefaultApiObjectDocReader(PropertyScanner propertyScanner) {
-        return new LivedocAnnotationTypeDocReader();
     }
 
     private TemplateProvider getDefaultTemplateProvider(PropertyScanner propertyScanner,
