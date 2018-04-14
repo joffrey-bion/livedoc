@@ -14,12 +14,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiGlobal {
 
-    String FILE_PREFIX = "/livedocfile:";
-
     /**
-     * The content of the global doc, as an HTML string. You may also use a reference to a file using the
-     * {@link #FILE_PREFIX} followed by an absolute resource path.
+     * The list of pages in the global documentation.
+     *
+     * @return the list of pages in the global documentation
      */
-    String value();
+    ApiGlobalPage[] value();
 
 }

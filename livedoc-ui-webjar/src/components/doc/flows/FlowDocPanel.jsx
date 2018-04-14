@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import type { ApiFlowDoc, LivedocID } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { getFlow } from '../../../redux/livedoc';
-import { RouteHelper } from '../../../routing/routeHelpler';
+import { RouteHelper } from '../../../routing/routeHelper';
 import { ContentHeader } from '../../shared/content/ContentHeader';
 import { FlowOperationPanel } from './FlowOperationPanel';
 

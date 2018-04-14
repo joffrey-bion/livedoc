@@ -1,35 +1,33 @@
 package org.hildan.livedoc.core.model.doc.global;
 
+import java.util.List;
+
+/**
+ * The global documentation of the API, containing free-text pages to help the end user understand the rest of the doc.
+ */
 public class ApiGlobalDoc {
 
-    private String general;
+    private List<GlobalDocPage> pages;
 
-    private ApiChangelogsDoc changelogSet;
-
-    private ApiMigrationsDoc migrationSet;
-
-    public String getGeneral() {
-        return general;
+    /**
+     * Gets a list of free-text pages to add information about the generated documentation.
+     *
+     * @return a list of free-text pages to add information about the generated documentation
+     */
+    public List<GlobalDocPage> getPages() {
+        return pages;
     }
 
-    public void setGeneral(String general) {
-        this.general = general;
+    public void setPages(List<GlobalDocPage> pages) {
+        this.pages = pages;
     }
 
-    public ApiChangelogsDoc getChangelogSet() {
-        return changelogSet;
+    /**
+     * Gets the ID of the page to use by default.
+     *
+     * @return the ID of the page to use by default.
+     */
+    public String getHomePageId() {
+        return pages.isEmpty() ? null : pages.get(0).getLivedocId();
     }
-
-    public void setChangelogSet(ApiChangelogsDoc changelogSet) {
-        this.changelogSet = changelogSet;
-    }
-
-    public ApiMigrationsDoc getMigrationSet() {
-        return migrationSet;
-    }
-
-    public void setMigrationSet(ApiMigrationsDoc migrationSet) {
-        this.migrationSet = migrationSet;
-    }
-
 }

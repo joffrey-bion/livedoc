@@ -59,8 +59,7 @@ public class LivedocReader {
      * @param typeDocReader
      *         the {@link TypeDocReader} to use to generate the documentation for the types used in the API
      * @param globalDocReader
-     *         the {@link GlobalDocReader} to use to generate the global documentation of a project (general info,
-     *         flows, migrations)
+     *         the {@link GlobalDocReader} to use to generate the free text documentation of the API
      * @param typeScanner
      *         the {@link TypeScanner} to use to retrieve all the types that should be documented, starting from the
      *         types that are directly referenced in the API (as request or response body, mainly)

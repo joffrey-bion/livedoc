@@ -62,15 +62,6 @@ export type ApiRequestBodyDoc = Identified & {
   template: any,
 }
 
-export type ApiChangelogsDoc = Identified & {
-  changelogs: Array<ApiChangelogDoc>,
-}
-
-export type ApiChangelogDoc = Identified & {
-  version: string,
-  changes: Array<string>,
-}
-
 export type ApiDoc = Identified & Named & Versioned & Secured & Staged & {
   description: string,
   group: string,
@@ -95,15 +86,14 @@ export type ApiFlowStepDoc = Identified & {
   apiOperationDoc: ApiOperationDoc,
 }
 
-export type ApiGlobalDoc = Identified & {
-  general: string,
-  changelogSet: ?ApiChangelogsDoc,
-  migrationSet: ?ApiMigrationsDoc,
+export type ApiGlobalDoc = {
+  homePageId: LivedocID,
+  pages: Array<GlobalDocPage>,
 }
 
-export type ApiGlobalSectionDoc = Identified & {
+export type GlobalDocPage = Identified & {
   title: string,
-  paragraphs: Array<string>,
+  content: string,
 }
 
 export type ApiHeaderDoc = Identified & Named & {
@@ -132,16 +122,6 @@ export type ApiOperationDoc = Identified & LivedocHints & Versioned & Staged & {
   responseStatusCode: string,
   apiErrors: Array<ApiErrorDoc>,
   auth: ApiAuthDoc,
-}
-
-export type ApiMigrationsDoc = Identified & {
-  migrations: Array<ApiMigrationDoc>,
-}
-
-export type ApiMigrationDoc = Identified & {
-  fromVersion: string,
-  toVersion: string,
-  steps: Array<string>,
 }
 
 export type ApiTypeDoc = Identified & Named & LivedocHints & Versioned & Staged & {

@@ -11,7 +11,7 @@ import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A component able to build the global documentation of an API (general information, flows, migrations).
+ * A component able to build the global documentation of an API (free text and flows).
  */
 public interface GlobalDocReader {
 

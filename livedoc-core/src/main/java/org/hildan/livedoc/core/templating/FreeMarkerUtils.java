@@ -17,6 +17,10 @@ public class FreeMarkerUtils {
 
     public static String loadTemplateAsString(Configuration configuration, GlobalTemplateData templateData,
             String templateName) throws IOException, TemplateException {
+        if (templateName.startsWith("/")) {
+            throw new IllegalArgumentException("Absolute template paths are not supported by FreeMarker, got '%s'. "
+                    + "Please use a path that's relative to the class using it.");
+        }
         Template template = configuration.getTemplate(templateName);
         StringWriter out = new StringWriter();
         template.process(templateData, out);

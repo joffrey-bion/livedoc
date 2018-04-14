@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import type { ApiGlobalDoc } from '../../../model/livedoc';
+import type { ApiGlobalDoc, GlobalDocPage } from '../../../model/livedoc';
 import type { NavElementDescription, NavGroupDescription } from './NavGroup';
 import { NavSection } from './NavSection';
 
@@ -11,21 +11,13 @@ export type GlobalNavSectionProps = {
 }
 
 export const GlobalNavSection = ({globalDoc, ...otherProps}: GlobalNavSectionProps) => {
-  const hasGeneral = globalDoc.general.length > 0;
-  // this checks for null AND undefined with "!=" on purpose
-  const hasChangeLogs = globalDoc.changelogSet != null && globalDoc.changelogSet.changelogs.length > 0;
-  const hasMigrations = globalDoc.migrationSet != null && globalDoc.migrationSet.migrations.length > 0;
 
-  const globalElements: NavElementDescription[] = [];
-  globalElements.push(navElementDesc('general', 'General', true));
-  globalElements.push(navElementDesc('changelog', 'Change Log', hasChangeLogs));
-  globalElements.push(navElementDesc('migrations', 'Migrations', hasMigrations));
-
-  const globalGroup: NavGroupDescription = {elements: globalElements};
-
+  const globalGroup: NavGroupDescription = {
+    elements: globalDoc.pages.map(navElementDesc)
+  };
   return <NavSection groups={[globalGroup]} {...otherProps}/>;
 };
 
-function navElementDesc(link: string, name: string, enabled: boolean): NavElementDescription {
-  return {link, name, disabled: !enabled};
+function navElementDesc(page: GlobalDocPage): NavElementDescription {
+  return {link: page.livedocId, name: page.title, disabled: false};
 }

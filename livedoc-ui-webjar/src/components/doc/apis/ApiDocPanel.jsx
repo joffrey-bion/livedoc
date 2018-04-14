@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import type { ApiDoc, LivedocID } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
 import { getApi } from '../../../redux/livedoc';
-import { RouteHelper } from '../../../routing/routeHelpler';
+import { RouteHelper } from '../../../routing/routeHelper';
 import { ContentHeader } from '../../shared/content/ContentHeader';
 import { ApiOperationPanel } from './method/ApiOperationPanel';
 

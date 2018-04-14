@@ -1,5 +1,6 @@
 package org.hildan.livedoc.core.readers.annotation;
 
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -10,9 +11,7 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
-import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
-import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -21,11 +20,16 @@ import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An implementation of {@link GlobalDocReader} that reads Livedoc annotations to build the documentation.
  */
 public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
+
+    private static final Logger logger = LoggerFactory.getLogger(LivedocAnnotationGlobalDocReader.class);
 
     private final AnnotatedTypesFinder annotatedTypesFinder;
 
@@ -36,10 +40,24 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
     @NotNull
     @Override
     public ApiGlobalDoc getApiGlobalDoc(LivedocConfiguration configuration, GlobalTemplateData globalTemplateData) {
-        Collection<Class<?>> global = annotatedTypesFinder.apply(ApiGlobal.class);
-        Collection<Class<?>> changelogs = annotatedTypesFinder.apply(ApiChangelogSet.class);
-        Collection<Class<?>> migrations = annotatedTypesFinder.apply(ApiMigrationSet.class);
-        return ApiGlobalDocReader.read(configuration, globalTemplateData, global, changelogs, migrations);
+        Class<?> globalDocClass = findOneClass(ApiGlobal.class);
+        if (globalDocClass == null) {
+            return ApiGlobalDocReader.readDefault(globalTemplateData);
+        }
+        return ApiGlobalDocReader.read(configuration, globalTemplateData, globalDocClass);
+    }
+
+    @Nullable
+    private <A extends Annotation> Class<?> findOneClass(Class<A> annotationClass) {
+        Collection<Class<?>> classes = annotatedTypesFinder.apply(annotationClass);
+        if (classes.isEmpty()) {
+            return null;
+        }
+        if (classes.size() > 1) {
+            logger.warn("Multiple classes annotated {} were found, only one such class is supported",
+                    annotationClass.getSimpleName());
+        }
+        return classes.iterator().next();
     }
 
     @NotNull
@@ -59,5 +77,4 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
             ApiFlow flowAnnotation) {
         return ApiFlowDoc.buildFromAnnotation(flowAnnotation, apiOperationDocsById);
     }
-
 }

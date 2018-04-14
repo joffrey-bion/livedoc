@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import type { LivedocType, TypeElement } from '../../../model/livedoc';
-import { RouteHelper } from '../../../routing/routeHelpler';
+import { RouteHelper } from '../../../routing/routeHelper';
 
 export type TypeRefProps = {
   type: LivedocType,

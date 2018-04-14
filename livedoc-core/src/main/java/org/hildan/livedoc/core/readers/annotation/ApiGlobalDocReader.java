@@ -5,78 +5,103 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
-import java.lang.annotation.Annotation;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.annotations.global.ApiChangelog;
-import org.hildan.livedoc.core.annotations.global.ApiChangelogSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobal;
-import org.hildan.livedoc.core.annotations.global.ApiGlobalTemplate;
-import org.hildan.livedoc.core.annotations.global.ApiMigration;
-import org.hildan.livedoc.core.annotations.global.ApiMigrationSet;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
+import org.hildan.livedoc.core.annotations.global.PageContentType;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.model.doc.global.ApiChangelogDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiChangelogsDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiMigrationDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiMigrationsDoc;
+import org.hildan.livedoc.core.model.doc.global.GlobalDocPage;
 import org.hildan.livedoc.core.templating.FreeMarkerUtils;
 import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 public class ApiGlobalDocReader {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiGlobalDocReader.class);
-
     private final Supplier<Configuration> freemarkerConfigSupplier;
 
     private final GlobalTemplateData templateData;
 
-    private ApiGlobalDocReader(LivedocConfiguration config, GlobalTemplateData templateData) {
-        this.freemarkerConfigSupplier = config::getFreemarkerConfig;
+    public ApiGlobalDocReader(Supplier<Configuration> freemarkerConfigSupplier, GlobalTemplateData templateData) {
+        this.freemarkerConfigSupplier = freemarkerConfigSupplier;
         this.templateData = templateData;
     }
 
     @NotNull
-    public static ApiGlobalDoc read(LivedocConfiguration config, GlobalTemplateData globalTemplateData,
-            Collection<Class<?>> globalClasses, Collection<Class<?>> changelogClasses,
-            Collection<Class<?>> migrationClasses) {
-        ApiGlobalDocReader reader = new ApiGlobalDocReader(config, globalTemplateData);
+    public static ApiGlobalDoc readDefault(GlobalTemplateData templateData) {
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
-        apiGlobalDoc.setGeneral(reader.buildHomePage(globalClasses));
-        apiGlobalDoc.setChangelogSet(buildChangelogsDoc(changelogClasses));
-        apiGlobalDoc.setMigrationSet(buildMigrationsDoc(migrationClasses));
+        apiGlobalDoc.setPages(createDefaultPages(templateData));
         return apiGlobalDoc;
     }
 
-    @NotNull
-    private String buildHomePage(Collection<Class<?>> globalClasses) {
-        ApiGlobal apiGlobal = extractSingleAnnotation(ApiGlobal.class, globalClasses);
-        if (apiGlobal != null) {
-            return readContent(apiGlobal.value());
+    private static List<GlobalDocPage> createDefaultPages(GlobalTemplateData templateData) {
+        GlobalDocPage defaultHome = new GlobalDocPage("Home", loadDefaultHomeContent(templateData));
+        return Collections.singletonList(defaultHome);
+    }
+
+    private static String loadDefaultHomeContent(GlobalTemplateData templateData) {
+        try {
+            Configuration config = FreeMarkerUtils.createDefaultFreeMarkerConfig();
+            return FreeMarkerUtils.loadTemplateAsString(config, templateData, "default_global.ftl");
+        } catch (IOException e) {
+            return "Error: default global doc template missing.\n"
+                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
+        } catch (TemplateException e) {
+            return "Error: malformed default global doc template.\n"
+                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
         }
-        ApiGlobalTemplate apiGlobalTemplate = extractSingleAnnotation(ApiGlobalTemplate.class, globalClasses);
-        if (apiGlobalTemplate != null) {
-            return readTemplate(apiGlobalTemplate.value());
-        }
-        return loadDefaultGlobalDoc();
     }
 
     @NotNull
-    private static String readContent(@NotNull String content) {
-        if (content.startsWith(ApiGlobal.FILE_PREFIX)) {
-            String path = content.substring(ApiGlobal.FILE_PREFIX.length());
-            return readContentFromResource(path);
+    public static ApiGlobalDoc read(LivedocConfiguration configuration, GlobalTemplateData templateData,
+            @NotNull Class<?> globalDocClass) {
+        Configuration freeMarkerConfig = configuration.getFreemarkerConfig();
+        Supplier<Configuration> classBased = () -> createConfiguration(globalDocClass);
+        Supplier<Configuration> configSupplier = () -> freeMarkerConfig;
+        Supplier<Configuration> freeMarkerConfigSupplier = freeMarkerConfig == null ? classBased : configSupplier;
+        ApiGlobalDocReader reader = new ApiGlobalDocReader(freeMarkerConfigSupplier, templateData);
+        ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
+        apiGlobalDoc.setPages(reader.readPages(globalDocClass));
+        return apiGlobalDoc;
+    }
+
+    private static Configuration createConfiguration(Class<?> globalDocClass) {
+        Configuration configuration = new Configuration();
+        configuration.setClassForTemplateLoading(globalDocClass, "");
+        return configuration;
+    }
+
+    @NotNull
+    private List<GlobalDocPage> readPages(@NotNull Class<?> globalDocClass) {
+        ApiGlobal apiGlobal = globalDocClass.getAnnotation(ApiGlobal.class);
+        ApiGlobalPage[] apiGlobalPages = apiGlobal.value();
+        return Arrays.stream(apiGlobalPages).map(this::readPage).collect(Collectors.toList());
+    }
+
+    private GlobalDocPage readPage(ApiGlobalPage pageAnnotation) {
+        String title = pageAnnotation.title();
+        String content = readContent(pageAnnotation.content(), pageAnnotation.type());
+        return new GlobalDocPage(title, content);
+    }
+
+    private String readContent(String content, PageContentType type) {
+        switch (type) {
+        case TEXT_FILE:
+            return readContentFromResource(content);
+        case FREEMARKER:
+            return readTemplate(content);
+        case STRING:
+        default:
+            return content;
         }
-        return content;
     }
 
     @NotNull
@@ -105,75 +130,5 @@ public class ApiGlobalDocReader {
         } catch (TemplateException e) {
             throw new RuntimeException(String.format("Invalid FreeMarker template '%s'", templateName), e);
         }
-    }
-
-    private String loadDefaultGlobalDoc() {
-        try {
-            Configuration config = FreeMarkerUtils.createDefaultFreeMarkerConfig();
-            return FreeMarkerUtils.loadTemplateAsString(config, templateData, "default_global.ftl");
-        } catch (IOException e) {
-            return "Error: default global doc template missing.\n"
-                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
-        } catch (TemplateException e) {
-            return "Error: malformed default global doc template.\n"
-                    + "Please open an issue at https://github.com/joffrey-bion/livedoc/issues";
-        }
-    }
-
-    @Nullable
-    private static ApiChangelogsDoc buildChangelogsDoc(Collection<Class<?>> changelogClasses) {
-        ApiChangelogSet apiChangelogSet = extractSingleAnnotation(ApiChangelogSet.class, changelogClasses);
-        if (apiChangelogSet == null) {
-            return null;
-        }
-        ApiChangelogsDoc apiChangelogsDoc = new ApiChangelogsDoc();
-        for (ApiChangelog apiChangelog : apiChangelogSet.changelogs()) {
-            apiChangelogsDoc.addChangelog(buildChangelogDoc(apiChangelog));
-        }
-        return apiChangelogsDoc;
-    }
-
-    @NotNull
-    private static ApiChangelogDoc buildChangelogDoc(ApiChangelog apiChangelog) {
-        ApiChangelogDoc apiChangelogDoc = new ApiChangelogDoc();
-        apiChangelogDoc.setVersion(apiChangelog.version());
-        apiChangelogDoc.setChanges(apiChangelog.changes());
-        return apiChangelogDoc;
-    }
-
-    @Nullable
-    private static ApiMigrationsDoc buildMigrationsDoc(Collection<Class<?>> migrationClasses) {
-        ApiMigrationSet apiMigrationSet = extractSingleAnnotation(ApiMigrationSet.class, migrationClasses);
-        if (apiMigrationSet == null) {
-            return null;
-        }
-        ApiMigrationsDoc apiMigrationsDoc = new ApiMigrationsDoc();
-        for (ApiMigration apiMigration : apiMigrationSet.migrations()) {
-            apiMigrationsDoc.addMigration(buildMigrationDoc(apiMigration));
-        }
-        return apiMigrationsDoc;
-    }
-
-    @NotNull
-    private static ApiMigrationDoc buildMigrationDoc(ApiMigration apiMigration) {
-        ApiMigrationDoc apiMigrationDoc = new ApiMigrationDoc();
-        apiMigrationDoc.setFromVersion(apiMigration.fromVersion());
-        apiMigrationDoc.setToVersion(apiMigration.toVersion());
-        apiMigrationDoc.setSteps(apiMigration.steps());
-        return apiMigrationDoc;
-    }
-
-    @Nullable
-    private static <A extends Annotation> A extractSingleAnnotation(Class<A> annotationClass,
-            Collection<Class<?>> annotatedClasses) {
-        if (annotatedClasses.isEmpty()) {
-            return null;
-        }
-        if (annotatedClasses.size() > 1) {
-            logger.warn("Multiple classes annotated {} were found, only one such class is supported",
-                    annotationClass.getSimpleName());
-        }
-        Class<?> clazz = annotatedClasses.iterator().next();
-        return clazz.getAnnotation(annotationClass);
     }
 }

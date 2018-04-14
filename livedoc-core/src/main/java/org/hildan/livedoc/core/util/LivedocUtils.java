@@ -1,8 +1,11 @@
 package org.hildan.livedoc.core.util;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +28,15 @@ public class LivedocUtils {
 
     public static String getLivedocId(Class<?> clazz) {
         return clazz.getCanonicalName();
+    }
+
+    public static String asLivedocId(String userText) {
+        try {
+            return URLEncoder.encode(userText.toLowerCase(), StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            // The system should always have UTF_8
+            throw new RuntimeException("Careless code change led here", e);
+        }
     }
 
     public static int getIndexOfParameterWithAnnotation(Method method, Class<? extends Annotation> annotationClass) {

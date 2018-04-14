@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import type { ApiOperationDoc, LivedocID } from '../../../../model/livedoc';
-import { RouteHelper } from '../../../../routing/routeHelpler';
+import { RouteHelper } from '../../../../routing/routeHelper';
 import { OperationPanel } from './OperationPanel';
 
 export type ApiOperationPanelProps = {
