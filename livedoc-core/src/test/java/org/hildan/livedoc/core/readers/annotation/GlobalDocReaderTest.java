@@ -11,7 +11,7 @@ import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
-import org.hildan.livedoc.core.annotations.global.PageContentType;
+import org.hildan.livedoc.core.annotations.global.PageGenerator;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -90,9 +90,7 @@ public class GlobalDocReaderTest {
 
     @Test
     public void getApiGlobalDoc_fileReference() {
-        @ApiGlobalPage(title = "From File",
-                content = "/org/hildan/livedoc/core/readers/annotation/text.txt",
-                type = PageContentType.TEXT_FILE)
+        @ApiGlobalPage(title = "From File", resource = "/org/hildan/livedoc/core/readers/annotation/text.txt")
         class GlobalWithFile {}
 
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithFile.class);
@@ -111,7 +109,7 @@ public class GlobalDocReaderTest {
 
     @Test
     public void getApiGlobalDoc_templateReference() {
-        @ApiGlobalPage(title = "From Template", content = "freemarker.ftl", type = PageContentType.FREEMARKER)
+        @ApiGlobalPage(title = "From Template", template = "freemarker.ftl")
         class GlobalWithTemplate {}
 
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
@@ -126,6 +124,67 @@ public class GlobalDocReaderTest {
         assertEquals("from+template", page.getLivedocId());
         assertEquals("From Template", page.getTitle());
         assertEquals("Paragraph from template with API name: " + TEST_API_NAME, page.getContent().trim());
+    }
+
+    public static class MyPageGenerator implements PageGenerator {
+        @Override
+        public String generate(GlobalTemplateData templateData) {
+            return "Generated test content";
+        }
+    }
+
+    @Test
+    public void getApiGlobalDoc_generator() {
+        @ApiGlobalPage(title = "From Generator", generator = MyPageGenerator.class)
+        class GlobalWithGenerator {}
+
+        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithGenerator.class);
+        assertNotNull(apiGlobalDoc);
+        assertEquals("from+generator", apiGlobalDoc.getHomePageId());
+
+        List<GlobalDocPage> pages = apiGlobalDoc.getPages();
+        assertNotNull(pages);
+        assertFalse(pages.isEmpty());
+
+        GlobalDocPage page = pages.get(0);
+        assertEquals("from+generator", page.getLivedocId());
+        assertEquals("From Generator", page.getTitle());
+        assertEquals("Generated test content", page.getContent());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getApiGlobalDoc_generator_failsOnNonPublic() {
+        class NonPublicPageGenerator implements PageGenerator {
+            @Override
+            public String generate(GlobalTemplateData templateData) {
+                return "Generated test content";
+            }
+        }
+
+        @ApiGlobalPage(title = "From Generator", generator = NonPublicPageGenerator.class)
+        class GlobalWithGenerator {}
+
+        buildGlobalDocFor(GlobalWithGenerator.class);
+    }
+
+    public static class UninstantiablePageGenerator implements PageGenerator {
+        public UninstantiablePageGenerator() {
+            throw new IllegalStateException("here to test failure at instantiation");
+        }
+
+        @Override
+        public String generate(GlobalTemplateData templateData) {
+            return "Generated test content";
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getApiGlobalDoc_generator_failsOnGeneratorCreation() {
+
+        @ApiGlobalPage(title = "From Generator", generator = UninstantiablePageGenerator.class)
+        class GlobalWithGenerator {}
+
+        buildGlobalDocFor(GlobalWithGenerator.class);
     }
 
     @SuppressWarnings("unused")

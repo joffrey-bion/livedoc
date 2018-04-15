@@ -7,9 +7,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.hildan.livedoc.core.model.LivedocDefaultType;
+
+import static org.hildan.livedoc.core.model.LivedocDefaultType.DEFAULT_NONE;
+
 /**
- * Describes one page of the global free-text documentation. This annotation can be repeated to declare multiple
- * pages. There is no need to wrap it in the {@link ApiGlobalPages} ann
+ * Describes one page of the global free-text documentation. This annotation can be repeated to declare multiple pages.
+ * There is no need to wrap it in the {@link ApiGlobalPages} annotation.
+ * <p>
+ * This annotation provides multiple fields to specify where to get the content of the page. Exactly one such field
+ * should be used in addition to {@link #title()}.
  */
 @Documented
 @Repeatable(ApiGlobalPages.class)
@@ -24,13 +31,25 @@ public @interface ApiGlobalPage {
     String title();
 
     /**
-     * The content of the page, which can be provided in different forms depending on the selected {@link #type()}. See
-     * {@link PageContentType} for more details.
+     * A string containing the content of the page.
      */
-    String content();
+    String content() default DEFAULT_NONE;
 
     /**
-     * The type of content provided as {@link #content()}. See {@link PageContentType} for more details.
+     * An absolute resource path to a file which content should be used as-is for this page. Relative resource paths are
+     * not yet supported.
      */
-    PageContentType type() default PageContentType.STRING;
+    String resource() default DEFAULT_NONE;
+
+    /**
+     * A relative resource path to a FreeMarker template file. The path is relative to the package of the class
+     * annotated with this annotation, as in standard resource loading. Absolute paths are not supported by FreeMarker.
+     */
+    String template() default DEFAULT_NONE;
+
+    /**
+     * A {@link PageGenerator} to use to generate the content of this page. The given class will be instantiated at
+     * runtime and needs to have a default no-arg constructor.
+     */
+    Class<? extends PageGenerator> generator() default LivedocDefaultType.class;
 }

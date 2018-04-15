@@ -16,13 +16,6 @@ import org.hildan.livedoc.core.model.LivedocDefaultType;
 @Retention(RetentionPolicy.RUNTIME)
 @ApiPathParam
 public @interface ApiQueryParam {
-    /**
-     * Constant defining a value for no default - as a replacement for {@code null} which we cannot use in annotation
-     * attributes.
-     * <p>This is an artificial arrangement of 16 unicode characters, with its sole purpose being to never match
-     * user-declared values.
-     */
-    String DEFAULT_NONE = "\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n";
 
     /**
      * The name of the url parameter, as expected by the server
@@ -52,7 +45,7 @@ public @interface ApiQueryParam {
     /**
      * The default value for this parameter, if it is not passed in the query string
      */
-    String defaultValue() default DEFAULT_NONE;
+    String defaultValue() default LivedocDefaultType.DEFAULT_NONE;
 
     /**
      * Specify this element if you need to use the ApiParam annotation on the method declaration and not a method

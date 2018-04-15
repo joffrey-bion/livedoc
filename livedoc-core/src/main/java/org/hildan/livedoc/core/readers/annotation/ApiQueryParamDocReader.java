@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiParams;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
+import org.hildan.livedoc.core.model.LivedocDefaultType;
 import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -54,7 +55,7 @@ public class ApiQueryParamDocReader {
         String name = nullifyIfEmpty(annotation.name());
         String description = nullifyIfEmpty(annotation.description());
         String format = nullifyIfEmpty(annotation.format());
-        boolean hasDefault = annotation.defaultValue().equals(ApiQueryParam.DEFAULT_NONE);
+        boolean hasDefault = annotation.defaultValue().equals(LivedocDefaultType.DEFAULT_NONE);
         String defaultValue = hasDefault ? null : annotation.defaultValue();
         return new ApiParamDoc(name, description, livedocType, String.valueOf(annotation.required()),
                 annotation.allowedValues(), format, defaultValue);

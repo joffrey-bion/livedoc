@@ -5,38 +5,42 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
-import org.hildan.livedoc.core.annotations.global.PageContentType;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
+import org.hildan.livedoc.core.annotations.global.PageGenerator;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.model.LivedocDefaultType;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.GlobalDocPage;
 import org.hildan.livedoc.core.templating.FreeMarkerUtils;
 import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
-public class ApiGlobalDocReader {
+class ApiGlobalDocReader {
 
     private final Supplier<Configuration> freemarkerConfigSupplier;
 
     private final GlobalTemplateData templateData;
 
-    public ApiGlobalDocReader(Supplier<Configuration> freemarkerConfigSupplier, GlobalTemplateData templateData) {
+    private ApiGlobalDocReader(Supplier<Configuration> freemarkerConfigSupplier, GlobalTemplateData templateData) {
         this.freemarkerConfigSupplier = freemarkerConfigSupplier;
         this.templateData = templateData;
     }
 
     @NotNull
-    public static ApiGlobalDoc readDefault(GlobalTemplateData templateData) {
+    static ApiGlobalDoc readDefault(GlobalTemplateData templateData) {
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
         apiGlobalDoc.setPages(createDefaultPages(templateData));
         return apiGlobalDoc;
@@ -61,7 +65,7 @@ public class ApiGlobalDocReader {
     }
 
     @NotNull
-    public static ApiGlobalDoc read(LivedocConfiguration configuration, GlobalTemplateData templateData,
+    static ApiGlobalDoc read(LivedocConfiguration configuration, GlobalTemplateData templateData,
             @NotNull Class<?> globalDocClass) {
         Configuration freeMarkerConfig = configuration.getFreemarkerConfig();
         Supplier<Configuration> classBased = () -> createConfiguration(globalDocClass);
@@ -97,20 +101,28 @@ public class ApiGlobalDocReader {
 
     private GlobalDocPage readPage(ApiGlobalPage pageAnnotation) {
         String title = pageAnnotation.title();
-        String content = readContent(pageAnnotation.content(), pageAnnotation.type());
+        String content = readContent(pageAnnotation);
         return new GlobalDocPage(title, content);
     }
 
-    private String readContent(String content, PageContentType type) {
-        switch (type) {
-        case TEXT_FILE:
-            return readContentFromResource(content);
-        case FREEMARKER:
-            return readTemplate(content);
-        case STRING:
-        default:
+    private String readContent(ApiGlobalPage pageAnnotation) {
+        String content = pageAnnotation.content();
+        if (!content.equals(LivedocDefaultType.DEFAULT_NONE)) {
             return content;
         }
+        String resource = pageAnnotation.resource();
+        if (!resource.equals(LivedocDefaultType.DEFAULT_NONE)) {
+            return readContentFromResource(resource);
+        }
+        String template = pageAnnotation.template();
+        if (!template.equals(LivedocDefaultType.DEFAULT_NONE)) {
+            return readTemplate(template);
+        }
+        Class<? extends PageGenerator> generatorType = pageAnnotation.generator();
+        if (!generatorType.equals(LivedocDefaultType.class)) {
+            return generate(generatorType);
+        }
+        throw new IllegalArgumentException("No content provided for a global doc page");
     }
 
     @NotNull
@@ -138,6 +150,27 @@ public class ApiGlobalDocReader {
             throw new RuntimeException(String.format("FreeMarker template '%s' not found", templateName), e);
         } catch (TemplateException e) {
             throw new RuntimeException(String.format("Invalid FreeMarker template '%s'", templateName), e);
+        }
+    }
+
+    @Nullable
+    private String generate(Class<? extends PageGenerator> generatorType) {
+        PageGenerator generator = getGeneratorInstance(generatorType);
+        return generator.generate(templateData);
+    }
+
+    @NotNull
+    private static PageGenerator getGeneratorInstance(Class<? extends PageGenerator> generatorType) {
+        try {
+            Constructor<? extends PageGenerator> constructor = generatorType.getConstructor();
+            return constructor.newInstance();
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException(
+                    "Page generator class " + generatorType.getSimpleName() + " should be public and have a "
+                            + "public default (no-arg) constructor", e);
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            throw new IllegalArgumentException(
+                    "Could not create PageGenerator of class " + generatorType.getSimpleName(), e);
         }
     }
 }
