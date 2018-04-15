@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.scanners;
+package org.hildan.livedoc.core.readers.annotation;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,8 +9,8 @@ import java.util.Set;
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
-import org.hildan.livedoc.core.annotations.global.ApiGlobal;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
 import org.hildan.livedoc.core.annotations.global.PageContentType;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
@@ -20,7 +20,7 @@ import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
 import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.GlobalDocPage;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
-import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationGlobalDocReader;
+import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.junit.Test;
 
@@ -30,16 +30,20 @@ import static org.junit.Assert.assertNotNull;
 
 public class GlobalDocReaderTest {
 
+    private static final String TEST_API_NAME = "Test API Name";
+
     private static ApiGlobalDoc buildGlobalDocFor(Class<?> global) {
         GlobalDocReader reader = new LivedocAnnotationGlobalDocReader(ann -> {
-            if (ApiGlobal.class.equals(ann)) {
+            if (ApiGlobalPages.class.equals(ann)) {
                 return global == null ? Collections.emptyList() : Collections.singletonList(global);
             }
             return Collections.emptyList();
         });
         List<String> packages = Collections.emptyList();
         LivedocConfiguration configuration = new LivedocConfiguration(packages);
-        GlobalTemplateData templateData = new GlobalTemplateData(new ApiMetaData(), new LivedocMetaData(), packages);
+        ApiMetaData apiInfo = new ApiMetaData();
+        apiInfo.setName(TEST_API_NAME);
+        GlobalTemplateData templateData = new GlobalTemplateData(apiInfo, new LivedocMetaData(), packages);
         return reader.getApiGlobalDoc(configuration, templateData);
     }
 
@@ -61,10 +65,8 @@ public class GlobalDocReaderTest {
 
     @Test
     public void getApiGlobalDoc_basic() {
-        @ApiGlobal({
-                @ApiGlobalPage(title = "Home", content = "<h1>Title</h1><p>Description</p>"),
-                @ApiGlobalPage(title = "Secondary", content = "<h1>Title 2</h1><p>Description 2</p>")
-        })
+        @ApiGlobalPage(title = "Home", content = "<h1>Title</h1><p>Description</p>")
+        @ApiGlobalPage(title = "Secondary", content = "<h1>Title 2</h1><p>Description 2</p>")
         class Global {}
 
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(Global.class);
@@ -88,9 +90,9 @@ public class GlobalDocReaderTest {
 
     @Test
     public void getApiGlobalDoc_fileReference() {
-        @ApiGlobal({
-                @ApiGlobalPage(title = "From File", content = "/test/path/text.txt", type = PageContentType.TEXT_FILE)
-        })
+        @ApiGlobalPage(title = "From File",
+                content = "/org/hildan/livedoc/core/readers/annotation/text.txt",
+                type = PageContentType.TEXT_FILE)
         class GlobalWithFile {}
 
         ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithFile.class);
@@ -105,6 +107,25 @@ public class GlobalDocReaderTest {
         assertEquals("from+file", page.getLivedocId());
         assertEquals("From File", page.getTitle());
         assertEquals("Paragraph from file", page.getContent());
+    }
+
+    @Test
+    public void getApiGlobalDoc_templateReference() {
+        @ApiGlobalPage(title = "From Template", content = "freemarker.ftl", type = PageContentType.FREEMARKER)
+        class GlobalWithTemplate {}
+
+        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
+        assertNotNull(apiGlobalDoc);
+        assertEquals("from+template", apiGlobalDoc.getHomePageId());
+
+        List<GlobalDocPage> pages = apiGlobalDoc.getPages();
+        assertNotNull(pages);
+        assertFalse(pages.isEmpty());
+
+        GlobalDocPage page = pages.get(0);
+        assertEquals("from+template", page.getLivedocId());
+        assertEquals("From Template", page.getTitle());
+        assertEquals("Paragraph from template with API name: " + TEST_API_NAME, page.getContent().trim());
     }
 
     @SuppressWarnings("unused")

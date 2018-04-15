@@ -1,8 +1,20 @@
 package org.hildan.livedoc.core.annotations.global;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * Describes one page of the global free-text documentation.
+ * Describes one page of the global free-text documentation. This annotation can be repeated to declare multiple
+ * pages. There is no need to wrap it in the {@link ApiGlobalPages} ann
  */
+@Documented
+@Repeatable(ApiGlobalPages.class)
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface ApiGlobalPage {
 
     /**

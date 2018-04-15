@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
-import org.hildan.livedoc.core.annotations.global.ApiGlobal;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -40,9 +41,12 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
     @NotNull
     @Override
     public ApiGlobalDoc getApiGlobalDoc(LivedocConfiguration configuration, GlobalTemplateData globalTemplateData) {
-        Class<?> globalDocClass = findOneClass(ApiGlobal.class);
+        Class<?> globalDocClass = findOneClass(ApiGlobalPage.class);
         if (globalDocClass == null) {
-            return ApiGlobalDocReader.readDefault(globalTemplateData);
+            globalDocClass = findOneClass(ApiGlobalPages.class);
+            if (globalDocClass == null) {
+                return ApiGlobalDocReader.readDefault(globalTemplateData);
+            }
         }
         return ApiGlobalDocReader.read(configuration, globalTemplateData, globalDocClass);
     }

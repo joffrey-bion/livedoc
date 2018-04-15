@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiGlobal {
+public @interface ApiGlobalPages {
 
     /**
      * The list of pages in the global documentation.

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.annotations.global.ApiGlobal;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
 import org.hildan.livedoc.core.annotations.global.PageContentType;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
@@ -67,6 +67,7 @@ public class ApiGlobalDocReader {
         Supplier<Configuration> classBased = () -> createConfiguration(globalDocClass);
         Supplier<Configuration> configSupplier = () -> freeMarkerConfig;
         Supplier<Configuration> freeMarkerConfigSupplier = freeMarkerConfig == null ? classBased : configSupplier;
+
         ApiGlobalDocReader reader = new ApiGlobalDocReader(freeMarkerConfigSupplier, templateData);
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
         apiGlobalDoc.setPages(reader.readPages(globalDocClass));
@@ -81,9 +82,17 @@ public class ApiGlobalDocReader {
 
     @NotNull
     private List<GlobalDocPage> readPages(@NotNull Class<?> globalDocClass) {
-        ApiGlobal apiGlobal = globalDocClass.getAnnotation(ApiGlobal.class);
-        ApiGlobalPage[] apiGlobalPages = apiGlobal.value();
+        ApiGlobalPage[] apiGlobalPages = getPageAnnotations(globalDocClass);
         return Arrays.stream(apiGlobalPages).map(this::readPage).collect(Collectors.toList());
+    }
+
+    private ApiGlobalPage[] getPageAnnotations(@NotNull Class<?> globalDocClass) {
+        ApiGlobalPages apiGlobalPages = globalDocClass.getAnnotation(ApiGlobalPages.class);
+        if (apiGlobalPages == null) {
+            return globalDocClass.getAnnotationsByType(ApiGlobalPage.class);
+        } else {
+            return apiGlobalPages.value();
+        }
     }
 
     private GlobalDocPage readPage(ApiGlobalPage pageAnnotation) {

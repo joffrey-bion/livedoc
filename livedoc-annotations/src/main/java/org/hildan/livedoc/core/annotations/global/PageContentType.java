@@ -12,7 +12,7 @@ public enum PageContentType {
     TEXT_FILE,
     /**
      * The content is a relative resource path to a FreeMarker template file. The path is relative to the package
-     * of the class annotated with {@link ApiGlobal}, as in standard resource loading. Absolute paths are not
+     * of the class annotated with {@link ApiGlobalPage}, as in standard resource loading. Absolute paths are not
      * supported by FreeMarker.
      */
     FREEMARKER
