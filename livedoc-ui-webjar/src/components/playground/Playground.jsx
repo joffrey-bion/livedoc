@@ -11,12 +11,12 @@ import { PlaygroundForm } from './PlaygroundForm';
 import { PlaygroundResponse } from './response/PlaygroundResponse';
 
 export type PlaygroundProps = {
-  basePath: string,
+  baseUrl: string,
   operationDoc: ?ApiOperationDoc,
   submitRequest: (request: RequestInfo) => void,
 }
 
-const Playground = ({basePath, operationDoc, submitRequest}: PlaygroundProps) => {
+const Playground = ({baseUrl, operationDoc, submitRequest}: PlaygroundProps) => {
   if (!operationDoc) {
     return <p>Select a method to enable the playground</p>;
   }
@@ -24,7 +24,7 @@ const Playground = ({basePath, operationDoc, submitRequest}: PlaygroundProps) =>
   return <section>
     <h3 style={{marginTop: '1rem'}}>Playground</h3>
     <Card style={{padding: '0.8rem'}}>
-      <PlaygroundForm basePath={basePath} operationDoc={operationDoc} onSubmit={submitRequest}/>
+      <PlaygroundForm basePath={baseUrl} operationDoc={operationDoc} onSubmit={submitRequest}/>
     </Card>
     <PlaygroundResponse/>
   </section>;
@@ -36,7 +36,7 @@ type PlaygroundOwnProps = {
 }
 
 const mapStateToProps = (state: State, {selectedApiId, selectedOperationId}: PlaygroundOwnProps) => ({
-  basePath: state.livedoc && state.livedoc.basePath,
+  baseUrl: state.livedoc && state.livedoc.apiInfo.baseUrl,
   operationDoc: selectedApiId && selectedOperationId && getMethod(selectedApiId, selectedOperationId, state),
 });
 
