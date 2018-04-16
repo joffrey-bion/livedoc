@@ -11,6 +11,9 @@ import loaderReducer from './redux/loader';
 import playgroundReducer from './redux/playground';
 import rootSaga from './sagas';
 
+const APP_VERSION = process.env.REACT_APP_VERSION || '?:?:?';
+
+// using the app's version in the key prevents rehydration of an out-of-date state
 const persistConfig = {
   key: 'livedoc',
   storage,
@@ -27,7 +30,7 @@ export default function configureStore(history: any, initialState: State = newSt
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
 
   const reducers = persistCombineReducers(persistConfig, {
-    uiVersion: (state, action) => process.env.REACT_APP_VERSION,
+    uiVersion: (state, action) => APP_VERSION,
     livedoc: livedocReducer,
     loader: loaderReducer,
     playground: playgroundReducer,
