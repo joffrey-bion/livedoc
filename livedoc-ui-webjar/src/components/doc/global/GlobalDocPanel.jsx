@@ -15,7 +15,7 @@ export type GlobalDocPanelProps = {
 const GlobalDocPanelPresenter = ({globalDoc}: GlobalDocPanelProps) => {
   const routes = globalDoc.pages.map(page => {
     let pageUrl = RouteHelper.globalPageUrl(page.livedocId);
-    return <Route path={pageUrl} render={() => <GlobalDocPage content={page.content}/>}/>
+    return <Route key={page.livedocId} path={pageUrl} render={() => <GlobalDocPage content={page.content}/>}/>
   });
   return <Switch>
     {routes}
