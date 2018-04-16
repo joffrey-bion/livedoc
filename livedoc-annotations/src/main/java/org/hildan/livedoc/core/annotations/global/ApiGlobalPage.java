@@ -36,8 +36,9 @@ public @interface ApiGlobalPage {
     String content() default DEFAULT_NONE;
 
     /**
-     * An absolute resource path to a file which content should be used as-is for this page. Relative resource paths are
-     * not yet supported.
+     * A resource path to a file which content should be used as-is for this page. Both absolute and relative resource
+     * paths are supported. When a relative path is used, it is resolved relatively to the package of the class
+     * annotated with this annotation, as in standard resource loading.
      */
     String resource() default DEFAULT_NONE;
 

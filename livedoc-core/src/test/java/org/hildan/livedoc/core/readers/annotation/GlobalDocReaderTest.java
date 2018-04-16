@@ -89,11 +89,23 @@ public class GlobalDocReaderTest {
     }
 
     @Test
-    public void getApiGlobalDoc_fileReference() {
+    public void getApiGlobalDoc_absoluteFileReference() {
         @ApiGlobalPage(title = "From File", resource = "/org/hildan/livedoc/core/readers/annotation/text.txt")
         class GlobalWithFile {}
 
-        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithFile.class);
+        assertElementsFromResourceFile(GlobalWithFile.class);
+    }
+
+    @Test
+    public void getApiGlobalDoc_relativeFileReference() {
+        @ApiGlobalPage(title = "From File", resource = "text.txt")
+        class GlobalWithFile {}
+
+        assertElementsFromResourceFile(GlobalWithFile.class);
+    }
+
+    private static void assertElementsFromResourceFile(Class<?> clazz) {
+        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(clazz);
         assertNotNull(apiGlobalDoc);
         assertEquals("from+file", apiGlobalDoc.getHomePageId());
 

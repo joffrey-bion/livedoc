@@ -10,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
@@ -30,12 +29,16 @@ import freemarker.template.TemplateException;
 
 class ApiGlobalDocReader {
 
-    private final Supplier<Configuration> freemarkerConfigSupplier;
+    private final LivedocConfiguration configuration;
+
+    private final Class<?> globalDocClass;
 
     private final GlobalTemplateData templateData;
 
-    private ApiGlobalDocReader(Supplier<Configuration> freemarkerConfigSupplier, GlobalTemplateData templateData) {
-        this.freemarkerConfigSupplier = freemarkerConfigSupplier;
+    private ApiGlobalDocReader(@NotNull LivedocConfiguration configuration, @NotNull Class<?> globalDocClass,
+            @NotNull GlobalTemplateData templateData) {
+        this.configuration = configuration;
+        this.globalDocClass = globalDocClass;
         this.templateData = templateData;
     }
 
@@ -65,23 +68,12 @@ class ApiGlobalDocReader {
     }
 
     @NotNull
-    static ApiGlobalDoc read(LivedocConfiguration configuration, GlobalTemplateData templateData,
+    static ApiGlobalDoc read(@NotNull LivedocConfiguration configuration, @NotNull GlobalTemplateData templateData,
             @NotNull Class<?> globalDocClass) {
-        Configuration freeMarkerConfig = configuration.getFreemarkerConfig();
-        Supplier<Configuration> classBased = () -> createConfiguration(globalDocClass);
-        Supplier<Configuration> configSupplier = () -> freeMarkerConfig;
-        Supplier<Configuration> freeMarkerConfigSupplier = freeMarkerConfig == null ? classBased : configSupplier;
-
-        ApiGlobalDocReader reader = new ApiGlobalDocReader(freeMarkerConfigSupplier, templateData);
+        ApiGlobalDocReader reader = new ApiGlobalDocReader(configuration, globalDocClass, templateData);
         ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
         apiGlobalDoc.setPages(reader.readPages(globalDocClass));
         return apiGlobalDoc;
-    }
-
-    private static Configuration createConfiguration(Class<?> globalDocClass) {
-        Configuration configuration = new Configuration();
-        configuration.setClassForTemplateLoading(globalDocClass, "");
-        return configuration;
     }
 
     @NotNull
@@ -126,9 +118,9 @@ class ApiGlobalDocReader {
     }
 
     @NotNull
-    private static String readContentFromResource(@NotNull String path) {
+    private String readContentFromResource(@NotNull String path) {
         try {
-            InputStream resourceAsStream = ApiGlobalDocReader.class.getResourceAsStream(path);
+            InputStream resourceAsStream = globalDocClass.getResourceAsStream(path);
             if (resourceAsStream == null) {
                 throw new IllegalArgumentException("Unable to find file at path: " + path);
             }
@@ -140,7 +132,7 @@ class ApiGlobalDocReader {
     }
 
     private String readTemplate(String templateName) {
-        Configuration config = freemarkerConfigSupplier.get();
+        Configuration config = getFreemarkerConfig();
         if (config == null) {
             throw new RuntimeException("Missing FreeMarker configuration");
         }
@@ -151,6 +143,20 @@ class ApiGlobalDocReader {
         } catch (TemplateException e) {
             throw new RuntimeException(String.format("Invalid FreeMarker template '%s'", templateName), e);
         }
+    }
+
+    private Configuration getFreemarkerConfig() {
+        Configuration freeMarkerConfig = configuration.getFreemarkerConfig();
+        if (freeMarkerConfig != null) {
+            return freeMarkerConfig;
+        }
+        return createClassRelativeConfiguration();
+    }
+
+    private Configuration createClassRelativeConfiguration() {
+        Configuration configuration = new Configuration();
+        configuration.setClassForTemplateLoading(globalDocClass, "");
+        return configuration;
     }
 
     @Nullable
