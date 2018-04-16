@@ -11,6 +11,7 @@ import logo from './livedoc-logo-round-white.svg';
 import { TopNav } from './TopNav';
 
 export type HeaderProps = {
+  uiVersion: string,
   homeUrl: string,
   docLoaded: boolean,
   reset: () => void,
@@ -22,8 +23,12 @@ const CloseButton = ({reset}) => (<button type="button" onClick={reset} classNam
   <span aria-hidden="true">&times;</span>
 </button>);
 
-const HeaderPresenter = ({homeUrl, docLoaded, reset}: HeaderProps) => (<Navbar className="header">
-  <NavbarBrand href={homeUrl} className="title"><HeaderLogo/>Livedoc</NavbarBrand>
+const HeaderPresenter = ({uiVersion, homeUrl, docLoaded, reset}: HeaderProps) => (<Navbar className="header">
+  <NavbarBrand href={homeUrl}>
+    <HeaderLogo/>
+    <span className="title">Livedoc UI</span>
+    <span className="version">v{uiVersion}</span>
+  </NavbarBrand>
   {docLoaded && <TopNav/>}
   {docLoaded && <CloseButton reset={reset}/>}
 </Navbar>);
@@ -33,6 +38,7 @@ const getHomeUrl = (currentDocUrl: ?string) => {
 };
 
 const mapStateToProps = (state: State) => ({
+  uiVersion: state.uiVersion,
   homeUrl: getHomeUrl(state.loader.url),
   docLoaded: isDocLoaded(state),
 });

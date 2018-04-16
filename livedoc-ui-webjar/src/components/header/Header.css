@@ -28,6 +28,16 @@
 
 .navbar-brand, .navbar-brand:hover {
     color: white;
-    font-family: 'Audiowide', cursive;
     font-weight: normal;
+}
+
+.navbar-brand .title {
+    font-family: 'Audiowide', cursive;
+    margin-right: 0.5rem;
+}
+
+.version {
+    font-size: 10pt;
+    position: relative;
+    bottom: -0.3rem;
 }
