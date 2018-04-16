@@ -4,7 +4,7 @@ import type { RequestInfo, ResponseMetaData } from '../model/playground';
 import type { SendHttpRequestAction } from '../redux/actions/playground';
 import { actions, SUBMIT_HTTP } from '../redux/actions/playground';
 
-function* watchPlaygroundActions(): * {
+export function* watchPlaygroundActions(): * {
   console.log('Watching for SUBMIT_HTTP actions');
   yield takeLatest(SUBMIT_HTTP, sendHttpRequest);
 }
@@ -45,5 +45,3 @@ function extractMetaData(response: Response): ResponseMetaData {
     statusText: response.statusText,
   };
 }
-
-export default watchPlaygroundActions;
