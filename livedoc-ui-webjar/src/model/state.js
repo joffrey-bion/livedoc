@@ -1,4 +1,5 @@
 // @flow
+import { APP_VERSION } from '../App';
 import type { Livedoc } from './livedoc';
 import type { ResponseMetaData } from './playground';
 
@@ -48,7 +49,7 @@ export type State = {
   +playground: PlaygroundState,
 }
 export const newState = () => ({
-  uiVersion: process.env.REACT_APP_VERSION || '?.?.?',
+  uiVersion: APP_VERSION,
   loader: newLoaderState(),
   livedoc: null,
   playground: newPlaygroundState(),

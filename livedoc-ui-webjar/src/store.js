@@ -4,6 +4,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import { persistCombineReducers, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
+import { APP_VERSION } from './App';
 import type { State } from './model/state';
 import { newState } from './model/state';
 import livedocReducer from './redux/livedoc';
@@ -11,11 +12,9 @@ import loaderReducer from './redux/loader';
 import playgroundReducer from './redux/playground';
 import rootSaga from './sagas';
 
-const APP_VERSION = process.env.REACT_APP_VERSION || '?:?:?';
-
 // using the app's version in the key prevents rehydration of an out-of-date state
 const persistConfig = {
-  key: 'livedoc',
+  key: `livedoc-${APP_VERSION}`,
   storage,
   whitelist: ['livedoc'],
 };

@@ -8,13 +8,15 @@ import { Header } from './components/header/Header';
 import type { State } from './model/state';
 import { isDocLoaded } from './redux/livedoc';
 
+export const APP_VERSION = process.env.REACT_APP_VERSION || '?:?:?';
+
 type Props = {
   loading: boolean,
   url: ?string,
   docLoaded: boolean,
 }
 
-const App = (props: Props) => (<div>
+const AppPresenter = (props: Props) => (<div>
           <Header/>
           <Switch>
             <Route path="/fetch" render={() => <DocFetcher/>}/>
@@ -29,4 +31,4 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {};
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export const App = withRouter(connect(mapStateToProps, mapDispatchToProps)(AppPresenter));
