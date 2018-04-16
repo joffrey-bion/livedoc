@@ -27,6 +27,7 @@ export default function configureStore(history: any, initialState: State = newSt
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
 
   const reducers = persistCombineReducers(persistConfig, {
+    uiVersion: (state, action) => process.env.REACT_APP_VERSION,
     livedoc: livedocReducer,
     loader: loaderReducer,
     playground: playgroundReducer,

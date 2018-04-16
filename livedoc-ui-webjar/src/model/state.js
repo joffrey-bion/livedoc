@@ -42,11 +42,13 @@ export function newPlaygroundState(): PlaygroundState {
 }
 
 export type State = {
+  +uiVersion: string,
   +loader: LoaderState,
   +livedoc: ?Livedoc,
   +playground: PlaygroundState,
 }
 export const newState = () => ({
+  uiVersion: process.env.REACT_APP_VERSION || '?.?.?',
   loader: newLoaderState(),
   livedoc: null,
   playground: newPlaygroundState(),
