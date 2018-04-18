@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.types.predicates.TypePredicates;
@@ -22,8 +23,9 @@ public class DocMerger {
 
     private final PropertyScanner propScanner;
 
-    public DocMerger(PropertyScanner propScanner) {
-        this.propScanner = propScanner;
+    public DocMerger() {
+        // Note that merging doc objects has nothing to do with the user-defined property scanner for API types
+        this.propScanner = new FieldPropertyScanner();
     }
 
     /**
@@ -136,7 +138,7 @@ public class DocMerger {
         return overridden;
     }
 
-    private <T, K> Optional<T> takeMatch(List<T> basePool, Function<T, K> keyExtractor, K key) {
+    private static <T, K> Optional<T> takeMatch(List<T> basePool, Function<T, K> keyExtractor, K key) {
         Optional<T> match = basePool.stream().filter(b -> Objects.equals(keyExtractor.apply(b), key)).findAny();
         match.ifPresent(basePool::remove);
         return match;

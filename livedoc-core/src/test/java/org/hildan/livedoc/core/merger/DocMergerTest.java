@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hildan.livedoc.core.readers.combined.DocMerger;
-import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ public class DocMergerTest {
 
     @Before
     public void setUp() {
-        merger = new DocMerger(new FieldPropertyScanner());
+        merger = new DocMerger();
     }
 
     @Test

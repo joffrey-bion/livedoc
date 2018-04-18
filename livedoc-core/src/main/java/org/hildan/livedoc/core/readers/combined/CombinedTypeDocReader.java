@@ -7,7 +7,6 @@ import java.util.function.Function;
 import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
 import org.hildan.livedoc.core.readers.TypeDocReader;
-import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -29,7 +28,7 @@ public class CombinedTypeDocReader implements TypeDocReader {
      */
     public CombinedTypeDocReader(List<TypeDocReader> typeDocReaders) {
         this.typeDocReaders = typeDocReaders;
-        this.docMerger = new DocMerger(new FieldPropertyScanner());
+        this.docMerger = new DocMerger();
     }
 
     @NotNull

@@ -12,7 +12,6 @@ import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
-import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ public class CombinedDocReader implements DocReader {
      */
     public CombinedDocReader(List<DocReader> docReaders) {
         this.docReaders = docReaders;
-        this.docMerger = new DocMerger(new FieldPropertyScanner());
+        this.docMerger = new DocMerger();
     }
 
     @NotNull
