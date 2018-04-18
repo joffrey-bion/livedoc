@@ -16,6 +16,10 @@ import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An implementation of {@link DocReader} that merges the result of multiple {@code DocReader}s. This allows for
+ * easier processing of the readers' output, because it encapsulates the fact that there are multiple readers involved.
+ */
 public class CombinedDocReader implements DocReader {
 
     private final List<DocReader> docReaders;

@@ -19,6 +19,10 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A component able to merge doc objects of the same type into one. This is allows to build a single doc object from
+ * the result of multiple readers.
+ */
 public class DocMerger {
 
     private final PropertyScanner propScanner;

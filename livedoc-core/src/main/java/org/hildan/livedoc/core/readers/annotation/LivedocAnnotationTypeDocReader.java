@@ -3,12 +3,9 @@ package org.hildan.livedoc.core.readers.annotation;
 import java.lang.reflect.Modifier;
 import java.util.Optional;
 
-import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
 import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
-import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.readers.TypeDocReader;
 import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.hildan.livedoc.core.scanners.properties.Property;
@@ -20,9 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
 /**
- * An implementation of {@link DocReader} that reads Livedoc annotations to build the documentation. In this
- * implementation, controllers are classes annotated with {@link Api}, and methods are only found and documented if
- * annotated with {@link ApiOperation}.
+ * An implementation of {@link TypeDocReader} that reads Livedoc annotations to build the documentation of types.
  */
 public class LivedocAnnotationTypeDocReader implements TypeDocReader {
 

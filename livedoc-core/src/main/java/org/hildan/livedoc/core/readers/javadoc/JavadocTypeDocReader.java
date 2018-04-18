@@ -11,6 +11,9 @@ import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An implementation of {@link TypeDocReader} that reads the Javadoc to build the documentation of types.
+ */
 public class JavadocTypeDocReader implements TypeDocReader {
 
     @NotNull

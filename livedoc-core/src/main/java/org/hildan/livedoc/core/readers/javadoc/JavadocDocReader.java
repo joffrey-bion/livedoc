@@ -12,6 +12,11 @@ import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An implementation of {@link DocReader} that reads the Javadoc of classes and methods to build the documentation.
+ * This implementation cannot identify controller classes or API operation methods, but it can document the ones that
+ * are identified by other readers.
+ */
 public class JavadocDocReader implements DocReader {
 
     @NotNull
