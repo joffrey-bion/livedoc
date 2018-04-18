@@ -16,13 +16,18 @@ const history = createHistory();
 async function bootstrap() {
   const {persistor, store} = configureStore(history);
 
+  const rootElement = document.getElementById('root');
+  if (!rootElement) {
+    console.error('Element with ID "root" was not found, cannot bootstrap react app');
+    return;
+  }
   ReactDOM.render(<Provider store={store}>
     <PersistGate persistor={persistor}>
       <ConnectedRouter history={history}>
         <App/>
       </ConnectedRouter>
     </PersistGate>
-  </Provider>, document.getElementById('root'));
+  </Provider>, rootElement);
 
   registerServiceWorker();
 }

@@ -1,8 +1,8 @@
 // @flow
 import * as React from 'react';
-import {Button, Col, Form, FormGroup, Input, Label} from 'reactstrap';
-import type {ApiRequestBodyDoc, ApiOperationDoc, ApiVerb} from '../../model/livedoc';
-import type {RequestInfo} from '../../model/playground';
+import { Button, Col, Form, FormGroup, Input, Label } from 'reactstrap';
+import type { ApiOperationDoc, ApiRequestBodyDoc, ApiVerb } from '../../model/livedoc';
+import type { RequestInfo } from '../../model/playground';
 
 export type PlaygroundFormProps = {
   basePath: string,
@@ -32,9 +32,18 @@ const Select = ({id, name, options, value, ...otherProps}) => (
       {options.map((opt, index) => <option key={index}>{opt}</option>)}
     </Input>);
 
-const SelectRow = ({label, id, name, options, ...otherProps}) => (<PlaygroundFormRow label={label} id={id}>
-  <Select name={name} id={id} options={options} {...otherProps}/>
-</PlaygroundFormRow>);
+type SelectRowParams = {
+  label: string,
+  id: string,
+  name: string,
+  options: $ReadOnlyArray<string>,
+  value: string,
+  [string]: any
+}
+const SelectRow = ({label, id, name, options, ...otherProps}: SelectRowParams) => (
+        <PlaygroundFormRow label={label} id={id}>
+          <Select name={name} id={id} options={options} {...otherProps}/>
+        </PlaygroundFormRow>);
 
 const RequestBodyInput = (textAreaProps) => {
   return <FormGroup>

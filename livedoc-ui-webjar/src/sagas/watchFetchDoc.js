@@ -1,17 +1,18 @@
 // @flow
 import { push } from 'react-router-redux';
+import type { SagaIterator } from 'redux-saga';
 import { apply, call, put, takeLatest } from 'redux-saga/effects';
 import { APP_VERSION } from '../App';
 import type { Livedoc } from '../model/livedoc';
 import type { FetchDocAction } from '../redux/actions/loader';
 import { actions, FETCH_DOC } from '../redux/actions/loader';
 
-export function* watchFetchDoc(): * {
+export function* watchFetchDoc(): SagaIterator {
   console.log('Watching for FETCH_DOC actions');
   yield takeLatest(FETCH_DOC, fetchDoc);
 }
 
-function* fetchDoc(action: FetchDocAction): * {
+function* fetchDoc(action: FetchDocAction): SagaIterator {
   try {
     console.log('Fetching documentation at', action.url);
     const response: Response = yield call(fetch, action.url, {
@@ -25,7 +26,7 @@ function* fetchDoc(action: FetchDocAction): * {
   }
 }
 
-function* handleResponse(response: Response): * {
+function* handleResponse(response: Response): SagaIterator {
   if (!response.ok) {
     yield* handleError(`Could not fetch documentation: HTTP ${response.status} ${response.statusText}`);
     return;
@@ -35,7 +36,7 @@ function* handleResponse(response: Response): * {
   yield* handleResponsePayload(data);
 }
 
-function* handleResponsePayload(data: ?Livedoc): * {
+function* handleResponsePayload(data: ?Livedoc): SagaIterator {
   if (!data) {
     yield* handleError('Unable to read documentation: no response payload');
     return;
@@ -55,6 +56,6 @@ function* handleResponsePayload(data: ?Livedoc): * {
   }
 }
 
-function* handleError(errorDetail: string): * {
+function* handleError(errorDetail: string): SagaIterator {
   yield put(actions.fetchError(errorDetail));
 }
