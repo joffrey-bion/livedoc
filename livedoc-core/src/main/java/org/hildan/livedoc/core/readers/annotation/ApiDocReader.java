@@ -2,12 +2,14 @@ package org.hildan.livedoc.core.readers.annotation;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
+import org.hildan.livedoc.core.util.LivedocUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class ApiDocReader {
 
     public static ApiDoc read(Class<?> controller) {
         ApiDoc apiDoc = new ApiDoc();
+        apiDoc.setLivedocId(LivedocUtils.getLivedocId(controller));
         apiDoc.setName(controller.getSimpleName());
         apiDoc.setSupportedVersions(ApiVersionDocReader.read(controller));
         apiDoc.setAuth(ApiAuthDocReader.readController(controller));

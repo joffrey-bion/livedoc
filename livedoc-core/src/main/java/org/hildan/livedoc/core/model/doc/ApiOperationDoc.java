@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
-import org.hildan.livedoc.core.readers.combined.DocMerger;
-import org.hildan.livedoc.core.readers.combined.Mergeable;
-import org.hildan.livedoc.core.readers.combined.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.readers.combined.DocMerger;
+import org.hildan.livedoc.core.readers.combined.Mergeable;
+import org.hildan.livedoc.core.readers.combined.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.util.LivedocUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,8 +32,6 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
 
     private static final Comparator<ApiOperationDoc> COMPARATOR = PATHS_COMPARATOR.thenComparing(VERBS_COMPARATOR)
                                                                                   .thenComparing(PARAMS_COMPARATOR);
-
-    public final String livedocId = UUID.randomUUID().toString();
 
     private String id;
 
@@ -92,6 +89,18 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.apiErrors = new ArrayList<>();
         this.supportedVersions = null;
         this.auth = null;
+    }
+
+    public String getLivedocId() {
+        // a given verb with a given path is by definition unique, even among controllers
+        String firstVerb = verbs.isEmpty() ? "" : verbs.get(0).toString();
+        String firstPath = paths.isEmpty() ? "" : paths.get(0);
+        firstPath = firstPath.replaceAll("[{}]", "");
+        firstPath = firstPath.replaceAll("/", "-");
+        if (!firstPath.startsWith("-")) {
+            firstPath = "-" + firstPath;
+        }
+        return LivedocUtils.asLivedocId(firstVerb + firstPath);
     }
 
     public String getId() {

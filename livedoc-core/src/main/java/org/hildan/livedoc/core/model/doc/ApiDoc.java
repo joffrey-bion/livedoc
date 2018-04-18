@@ -2,21 +2,20 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import org.hildan.livedoc.core.readers.combined.DocMerger;
-import org.hildan.livedoc.core.readers.combined.Mergeable;
-import org.hildan.livedoc.core.readers.combined.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.groups.Groupable;
+import org.hildan.livedoc.core.readers.combined.DocMerger;
+import org.hildan.livedoc.core.readers.combined.Mergeable;
+import org.hildan.livedoc.core.readers.combined.SpecialDefaultStringValue;
 import org.jetbrains.annotations.NotNull;
 
 public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, Versioned, Mergeable<ApiDoc> {
 
-    public final String livedocId = UUID.randomUUID().toString();
+    private String livedocId;
 
     private String name;
 
@@ -41,6 +40,14 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
         this.operations = new ArrayList<>();
         this.supportedVersions = null;
         this.auth = null;
+    }
+
+    public String getLivedocId() {
+        return livedocId;
+    }
+
+    public void setLivedocId(String livedocId) {
+        this.livedocId = livedocId;
     }
 
     public String getName() {
