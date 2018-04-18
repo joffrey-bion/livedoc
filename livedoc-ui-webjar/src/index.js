@@ -5,6 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+// $FlowFixMe: redux-persist is ignored in .flowconfig, so needs to be ignored here too
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { App } from './App';
 import './index.css';

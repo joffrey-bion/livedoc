@@ -1,5 +1,6 @@
 [ignore]
-node_modules/eslint-plugin-jsx-a11y/**/*.js
+<PROJECT_ROOT>/node_modules/redux-persist/.*
+<PROJECT_ROOT>/\.gradle/.*
 
 [include]
 

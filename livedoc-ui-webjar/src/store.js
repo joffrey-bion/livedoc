@@ -1,7 +1,9 @@
 // @flow
 import { routerMiddleware as createRouterMiddleware, routerReducer } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
+// $FlowFixMe: redux-persist is ignored in .flowconfig, so needs to be ignored here too
 import { persistCombineReducers, persistStore } from 'redux-persist';
+// $FlowFixMe: redux-persist is ignored in .flowconfig, so needs to be ignored here too
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 import { APP_VERSION } from './App';
