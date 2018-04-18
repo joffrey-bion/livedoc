@@ -17,18 +17,29 @@ public class JavadocHelper {
 
     private static final CommentFormatter COMMENT_FORMATTER = new CommentFormatter();
 
-    private static String extractDescription(Comment comment) {
+    private static String formatComment(Comment comment) {
         return COMMENT_FORMATTER.format(comment).trim();
     }
 
     @NotNull
     public static Optional<String> getJavadocDescription(@NotNull Class<?> clazz) {
-        return RuntimeJavadoc.getJavadoc(clazz).map(ClassJavadoc::getComment).map(JavadocHelper::extractDescription);
+        return RuntimeJavadoc.getJavadoc(clazz).map(ClassJavadoc::getComment).map(JavadocHelper::formatComment);
     }
 
     @NotNull
     public static Optional<String> getJavadocDescription(@NotNull Method method) {
-        return RuntimeJavadoc.getJavadoc(method).map(MethodJavadoc::getComment).map(JavadocHelper::extractDescription);
+        return RuntimeJavadoc.getJavadoc(method).map(MethodJavadoc::getComment).map(JavadocHelper::formatComment);
+    }
+
+    @NotNull
+    public static Optional<String> getReturnDescription(@NotNull Method method) {
+        Optional<String> returnComment = RuntimeJavadoc.getJavadoc(method)
+                                           .map(MethodJavadoc::getReturns)
+                                           .map(JavadocHelper::formatComment);
+        if (!returnComment.isPresent() || returnComment.get().isEmpty()) {
+            return getJavadocDescription(method);
+        }
+        return returnComment;
     }
 
     @NotNull

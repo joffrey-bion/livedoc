@@ -34,7 +34,7 @@ public class JavadocTypeDocReader implements TypeDocReader {
         doc.setName(property.getName());
         Method getter = property.getGetter();
         if (getter != null) {
-            doc.setDescription(JavadocHelper.getJavadocDescription(getter).orElse(null));
+            doc.setDescription(JavadocHelper.getReturnDescription(getter).orElse(null));
         }
         return Optional.of(doc);
     }

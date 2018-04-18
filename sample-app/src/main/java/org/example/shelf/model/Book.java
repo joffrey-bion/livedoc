@@ -13,28 +13,25 @@ import org.example.shelf.documentation.DocumentationConstants;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
+/**
+ * Represents a book. Every book has an <code>Author</code> and a price.
+ */
 @Entity
-@ApiType(name = "Book",
-        group = DocumentationConstants.GROUP_LIBRARY,
-        description = "Represents a book. Every book has an <code>Author</code> and a price.")
+@ApiType(group = DocumentationConstants.GROUP_LIBRARY)
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiTypeProperty(description = "The book's ID", order = 4)
     private Long id;
 
     @Column(name = "title")
-    @ApiTypeProperty(description = "The book's title", order = 2)
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    @ApiTypeProperty(description = "The book's author", order = 1)
     private Author author;
 
     @Column(name = "price")
-    @ApiTypeProperty(required = true, format = "Must be a double", description = "The price of the book")
     private Double price;
 
     public Book() {
@@ -47,6 +44,10 @@ public class Book {
         this.price = price;
     }
 
+    /**
+     * @return The book's ID
+     */
+    @ApiTypeProperty(order = 4)
     public Long getId() {
         return id;
     }
@@ -55,6 +56,12 @@ public class Book {
         this.id = id;
     }
 
+    /**
+     * Gets the book's title.
+     *
+     * @return the book's title
+     */
+    @ApiTypeProperty(order = 2)
     public String getTitle() {
         return title;
     }
@@ -63,6 +70,12 @@ public class Book {
         this.title = title;
     }
 
+    /**
+     * Gets the book's author.
+     *
+     * @return the book's author
+     */
+    @ApiTypeProperty(order = 1)
     public Author getAuthor() {
         return author;
     }
@@ -71,6 +84,12 @@ public class Book {
         this.author = author;
     }
 
+    /**
+     * Gets the price of the book.
+     *
+     * @return the price of the book
+     */
+    @ApiTypeProperty(required = true, format = "Must be a double")
     public Double getPrice() {
         return price;
     }

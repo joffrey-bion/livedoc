@@ -20,26 +20,24 @@ import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Represents an author. Every author has a list of <code>Book</code>s.
+ */
 @Entity
-@ApiType(name = "Author",
-        group = DocumentationConstants.GROUP_LIBRARY,
-        description = "Represents an author. Every author has a list of <code>Book</code>s")
+@ApiType(group = DocumentationConstants.GROUP_LIBRARY)
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiTypeProperty
     private Long id;
 
     @Column(name = "name")
     @NotBlank
     @Length(min = 5, max = 20)
-    @ApiTypeProperty(required = true, description = "Name and surname of the author")
     private String name;
 
     @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ApiTypeProperty
     private List<Book> books = new ArrayList<Book>();
 
     public Author() {
@@ -56,6 +54,9 @@ public class Author {
         book.setAuthor(this);
     }
 
+    /**
+     * @return the id of this author
+     */
     public Long getId() {
         return id;
     }
@@ -64,6 +65,10 @@ public class Author {
         this.id = id;
     }
 
+    /**
+     * @return the name and surname of this author
+     */
+    @ApiTypeProperty(required = true)
     public String getName() {
         return name;
     }
@@ -72,6 +77,9 @@ public class Author {
         this.name = name;
     }
 
+    /**
+     * @return the books written by this author
+     */
     public List<Book> getBooks() {
         return books;
     }
