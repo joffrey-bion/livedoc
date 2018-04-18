@@ -2,6 +2,9 @@ package org.hildan.livedoc.core.merger;
 
 import java.util.Objects;
 
+import org.hildan.livedoc.core.readers.combined.DocMerger;
+import org.hildan.livedoc.core.readers.combined.Mergeable;
+
 class MergeableObj implements Mergeable<MergeableObj> {
     int num;
     String data;

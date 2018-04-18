@@ -2,8 +2,8 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.UUID;
 
-import org.hildan.livedoc.core.merger.DocMerger;
-import org.hildan.livedoc.core.merger.Mergeable;
+import org.hildan.livedoc.core.readers.combined.DocMerger;
+import org.hildan.livedoc.core.readers.combined.Mergeable;
 import org.hildan.livedoc.core.model.types.LivedocType;
 
 public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc>, Mergeable<ApiParamDoc> {

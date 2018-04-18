@@ -4,9 +4,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hildan.livedoc.core.merger.DocMerger;
-import org.hildan.livedoc.core.merger.Mergeable;
-import org.hildan.livedoc.core.merger.SpecialDefaultIntValue;
+import org.hildan.livedoc.core.readers.combined.DocMerger;
+import org.hildan.livedoc.core.readers.combined.Mergeable;
+import org.hildan.livedoc.core.readers.combined.SpecialDefaultIntValue;
 import org.hildan.livedoc.core.model.doc.AbstractDoc;
 import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;

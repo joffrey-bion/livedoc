@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.merger;
+package org.hildan.livedoc.core.readers.combined;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

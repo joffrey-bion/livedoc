@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.merger;
+package org.hildan.livedoc.core.readers.combined;
 
 public interface Mergeable<T> {
 

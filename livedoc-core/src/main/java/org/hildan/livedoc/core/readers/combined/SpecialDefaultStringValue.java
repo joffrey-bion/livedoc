@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.merger;
+package org.hildan.livedoc.core.readers.combined;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SpecialDefaultIntValue {
+public @interface SpecialDefaultStringValue {
 
-    int value();
+    String value();
 }

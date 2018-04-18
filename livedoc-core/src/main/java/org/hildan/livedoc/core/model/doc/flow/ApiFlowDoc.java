@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
-import org.hildan.livedoc.core.merger.SpecialDefaultStringValue;
+import org.hildan.livedoc.core.readers.combined.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.groups.Groupable;
 

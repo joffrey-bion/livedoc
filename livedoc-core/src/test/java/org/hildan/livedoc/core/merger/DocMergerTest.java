@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.hildan.livedoc.core.readers.combined.DocMerger;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.junit.Before;
 import org.junit.Test;
