@@ -1,4 +1,4 @@
-package org.hildan.livedoc.core.readers.types;
+package org.hildan.livedoc.core.scanners.types.references;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -11,7 +11,6 @@ import org.hildan.generics.GenericDeclarationExplorer;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.scanners.types.references.TypeReferenceBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
