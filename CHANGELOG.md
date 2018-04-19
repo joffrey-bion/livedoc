@@ -1,5 +1,25 @@
 # Change Log
 
+## [v4.4.0](https://bintray.com/joffrey-bion/maven/livedoc/4.4.0) (2018-04-19)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.2...v4.4.0)
+
+**Implemented enhancements:**
+
+- Use better IDs for controllers and API operations [\#98](https://github.com/joffrey-bion/livedoc/issues/98)
+- Unify global doc elements [\#93](https://github.com/joffrey-bion/livedoc/issues/93)
+- Remove unnecessary paragraph separation in Global doc [\#92](https://github.com/joffrey-bion/livedoc/issues/92)
+- Add default global doc page [\#91](https://github.com/joffrey-bion/livedoc/issues/91)
+- Support templating in global doc HTML [\#90](https://github.com/joffrey-bion/livedoc/issues/90)
+- Check livedoc version match between UI and JSON [\#89](https://github.com/joffrey-bion/livedoc/issues/89)
+
+**Fixed bugs:**
+
+- Prevent state rehydration if livedoc version is different [\#97](https://github.com/joffrey-bion/livedoc/issues/97)
+
+**Closed issues:**
+
+- Add GENERATED PageContentType [\#96](https://github.com/joffrey-bion/livedoc/issues/96)
+
 ## [v4.3.2](https://bintray.com/joffrey-bion/maven/livedoc/4.3.2) (2018-04-11)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.1...v4.3.2)
 
