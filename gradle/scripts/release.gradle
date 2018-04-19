@@ -43,6 +43,8 @@ task commitRelease {
     doLast {
         execute 'git', 'add', 'build.gradle'
         execute 'git', 'add', 'CHANGELOG.md'
+        execute 'git', 'add', 'docs/_config.yml'
+        execute 'git', 'add', 'livedoc-ui-webjar/package.json'
         execute 'git', 'commit', '-m', "Version ${project.version}"
         execute 'git', 'push'
     }
