@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '1.5.10.RELEASE'
+    id 'org.springframework.boot' version '1.5.12.RELEASE'
     id 'com.palantir.docker' version '0.19.2'
 }
 
@@ -12,9 +12,9 @@ dependencies {
 
     compile project(':livedoc-springboot')
     compile project(':livedoc-ui-webjar')
-    compile 'org.springframework.boot:spring-boot-starter-web:1.5.10.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.10.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-security:1.5.10.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'com.h2database:h2:1.4.196'
 }
 
