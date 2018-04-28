@@ -32,10 +32,9 @@ public class JavadocTypeDocReaderTest {
          */
         private String name;
 
-        /**
-         * The age of this person.
-         */
         private Integer age;
+
+        private String phone;
 
         /**
          * Gets this person's name.
@@ -48,9 +47,18 @@ public class JavadocTypeDocReaderTest {
 
         /**
          * Gets this person's age.
+         *
+         * @return this person's age
          */
         public Integer getAge() {
             return age;
+        }
+
+        /**
+         * Gets this person's phone number.
+         */
+        public String getPhone() {
+            return phone;
         }
     }
 
@@ -73,9 +81,11 @@ public class JavadocTypeDocReaderTest {
     public void buildPropertyDoc() throws NoSuchMethodException, NoSuchFieldException {
         Field nameField = Person.class.getDeclaredField("name");
         Field ageField = Person.class.getDeclaredField("age");
+        Field phoneField = Person.class.getDeclaredField("phone");
 
         Method getName = Person.class.getDeclaredMethod("getName");
         Method getAge = Person.class.getDeclaredMethod("getAge");
+        Method getPhone = Person.class.getDeclaredMethod("getPhone");
 
         Property nameProp = new Property("name", String.class, getName);
         nameProp.setField(nameField);
@@ -85,20 +95,32 @@ public class JavadocTypeDocReaderTest {
         ageProp.setField(ageField);
         ageProp.setGetter(getAge);
 
+        Property phoneProp = new Property("phone", String.class, getPhone);
+        phoneProp.setField(phoneField);
+        phoneProp.setGetter(getPhone);
+
         Optional<ApiTypeDoc> doc = reader.buildTypeDocBase(Person.class, typeReferenceProvider, c -> null);
         assertTrue(doc.isPresent());
 
         ApiTypeDoc apiTypeDoc = doc.get();
         Optional<ApiPropertyDoc> maybeNameDoc = reader.buildPropertyDoc(nameProp, apiTypeDoc, typeReferenceProvider);
         Optional<ApiPropertyDoc> maybeAgeDoc = reader.buildPropertyDoc(ageProp, apiTypeDoc, typeReferenceProvider);
+        Optional<ApiPropertyDoc> maybePhoneDoc = reader.buildPropertyDoc(phoneProp, apiTypeDoc, typeReferenceProvider);
         assertTrue(maybeNameDoc.isPresent());
         assertTrue(maybeAgeDoc.isPresent());
+        assertTrue(maybePhoneDoc.isPresent());
 
         ApiPropertyDoc nameDoc = maybeNameDoc.get();
         ApiPropertyDoc ageDoc = maybeAgeDoc.get();
+        ApiPropertyDoc phoneDoc = maybePhoneDoc.get();
         assertEquals("name", nameDoc.getName());
         assertEquals("age", ageDoc.getName());
-        assertEquals("this person's name", nameDoc.getDescription());
-        assertEquals("Gets this person's age.", ageDoc.getDescription());
+        assertEquals("phone", phoneDoc.getName());
+        // takes field doc if present
+        assertEquals("The name of this person.", nameDoc.getDescription());
+        // takes the return description if no field doc
+        assertEquals("this person's age", ageDoc.getDescription());
+        // takes the method description if neither field doc nor return description
+        assertEquals("Gets this person's phone number.", phoneDoc.getDescription());
     }
 }
