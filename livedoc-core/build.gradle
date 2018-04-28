@@ -6,7 +6,7 @@ dependencies {
     api project(':livedoc-annotations')
 
     implementation 'org.hildan.generics:generics-explorer:1.1.0'
-    implementation 'com.github.therapi:therapi-runtime-javadoc:0.4.0'
+    implementation 'com.github.therapi:therapi-runtime-javadoc:0.5.0'
     implementation 'org.reflections:reflections:0.9.10'
     implementation 'org.freemarker:freemarker:2.3.20'
     implementation 'org.slf4j:slf4j-api:1.7.10'
