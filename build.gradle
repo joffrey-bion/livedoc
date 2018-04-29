@@ -9,7 +9,7 @@ buildscript {
 
 allprojects {
     group = 'org.hildan.livedoc'
-    version = '4.4.0'
+    version = '4.4.1'
     ext.labels = ['doc', 'documentation', 'generation', 'annotation', 'java', 'rest', 'websocket', 'api']
     ext.licenses = ['MIT']
 }

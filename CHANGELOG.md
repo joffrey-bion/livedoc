@@ -1,11 +1,23 @@
 # Change Log
 
+## [v4.4.1](https://bintray.com/joffrey-bion/maven/livedoc/4.4.1) (2018-04-29)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.4.0...v4.4.1)
+
+**Implemented enhancements:**
+
+- Use field Javadoc for type properties descriptions [\#100](https://github.com/joffrey-bion/livedoc/issues/100)
+
+**Fixed bugs:**
+
+- NullPointerException in RuntimeJavadoc [\#99](https://github.com/joffrey-bion/livedoc/issues/99)
+
 ## [v4.4.0](https://bintray.com/joffrey-bion/maven/livedoc/4.4.0) (2018-04-19)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.2...v4.4.0)
 
 **Implemented enhancements:**
 
 - Use better IDs for controllers and API operations [\#98](https://github.com/joffrey-bion/livedoc/issues/98)
+- Add GENERATED PageContentType [\#96](https://github.com/joffrey-bion/livedoc/issues/96)
 - Unify global doc elements [\#93](https://github.com/joffrey-bion/livedoc/issues/93)
 - Remove unnecessary paragraph separation in Global doc [\#92](https://github.com/joffrey-bion/livedoc/issues/92)
 - Add default global doc page [\#91](https://github.com/joffrey-bion/livedoc/issues/91)
@@ -15,10 +27,6 @@
 **Fixed bugs:**
 
 - Prevent state rehydration if livedoc version is different [\#97](https://github.com/joffrey-bion/livedoc/issues/97)
-
-**Closed issues:**
-
-- Add GENERATED PageContentType [\#96](https://github.com/joffrey-bion/livedoc/issues/96)
 
 ## [v4.3.2](https://bintray.com/joffrey-bion/maven/livedoc/4.3.2) (2018-04-11)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.1...v4.3.2)
@@ -75,6 +83,7 @@
 
 **Implemented enhancements:**
 
+- Add proper redirect when no doc is loaded [\#66](https://github.com/joffrey-bion/livedoc/issues/66)
 - Make types clickable and lead to type doc [\#62](https://github.com/joffrey-bion/livedoc/issues/62)
 - Keep doc after refresh using redux local storage [\#60](https://github.com/joffrey-bion/livedoc/issues/60)
 - Add 1 or 2 element\(s\) in examples of arrays [\#54](https://github.com/joffrey-bion/livedoc/issues/54)
@@ -85,10 +94,6 @@
 
 - @PathVariable-annotated param name is empty [\#71](https://github.com/joffrey-bion/livedoc/issues/71)
 - @ApiObjectProperty is not allowed on getters [\#53](https://github.com/joffrey-bion/livedoc/issues/53)
-
-**Closed issues:**
-
-- Add proper redirect when no doc is loaded [\#66](https://github.com/joffrey-bion/livedoc/issues/66)
 
 **Merged pull requests:**
 
@@ -114,7 +119,6 @@
 
 **Closed issues:**
 
-- Make the version of Livedoc a global variable in the doc [\#51](https://github.com/joffrey-bion/livedoc/issues/51)
 - Use tabs for dependency inclusion with Gradle/Maven [\#50](https://github.com/joffrey-bion/livedoc/issues/50)
 - Add quick-start documentation in the README [\#48](https://github.com/joffrey-bion/livedoc/issues/48)
 
@@ -210,12 +214,9 @@
 
 **Implemented enhancements:**
 
-- Ignore fields annotated @JsonIgnore [\#10](https://github.com/joffrey-bion/livedoc/issues/10)
-
-**Closed issues:**
-
 - Customize Spring MVC types exploration using Jackson properties [\#15](https://github.com/joffrey-bion/livedoc/issues/15)
 - Add proper support for custom property exploration [\#14](https://github.com/joffrey-bion/livedoc/issues/14)
+- Ignore fields annotated @JsonIgnore [\#10](https://github.com/joffrey-bion/livedoc/issues/10)
 
 ## [v0.3.0](https://bintray.com/joffrey-bion/maven/livedoc/0.3.0) (2017-08-15)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v0.2.0...v0.3.0)
