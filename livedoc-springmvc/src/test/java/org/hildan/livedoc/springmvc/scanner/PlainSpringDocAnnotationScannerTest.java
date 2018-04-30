@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.ApiParamDoc;
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.ParamDoc;
+import org.hildan.livedoc.core.model.doc.headers.HeaderDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -33,12 +33,14 @@ public class PlainSpringDocAnnotationScannerTest {
     @RequestMapping(name = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
     private class SpringController {
 
-        @RequestMapping(name = "/string/{name}", headers = "header=test", params = "delete",
-                method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+        @RequestMapping(name = "/string/{name}",
+                headers = "header=test",
+                params = "delete",
+                method = RequestMethod.POST,
+                consumes = MediaType.APPLICATION_JSON_VALUE)
         @ResponseStatus(HttpStatus.CREATED)
         public @ResponseBody
-        String string(@PathVariable("test") String name, @RequestParam("id") Integer id,
-                @RequestParam Long query,
+        String string(@PathVariable("test") String name, @RequestParam("id") Integer id, @RequestParam Long query,
                 @RequestHeader(name = "header-two", defaultValue = "header-test") String header,
                 @RequestBody String requestBody) {
             return "ok";
@@ -66,12 +68,12 @@ public class PlainSpringDocAnnotationScannerTest {
 
             if (apiOperationDoc.getPaths().contains("/api/string/{name}")) {
                 assertEquals(2, apiOperationDoc.getHeaders().size());
-                List<ApiHeaderDoc> headers = apiOperationDoc.getHeaders();
-                Iterator<ApiHeaderDoc> headersIterator = headers.iterator();
-                ApiHeaderDoc headerTest = headersIterator.next();
+                List<HeaderDoc> headers = apiOperationDoc.getHeaders();
+                Iterator<HeaderDoc> headersIterator = headers.iterator();
+                HeaderDoc headerTest = headersIterator.next();
                 assertEquals("header", headerTest.getName());
                 assertEquals("test", headerTest.getValues().get(0));
-                ApiHeaderDoc headerTwo = headersIterator.next();
+                HeaderDoc headerTwo = headersIterator.next();
                 assertEquals("header-two", headerTwo.getName());
                 assertEquals("header-test", headerTwo.getValues().get(0));
 
@@ -82,26 +84,26 @@ public class PlainSpringDocAnnotationScannerTest {
                 assertEquals("application/json", apiOperationDoc.getConsumes().iterator().next());
                 assertEquals("201 - Created", apiOperationDoc.getResponseStatusCode());
 
-                List<ApiParamDoc> queryparameters = apiOperationDoc.getQueryParameters();
+                List<ParamDoc> queryparameters = apiOperationDoc.getQueryParameters();
                 assertEquals(3, queryparameters.size());
-                ApiParamDoc apiParamDoc = queryparameters.get(0);
-                assertEquals("delete", apiParamDoc.getName());
-                assertEquals("true", apiParamDoc.getRequired());
-                assertNull(apiParamDoc.getDefaultValue());
-                assertEquals(0, apiParamDoc.getAllowedValues().length);
+                ParamDoc paramDoc = queryparameters.get(0);
+                assertEquals("delete", paramDoc.getName());
+                assertEquals("true", paramDoc.getRequired());
+                assertNull(paramDoc.getDefaultValue());
+                assertEquals(0, paramDoc.getAllowedValues().length);
 
-                apiParamDoc = queryparameters.get(1);
-                assertEquals("id", apiParamDoc.getName());
-                assertEquals("true", apiParamDoc.getRequired());
-                assertTrue(apiParamDoc.getDefaultValue().isEmpty());
+                paramDoc = queryparameters.get(1);
+                assertEquals("id", paramDoc.getName());
+                assertEquals("true", paramDoc.getRequired());
+                assertTrue(paramDoc.getDefaultValue().isEmpty());
 
-                apiParamDoc = queryparameters.get(2);
-                assertEquals("query", apiParamDoc.getName());
-                assertEquals("true", apiParamDoc.getRequired());
-                assertNull(apiParamDoc.getDefaultValue());
+                paramDoc = queryparameters.get(2);
+                assertEquals("query", paramDoc.getName());
+                assertEquals("true", paramDoc.getRequired());
+                assertNull(paramDoc.getDefaultValue());
 
-                apiParamDoc = apiOperationDoc.getPathParameters().get(0);
-                assertEquals("test", apiParamDoc.getName());
+                paramDoc = apiOperationDoc.getPathParameters().get(0);
+                assertEquals("test", paramDoc.getName());
             }
         }
 

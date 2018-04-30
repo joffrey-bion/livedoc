@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The global documentation of the API, containing free-text pages to help the end user understand the rest of the doc.
  */
-public class ApiGlobalDoc {
+public class GlobalDoc {
 
     private List<GlobalDocPage> pages;
 

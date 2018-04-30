@@ -11,8 +11,8 @@ import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 import org.hildan.livedoc.core.model.doc.Stage;
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.scanners.properties.FieldPropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
@@ -41,8 +41,8 @@ public class LivedocAnnotationTypeDocReaderTest {
         templateProvider = type -> null;
     }
 
-    private ApiTypeDoc buildDoc(Class<?> typeToDocument, TemplateProvider templateProvider) {
-        Optional<ApiTypeDoc> optionalDoc = reader.readTypeDoc(typeToDocument, typeReferenceProvider, templateProvider);
+    private TypeDoc buildDoc(Class<?> typeToDocument, TemplateProvider templateProvider) {
+        Optional<TypeDoc> optionalDoc = reader.readTypeDoc(typeToDocument, typeReferenceProvider, templateProvider);
         assertTrue(optionalDoc.isPresent());
         return optionalDoc.get();
     }
@@ -52,7 +52,6 @@ public class LivedocAnnotationTypeDocReaderTest {
     @ApiStage(Stage.PRE_ALPHA)
     @ApiVersion(since = "1.0", until = "2.12")
     private class TestObject {
-
 
         @ApiTypeProperty(description = "the test name", required = true)
         private String name;
@@ -67,8 +66,8 @@ public class LivedocAnnotationTypeDocReaderTest {
         private Map<String, Integer> map;
 
         @SuppressWarnings("rawtypes")
-        @ApiTypeProperty(
-                description = "an unparametrized list to test https://github.com/fabiomaffioletti/jsondoc/issues/5")
+        @ApiTypeProperty(description = "an unparametrized list to test https://github"
+                + ".com/fabiomaffioletti/jsondoc/issues/5")
         private List unparametrizedList;
 
         @ApiTypeProperty(description = "a parametrized list")
@@ -85,7 +84,8 @@ public class LivedocAnnotationTypeDocReaderTest {
         private long[] longArray;
 
         @ApiTypeProperty(name = "foo_bar",
-                description = "a property to test https://github.com/fabiomaffioletti/jsondoc/pull/31", required = true)
+                description = "a property to test https://github.com/fabiomaffioletti/jsondoc/pull/31",
+                required = true)
         private String fooBar;
 
         @ApiTypeProperty(name = "version", description = "a property to test version since and until", required = true)
@@ -95,9 +95,11 @@ public class LivedocAnnotationTypeDocReaderTest {
         @ApiTypeProperty(name = "test-enum", description = "a test enum")
         private TestEnum testEnum;
 
-        @ApiTypeProperty(name = "test-enum-with-allowed-values", description = "a test enum with allowed values",
+        @ApiTypeProperty(name = "test-enum-with-allowed-values",
+                description = "a test enum with allowed values",
                 allowedValues = {"A", "B", "C"})
         private TestEnum testEnumWithAllowedValues;
+
         @ApiTypeProperty(name = "orderedProperty", order = 1)
         private String orderedProperty;
 
@@ -106,7 +108,7 @@ public class LivedocAnnotationTypeDocReaderTest {
     @Test
     public void testApiObjectDoc() {
         Object mockTemplate = new Object();
-        ApiTypeDoc doc = buildDoc(TestObject.class, type -> mockTemplate);
+        TypeDoc doc = buildDoc(TestObject.class, type -> mockTemplate);
         assertEquals("test-object", doc.getName());
         assertEquals(14, doc.getFields().size());
         assertEquals("1.0", doc.getSupportedVersions().getSince());
@@ -114,7 +116,7 @@ public class LivedocAnnotationTypeDocReaderTest {
         assertEquals(Stage.PRE_ALPHA, doc.getStage());
         assertSame(mockTemplate, doc.getTemplate());
 
-        for (ApiPropertyDoc fieldDoc : doc.getFields()) {
+        for (PropertyDoc fieldDoc : doc.getFields()) {
             if (fieldDoc.getName().equals("wildcardParametrized")) {
                 assertEquals("List<?>", fieldDoc.getType().getOneLineText());
             }
@@ -205,7 +207,7 @@ public class LivedocAnnotationTypeDocReaderTest {
 
     @Test
     public void testEnumObjectDoc() {
-        ApiTypeDoc doc = buildDoc(TestEnum.class, templateProvider);
+        TypeDoc doc = buildDoc(TestEnum.class, templateProvider);
         assertEquals("test-enum", doc.getName());
         assertEquals(0, doc.getFields().size());
         assertEquals(TestEnum.TESTENUM1.name(), doc.getAllowedValues()[0]);
@@ -222,7 +224,7 @@ public class LivedocAnnotationTypeDocReaderTest {
 
     @Test
     public void testNoNameApiObjectDoc() {
-        ApiTypeDoc doc = buildDoc(NoNameApiObject.class, templateProvider);
+        TypeDoc doc = buildDoc(NoNameApiObject.class, templateProvider);
         assertEquals("NoNameApiObject", doc.getName());
         assertEquals("id", doc.getFields().iterator().next().getName());
     }
@@ -239,9 +241,9 @@ public class LivedocAnnotationTypeDocReaderTest {
 
     @Test
     public void testTemplateApiObjectDoc() {
-        ApiTypeDoc doc = buildDoc(TemplateApiObject.class, templateProvider);
+        TypeDoc doc = buildDoc(TemplateApiObject.class, templateProvider);
         assertEquals("TemplateApiObject", doc.getName());
-        Iterator<ApiPropertyDoc> iterator = doc.getFields().iterator();
+        Iterator<PropertyDoc> iterator = doc.getFields().iterator();
         assertEquals("id", iterator.next().getName());
         assertEquals("name", iterator.next().getName());
     }
@@ -251,16 +253,16 @@ public class LivedocAnnotationTypeDocReaderTest {
 
     @Test
     public void testUndefinedStageDoc() {
-        ApiTypeDoc doc = buildDoc(UndefinedStage.class, templateProvider);
+        TypeDoc doc = buildDoc(UndefinedStage.class, templateProvider);
         assertEquals("UndefinedStage", doc.getName());
         assertNull(doc.getStage());
     }
 
     @Test
     public void testApiObjectDocWithHibernateValidator() {
-        ApiTypeDoc doc = buildDoc(HibernateValidatorPojo.class, templateProvider);
-        List<ApiPropertyDoc> fields = doc.getFields();
-        for (ApiPropertyDoc fieldDoc : fields) {
+        TypeDoc doc = buildDoc(HibernateValidatorPojo.class, templateProvider);
+        List<PropertyDoc> fields = doc.getFields();
+        for (PropertyDoc fieldDoc : fields) {
             if (fieldDoc.getName().equals("id")) {
                 Iterator<String> formats = fieldDoc.getFormat().iterator();
                 assertEquals("a not empty id", formats.next());

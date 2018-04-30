@@ -2,8 +2,8 @@ package org.hildan.livedoc.core.readers;
 
 import java.util.Optional;
 
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
@@ -26,11 +26,11 @@ public interface TypeDocReader {
      * @param templateProvider
      *         a {@link TemplateProvider} to generate templates for potentially mentioned types
      *
-     * @return the created {@link ApiTypeDoc}, or an empty optional if this reader cannot build a documentation for the
+     * @return the created {@link TypeDoc}, or an empty optional if this reader cannot build a documentation for the
      * given type
      */
     @NotNull
-    Optional<ApiTypeDoc> buildTypeDocBase(@NotNull Class<?> clazz, @NotNull TypeReferenceProvider typeReferenceProvider,
+    Optional<TypeDoc> buildTypeDocBase(@NotNull Class<?> clazz, @NotNull TypeReferenceProvider typeReferenceProvider,
             @NotNull TemplateProvider templateProvider);
 
     /**
@@ -43,10 +43,10 @@ public interface TypeDocReader {
      * @param typeReferenceProvider
      *         a {@link TypeReferenceProvider} to get {@link LivedocType}s for potentially mentioned types
      *
-     * @return the created {@link ApiPropertyDoc}, or an empty optional if this reader cannot build a documentation for
-     * the given property
+     * @return the created {@link PropertyDoc}, or an empty optional if this reader cannot build a documentation for the
+     * given property
      */
     @NotNull
-    Optional<ApiPropertyDoc> buildPropertyDoc(Property property, ApiTypeDoc parentDoc,
+    Optional<PropertyDoc> buildPropertyDoc(Property property, TypeDoc parentDoc,
             TypeReferenceProvider typeReferenceProvider);
 }

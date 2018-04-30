@@ -2,7 +2,7 @@ package org.hildan.livedoc.core.model.doc.version;
 
 public interface Versioned {
 
-    ApiVersionDoc getSupportedVersions();
+    VersionDoc getSupportedVersions();
 
-    void setSupportedVersions(ApiVersionDoc versions);
+    void setSupportedVersions(VersionDoc versions);
 }

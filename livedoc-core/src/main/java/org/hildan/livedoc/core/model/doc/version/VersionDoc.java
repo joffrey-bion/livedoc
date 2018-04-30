@@ -1,12 +1,12 @@
 package org.hildan.livedoc.core.model.doc.version;
 
-public class ApiVersionDoc {
+public class VersionDoc {
 
     private String since;
 
     private String until;
 
-    public ApiVersionDoc() {
+    public VersionDoc() {
         this.since = null;
         this.until = null;
     }

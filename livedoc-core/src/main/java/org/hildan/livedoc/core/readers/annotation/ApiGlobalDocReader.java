@@ -17,7 +17,7 @@ import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
 import org.hildan.livedoc.core.annotations.global.PageGenerator;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
-import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.GlobalDocPage;
 import org.hildan.livedoc.core.templating.FreeMarkerUtils;
 import org.hildan.livedoc.core.templating.GlobalTemplateData;
@@ -43,10 +43,10 @@ class ApiGlobalDocReader {
     }
 
     @NotNull
-    static ApiGlobalDoc readDefault(GlobalTemplateData templateData) {
-        ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
-        apiGlobalDoc.setPages(createDefaultPages(templateData));
-        return apiGlobalDoc;
+    static GlobalDoc readDefault(GlobalTemplateData templateData) {
+        GlobalDoc globalDoc = new GlobalDoc();
+        globalDoc.setPages(createDefaultPages(templateData));
+        return globalDoc;
     }
 
     private static List<GlobalDocPage> createDefaultPages(GlobalTemplateData templateData) {
@@ -68,12 +68,12 @@ class ApiGlobalDocReader {
     }
 
     @NotNull
-    static ApiGlobalDoc read(@NotNull LivedocConfiguration configuration, @NotNull GlobalTemplateData templateData,
+    static GlobalDoc read(@NotNull LivedocConfiguration configuration, @NotNull GlobalTemplateData templateData,
             @NotNull Class<?> globalDocClass) {
         ApiGlobalDocReader reader = new ApiGlobalDocReader(configuration, globalDocClass, templateData);
-        ApiGlobalDoc apiGlobalDoc = new ApiGlobalDoc();
-        apiGlobalDoc.setPages(reader.readPages(globalDocClass));
-        return apiGlobalDoc;
+        GlobalDoc globalDoc = new GlobalDoc();
+        globalDoc.setPages(reader.readPages(globalDocClass));
+        return globalDoc;
     }
 
     @NotNull

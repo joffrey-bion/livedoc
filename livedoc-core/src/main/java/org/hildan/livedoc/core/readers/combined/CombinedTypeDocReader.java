@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.readers.TypeDocReader;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
@@ -37,14 +37,14 @@ public class CombinedTypeDocReader implements TypeDocReader {
 
     @NotNull
     @Override
-    public Optional<ApiTypeDoc> buildTypeDocBase(@NotNull Class<?> clazz,
+    public Optional<TypeDoc> buildTypeDocBase(@NotNull Class<?> clazz,
             @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
         return readFromAllReadersAndMerge(r -> r.buildTypeDocBase(clazz, typeReferenceProvider, templateProvider));
     }
 
     @NotNull
     @Override
-    public Optional<ApiPropertyDoc> buildPropertyDoc(Property property, ApiTypeDoc parentDoc,
+    public Optional<PropertyDoc> buildPropertyDoc(Property property, TypeDoc parentDoc,
             TypeReferenceProvider typeReferenceProvider) {
         return readFromAllReadersAndMerge(r -> r.buildPropertyDoc(property, parentDoc, typeReferenceProvider));
     }

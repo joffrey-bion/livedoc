@@ -10,12 +10,12 @@ import java.util.Set;
 
 import org.hildan.livedoc.core.annotations.ApiHeader;
 import org.hildan.livedoc.core.annotations.ApiHeaders;
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.headers.HeaderDoc;
 
 public class ApiHeaderDocReader {
 
-    public static List<ApiHeaderDoc> read(Method method) {
-        Set<ApiHeaderDoc> docs = new LinkedHashSet<>();
+    public static List<HeaderDoc> read(Method method) {
+        Set<HeaderDoc> docs = new LinkedHashSet<>();
 
         ApiHeaders typeAnnotation = method.getDeclaringClass().getAnnotation(ApiHeaders.class);
         if (typeAnnotation != null) {
@@ -30,11 +30,11 @@ public class ApiHeaderDocReader {
         return new ArrayList<>(docs);
     }
 
-    private static Set<ApiHeaderDoc> extractHeaders(ApiHeaders annotation) {
-        Set<ApiHeaderDoc> headers = new HashSet<>();
+    private static Set<HeaderDoc> extractHeaders(ApiHeaders annotation) {
+        Set<HeaderDoc> headers = new HashSet<>();
         for (ApiHeader header : annotation.headers()) {
             List<String> allowedValues = Arrays.asList(header.allowedValues());
-            ApiHeaderDoc headerDoc = ApiHeaderDoc.oneOf(header.name(), header.description(), allowedValues);
+            HeaderDoc headerDoc = HeaderDoc.oneOf(header.name(), header.description(), allowedValues);
             headers.add(headerDoc);
         }
         return headers;

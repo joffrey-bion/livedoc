@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.readers.TypeDocReader;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
@@ -20,9 +20,9 @@ public class JavadocTypeDocReader implements TypeDocReader {
 
     @NotNull
     @Override
-    public Optional<ApiTypeDoc> buildTypeDocBase(@NotNull Class<?> clazz,
+    public Optional<TypeDoc> buildTypeDocBase(@NotNull Class<?> clazz,
             @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
-        ApiTypeDoc doc = new ApiTypeDoc(clazz);
+        TypeDoc doc = new TypeDoc(clazz);
         doc.setName(clazz.getSimpleName());
         doc.setDescription(JavadocHelper.getJavadocDescription(clazz).orElse(null));
         return Optional.of(doc);
@@ -30,9 +30,9 @@ public class JavadocTypeDocReader implements TypeDocReader {
 
     @NotNull
     @Override
-    public Optional<ApiPropertyDoc> buildPropertyDoc(Property property, ApiTypeDoc parentDoc,
+    public Optional<PropertyDoc> buildPropertyDoc(Property property, TypeDoc parentDoc,
             TypeReferenceProvider typeReferenceProvider) {
-        ApiPropertyDoc doc = new ApiPropertyDoc();
+        PropertyDoc doc = new PropertyDoc();
         doc.setName(property.getName());
         doc.setDescription(getPropertyDescription(property));
         return Optional.of(doc);

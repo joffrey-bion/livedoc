@@ -29,7 +29,8 @@ public class ApiOperationDocReader {
         apiOperationDoc.setHeaders(ApiHeaderDocReader.read(method));
         apiOperationDoc.setPathParameters(ApiPathParamDocReader.read(method, typeReferenceProvider));
         apiOperationDoc.setQueryParameters(ApiQueryParamDocReader.read(method, typeReferenceProvider));
-        apiOperationDoc.setRequestBody(ApiRequestBodyDocReader.read(method, typeReferenceProvider, templateProvider));
+        apiOperationDoc.setRequestBody(
+                ApiRequestBodyTypeDocReader.read(method, typeReferenceProvider, templateProvider));
         apiOperationDoc.setResponseBodyType(readResponseBodyType(method, typeReferenceProvider));
         apiOperationDoc.setStage(ApiStageReader.read(method, parentApiDoc.getStage()));
 

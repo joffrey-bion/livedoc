@@ -6,10 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
-import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
+import org.hildan.livedoc.core.model.doc.auth.AuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
-import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
+import org.hildan.livedoc.core.model.doc.headers.HeaderDoc;
+import org.hildan.livedoc.core.model.doc.version.VersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.combined.DocMerger;
@@ -45,13 +45,13 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
 
     private List<ApiVerb> verbs;
 
-    private List<ApiParamDoc> pathParameters;
+    private List<ParamDoc> pathParameters;
 
-    private List<ApiParamDoc> queryParameters;
+    private List<ParamDoc> queryParameters;
 
-    private List<ApiHeaderDoc> headers;
+    private List<HeaderDoc> headers;
 
-    private ApiRequestBodyDoc requestBody;
+    private RequestBodyDoc requestBody;
 
     private LivedocType responseBodyType;
 
@@ -64,9 +64,9 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
 
     private List<ApiErrorDoc> apiErrors;
 
-    private ApiAuthDoc auth;
+    private AuthDoc auth;
 
-    private ApiVersionDoc supportedVersions;
+    private VersionDoc supportedVersions;
 
     private Stage stage;
 
@@ -152,11 +152,11 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         Collections.sort(this.verbs);
     }
 
-    public List<ApiHeaderDoc> getHeaders() {
+    public List<HeaderDoc> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(List<ApiHeaderDoc> headers) {
+    public void setHeaders(List<HeaderDoc> headers) {
         this.headers = headers;
     }
 
@@ -176,19 +176,19 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.consumes = consumes;
     }
 
-    public List<ApiParamDoc> getPathParameters() {
+    public List<ParamDoc> getPathParameters() {
         return pathParameters;
     }
 
-    public void setPathParameters(List<ApiParamDoc> pathParameters) {
+    public void setPathParameters(List<ParamDoc> pathParameters) {
         this.pathParameters = pathParameters;
     }
 
-    public List<ApiParamDoc> getQueryParameters() {
+    public List<ParamDoc> getQueryParameters() {
         return queryParameters;
     }
 
-    public void setQueryParameters(List<ApiParamDoc> queryParameters) {
+    public void setQueryParameters(List<ParamDoc> queryParameters) {
         this.queryParameters = queryParameters;
     }
 
@@ -200,11 +200,11 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         this.responseBodyType = responseBodyType;
     }
 
-    public ApiRequestBodyDoc getRequestBody() {
+    public RequestBodyDoc getRequestBody() {
         return requestBody;
     }
 
-    public void setRequestBody(ApiRequestBodyDoc requestBody) {
+    public void setRequestBody(RequestBodyDoc requestBody) {
         this.requestBody = requestBody;
     }
 
@@ -217,22 +217,22 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     }
 
     @Override
-    public ApiVersionDoc getSupportedVersions() {
+    public VersionDoc getSupportedVersions() {
         return supportedVersions;
     }
 
     @Override
-    public void setSupportedVersions(ApiVersionDoc supportedVersions) {
+    public void setSupportedVersions(VersionDoc supportedVersions) {
         this.supportedVersions = supportedVersions;
     }
 
     @Override
-    public ApiAuthDoc getAuth() {
+    public AuthDoc getAuth() {
         return auth;
     }
 
     @Override
-    public void setAuth(ApiAuthDoc auth) {
+    public void setAuth(AuthDoc auth) {
         this.auth = auth;
     }
 
@@ -258,9 +258,9 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     public ApiOperationDoc merge(ApiOperationDoc override, DocMerger merger) {
         ApiOperationDoc doc = merger.mergeProperties(this, override, new ApiOperationDoc());
         // For paths, consumes, produces, and errors, we want the last non empty list to win, no merge
-        doc.pathParameters = merger.mergeAndSort(this.pathParameters, override.pathParameters, ApiParamDoc::getName);
-        doc.queryParameters = merger.mergeAndSort(this.queryParameters, override.queryParameters, ApiParamDoc::getName);
-        doc.headers = merger.mergeList(this.headers, override.headers, ApiHeaderDoc::getName);
+        doc.pathParameters = merger.mergeAndSort(this.pathParameters, override.pathParameters, ParamDoc::getName);
+        doc.queryParameters = merger.mergeAndSort(this.queryParameters, override.queryParameters, ParamDoc::getName);
+        doc.headers = merger.mergeList(this.headers, override.headers, HeaderDoc::getName);
         return doc;
     }
 

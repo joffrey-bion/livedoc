@@ -6,7 +6,7 @@ import java.util.List;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.doc.ParamDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
@@ -52,11 +52,11 @@ public class SpringQueryParamBuilderTest {
             }
             if (apiOperationDoc.getPaths().contains("/param-three")) {
                 assertEquals(2, apiOperationDoc.getQueryParameters().size());
-                Iterator<ApiParamDoc> iterator = apiOperationDoc.getQueryParameters().iterator();
-                ApiParamDoc param = iterator.next();
+                Iterator<ParamDoc> iterator = apiOperationDoc.getQueryParameters().iterator();
+                ParamDoc param = iterator.next();
                 assertEquals("param", param.getName());
                 assertEquals("value", param.getAllowedValues()[0]);
-                ApiParamDoc param2 = iterator.next();
+                ParamDoc param2 = iterator.next();
                 assertEquals("param2", param2.getName());
                 assertEquals("value2", param2.getAllowedValues()[0]);
             }
@@ -116,7 +116,7 @@ public class SpringQueryParamBuilderTest {
         assertEquals("SpringController3", apiDoc.getName());
         assertEquals(3, apiDoc.getOperations().size());
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
-            List<ApiParamDoc> queryParameters = apiOperationDoc.getQueryParameters();
+            List<ParamDoc> queryParameters = apiOperationDoc.getQueryParameters();
             if (apiOperationDoc.getPaths().contains("/param-one")) {
                 assertEquals(2, queryParameters.size());
                 checkNameParam(queryParameters.get(0));
@@ -135,21 +135,21 @@ public class SpringQueryParamBuilderTest {
         }
     }
 
-    private static void checkParam(ApiParamDoc param) {
+    private static void checkParam(ParamDoc param) {
         assertEquals("param", param.getName());
         assertEquals("true", param.getRequired());
         assertEquals("String", param.getType().getOneLineText());
         assertNull(param.getDefaultValue());
     }
 
-    private static void checkNameParam(ApiParamDoc queryParam) {
+    private static void checkNameParam(ParamDoc queryParam) {
         assertEquals("name", queryParam.getName());
         assertEquals("true", queryParam.getRequired());
         assertEquals("String", queryParam.getType().getOneLineText());
         assertNull(queryParam.getDefaultValue());
     }
 
-    private static void checkOverriddenNameParam(ApiParamDoc queryParam) {
+    private static void checkOverriddenNameParam(ParamDoc queryParam) {
         assertEquals("otherName", queryParam.getName());
         assertEquals("false", queryParam.getRequired());
         assertEquals("String", queryParam.getType().getOneLineText());
@@ -179,7 +179,7 @@ public class SpringQueryParamBuilderTest {
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
             if (apiOperationDoc.getPaths().contains("/")) {
                 assertEquals(1, apiOperationDoc.getQueryParameters().size());
-                ApiParamDoc param = apiOperationDoc.getQueryParameters().iterator().next();
+                ParamDoc param = apiOperationDoc.getQueryParameters().iterator().next();
                 assertEquals("name", param.getName());
             }
             if (apiOperationDoc.getPaths().contains("/two")) {
@@ -208,7 +208,7 @@ public class SpringQueryParamBuilderTest {
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
             if (apiOperationDoc.getPaths().contains("/")) {
                 assertEquals(1, apiOperationDoc.getQueryParameters().size());
-                ApiParamDoc param = apiOperationDoc.getQueryParameters().iterator().next();
+                ParamDoc param = apiOperationDoc.getQueryParameters().iterator().next();
                 assertEquals("modelAttributePojo", param.getName());
                 assertEquals("ModelAttributePojo", param.getType().getOneLineText());
             }

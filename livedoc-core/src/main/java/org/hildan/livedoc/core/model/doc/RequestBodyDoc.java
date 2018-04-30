@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.hildan.livedoc.core.model.types.LivedocType;
 
-public class ApiRequestBodyDoc {
+public class RequestBodyDoc {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -12,7 +12,7 @@ public class ApiRequestBodyDoc {
 
     private final Object template;
 
-    public ApiRequestBodyDoc(LivedocType type, Object template) {
+    public RequestBodyDoc(LivedocType type, Object template) {
         this.type = type;
         this.template = template;
     }

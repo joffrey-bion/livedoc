@@ -3,9 +3,9 @@ package org.hildan.livedoc.core.model.doc;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
+import org.hildan.livedoc.core.model.doc.auth.AuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
-import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
+import org.hildan.livedoc.core.model.doc.version.VersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.readers.combined.DocMerger;
@@ -28,9 +28,9 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
 
     private Stage stage;
 
-    private ApiVersionDoc supportedVersions;
+    private VersionDoc supportedVersions;
 
-    private ApiAuthDoc auth;
+    private AuthDoc auth;
 
     public ApiDoc() {
         this.name = null;
@@ -84,22 +84,22 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
     }
 
     @Override
-    public ApiVersionDoc getSupportedVersions() {
+    public VersionDoc getSupportedVersions() {
         return supportedVersions;
     }
 
     @Override
-    public void setSupportedVersions(ApiVersionDoc supportedVersions) {
+    public void setSupportedVersions(VersionDoc supportedVersions) {
         this.supportedVersions = supportedVersions;
     }
 
     @Override
-    public ApiAuthDoc getAuth() {
+    public AuthDoc getAuth() {
         return auth;
     }
 
     @Override
-    public void setAuth(ApiAuthDoc auth) {
+    public void setAuth(AuthDoc auth) {
         this.auth = auth;
     }
 

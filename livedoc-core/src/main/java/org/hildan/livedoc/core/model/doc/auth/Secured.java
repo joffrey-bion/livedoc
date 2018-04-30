@@ -2,7 +2,7 @@ package org.hildan.livedoc.core.model.doc.auth;
 
 public interface Secured {
 
-    ApiAuthDoc getAuth();
+    AuthDoc getAuth();
 
-    void setAuth(ApiAuthDoc auth);
+    void setAuth(AuthDoc auth);
 }

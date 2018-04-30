@@ -2,9 +2,9 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.List;
 
-import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
+import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 
 public class Livedoc {
@@ -15,11 +15,11 @@ public class Livedoc {
 
     private List<Group<ApiDoc>> apis;
 
-    private List<Group<ApiTypeDoc>> types;
+    private List<Group<TypeDoc>> types;
 
-    private List<Group<ApiFlowDoc>> flows;
+    private List<Group<FlowDoc>> flows;
 
-    private ApiGlobalDoc global;
+    private GlobalDoc global;
 
     private boolean playgroundEnabled;
 
@@ -52,19 +52,19 @@ public class Livedoc {
         this.apis = apis;
     }
 
-    public List<Group<ApiTypeDoc>> getTypes() {
+    public List<Group<TypeDoc>> getTypes() {
         return types;
     }
 
-    public void setTypes(List<Group<ApiTypeDoc>> types) {
+    public void setTypes(List<Group<TypeDoc>> types) {
         this.types = types;
     }
 
-    public List<Group<ApiFlowDoc>> getFlows() {
+    public List<Group<FlowDoc>> getFlows() {
         return flows;
     }
 
-    public void setFlows(List<Group<ApiFlowDoc>> flows) {
+    public void setFlows(List<Group<FlowDoc>> flows) {
         this.flows = flows;
     }
 
@@ -84,11 +84,11 @@ public class Livedoc {
         this.displayMethodAs = displayMethodAs;
     }
 
-    public ApiGlobalDoc getGlobal() {
+    public GlobalDoc getGlobal() {
         return global;
     }
 
-    public void setGlobal(ApiGlobalDoc global) {
+    public void setGlobal(GlobalDoc global) {
         this.global = global;
     }
 

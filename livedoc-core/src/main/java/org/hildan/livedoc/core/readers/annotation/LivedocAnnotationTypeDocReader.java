@@ -4,8 +4,8 @@ import java.lang.reflect.Modifier;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.types.ApiType;
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.readers.TypeDocReader;
 import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.hildan.livedoc.core.scanners.properties.Property;
@@ -23,41 +23,41 @@ public class LivedocAnnotationTypeDocReader implements TypeDocReader {
 
     @NotNull
     @Override
-    public Optional<ApiTypeDoc> buildTypeDocBase(@NotNull Class<?> clazz,
+    public Optional<TypeDoc> buildTypeDocBase(@NotNull Class<?> clazz,
             @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
         return Optional.of(read(clazz, templateProvider));
     }
 
     @NotNull
     @Override
-    public Optional<ApiPropertyDoc> buildPropertyDoc(Property property, ApiTypeDoc parentDoc,
+    public Optional<PropertyDoc> buildPropertyDoc(Property property, TypeDoc parentDoc,
             TypeReferenceProvider typeReferenceProvider) {
-        return Optional.of(ApiPropertyDocReader.read(property, parentDoc, typeReferenceProvider));
+        return Optional.of(ApiTypePropertyDocReader.read(property, parentDoc, typeReferenceProvider));
     }
 
-    public ApiTypeDoc read(Class<?> clazz, TemplateProvider templateProvider) {
+    public TypeDoc read(Class<?> clazz, TemplateProvider templateProvider) {
         String javadoc = JavadocHelper.getJavadocDescription(clazz).orElse(null);
-        ApiTypeDoc apiTypeDoc = new ApiTypeDoc(clazz);
-        apiTypeDoc.setName(clazz.getSimpleName());
-        apiTypeDoc.setDescription(javadoc);
-        apiTypeDoc.setSupportedVersions(ApiVersionDocReader.read(clazz));
-        apiTypeDoc.setShow(Modifier.isAbstract(clazz.getModifiers()));
-        apiTypeDoc.setStage(ApiStageReader.read(clazz));
+        TypeDoc typeDoc = new TypeDoc(clazz);
+        typeDoc.setName(clazz.getSimpleName());
+        typeDoc.setDescription(javadoc);
+        typeDoc.setSupportedVersions(ApiVersionDocReader.read(clazz));
+        typeDoc.setShow(Modifier.isAbstract(clazz.getModifiers()));
+        typeDoc.setStage(ApiStageReader.read(clazz));
 
         ApiType apiType = clazz.getAnnotation(ApiType.class);
         if (apiType != null) {
-            apiTypeDoc.setName(BeanUtils.maybeOverridden(nullifyIfEmpty(apiType.name()), clazz.getSimpleName()));
-            apiTypeDoc.setDescription(BeanUtils.maybeOverridden(nullifyIfEmpty(apiType.description()), javadoc));
-            apiTypeDoc.setGroup(apiType.group());
-            apiTypeDoc.setShow(apiType.show());
+            typeDoc.setName(BeanUtils.maybeOverridden(nullifyIfEmpty(apiType.name()), clazz.getSimpleName()));
+            typeDoc.setDescription(BeanUtils.maybeOverridden(nullifyIfEmpty(apiType.description()), javadoc));
+            typeDoc.setGroup(apiType.group());
+            typeDoc.setShow(apiType.show());
         }
 
         if (clazz.isEnum()) {
-            apiTypeDoc.setAllowedValues(BeanUtils.enumConstantsToStringArray(clazz.getEnumConstants()));
+            typeDoc.setAllowedValues(BeanUtils.enumConstantsToStringArray(clazz.getEnumConstants()));
         }
 
-        apiTypeDoc.setTemplate(templateProvider.getTemplate(clazz));
+        typeDoc.setTemplate(templateProvider.getTemplate(clazz));
 
-        return apiTypeDoc;
+        return typeDoc;
     }
 }

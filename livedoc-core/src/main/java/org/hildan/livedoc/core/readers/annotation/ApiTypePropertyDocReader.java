@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
-import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
+import org.hildan.livedoc.core.model.doc.version.VersionDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -16,11 +16,10 @@ import org.hildan.livedoc.core.util.HibernateValidationProcessor;
 
 import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
-public class ApiPropertyDocReader {
+public class ApiTypePropertyDocReader {
 
-    public static ApiPropertyDoc read(Property property, ApiTypeDoc parentDoc,
-            TypeReferenceProvider typeReferenceProvider) {
-        ApiPropertyDoc doc = new ApiPropertyDoc();
+    public static PropertyDoc read(Property property, TypeDoc parentDoc, TypeReferenceProvider typeReferenceProvider) {
+        PropertyDoc doc = new PropertyDoc();
         doc.setName(property.getName());
         doc.setType(getLivedocType(property, typeReferenceProvider));
         // FIXME maybe DefaultDocAnnotationScanner.UNDEFINED.toUpperCase() when not set
@@ -43,7 +42,7 @@ public class ApiPropertyDocReader {
         return doc;
     }
 
-    private static void overrideFromMember(ApiPropertyDoc doc, AnnotatedElement annotatedElement) {
+    private static void overrideFromMember(PropertyDoc doc, AnnotatedElement annotatedElement) {
         ApiTypeProperty annotation = annotatedElement.getAnnotation(ApiTypeProperty.class);
         if (annotation != null) {
             overrideFromAnnotation(doc, annotation);
@@ -51,7 +50,7 @@ public class ApiPropertyDocReader {
         HibernateValidationProcessor.addConstraintMessages(annotatedElement, doc);
     }
 
-    private static void overrideFromAnnotation(ApiPropertyDoc doc, ApiTypeProperty annotation) {
+    private static void overrideFromAnnotation(PropertyDoc doc, ApiTypeProperty annotation) {
         doc.setName(BeanUtils.maybeOverridden(nullifyIfEmpty(annotation.name()), doc.getName()));
         doc.setDescription(nullifyIfEmpty(annotation.description()));
 
@@ -82,8 +81,8 @@ public class ApiPropertyDocReader {
         return typeReferenceProvider.getReference(property.getGenericType());
     }
 
-    private static ApiVersionDoc getVersionDoc(Property property, ApiTypeDoc parentDoc) {
-        ApiVersionDoc versionDoc = parentDoc.getSupportedVersions();
+    private static VersionDoc getVersionDoc(Property property, TypeDoc parentDoc) {
+        VersionDoc versionDoc = parentDoc.getSupportedVersions();
         Field field = property.getField();
         if (field != null) {
             versionDoc = ApiVersionDocReader.read(field, versionDoc);

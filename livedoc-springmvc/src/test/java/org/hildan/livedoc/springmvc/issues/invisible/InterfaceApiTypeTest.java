@@ -9,7 +9,7 @@ import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Test;
@@ -25,10 +25,10 @@ public class InterfaceApiTypeTest {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(config, null);
         Livedoc livedoc = builder.read(new ApiMetaData());
 
-        List<Group<ApiTypeDoc>> typeGroups = livedoc.getTypes();
+        List<Group<TypeDoc>> typeGroups = livedoc.getTypes();
         assertEquals(1, typeGroups.size());
 
-        Group<ApiTypeDoc> typeGroup = typeGroups.get(0);
+        Group<TypeDoc> typeGroup = typeGroups.get(0);
         assertEquals(2, typeGroup.getElements().size());
 
         List<Group<ApiDoc>> apiGroups = livedoc.getApis();

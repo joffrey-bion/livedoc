@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 
-public class ApiFlowStepDoc {
+public class FlowStepDoc {
 
     private static final String ERROR_MISSING_METHOD_ID = "No method found with id: %s";
 
@@ -19,12 +19,12 @@ public class ApiFlowStepDoc {
 
     private ApiOperationDoc apiOperationDoc;
 
-    static ApiFlowStepDoc buildFromAnnotation(ApiFlowStep annotation,
+    static FlowStepDoc buildFromAnnotation(ApiFlowStep annotation,
             Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
-        ApiFlowStepDoc apiFlowStepDoc = new ApiFlowStepDoc();
-        apiFlowStepDoc.setApiOperationId(annotation.apiOperationId());
-        apiFlowStepDoc.setApiOperationDoc(getApiOperationDoc(annotation, apiOperationDocsById));
-        return apiFlowStepDoc;
+        FlowStepDoc flowStepDoc = new FlowStepDoc();
+        flowStepDoc.setApiOperationId(annotation.apiOperationId());
+        flowStepDoc.setApiOperationDoc(getApiOperationDoc(annotation, apiOperationDocsById));
+        return flowStepDoc;
     }
 
     private static ApiOperationDoc getApiOperationDoc(ApiFlowStep annotation,

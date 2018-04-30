@@ -2,11 +2,11 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.UUID;
 
+import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.combined.DocMerger;
 import org.hildan.livedoc.core.readers.combined.Mergeable;
-import org.hildan.livedoc.core.model.types.LivedocType;
 
-public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc>, Mergeable<ApiParamDoc> {
+public class ParamDoc extends AbstractDoc implements Comparable<ParamDoc>, Mergeable<ParamDoc> {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -24,10 +24,10 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc>,
 
     private String defaultValue;
 
-    private ApiParamDoc() {
+    private ParamDoc() {
     }
 
-    public ApiParamDoc(String name, String description, LivedocType type, String required, String[] allowedValues,
+    public ParamDoc(String name, String description, LivedocType type, String required, String[] allowedValues,
             String format, String defaultValue) {
         super();
         this.name = name;
@@ -92,8 +92,8 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc>,
     }
 
     @Override
-    public ApiParamDoc merge(ApiParamDoc override, DocMerger merger) {
-        return merger.mergeProperties(this, override, new ApiParamDoc());
+    public ParamDoc merge(ParamDoc override, DocMerger merger) {
+        return merger.mergeProperties(this, override, new ParamDoc());
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc>,
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ApiParamDoc other = (ApiParamDoc) obj;
+        ParamDoc other = (ParamDoc) obj;
         if (name == null) {
             if (other.name != null) {
                 return false;
@@ -127,7 +127,7 @@ public class ApiParamDoc extends AbstractDoc implements Comparable<ApiParamDoc>,
     }
 
     @Override
-    public int compareTo(ApiParamDoc o) {
+    public int compareTo(ParamDoc o) {
         return this.name.compareTo(o.getName());
     }
 

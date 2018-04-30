@@ -10,15 +10,14 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.meta.LivedocMetaDataReader;
-import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.LivedocMetaData;
-import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
+import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.DocReader;
@@ -28,6 +27,7 @@ import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.TypeScanner;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
+import org.hildan.livedoc.core.templating.GlobalTemplateData;
 
 /**
  * Builds a {@link Livedoc} object representing an API documentation by reading java classes and their annotations.
@@ -109,11 +109,11 @@ public class LivedocReader {
 
         Collection<ApiDoc> apiDocs = masterApiDocReader.readApiDocs(typeReferenceProvider, templateProvider);
         Set<Class<?>> types = getClassesToDocument();
-        List<ApiTypeDoc> typeDocs = masterTypeDocReader.readApiTypeDocs(types, typeReferenceProvider, templateProvider);
-        Set<ApiFlowDoc> flowDocs = globalDocReader.getApiFlowDocs(getAllApiOperationDocsById(apiDocs));
+        List<TypeDoc> typeDocs = masterTypeDocReader.readTypeDocs(types, typeReferenceProvider, templateProvider);
+        Set<FlowDoc> flowDocs = globalDocReader.getApiFlowDocs(getAllApiOperationDocsById(apiDocs));
 
         GlobalTemplateData templateData = new GlobalTemplateData(apiInfo, livedocInfo, configuration.getPackages());
-        ApiGlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(configuration, templateData);
+        GlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(configuration, templateData);
 
         Livedoc livedoc = new Livedoc(livedocInfo, apiInfo);
         livedoc.setPlaygroundEnabled(configuration.isPlaygroundEnabled());

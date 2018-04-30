@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
-import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
+import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
+import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
+import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
 
     @NotNull
     @Override
-    public ApiGlobalDoc getApiGlobalDoc(LivedocConfiguration configuration, GlobalTemplateData globalTemplateData) {
+    public GlobalDoc getApiGlobalDoc(LivedocConfiguration configuration, GlobalTemplateData globalTemplateData) {
         Class<?> globalDocClass = findOneClass(ApiGlobalPage.class);
         if (globalDocClass == null) {
             globalDocClass = findOneClass(ApiGlobalPages.class);
@@ -66,7 +66,7 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
 
     @NotNull
     @Override
-    public Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
+    public Set<FlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
         Collection<Class<?>> classesWithFlows = annotatedTypesFinder.apply(ApiFlowSet.class);
         return classesWithFlows.stream()
                                .map(Class::getMethods)
@@ -77,8 +77,7 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
                                .collect(Collectors.toCollection(TreeSet::new));
     }
 
-    private ApiFlowDoc getApiFlowDoc(Map<String, ? extends ApiOperationDoc> apiOperationDocsById,
-            ApiFlow flowAnnotation) {
-        return ApiFlowDoc.buildFromAnnotation(flowAnnotation, apiOperationDocsById);
+    private FlowDoc getApiFlowDoc(Map<String, ? extends ApiOperationDoc> apiOperationDocsById, ApiFlow flowAnnotation) {
+        return FlowDoc.buildFromAnnotation(flowAnnotation, apiOperationDocsById);
     }
 }

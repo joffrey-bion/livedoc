@@ -7,13 +7,13 @@ import java.util.UUID;
 
 import org.hildan.livedoc.core.annotations.flow.ApiFlow;
 import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
-import org.hildan.livedoc.core.readers.combined.SpecialDefaultStringValue;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.groups.Groupable;
+import org.hildan.livedoc.core.readers.combined.SpecialDefaultStringValue;
 
 import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfEmpty;
 
-public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
+public class FlowDoc implements Comparable<FlowDoc>, Groupable {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -23,28 +23,28 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
 
     private List<String> preconditions = new ArrayList<>();
 
-    private List<ApiFlowStepDoc> steps = new ArrayList<>();
+    private List<FlowStepDoc> steps = new ArrayList<>();
 
     private List<ApiOperationDoc> operations = new ArrayList<>();
 
     @SpecialDefaultStringValue("")
     private String group = "";
 
-    public static ApiFlowDoc buildFromAnnotation(ApiFlow annotation,
+    public static FlowDoc buildFromAnnotation(ApiFlow annotation,
             Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
-        ApiFlowDoc apiFlowDoc = new ApiFlowDoc();
-        apiFlowDoc.setName(annotation.name());
-        apiFlowDoc.setDescription(nullifyIfEmpty(annotation.description()));
-        apiFlowDoc.setGroup(annotation.group());
+        FlowDoc flowDoc = new FlowDoc();
+        flowDoc.setName(annotation.name());
+        flowDoc.setDescription(nullifyIfEmpty(annotation.description()));
+        flowDoc.setGroup(annotation.group());
         for (String precondition : annotation.preconditions()) {
-            apiFlowDoc.addPrecondition(precondition);
+            flowDoc.addPrecondition(precondition);
         }
         for (ApiFlowStep apiFlowStep : annotation.steps()) {
-            ApiFlowStepDoc apiFlowStepDoc = ApiFlowStepDoc.buildFromAnnotation(apiFlowStep, apiOperationDocsById);
-            apiFlowDoc.addStep(apiFlowStepDoc);
-            apiFlowDoc.addMethod(apiFlowStepDoc.getApiOperationDoc());
+            FlowStepDoc flowStepDoc = FlowStepDoc.buildFromAnnotation(apiFlowStep, apiOperationDocsById);
+            flowDoc.addStep(flowStepDoc);
+            flowDoc.addMethod(flowStepDoc.getApiOperationDoc());
         }
-        return apiFlowDoc;
+        return flowDoc;
     }
 
     public String getName() {
@@ -72,15 +72,15 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
         this.group = group;
     }
 
-    public void addStep(ApiFlowStepDoc apiFlowStepDoc) {
-        this.steps.add(apiFlowStepDoc);
+    public void addStep(FlowStepDoc flowStepDoc) {
+        this.steps.add(flowStepDoc);
     }
 
-    public List<ApiFlowStepDoc> getSteps() {
+    public List<FlowStepDoc> getSteps() {
         return steps;
     }
 
-    public void setSteps(List<ApiFlowStepDoc> steps) {
+    public void setSteps(List<FlowStepDoc> steps) {
         this.steps = steps;
     }
 
@@ -109,7 +109,7 @@ public class ApiFlowDoc implements Comparable<ApiFlowDoc>, Groupable {
     }
 
     @Override
-    public int compareTo(ApiFlowDoc o) {
+    public int compareTo(FlowDoc o) {
         return name.compareTo(o.getName());
     }
 }

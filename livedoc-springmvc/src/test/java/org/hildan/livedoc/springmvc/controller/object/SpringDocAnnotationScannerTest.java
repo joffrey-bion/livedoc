@@ -7,7 +7,7 @@ import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
 import org.junit.Test;
@@ -22,8 +22,8 @@ public class SpringDocAnnotationScannerTest {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(config, null);
         Livedoc doc = builder.read(new ApiMetaData());
 
-        List<Group<ApiTypeDoc>> typeGroups = doc.getTypes();
-        for (Group<ApiTypeDoc> types : typeGroups) {
+        List<Group<TypeDoc>> typeGroups = doc.getTypes();
+        for (Group<TypeDoc> types : typeGroups) {
             assertContainsDoc(types, "NestedObject1");
         }
     }
@@ -34,19 +34,19 @@ public class SpringDocAnnotationScannerTest {
         LivedocReader builder = SpringLivedocReaderFactory.getReader(config, null);
         Livedoc doc = builder.read(new ApiMetaData());
 
-        List<Group<ApiTypeDoc>> typeGroups = doc.getTypes();
-        for (Group<ApiTypeDoc> types : typeGroups) {
+        List<Group<TypeDoc>> typeGroups = doc.getTypes();
+        for (Group<TypeDoc> types : typeGroups) {
             assertContainsDoc(types, "NestedObject2");
             assertContainsDoc(types, "NestedObject3");
         }
     }
 
-    private void assertContainsDoc(Group<ApiTypeDoc> typesGroup, String name) {
-        for (ApiTypeDoc apiTypeDoc : typesGroup.getElements()) {
-            if (apiTypeDoc.getName().equals(name)) {
+    private void assertContainsDoc(Group<TypeDoc> typesGroup, String name) {
+        for (TypeDoc typeDoc : typesGroup.getElements()) {
+            if (typeDoc.getName().equals(name)) {
                 return;
             }
         }
-        fail("Could not find ApiTypeDoc with name " + name);
+        fail("Could not find TypeDoc with name " + name);
     }
 }

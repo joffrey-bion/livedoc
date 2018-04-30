@@ -15,8 +15,8 @@ import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.junit.Test;
 
@@ -61,34 +61,34 @@ public class LivedocReaderTest {
     }
 
     private static void checkObjects(Livedoc livedoc) {
-        List<Group<ApiTypeDoc>> typesGroups = livedoc.getTypes();
+        List<Group<TypeDoc>> typesGroups = livedoc.getTypes();
         assertEquals(2, typesGroups.size());
 
-        Group<ApiTypeDoc> anonymousGroup = typesGroups.get(0);
+        Group<TypeDoc> anonymousGroup = typesGroups.get(0);
         assertNotNull(anonymousGroup);
         assertEquals("", anonymousGroup.getGroupName());
 
-        List<ApiTypeDoc> anonymousGroupTypes = anonymousGroup.getElements();
+        List<TypeDoc> anonymousGroupTypes = anonymousGroup.getElements();
         assertNotNull(anonymousGroupTypes);
         assertEquals(3, anonymousGroupTypes.size());
 
-        List<String> objectNames = anonymousGroupTypes.stream().map(ApiTypeDoc::getName).collect(Collectors.toList());
+        List<String> objectNames = anonymousGroupTypes.stream().map(TypeDoc::getName).collect(Collectors.toList());
         List<String> expectedObjectNames = new ArrayList<>(3);
         expectedObjectNames.add("child");
         expectedObjectNames.add("gender");
         expectedObjectNames.add("parent");
         assertEquals(expectedObjectNames, objectNames);
 
-        Group<ApiTypeDoc> restaurantGroup = typesGroups.get(1);
+        Group<TypeDoc> restaurantGroup = typesGroups.get(1);
         assertNotNull(restaurantGroup);
         assertEquals("Restaurant", restaurantGroup.getGroupName());
 
-        List<ApiTypeDoc> restaurantTypes = restaurantGroup.getElements();
+        List<TypeDoc> restaurantTypes = restaurantGroup.getElements();
         assertNotNull(restaurantTypes);
         assertEquals(1, restaurantTypes.size());
 
         List<String> restaurantObjectNames = restaurantTypes.stream()
-                                                            .map(ApiTypeDoc::getName)
+                                                            .map(TypeDoc::getName)
                                                             .collect(Collectors.toList());
         List<String> expectedRestaurantObjectNames = new ArrayList<>();
         expectedRestaurantObjectNames.add("customPizzaObject");
@@ -96,10 +96,10 @@ public class LivedocReaderTest {
     }
 
     private static void checkFlows(Livedoc livedoc) {
-        List<Group<ApiFlowDoc>> flowGroups = livedoc.getFlows();
+        List<Group<FlowDoc>> flowGroups = livedoc.getFlows();
         assertEquals(1, flowGroups.size());
 
-        Group<ApiFlowDoc> flowGroup = flowGroups.get(0);
+        Group<FlowDoc> flowGroup = flowGroups.get(0);
         assertNotNull(flowGroup);
         assertEquals("", flowGroup.getGroupName());
         assertNotNull(flowGroup.getElements());

@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.types.references.DefaultTypeReferenceProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -70,11 +70,11 @@ public class JavadocTypeDocReaderTest {
 
     @Test
     public void buildTypeDocBase() {
-        Optional<ApiTypeDoc> doc = reader.buildTypeDocBase(Person.class, typeReferenceProvider, c -> null);
+        Optional<TypeDoc> doc = reader.buildTypeDocBase(Person.class, typeReferenceProvider, c -> null);
         assertTrue(doc.isPresent());
-        ApiTypeDoc apiTypeDoc = doc.get();
-        assertEquals("Person", apiTypeDoc.getName());
-        assertEquals("Represents a person.", apiTypeDoc.getDescription());
+        TypeDoc typeDoc = doc.get();
+        assertEquals("Person", typeDoc.getName());
+        assertEquals("Represents a person.", typeDoc.getDescription());
     }
 
     @Test
@@ -99,20 +99,20 @@ public class JavadocTypeDocReaderTest {
         phoneProp.setField(phoneField);
         phoneProp.setGetter(getPhone);
 
-        Optional<ApiTypeDoc> doc = reader.buildTypeDocBase(Person.class, typeReferenceProvider, c -> null);
+        Optional<TypeDoc> doc = reader.buildTypeDocBase(Person.class, typeReferenceProvider, c -> null);
         assertTrue(doc.isPresent());
 
-        ApiTypeDoc apiTypeDoc = doc.get();
-        Optional<ApiPropertyDoc> maybeNameDoc = reader.buildPropertyDoc(nameProp, apiTypeDoc, typeReferenceProvider);
-        Optional<ApiPropertyDoc> maybeAgeDoc = reader.buildPropertyDoc(ageProp, apiTypeDoc, typeReferenceProvider);
-        Optional<ApiPropertyDoc> maybePhoneDoc = reader.buildPropertyDoc(phoneProp, apiTypeDoc, typeReferenceProvider);
+        TypeDoc typeDoc = doc.get();
+        Optional<PropertyDoc> maybeNameDoc = reader.buildPropertyDoc(nameProp, typeDoc, typeReferenceProvider);
+        Optional<PropertyDoc> maybeAgeDoc = reader.buildPropertyDoc(ageProp, typeDoc, typeReferenceProvider);
+        Optional<PropertyDoc> maybePhoneDoc = reader.buildPropertyDoc(phoneProp, typeDoc, typeReferenceProvider);
         assertTrue(maybeNameDoc.isPresent());
         assertTrue(maybeAgeDoc.isPresent());
         assertTrue(maybePhoneDoc.isPresent());
 
-        ApiPropertyDoc nameDoc = maybeNameDoc.get();
-        ApiPropertyDoc ageDoc = maybeAgeDoc.get();
-        ApiPropertyDoc phoneDoc = maybePhoneDoc.get();
+        PropertyDoc nameDoc = maybeNameDoc.get();
+        PropertyDoc ageDoc = maybeAgeDoc.get();
+        PropertyDoc phoneDoc = maybePhoneDoc.get();
         assertEquals("name", nameDoc.getName());
         assertEquals("age", ageDoc.getName());
         assertEquals("phone", phoneDoc.getName());

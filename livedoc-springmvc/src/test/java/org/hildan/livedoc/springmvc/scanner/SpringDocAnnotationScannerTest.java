@@ -12,14 +12,14 @@ import org.hildan.livedoc.core.annotations.ApiVersion;
 import org.hildan.livedoc.core.annotations.auth.ApiAuthNone;
 import org.hildan.livedoc.core.annotations.errors.ApiError;
 import org.hildan.livedoc.core.annotations.errors.ApiErrors;
-import org.hildan.livedoc.core.model.doc.ApiAuthType;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
-import org.hildan.livedoc.core.model.doc.auth.ApiAuthDoc;
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
-import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
+import org.hildan.livedoc.core.model.doc.AuthType;
+import org.hildan.livedoc.core.model.doc.ParamDoc;
+import org.hildan.livedoc.core.model.doc.auth.AuthDoc;
+import org.hildan.livedoc.core.model.doc.headers.HeaderDoc;
+import org.hildan.livedoc.core.model.doc.version.VersionDoc;
 import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Test;
@@ -113,15 +113,15 @@ public class SpringDocAnnotationScannerTest {
         assertEquals(1, opDoc.getVerbs().size());
         assertEquals(ApiVerb.GET, opDoc.getVerbs().get(0));
 
-        List<ApiParamDoc> queryParameters = opDoc.getQueryParameters();
+        List<ParamDoc> queryParameters = opDoc.getQueryParameters();
         assertEquals(1, queryParameters.size());
 
-        ApiParamDoc apiParamDoc = queryParameters.get(0);
-        assertEquals("input", apiParamDoc.getName());
-        assertEquals("a test input", apiParamDoc.getDescription());
-        assertEquals("true", apiParamDoc.getRequired());
-        assertNull(apiParamDoc.getDefaultValue());
-        assertEquals(0, apiParamDoc.getAllowedValues().length);
+        ParamDoc paramDoc = queryParameters.get(0);
+        assertEquals("input", paramDoc.getName());
+        assertEquals("a test input", paramDoc.getDescription());
+        assertEquals("true", paramDoc.getRequired());
+        assertNull(paramDoc.getDefaultValue());
+        assertEquals(0, paramDoc.getAllowedValues().length);
     }
 
     private static void checkStringOperation(ApiOperationDoc opDoc) {
@@ -144,39 +144,39 @@ public class SpringDocAnnotationScannerTest {
         assertEquals("application/json", opDoc.getConsumes().get(0));
         assertEquals("201 - Created", opDoc.getResponseStatusCode());
 
-        List<ApiHeaderDoc> headers = opDoc.getHeaders();
-        ApiHeaderDoc header = headers.get(0);
+        List<HeaderDoc> headers = opDoc.getHeaders();
+        HeaderDoc header = headers.get(0);
         assertEquals("header", header.getName());
         assertEquals("test", header.getValues().get(0));
 
-        List<ApiParamDoc> queryParameters = opDoc.getQueryParameters();
+        List<ParamDoc> queryParameters = opDoc.getQueryParameters();
         assertEquals(3, queryParameters.size());
 
-        ApiParamDoc apiParamDoc = queryParameters.get(0);
-        assertEquals("delete", apiParamDoc.getName());
-        assertEquals("true", apiParamDoc.getRequired());
-        assertNull(apiParamDoc.getDefaultValue());
-        assertEquals(0, apiParamDoc.getAllowedValues().length);
+        ParamDoc paramDoc = queryParameters.get(0);
+        assertEquals("delete", paramDoc.getName());
+        assertEquals("true", paramDoc.getRequired());
+        assertNull(paramDoc.getDefaultValue());
+        assertEquals(0, paramDoc.getAllowedValues().length);
 
-        apiParamDoc = queryParameters.get(1);
-        assertEquals("id", apiParamDoc.getName());
-        assertEquals("true", apiParamDoc.getRequired());
-        assertNull(apiParamDoc.getDefaultValue());
+        paramDoc = queryParameters.get(1);
+        assertEquals("id", paramDoc.getName());
+        assertEquals("true", paramDoc.getRequired());
+        assertNull(paramDoc.getDefaultValue());
 
-        apiParamDoc = queryParameters.get(2);
-        assertEquals("query", apiParamDoc.getName());
-        assertEquals("true", apiParamDoc.getRequired());
-        assertEquals("test", apiParamDoc.getDefaultValue());
+        paramDoc = queryParameters.get(2);
+        assertEquals("query", paramDoc.getName());
+        assertEquals("true", paramDoc.getRequired());
+        assertEquals("test", paramDoc.getDefaultValue());
 
-        apiParamDoc = opDoc.getPathParameters().get(0);
-        assertEquals("name", apiParamDoc.getName());
+        paramDoc = opDoc.getPathParameters().get(0);
+        assertEquals("name", paramDoc.getName());
     }
 
-    private static void assertAuthNone(ApiAuthDoc authDoc) {
-        assertEquals(ApiAuthType.NONE, authDoc.getType());
+    private static void assertAuthNone(AuthDoc authDoc) {
+        assertEquals(AuthType.NONE, authDoc.getType());
     }
 
-    private static void assertVersion(ApiVersionDoc supportedVersions) {
+    private static void assertVersion(VersionDoc supportedVersions) {
         assertEquals("1.0", supportedVersions.getSince());
         assertNull(supportedVersions.getUntil());
     }

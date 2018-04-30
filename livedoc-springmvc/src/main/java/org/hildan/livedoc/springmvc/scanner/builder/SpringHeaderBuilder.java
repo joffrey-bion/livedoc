@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.headers.HeaderDoc;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ValueConstants;
@@ -23,10 +23,10 @@ public class SpringHeaderBuilder {
      * @param controller
      *         the controller to read type-level headers from
      *
-     * @return the {@link ApiHeaderDoc}s for the given method
+     * @return the {@link HeaderDoc}s for the given method
      */
-    public static List<ApiHeaderDoc> buildHeaders(Method method, Class<?> controller) {
-        Set<ApiHeaderDoc> headers = new HashSet<>(extractHeadersFromParams(method));
+    public static List<HeaderDoc> buildHeaders(Method method, Class<?> controller) {
+        Set<HeaderDoc> headers = new HashSet<>(extractHeadersFromParams(method));
 
         RequestMapping methodAnnotation = method.getAnnotation(RequestMapping.class);
         if (methodAnnotation != null) {
@@ -41,52 +41,52 @@ public class SpringHeaderBuilder {
         return new ArrayList<>(headers);
     }
 
-    private static List<ApiHeaderDoc> extractHeaders(RequestMapping annotation) {
-        List<ApiHeaderDoc> headers = new ArrayList<>();
+    private static List<HeaderDoc> extractHeaders(RequestMapping annotation) {
+        List<HeaderDoc> headers = new ArrayList<>();
         for (String header : annotation.headers()) {
-            headers.add(createApiHeaderDoc(header));
+            headers.add(createHeaderDoc(header));
         }
         return headers;
     }
 
-    private static ApiHeaderDoc createApiHeaderDoc(String header) {
+    private static HeaderDoc createHeaderDoc(String header) {
         if (header.startsWith("!")) {
-            return ApiHeaderDoc.forbidden(header.substring(1), "");
+            return HeaderDoc.forbidden(header.substring(1), "");
         }
         if (header.contains("!=")) {
             String[] splitHeader = header.split("!=");
             String forbiddenValue = splitHeader[1];
-            return ApiHeaderDoc.differentFrom(splitHeader[0], "", forbiddenValue);
+            return HeaderDoc.differentFrom(splitHeader[0], "", forbiddenValue);
         }
         if (header.contains("=")) {
             String[] splitHeader = header.split("=");
             String format = splitHeader[1];
-            return ApiHeaderDoc.matching(splitHeader[0], "", format);
+            return HeaderDoc.matching(splitHeader[0], "", format);
         }
-        return ApiHeaderDoc.required(header, "");
+        return HeaderDoc.required(header, "");
     }
 
-    private static Set<ApiHeaderDoc> extractHeadersFromParams(Method method) {
-        Set<ApiHeaderDoc> headers = new LinkedHashSet<>();
+    private static Set<HeaderDoc> extractHeadersFromParams(Method method) {
+        Set<HeaderDoc> headers = new LinkedHashSet<>();
         Annotation[][] parametersAnnotations = method.getParameterAnnotations();
         for (Annotation[] paramAnnotations : parametersAnnotations) {
             for (Annotation paramAnnotation : paramAnnotations) {
                 if (paramAnnotation instanceof RequestHeader) {
                     RequestHeader requestHeader = (RequestHeader) paramAnnotation;
-                    headers.add(createApiHeaderDoc(requestHeader));
+                    headers.add(createHeaderDoc(requestHeader));
                 }
             }
         }
         return headers;
     }
 
-    private static ApiHeaderDoc createApiHeaderDoc(RequestHeader annotation) {
+    private static HeaderDoc createHeaderDoc(RequestHeader annotation) {
         String headerName = annotation.value().isEmpty() ? annotation.name() : annotation.value();
         String defaultVal = extractDefaultValue(annotation);
         if (defaultVal != null || !annotation.required()) {
-            return ApiHeaderDoc.optional(headerName, "", defaultVal);
+            return HeaderDoc.optional(headerName, "", defaultVal);
         }
-        return ApiHeaderDoc.required(headerName, "");
+        return HeaderDoc.required(headerName, "");
     }
 
     private static String extractDefaultValue(RequestHeader requestHeader) {

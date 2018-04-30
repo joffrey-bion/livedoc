@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hildan.livedoc.core.model.doc.ApiAuthType;
+import org.hildan.livedoc.core.model.doc.AuthType;
 
-public class ApiAuthDoc {
+public class AuthDoc {
 
-    private ApiAuthType type;
+    private AuthType type;
 
     // Basic auth
     private List<String> roles = new ArrayList<>();
@@ -23,11 +23,11 @@ public class ApiAuthDoc {
 
     private Set<String> testtokens = new HashSet<>();
 
-    public ApiAuthType getType() {
+    public AuthType getType() {
         return type;
     }
 
-    public void setType(ApiAuthType type) {
+    public void setType(AuthType type) {
         this.type = type;
     }
 

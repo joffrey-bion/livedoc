@@ -7,8 +7,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.readers.TypeDocReader;
 import org.hildan.livedoc.core.scanners.properties.Property;
 import org.hildan.livedoc.core.scanners.properties.PropertyScanner;
@@ -28,27 +28,27 @@ public class MasterTypeDocReader {
         this.propertyScanner = propertyScanner;
     }
 
-    List<ApiTypeDoc> readApiTypeDocs(Collection<Class<?>> types, TypeReferenceProvider typeReferenceProvider,
+    List<TypeDoc> readTypeDocs(Collection<Class<?>> types, TypeReferenceProvider typeReferenceProvider,
             TemplateProvider templateProvider) {
         return buildDocs(types, t -> readTypeDoc(t, typeReferenceProvider, templateProvider));
     }
 
     @NotNull
-    public Optional<ApiTypeDoc> readTypeDoc(@NotNull Class<?> clazz,
-            @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
-        Optional<ApiTypeDoc> doc = typeDocReader.buildTypeDocBase(clazz, typeReferenceProvider, templateProvider);
+    public Optional<TypeDoc> readTypeDoc(@NotNull Class<?> clazz, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider) {
+        Optional<TypeDoc> doc = typeDocReader.buildTypeDocBase(clazz, typeReferenceProvider, templateProvider);
         doc.ifPresent(typeDoc -> typeDoc.setFields(buildPropertyDocs(clazz, typeDoc, typeReferenceProvider)));
         doc.ifPresent(ApiTypeDocValidator::validate);
         return doc;
     }
 
-    private List<ApiPropertyDoc> buildPropertyDocs(Class<?> clazz, ApiTypeDoc apiTypeDoc,
+    private List<PropertyDoc> buildPropertyDocs(Class<?> clazz, TypeDoc typeDoc,
             TypeReferenceProvider typeRefProvider) {
         if (clazz.isEnum()) {
             return Collections.emptyList();
         }
         List<Property> props = propertyScanner.getProperties(clazz);
-        return buildDocs(props, p -> typeDocReader.buildPropertyDoc(p, apiTypeDoc, typeRefProvider));
+        return buildDocs(props, p -> typeDocReader.buildPropertyDoc(p, typeDoc, typeRefProvider));
     }
 
     private static <T, D extends Comparable<D>> List<D> buildDocs(Collection<T> objects,

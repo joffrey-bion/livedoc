@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.doc.ParamDoc;
 import org.hildan.livedoc.springmvc.test.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -38,25 +38,25 @@ public class SpringPathVariableBuilderTest {
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
             if (apiOperationDoc.getPaths().contains("/param-one/{id}/{string}")) {
                 Assert.assertEquals(2, apiOperationDoc.getPathParameters().size());
-                Iterator<ApiParamDoc> iterator = apiOperationDoc.getPathParameters().iterator();
-                ApiParamDoc id = iterator.next();
+                Iterator<ParamDoc> iterator = apiOperationDoc.getPathParameters().iterator();
+                ParamDoc id = iterator.next();
                 Assert.assertEquals("id", id.getName());
                 Assert.assertEquals("Long", id.getType().getOneLineText());
-                ApiParamDoc name = iterator.next();
+                ParamDoc name = iterator.next();
                 Assert.assertEquals("name", name.getName());
                 Assert.assertEquals("String", name.getType().getOneLineText());
             }
 
             if (apiOperationDoc.getPaths().contains("/param-one/{id}/{string}/{test}")) {
                 Assert.assertEquals(3, apiOperationDoc.getPathParameters().size());
-                Iterator<ApiParamDoc> iterator = apiOperationDoc.getPathParameters().iterator();
-                ApiParamDoc id = iterator.next();
+                Iterator<ParamDoc> iterator = apiOperationDoc.getPathParameters().iterator();
+                ParamDoc id = iterator.next();
                 Assert.assertEquals("id", id.getName());
                 Assert.assertEquals("Long", id.getType().getOneLineText());
-                ApiParamDoc name = iterator.next();
+                ParamDoc name = iterator.next();
                 Assert.assertEquals("name", name.getName());
                 Assert.assertEquals("String", name.getType().getOneLineText());
-                ApiParamDoc test = iterator.next();
+                ParamDoc test = iterator.next();
                 Assert.assertEquals("test", test.getName());
                 Assert.assertEquals("Long", test.getType().getOneLineText());
             }
@@ -83,12 +83,12 @@ public class SpringPathVariableBuilderTest {
         for (ApiOperationDoc apiOperationDoc : apiDoc.getOperations()) {
             if (apiOperationDoc.getPaths().contains("/param-one/{id}/{string}")) {
                 Assert.assertEquals(2, apiOperationDoc.getPathParameters().size());
-                Iterator<ApiParamDoc> iterator = apiOperationDoc.getPathParameters().iterator();
-                ApiParamDoc id = iterator.next();
+                Iterator<ParamDoc> iterator = apiOperationDoc.getPathParameters().iterator();
+                ParamDoc id = iterator.next();
                 Assert.assertEquals("id", id.getName());
                 Assert.assertEquals("Long", id.getType().getOneLineText());
                 Assert.assertEquals("description for id", id.getDescription());
-                ApiParamDoc name = iterator.next();
+                ParamDoc name = iterator.next();
                 Assert.assertEquals("name", name.getName());
                 Assert.assertEquals("String", name.getType().getOneLineText());
             }

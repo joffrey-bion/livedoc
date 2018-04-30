@@ -3,7 +3,7 @@ package org.hildan.livedoc.springmvc.scanner.builder;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import org.hildan.livedoc.core.model.doc.ApiRequestBodyDoc;
+import org.hildan.livedoc.core.model.doc.RequestBodyDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class SpringRequestBodyBuilder {
 
-    public static ApiRequestBodyDoc buildRequestBody(Method method, TypeReferenceProvider typeReferenceProvider,
+    public static RequestBodyDoc buildRequestBody(Method method, TypeReferenceProvider typeReferenceProvider,
             TemplateProvider templateProvider) {
         int index = getIndexOfBodyParam(method);
         if (index < 0) {
@@ -25,7 +25,7 @@ public class SpringRequestBodyBuilder {
         Object template = templateProvider.getTemplate(bodyParamType);
         LivedocType livedocType = typeReferenceProvider.getReference(bodyParamType);
 
-        return new ApiRequestBodyDoc(livedocType, template);
+        return new RequestBodyDoc(livedocType, template);
     }
 
     private static int getIndexOfBodyParam(Method method) {

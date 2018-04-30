@@ -16,8 +16,8 @@ import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.LivedocMetaData;
-import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
+import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
 import org.hildan.livedoc.core.model.doc.global.GlobalDocPage;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
@@ -32,7 +32,7 @@ public class GlobalDocReaderTest {
 
     private static final String TEST_API_NAME = "Test API Name";
 
-    private static ApiGlobalDoc buildGlobalDocFor(Class<?> global) {
+    private static GlobalDoc buildGlobalDocFor(Class<?> global) {
         GlobalDocReader reader = new LivedocAnnotationGlobalDocReader(ann -> {
             if (ApiGlobalPages.class.equals(ann)) {
                 return global == null ? Collections.emptyList() : Collections.singletonList(global);
@@ -49,11 +49,11 @@ public class GlobalDocReaderTest {
 
     @Test
     public void getApiGlobalDoc_defaultGlobal() {
-        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(null);
-        assertNotNull(apiGlobalDoc);
-        assertFalse(apiGlobalDoc.getHomePageId().isEmpty());
+        GlobalDoc globalDoc = buildGlobalDocFor(null);
+        assertNotNull(globalDoc);
+        assertFalse(globalDoc.getHomePageId().isEmpty());
 
-        List<GlobalDocPage> pages = apiGlobalDoc.getPages();
+        List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
@@ -69,11 +69,11 @@ public class GlobalDocReaderTest {
         @ApiGlobalPage(title = "Secondary", content = "<h1>Title 2</h1><p>Description 2</p>")
         class Global {}
 
-        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(Global.class);
-        assertNotNull(apiGlobalDoc);
-        assertEquals("home", apiGlobalDoc.getHomePageId());
+        GlobalDoc globalDoc = buildGlobalDocFor(Global.class);
+        assertNotNull(globalDoc);
+        assertEquals("home", globalDoc.getHomePageId());
 
-        List<GlobalDocPage> pages = apiGlobalDoc.getPages();
+        List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
@@ -105,11 +105,11 @@ public class GlobalDocReaderTest {
     }
 
     private static void assertElementsFromResourceFile(Class<?> clazz) {
-        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(clazz);
-        assertNotNull(apiGlobalDoc);
-        assertEquals("from+file", apiGlobalDoc.getHomePageId());
+        GlobalDoc globalDoc = buildGlobalDocFor(clazz);
+        assertNotNull(globalDoc);
+        assertEquals("from+file", globalDoc.getHomePageId());
 
-        List<GlobalDocPage> pages = apiGlobalDoc.getPages();
+        List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
@@ -124,11 +124,11 @@ public class GlobalDocReaderTest {
         @ApiGlobalPage(title = "From Template", template = "freemarker.ftl")
         class GlobalWithTemplate {}
 
-        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
-        assertNotNull(apiGlobalDoc);
-        assertEquals("from+template", apiGlobalDoc.getHomePageId());
+        GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
+        assertNotNull(globalDoc);
+        assertEquals("from+template", globalDoc.getHomePageId());
 
-        List<GlobalDocPage> pages = apiGlobalDoc.getPages();
+        List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
@@ -150,11 +150,11 @@ public class GlobalDocReaderTest {
         @ApiGlobalPage(title = "From Generator", generator = MyPageGenerator.class)
         class GlobalWithGenerator {}
 
-        ApiGlobalDoc apiGlobalDoc = buildGlobalDocFor(GlobalWithGenerator.class);
-        assertNotNull(apiGlobalDoc);
-        assertEquals("from+generator", apiGlobalDoc.getHomePageId());
+        GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithGenerator.class);
+        assertNotNull(globalDoc);
+        assertEquals("from+generator", globalDoc.getHomePageId());
 
-        List<GlobalDocPage> pages = apiGlobalDoc.getPages();
+        List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
@@ -235,24 +235,24 @@ public class GlobalDocReaderTest {
         apiOperationDocsById.put("F1", apiOperationDoc);
 
         GlobalDocReader scanner = new LivedocAnnotationGlobalDocReader(finder);
-        Set<ApiFlowDoc> apiFlowDocs = scanner.getApiFlowDocs(apiOperationDocsById);
-        for (ApiFlowDoc apiFlowDoc : apiFlowDocs) {
-            if (apiFlowDoc.getName().equals("flow")) {
-                assertEquals("A test flow", apiFlowDoc.getDescription());
-                assertEquals(3, apiFlowDoc.getSteps().size());
-                assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationId());
-                assertEquals("F2", apiFlowDoc.getSteps().get(1).getApiOperationId());
-                assertEquals("Flows A", apiFlowDoc.getGroup());
-                assertNotNull(apiFlowDoc.getSteps().get(0).getApiOperationDoc());
-                assertEquals("F1", apiFlowDoc.getSteps().get(0).getApiOperationDoc().getId());
+        Set<FlowDoc> flowDocs = scanner.getApiFlowDocs(apiOperationDocsById);
+        for (FlowDoc flowDoc : flowDocs) {
+            if (flowDoc.getName().equals("flow")) {
+                assertEquals("A test flow", flowDoc.getDescription());
+                assertEquals(3, flowDoc.getSteps().size());
+                assertEquals("F1", flowDoc.getSteps().get(0).getApiOperationId());
+                assertEquals("F2", flowDoc.getSteps().get(1).getApiOperationId());
+                assertEquals("Flows A", flowDoc.getGroup());
+                assertNotNull(flowDoc.getSteps().get(0).getApiOperationDoc());
+                assertEquals("F1", flowDoc.getSteps().get(0).getApiOperationDoc().getId());
             }
 
-            if (apiFlowDoc.getName().equals("flow2")) {
-                assertEquals("A test flow 2", apiFlowDoc.getDescription());
-                assertEquals(3, apiFlowDoc.getSteps().size());
-                assertEquals("F4", apiFlowDoc.getSteps().get(0).getApiOperationId());
-                assertEquals("F5", apiFlowDoc.getSteps().get(1).getApiOperationId());
-                assertEquals("Flows B", apiFlowDoc.getGroup());
+            if (flowDoc.getName().equals("flow2")) {
+                assertEquals("A test flow 2", flowDoc.getDescription());
+                assertEquals(3, flowDoc.getSteps().size());
+                assertEquals("F4", flowDoc.getSteps().get(0).getApiOperationId());
+                assertEquals("F5", flowDoc.getSteps().get(1).getApiOperationId());
+                assertEquals("Flows B", flowDoc.getGroup());
             }
         }
     }

@@ -4,10 +4,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.flow.ApiFlowDoc;
-import org.hildan.livedoc.core.model.doc.global.ApiGlobalDoc;
+import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
+import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
+import org.hildan.livedoc.core.templating.GlobalTemplateData;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
 public interface GlobalDocReader {
 
     @NotNull
-    ApiGlobalDoc getApiGlobalDoc(LivedocConfiguration configuration, GlobalTemplateData globalTemplateData);
+    GlobalDoc getApiGlobalDoc(LivedocConfiguration configuration, GlobalTemplateData globalTemplateData);
 
     @NotNull
-    Set<ApiFlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById);
+    Set<FlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById);
 }

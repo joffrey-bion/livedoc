@@ -6,12 +6,12 @@ import java.util.List;
 import org.hildan.livedoc.core.model.doc.AbstractDoc;
 import org.hildan.livedoc.core.model.doc.Stage;
 import org.hildan.livedoc.core.model.doc.Staged;
-import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
+import org.hildan.livedoc.core.model.doc.version.VersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.groups.Groupable;
 import org.hildan.livedoc.core.util.LivedocUtils;
 
-public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, Groupable, Staged, Versioned {
+public class TypeDoc extends AbstractDoc implements Comparable<TypeDoc>, Groupable, Staged, Versioned {
 
     private final String livedocId;
 
@@ -19,7 +19,7 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
 
     private String description;
 
-    private List<ApiPropertyDoc> fields;
+    private List<PropertyDoc> fields;
 
     private String[] allowedValues;
 
@@ -27,13 +27,13 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
 
     private Stage stage;
 
-    private ApiVersionDoc supportedVersions;
+    private VersionDoc supportedVersions;
 
     private Object template;
 
     private boolean show;
 
-    public ApiTypeDoc(Class<?> clazz) {
+    public TypeDoc(Class<?> clazz) {
         this.livedocId = LivedocUtils.getLivedocId(clazz);
         this.name = null;
         this.description = null;
@@ -65,11 +65,11 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
         this.description = description;
     }
 
-    public List<ApiPropertyDoc> getFields() {
+    public List<PropertyDoc> getFields() {
         return fields;
     }
 
-    public void setFields(List<ApiPropertyDoc> fields) {
+    public void setFields(List<PropertyDoc> fields) {
         this.fields = fields;
     }
 
@@ -117,17 +117,17 @@ public class ApiTypeDoc extends AbstractDoc implements Comparable<ApiTypeDoc>, G
     }
 
     @Override
-    public ApiVersionDoc getSupportedVersions() {
+    public VersionDoc getSupportedVersions() {
         return supportedVersions;
     }
 
     @Override
-    public void setSupportedVersions(ApiVersionDoc supportedVersions) {
+    public void setSupportedVersions(VersionDoc supportedVersions) {
         this.supportedVersions = supportedVersions;
     }
 
     @Override
-    public int compareTo(ApiTypeDoc o) {
+    public int compareTo(TypeDoc o) {
         return name.compareTo(o.getName());
     }
 

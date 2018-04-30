@@ -1,20 +1,20 @@
 package org.hildan.livedoc.core.validators;
 
-import org.hildan.livedoc.core.model.doc.types.ApiPropertyDoc;
-import org.hildan.livedoc.core.model.doc.types.ApiTypeDoc;
+import org.hildan.livedoc.core.model.doc.types.PropertyDoc;
+import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 
 public class ApiTypeDocValidator {
 
     private static final String HINT_MISSING_API_OBJECT_FIELD_DESCRIPTION = "Add description to field: %s";
 
-    public static ApiTypeDoc validate(ApiTypeDoc apiTypeDoc) {
+    public static TypeDoc validate(TypeDoc typeDoc) {
 
-        for (ApiPropertyDoc apiPropertyDoc : apiTypeDoc.getFields()) {
-            if (apiPropertyDoc.getDescription() == null || apiPropertyDoc.getDescription().trim().isEmpty()) {
-                String msg = String.format(HINT_MISSING_API_OBJECT_FIELD_DESCRIPTION, apiPropertyDoc.getName());
-                apiTypeDoc.addJsondocHint(msg);
+        for (PropertyDoc propertyDoc : typeDoc.getFields()) {
+            if (propertyDoc.getDescription() == null || propertyDoc.getDescription().trim().isEmpty()) {
+                String msg = String.format(HINT_MISSING_API_OBJECT_FIELD_DESCRIPTION, propertyDoc.getName());
+                typeDoc.addJsondocHint(msg);
             }
         }
-        return apiTypeDoc;
+        return typeDoc;
     }
 }

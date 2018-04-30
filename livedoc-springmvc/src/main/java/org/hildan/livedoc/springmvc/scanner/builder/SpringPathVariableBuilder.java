@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hildan.livedoc.core.annotations.ApiPathParam;
-import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.doc.ParamDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
-import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
+import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -17,8 +17,8 @@ public class SpringPathVariableBuilder {
 
     private static final DefaultParameterNameDiscoverer PARAM_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
-    public static List<ApiParamDoc> buildPathVariable(Method method, TypeReferenceProvider typeReferenceProvider) {
-        List<ApiParamDoc> apiParamDocs = new ArrayList<>();
+    public static List<ParamDoc> buildPathVariable(Method method, TypeReferenceProvider typeReferenceProvider) {
+        List<ParamDoc> paramDocs = new ArrayList<>();
 
         Parameter[] parameters = method.getParameters();
         for (int i = 0; i < parameters.length; i++) {
@@ -29,17 +29,17 @@ public class SpringPathVariableBuilder {
                 LivedocType livedocType = typeReferenceProvider.getReference(param.getParameterizedType());
                 String paramName = getSpringParamName(method, pathVariable, i);
                 String description = JavadocHelper.getJavadocDescription(method, paramName).orElse("");
-                ApiParamDoc apiParamDoc = new ApiParamDoc(paramName, description, livedocType, "true", new String[0],
-                        null, null);
+                ParamDoc paramDoc = new ParamDoc(paramName, description, livedocType, "true", new String[0], null,
+                        null);
 
                 if (apiPathParam != null) {
-                    mergeApiPathParamDoc(apiPathParam, apiParamDoc);
+                    mergeApiPathParamDoc(apiPathParam, paramDoc);
                 }
-                apiParamDocs.add(apiParamDoc);
+                paramDocs.add(paramDoc);
             }
         }
 
-        return apiParamDocs;
+        return paramDocs;
     }
 
     private static String getSpringParamName(Method method, PathVariable pathVariable, int index) {
@@ -51,22 +51,22 @@ public class SpringPathVariableBuilder {
 
     /**
      * Available properties that can be overridden: name, description, allowedValues, format. Name is overridden only if
-     * it's empty in the apiParamDoc argument. Description, format and allowedValues are copied in any case.
+     * it's empty in the paramDoc argument. Description, format and allowedValues are copied in any case.
      *
      * @param apiPathParam
      *         the annotation to get the new data from
-     * @param apiParamDoc
-     *         the {@link ApiParamDoc} object to update
+     * @param paramDoc
+     *         the {@link ParamDoc} object to update
      */
-    private static void mergeApiPathParamDoc(ApiPathParam apiPathParam, ApiParamDoc apiParamDoc) {
-        if (apiParamDoc.getName().trim().isEmpty()) {
-            apiParamDoc.setName(apiPathParam.name());
+    private static void mergeApiPathParamDoc(ApiPathParam apiPathParam, ParamDoc paramDoc) {
+        if (paramDoc.getName().trim().isEmpty()) {
+            paramDoc.setName(apiPathParam.name());
         }
-        if (apiParamDoc.getDescription().trim().isEmpty()) {
-            apiParamDoc.setDescription(apiPathParam.description());
+        if (paramDoc.getDescription().trim().isEmpty()) {
+            paramDoc.setDescription(apiPathParam.description());
         }
-        apiParamDoc.setAllowedValues(apiPathParam.allowedValues());
-        apiParamDoc.setFormat(apiPathParam.format());
+        paramDoc.setAllowedValues(apiPathParam.allowedValues());
+        paramDoc.setFormat(apiPathParam.format());
     }
 
 }

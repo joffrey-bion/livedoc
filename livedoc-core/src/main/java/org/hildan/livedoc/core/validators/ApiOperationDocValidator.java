@@ -3,9 +3,9 @@ package org.hildan.livedoc.core.validators;
 import java.util.Collections;
 
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.ApiParamDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
-import org.hildan.livedoc.core.model.doc.headers.ApiHeaderDoc;
+import org.hildan.livedoc.core.model.doc.ParamDoc;
+import org.hildan.livedoc.core.model.doc.headers.HeaderDoc;
 
 public class ApiOperationDocValidator {
 
@@ -64,31 +64,31 @@ public class ApiOperationDocValidator {
     }
 
     private static void validateHeaders(ApiOperationDoc apiOperationDoc) {
-        for (ApiHeaderDoc apiHeaderDoc : apiOperationDoc.getHeaders()) {
-            if (apiHeaderDoc.getName() == null) {
+        for (HeaderDoc headerDoc : apiOperationDoc.getHeaders()) {
+            if (headerDoc.getName() == null) {
                 apiOperationDoc.addJsondocError(ERROR_MISSING_HEADER_NAME);
             }
         }
     }
 
     private static void validatePathParams(ApiOperationDoc apiOperationDoc) {
-        for (ApiParamDoc apiParamDoc : apiOperationDoc.getPathParameters()) {
-            if (apiParamDoc.getName() == null) {
+        for (ParamDoc paramDoc : apiOperationDoc.getPathParameters()) {
+            if (paramDoc.getName() == null) {
                 apiOperationDoc.addJsondocError(ERROR_MISSING_PATH_PARAM_NAME);
             }
 
-            if (apiParamDoc.getDescription() == null) {
+            if (paramDoc.getDescription() == null) {
                 apiOperationDoc.addJsondocHint(HINT_MISSING_PATH_PARAM_DESCRIPTION);
             }
         }
     }
 
     private static void validateQueryParams(ApiOperationDoc apiOperationDoc) {
-        for (ApiParamDoc apiParamDoc : apiOperationDoc.getQueryParameters()) {
-            if (apiParamDoc.getName() == null) {
+        for (ParamDoc paramDoc : apiOperationDoc.getQueryParameters()) {
+            if (paramDoc.getName() == null) {
                 apiOperationDoc.addJsondocError(ERROR_MISSING_QUERY_PARAM_NAME);
             }
-            if (apiParamDoc.getDescription() == null) {
+            if (paramDoc.getDescription() == null) {
                 apiOperationDoc.addJsondocHint(HINT_MISSING_QUERY_PARAM_DESCRIPTION);
             }
         }

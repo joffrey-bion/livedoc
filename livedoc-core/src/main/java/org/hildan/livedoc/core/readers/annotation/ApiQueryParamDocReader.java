@@ -11,7 +11,7 @@ import java.util.Set;
 import org.hildan.livedoc.core.annotations.ApiParams;
 import org.hildan.livedoc.core.annotations.ApiQueryParam;
 import org.hildan.livedoc.core.model.LivedocDefaultType;
-import org.hildan.livedoc.core.model.doc.ApiParamDoc;
+import org.hildan.livedoc.core.model.doc.ParamDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 
@@ -19,15 +19,15 @@ import static org.hildan.livedoc.core.readers.annotation.ApiDocReader.nullifyIfE
 
 public class ApiQueryParamDocReader {
 
-    public static List<ApiParamDoc> read(Method method, TypeReferenceProvider typeReferenceProvider) {
-        Set<ApiParamDoc> docs = new LinkedHashSet<>();
+    public static List<ParamDoc> read(Method method, TypeReferenceProvider typeReferenceProvider) {
+        Set<ParamDoc> docs = new LinkedHashSet<>();
 
         ApiParams apiParams = method.getAnnotation(ApiParams.class);
         if (apiParams != null) {
             for (ApiQueryParam apiParam : apiParams.queryParams()) {
                 LivedocType livedocType = typeReferenceProvider.getReference(apiParam.type());
-                ApiParamDoc apiParamDoc = buildFromAnnotation(apiParam, livedocType);
-                docs.add(apiParamDoc);
+                ParamDoc paramDoc = buildFromAnnotation(apiParam, livedocType);
+                docs.add(paramDoc);
             }
         }
 
@@ -37,27 +37,27 @@ public class ApiQueryParamDocReader {
                 if (parametersAnnotations[i][j] instanceof ApiQueryParam) {
                     ApiQueryParam annotation = (ApiQueryParam) parametersAnnotations[i][j];
                     LivedocType livedocType = typeReferenceProvider.getReference(method.getGenericParameterTypes()[i]);
-                    ApiParamDoc apiParamDoc = buildFromAnnotation(annotation, livedocType);
+                    ParamDoc paramDoc = buildFromAnnotation(annotation, livedocType);
                     // if not named, it serves no purpose and can't be merged with a param from another reader
-                    if (apiParamDoc.getName() != null) {
-                        docs.add(apiParamDoc);
+                    if (paramDoc.getName() != null) {
+                        docs.add(paramDoc);
                     }
                 }
             }
         }
 
-        ArrayList<ApiParamDoc> apiParamDocs = new ArrayList<>(docs);
-        Collections.sort(apiParamDocs);
-        return apiParamDocs;
+        ArrayList<ParamDoc> paramDocs = new ArrayList<>(docs);
+        Collections.sort(paramDocs);
+        return paramDocs;
     }
 
-    private static ApiParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType) {
+    private static ParamDoc buildFromAnnotation(ApiQueryParam annotation, LivedocType livedocType) {
         String name = nullifyIfEmpty(annotation.name());
         String description = nullifyIfEmpty(annotation.description());
         String format = nullifyIfEmpty(annotation.format());
         boolean hasDefault = annotation.defaultValue().equals(LivedocDefaultType.DEFAULT_NONE);
         String defaultValue = hasDefault ? null : annotation.defaultValue();
-        return new ApiParamDoc(name, description, livedocType, String.valueOf(annotation.required()),
+        return new ParamDoc(name, description, livedocType, String.valueOf(annotation.required()),
                 annotation.allowedValues(), format, defaultValue);
     }
 }

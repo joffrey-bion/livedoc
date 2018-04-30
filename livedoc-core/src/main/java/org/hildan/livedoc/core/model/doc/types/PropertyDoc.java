@@ -4,18 +4,17 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hildan.livedoc.core.model.doc.AbstractDoc;
+import org.hildan.livedoc.core.model.doc.version.VersionDoc;
+import org.hildan.livedoc.core.model.doc.version.Versioned;
+import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.combined.DocMerger;
 import org.hildan.livedoc.core.readers.combined.Mergeable;
 import org.hildan.livedoc.core.readers.combined.SpecialDefaultIntValue;
-import org.hildan.livedoc.core.model.doc.AbstractDoc;
-import org.hildan.livedoc.core.model.doc.version.ApiVersionDoc;
-import org.hildan.livedoc.core.model.doc.version.Versioned;
-import org.hildan.livedoc.core.model.types.LivedocType;
 
 import com.google.common.base.Joiner;
 
-public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropertyDoc>, Versioned,
-        Mergeable<ApiPropertyDoc> {
+public class PropertyDoc extends AbstractDoc implements Comparable<PropertyDoc>, Versioned, Mergeable<PropertyDoc> {
 
     public final String livedocId = UUID.randomUUID().toString();
 
@@ -31,12 +30,12 @@ public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropert
 
     private String required;
 
-    private ApiVersionDoc supportedVersions;
+    private VersionDoc supportedVersions;
 
     @SpecialDefaultIntValue(Integer.MAX_VALUE)
     private Integer order;
 
-    public ApiPropertyDoc() {
+    public PropertyDoc() {
         this.format = new LinkedHashSet<>();
     }
 
@@ -88,11 +87,11 @@ public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropert
         this.required = required;
     }
 
-    public ApiVersionDoc getSupportedVersions() {
+    public VersionDoc getSupportedVersions() {
         return supportedVersions;
     }
 
-    public void setSupportedVersions(ApiVersionDoc supportedVersions) {
+    public void setSupportedVersions(VersionDoc supportedVersions) {
         this.supportedVersions = supportedVersions;
     }
 
@@ -113,8 +112,8 @@ public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropert
     }
 
     @Override
-    public ApiPropertyDoc merge(ApiPropertyDoc override, DocMerger merger) {
-        return merger.mergeProperties(this, override, new ApiPropertyDoc());
+    public PropertyDoc merge(PropertyDoc override, DocMerger merger) {
+        return merger.mergeProperties(this, override, new PropertyDoc());
     }
 
     @Override
@@ -136,7 +135,7 @@ public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropert
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ApiPropertyDoc other = (ApiPropertyDoc) obj;
+        PropertyDoc other = (PropertyDoc) obj;
         if (name == null) {
             if (other.name != null) {
                 return false;
@@ -148,10 +147,10 @@ public class ApiPropertyDoc extends AbstractDoc implements Comparable<ApiPropert
     }
 
     /**
-     * This comparison is the same as the one in ApiPropertyDoc class
+     * This comparison is the same as the one in PropertyDoc class
      */
     @Override
-    public int compareTo(ApiPropertyDoc o) {
+    public int compareTo(PropertyDoc o) {
         if (this.getOrder().equals(o.getOrder())) {
             return this.getName().compareTo(o.getName());
         } else {
