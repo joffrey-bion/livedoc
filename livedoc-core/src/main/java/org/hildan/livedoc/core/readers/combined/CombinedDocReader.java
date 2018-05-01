@@ -2,6 +2,7 @@ package org.hildan.livedoc.core.readers.combined;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import org.hildan.livedoc.core.LivedocReaderBuilder;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
@@ -17,8 +19,8 @@ import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An implementation of {@link DocReader} that merges the result of multiple {@code DocReader}s. This allows for
- * easier processing of the readers' output, because it encapsulates the fact that there are multiple readers involved.
+ * An implementation of {@link DocReader} that merges the result of multiple {@code DocReader}s. This allows for easier
+ * processing of the readers' output, because it encapsulates the fact that there are multiple readers involved.
  */
 public class CombinedDocReader implements DocReader {
 
@@ -70,11 +72,35 @@ public class CombinedDocReader implements DocReader {
                 r -> r.buildApiOperationDoc(method, controller, parentApiDoc, typeReferenceProvider, templateProvider));
     }
 
+    @Override
+    public boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller) {
+        return docReaders.stream().anyMatch(r -> r.usesAsyncMessages(method, controller));
+    }
+
+    @NotNull
+    @Override
+    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider) {
+        return readFromAllReadersAndMergeLists(
+                r -> r.buildAsyncMessageDocs(method, controller, parentApiDoc, typeReferenceProvider, templateProvider),
+                AsyncMessageDoc::getDestinations);
+    }
+
     private <D> Optional<D> readFromAllReadersAndMerge(Function<DocReader, Optional<D>> buildDoc) {
         return docReaders.stream()
                          .map(buildDoc)
                          .filter(Optional::isPresent)
                          .map(Optional::get)
                          .reduce(docMerger::merge);
+    }
+
+    private <D> List<D> readFromAllReadersAndMergeLists(Function<DocReader, List<D>> buildDoc,
+            Function<D, ?> keyExtractor) {
+        return docReaders.stream()
+                         .map(buildDoc)
+                         .filter(l -> !l.isEmpty())
+                         .reduce((l1, l2) -> docMerger.mergeList(l1, l2, keyExtractor))
+                         .orElse(Collections.emptyList());
     }
 }

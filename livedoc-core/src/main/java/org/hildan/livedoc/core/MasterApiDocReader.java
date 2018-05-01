@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -32,8 +33,10 @@ public class MasterApiDocReader {
     public Optional<ApiDoc> readApiDoc(Class<?> controller, TypeReferenceProvider typeReferenceProvider,
             TemplateProvider templateProvider) {
         Optional<ApiDoc> doc = docReader.buildApiDocBase(controller);
-        doc.ifPresent(apiDoc -> apiDoc.setOperations(
-                readApiOperationDocs(controller, apiDoc, typeReferenceProvider, templateProvider)));
+        doc.ifPresent(apiDoc -> {
+            apiDoc.setOperations(readApiOperationDocs(controller, apiDoc, typeReferenceProvider, templateProvider));
+            apiDoc.setMessages(readAsyncMessages(controller, apiDoc, typeReferenceProvider, templateProvider));
+        });
         return doc;
     }
 
@@ -49,17 +52,6 @@ public class MasterApiDocReader {
                                         .collect(Collectors.toList());
     }
 
-    private static List<Method> getAllMethods(Class<?> clazz) {
-        List<Method> methods = new ArrayList<>();
-        Class<?> currentClass = clazz;
-        while (currentClass != null) {
-            Method[] declaredMethods = currentClass.getDeclaredMethods();
-            Collections.addAll(methods, declaredMethods);
-            currentClass = currentClass.getSuperclass();
-        }
-        return methods;
-    }
-
     private Optional<ApiOperationDoc> readApiOperationDoc(Method method, Class<?> controller, ApiDoc parentApiDoc,
             TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
         Optional<ApiOperationDoc> doc = docReader.buildApiOperationDoc(method, controller, parentApiDoc,
@@ -69,6 +61,33 @@ public class MasterApiDocReader {
             ApiOperationDocValidator.validate(apiOperationDoc);
         });
         return doc;
+    }
+
+    private List<AsyncMessageDoc> readAsyncMessages(Class<?> controller, ApiDoc doc,
+            TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
+        return getMethodsUsingMessages(controller).stream()
+                                                  .map(m -> docReader.buildAsyncMessageDocs(m, controller, doc,
+                                                          typeReferenceProvider, templateProvider))
+                                                  .flatMap(Collection::stream)
+                                                  .sorted()
+                                                  .collect(Collectors.toList());
+    }
+
+    private List<Method> getMethodsUsingMessages(Class<?> controller) {
+        return getAllMethods(controller).stream()
+                                        .filter(m -> docReader.usesAsyncMessages(m, controller))
+                                        .collect(Collectors.toList());
+    }
+
+    private static List<Method> getAllMethods(Class<?> clazz) {
+        List<Method> methods = new ArrayList<>();
+        Class<?> currentClass = clazz;
+        while (currentClass != null) {
+            Method[] declaredMethods = currentClass.getDeclaredMethods();
+            Collections.addAll(methods, declaredMethods);
+            currentClass = currentClass.getSuperclass();
+        }
+        return methods;
     }
 
     private static <T, D extends Comparable<D>> List<D> buildDocs(Collection<T> objects,

@@ -2,12 +2,15 @@ package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
@@ -51,5 +54,20 @@ public class LivedocAnnotationDocReader implements DocReader {
             @NotNull TemplateProvider templateProvider) {
         ApiOperationDoc doc = ApiOperationDocReader.read(method, parentApiDoc, typeReferenceProvider, templateProvider);
         return Optional.ofNullable(doc);
+    }
+
+    @Override
+    public boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller) {
+        // TODO
+        return false;
+    }
+
+    @NotNull
+    @Override
+    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider) {
+        // TODO
+        return Collections.emptyList();
     }
 }

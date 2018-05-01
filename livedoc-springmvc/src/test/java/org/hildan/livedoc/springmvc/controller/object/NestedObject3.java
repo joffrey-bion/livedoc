@@ -1,4 +1,3 @@
 package org.hildan.livedoc.springmvc.controller.object;
 
-public class NestedObject3 {
-}
+public class NestedObject3 {}

@@ -2,10 +2,12 @@ package org.hildan.livedoc.core.readers;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
+import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -74,6 +76,46 @@ public interface DocReader {
      */
     @NotNull
     Optional<ApiOperationDoc> buildApiOperationDoc(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider);
+
+    /**
+     * Returns true if this reader identifies the given method as handling or triggering messages. A method will be
+     * considered as a message handler/producer if at least one reader identifies it as such. Returning false here does
+     * not mean the given method is not a message handler/producer, it simply means that this particular reader doesn't
+     * see it as such.
+     *
+     * @param method
+     *         the method to check
+     * @param controller
+     *         the controller the given method belongs to
+     *
+     * @return true if this reader identifies the given method as a message handler/producer, false otherwise.
+     */
+    boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller);
+
+    /**
+     * Builds {@link AsyncMessageDoc}s relative to the given method. Any method could be passed on here, even the ones
+     * for which this reader's {@link #usesAsyncMessages(Method, Class)} returned false. If this reader can't read any
+     * documentation data for the given method, it should return an empty list.
+     *
+     * @param method
+     *         the method to document
+     * @param controller
+     *         the controller in which the given method should be resolved. Cannot be retrieved from the {@link Method}
+     *         because the method could be inherited from a parent controller.
+     * @param parentApiDoc
+     *         the {@link ApiDoc} which the given method is part of
+     * @param typeReferenceProvider
+     *         a {@link TypeReferenceProvider} to document types
+     * @param templateProvider
+     *         a {@link TemplateProvider} to document types with templates/examples
+     *
+     * @return the list of {@link AsyncMessageDoc}s for each message this method manipulates, or an empty list if this
+     * reader is not able to build any doc for the given method.
+     */
+    @NotNull
+    List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
             @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
             @NotNull TemplateProvider templateProvider);
 }

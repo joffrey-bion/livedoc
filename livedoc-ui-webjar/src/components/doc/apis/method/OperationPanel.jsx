@@ -2,18 +2,18 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, CardText, Collapse } from 'reactstrap';
-import type { ApiOperationDoc } from '../../../../model/livedoc';
+import type { ApiOperationDoc, ApiVerb, AsyncCommand } from '../../../../model/livedoc';
 import { ApiOperationDetails } from './ApiOperationDetails';
 import './OperationPanel.css';
 
-export type MethodPanelProps = {
+export type OperationPanelProps = {
   operationDoc: ApiOperationDoc,
   open: boolean,
   collapseUrl: string,
   expandUrl: string,
 }
 
-export const OperationPanel = ({operationDoc, open, collapseUrl, expandUrl}: MethodPanelProps) => {
+export const OperationPanel = ({operationDoc, open, collapseUrl, expandUrl}: OperationPanelProps) => {
 
   const title = operationDoc.paths || operationDoc.name;
   const verbs = operationDoc.verbs.map(v => <Badge key={v} style={getStyle(v)}>{v}</Badge>);
@@ -30,7 +30,7 @@ export const OperationPanel = ({operationDoc, open, collapseUrl, expandUrl}: Met
   </Card>;
 };
 
-const verbColors = {
+const verbColors: {[ApiVerb]: string} = {
   GET: '#468847',
   POST: '#3A87AD',
   PUT: '#F89406',
@@ -41,6 +41,6 @@ const verbColors = {
   TRACE: '#8E6C6E',
 };
 
-function getStyle(verb: string) {
+function getStyle(verb: ApiVerb) {
   return {backgroundColor: verbColors[verb]};
 }

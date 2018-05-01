@@ -21,15 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class MappingsResolver {
 
-    public static List<String> getPathsMappings(Method method, Class<?> controller) {
-        // FIXME only call one of the 3 specific methods
-        List<String> paths = new ArrayList<>();
-        paths.addAll(getRequestMappings(method, controller));
-        paths.addAll(getMessageMappings(method, controller));
-        paths.addAll(getSubscribeMappings(method, controller));
-        return paths;
-    }
-
     public static List<String> getRequestMappings(Method method, Class<?> controller) {
         return getMappingsFromGroup(method, controller, requestPathExtractorGroup());
     }
@@ -44,7 +35,7 @@ public class MappingsResolver {
         List<PathExtractor<?>> messageAndSubscribeExtractors = new ArrayList<>(messagePathExtractors);
         messageAndSubscribeExtractors.addAll(subscribeExtractors);
 
-        List<String> prefixes = getAllMappings(controller, messageAndSubscribeExtractors);
+        List<String> prefixes = getPrefixMappings(controller, messageAndSubscribeExtractors);
         List<String> suffixes = getAllMappings(method, subscribeExtractors);
         return PathUtils.joinAll(prefixes, suffixes);
     }
@@ -85,12 +76,18 @@ public class MappingsResolver {
 
     private static List<String> getMappingsFromGroup(Method method, Class<?> controller,
             List<PathExtractor<?>> extractors) {
+        List<String> prefixes = getPrefixMappings(controller, extractors);
+        List<String> suffixes = getAllMappings(method, extractors);
+        return PathUtils.joinAll(prefixes, suffixes);
+    }
+
+    @NotNull
+    private static List<String> getPrefixMappings(Class<?> controller, List<PathExtractor<?>> extractors) {
         List<String> prefixes = getAllMappings(controller, extractors);
         if (prefixes.isEmpty()) {
             prefixes.add("");
         }
-        List<String> suffixes = getAllMappings(method, extractors);
-        return PathUtils.joinAll(prefixes, suffixes);
+        return prefixes;
     }
 
     private static List<String> getAllMappings(AnnotatedElement element, List<PathExtractor<?>> extractors) {
@@ -99,5 +96,4 @@ public class MappingsResolver {
                          .flatMap(Collection::stream)
                          .collect(Collectors.toList());
     }
-
 }

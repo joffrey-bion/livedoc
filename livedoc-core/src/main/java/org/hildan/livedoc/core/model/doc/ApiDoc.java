@@ -3,6 +3,7 @@ package org.hildan.livedoc.core.model.doc;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.model.doc.auth.AuthDoc;
 import org.hildan.livedoc.core.model.doc.auth.Secured;
 import org.hildan.livedoc.core.model.doc.version.VersionDoc;
@@ -25,6 +26,8 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
     private String group;
 
     private List<ApiOperationDoc> operations;
+
+    private List<AsyncMessageDoc> messages;
 
     private Stage stage;
 
@@ -81,6 +84,14 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
 
     public void setOperations(List<ApiOperationDoc> operations) {
         this.operations = operations;
+    }
+
+    public List<AsyncMessageDoc> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<AsyncMessageDoc> messages) {
+        this.messages = messages;
     }
 
     @Override

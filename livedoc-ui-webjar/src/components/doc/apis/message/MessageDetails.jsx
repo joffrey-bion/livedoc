@@ -1,35 +1,29 @@
 // @flow
 import * as React from 'react';
 import { Table } from 'reactstrap';
-import type { ApiOperationDoc } from '../../../../model/livedoc';
+import type { AsyncMessageDoc } from '../../../../model/livedoc';
 import { StageBadge } from '../../../shared/content/StageBadge';
+import { TypeRef } from '../../typeref/TypeRef';
 import { AuthInfo } from '../AuthInfo';
 import { HeadersTable } from '../headers/HeadersTable';
 import { ParamsTable } from '../params/ParamsTable';
-import { TypeRefWithMime } from '../../typeref/TypeRefWithMime';
 
-export type ApiOperationDetailsProps = {
-  operationDoc: ApiOperationDoc,
+export type MessageDetailsProps = {
+  messageDoc: AsyncMessageDoc,
 }
 
-export const ApiOperationDetails = (props: ApiOperationDetailsProps) => {
-  const doc: ApiOperationDoc = props.operationDoc;
+export const MessageDetails = ({messageDoc}: MessageDetailsProps) => {
+  const doc: AsyncMessageDoc = messageDoc;
 
   let rows = [];
-  if (doc.pathParameters && doc.pathParameters.length > 0) {
-    rows.push(row('Path Params', <ParamsTable params={doc.pathParameters}/>));
-  }
-  if (doc.queryParameters && doc.queryParameters.length > 0) {
-    rows.push(row('Query Params', <ParamsTable params={doc.queryParameters}/>));
+  if (doc.destinationVariables && doc.destinationVariables.length > 0) {
+    rows.push(row('Destination variables', <ParamsTable params={doc.destinationVariables}/>));
   }
   if (doc.headers && doc.headers.length > 0) {
     rows.push(row('Headers', <HeadersTable headers={doc.headers}/>));
   }
-  if (doc.requestBody) {
-    rows.push(row('Request body type', <TypeRefWithMime type={doc.requestBody.type} mimeTypes={doc.consumes}/>));
-  }
-  if (doc.responseBodyType && doc.responseBodyType.oneLineText !== 'void') {
-    rows.push(row('Response body type', <TypeRefWithMime type={doc.responseBodyType} mimeTypes={doc.produces}/>));
+  if (doc.payloadType && doc.payloadType.oneLineText !== 'void') {
+    rows.push(row('Payload type', <TypeRef type={doc.payloadType}/>));
   }
   if (doc.auth) {
     rows.push(row('Authentication', <AuthInfo auth={doc.auth}/>));

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-class PathUtils {
+public class PathUtils {
 
-    static List<String> joinAll(Collection<String> pathPrefixes, Collection<String> pathsSuffixes) {
+    public static List<String> joinAll(Collection<String> pathPrefixes, Collection<String> pathsSuffixes) {
         List<String> mappings = new ArrayList<>();
         for (String controllerPath : pathPrefixes) {
             for (String methodPath : pathsSuffixes) {

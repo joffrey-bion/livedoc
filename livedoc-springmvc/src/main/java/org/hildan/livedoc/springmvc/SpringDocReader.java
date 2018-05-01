@@ -1,30 +1,22 @@
 package org.hildan.livedoc.springmvc;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.types.LivedocType;
+import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.readers.DocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringHeaderBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringMediaTypeBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringPathVariableBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringQueryParamBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringRequestBodyBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringResponseStatusBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.SpringVerbBuilder;
-import org.hildan.livedoc.springmvc.scanner.builder.path.MappingsResolver;
-import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
+import org.hildan.livedoc.springmvc.readers.messages.MessageHandlerReader;
+import org.hildan.livedoc.springmvc.readers.request.RequestHandlerReader;
+import org.hildan.livedoc.springmvc.utils.ClasspathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
@@ -91,12 +83,6 @@ public class SpringDocReader implements DocReader {
                 return true;
             }
         }
-        if (ClasspathUtils.isMessageMappingOnClasspath() && method.isAnnotationPresent(MessageMapping.class)) {
-            return true;
-        }
-        if (ClasspathUtils.isSubscribeMappingOnClasspath() && method.isAnnotationPresent(SubscribeMapping.class)) {
-            return true;
-        }
         return false;
     }
 
@@ -108,51 +94,26 @@ public class SpringDocReader implements DocReader {
         if (!isApiOperation(method, controller)) {
             return Optional.empty();
         }
-        return Optional.of(buildApiOperationDoc(method, controller, typeReferenceProvider, templateProvider));
+        return Optional.of(
+                RequestHandlerReader.buildApiOperationDoc(method, controller, typeReferenceProvider, templateProvider));
     }
 
-    private ApiOperationDoc buildApiOperationDoc(Method method, Class<?> controller,
-            TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
-        ApiOperationDoc apiOperationDoc = new ApiOperationDoc();
-        apiOperationDoc.setPaths(MappingsResolver.getPathsMappings(method, controller));
-        apiOperationDoc.setName(method.getName());
-        apiOperationDoc.setVerbs(SpringVerbBuilder.buildVerb(method, controller));
-        apiOperationDoc.setProduces(SpringMediaTypeBuilder.buildProduces(method, controller));
-        apiOperationDoc.setConsumes(SpringMediaTypeBuilder.buildConsumes(method, controller));
-        apiOperationDoc.setHeaders(SpringHeaderBuilder.buildHeaders(method, controller));
-        apiOperationDoc.setPathParameters(SpringPathVariableBuilder.buildPathVariable(method, typeReferenceProvider));
-        apiOperationDoc.setQueryParameters(
-                SpringQueryParamBuilder.buildQueryParams(method, controller, typeReferenceProvider));
-        apiOperationDoc.setRequestBody(
-                SpringRequestBodyBuilder.buildRequestBody(method, typeReferenceProvider, templateProvider));
-        apiOperationDoc.setResponseBodyType(buildResponse(method, typeReferenceProvider));
-        apiOperationDoc.setResponseStatusCode(SpringResponseStatusBuilder.buildResponseStatusCode(method));
-        return apiOperationDoc;
-    }
-
-    /**
-     * Builds the response body type from the method's return type.
-     * <p>
-     * This method handles Spring's {@link ResponseEntity} wrappers by unwrapping them, because they don't matter to the
-     * user of the doc.
-     *
-     * @param method
-     *         the method to create the response object for
-     * @param typeReferenceProvider
-     *         a provider for {@link LivedocType} objects
-     *
-     * @return the created {@link LivedocType}
-     */
-    private static LivedocType buildResponse(Method method, TypeReferenceProvider typeReferenceProvider) {
-        Type returnType = getActualReturnType(method);
-        return typeReferenceProvider.getReference(returnType);
-    }
-
-    private static Type getActualReturnType(Method method) {
-        Type returnType = method.getGenericReturnType();
-        if (ResponseEntity.class.equals(method.getReturnType())) {
-            returnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+    @Override
+    public boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller) {
+        if (ClasspathUtils.isMessageMappingOnClasspath() && method.isAnnotationPresent(MessageMapping.class)) {
+            return true;
         }
-        return returnType;
+        if (ClasspathUtils.isSubscribeMappingOnClasspath() && method.isAnnotationPresent(SubscribeMapping.class)) {
+            return true;
+        }
+        return false;
+    }
+
+    @NotNull
+    @Override
+    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
+            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
+            @NotNull TemplateProvider templateProvider) {
+        return MessageHandlerReader.read(method, controller, typeReferenceProvider);
     }
 }

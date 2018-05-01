@@ -66,6 +66,7 @@ export type ApiDoc = Identified & Named & Versioned & Secured & Staged & {
   description: string,
   group: string,
   operations: Array<ApiOperationDoc>,
+  messages: Array<AsyncMessageDoc>,
 };
 
 export type ApiErrorDoc = Identified & {
@@ -123,6 +124,20 @@ export type ApiOperationDoc = Identified & LivedocHints & Versioned & Staged & {
   apiErrors: Array<ApiErrorDoc>,
   auth: ApiAuthDoc,
 }
+
+export type AsyncMessageDoc = Identified & LivedocHints & Versioned & Staged & Secured & {
+  name: string,
+  summary: string,
+  description: string,
+  command: AsyncCommand,
+  destinations: Array<string>,
+  destinationVariables: Array<ApiParamDoc>,
+  headers: Array<ApiHeaderDoc>,
+  payloadType: LivedocType,
+  triggeredMessages: Array<AsyncMessageDoc>,
+}
+
+export type AsyncCommand = 'SEND' | 'SUBSCRIBE';
 
 export type ApiTypeDoc = Identified & Named & LivedocHints & Versioned & Staged & {
   description: string,

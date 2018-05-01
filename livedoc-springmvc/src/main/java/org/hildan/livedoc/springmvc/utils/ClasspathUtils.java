@@ -26,6 +26,22 @@ public class ClasspathUtils {
         return isOnClassPath("org.springframework.web.bind.annotation.GetMapping");
     }
 
+    public static boolean isCompletableFutureOnClasspath() {
+        return isOnClassPath("java.util.concurrent.CompletableFuture");
+    }
+
+    public static boolean isCompletionStageOnClasspath() {
+        return isOnClassPath("java.util.concurrent.CompletionStage");
+    }
+
+    public static boolean isSendToOnClasspath() {
+        return isOnClassPath("org.springframework.messaging.handler.annotation.SendTo");
+    }
+
+    public static boolean isSendToUserOnClasspath() {
+        return isOnClassPath("org.springframework.messaging.simp.annotation.SendToUser");
+    }
+
     private static boolean isOnClassPath(String fullyQualifiedClassName) {
         try {
             Class.forName(fullyQualifiedClassName);
