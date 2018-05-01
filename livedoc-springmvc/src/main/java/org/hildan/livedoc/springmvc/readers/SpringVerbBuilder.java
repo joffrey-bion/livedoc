@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner.builder;
+package org.hildan.livedoc.springmvc.readers;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.ApiVerb;
-import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
+import org.hildan.livedoc.springmvc.utils.ClasspathUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

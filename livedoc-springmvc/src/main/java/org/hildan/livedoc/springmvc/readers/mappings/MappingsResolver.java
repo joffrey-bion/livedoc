@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner.builder.path;
+package org.hildan.livedoc.springmvc.readers.mappings;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hildan.livedoc.springmvc.scanner.utils.ClasspathUtils;
+import org.hildan.livedoc.springmvc.utils.ClasspathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;

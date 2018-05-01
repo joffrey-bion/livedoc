@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner.builder.path;
+package org.hildan.livedoc.springmvc.readers.mappings;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner.utils;
+package org.hildan.livedoc.springmvc.utils;
 
 public class ClasspathUtils {
 

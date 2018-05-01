@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner.builder;
+package org.hildan.livedoc.springmvc.readers;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;

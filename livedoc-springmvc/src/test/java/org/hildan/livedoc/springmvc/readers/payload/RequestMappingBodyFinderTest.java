@@ -1,4 +1,4 @@
-package org.hildan.livedoc.springmvc.scanner;
+package org.hildan.livedoc.springmvc.readers.payload;
 
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-public class SpringRequestBodyBuilderTest {
+public class RequestMappingBodyFinderTest {
 
     @SuppressWarnings("unused")
     @Controller
