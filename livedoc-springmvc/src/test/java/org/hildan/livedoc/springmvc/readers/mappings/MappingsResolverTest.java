@@ -1,54 +1,63 @@
 package org.hildan.livedoc.springmvc.readers.mappings;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hildan.livedoc.core.model.doc.ApiDoc;
-import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.springmvc.test.TestUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static org.junit.Assert.assertTrue;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
 
 public class MappingsResolverTest {
 
     @SuppressWarnings("unused")
     @Controller
-    @RequestMapping
-    private static class SpringController {
+    private static class StandardController {
+
+        @RequestMapping
+        public void none() {
+        }
+
+        @RequestMapping("/")
+        public void slash() {
+        }
 
         @RequestMapping("/path")
         public void slashPath() {
         }
 
-        @RequestMapping("/")
-        public void path() {
+        @RequestMapping("/long/path")
+        public void slashLongPath() {
         }
 
-        @RequestMapping()
-        public void none() {
+        @RequestMapping(path = "/path/attr")
+        public void pathAttribute() {
         }
     }
 
     @Test
-    public void testPath() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController.class);
-        Assert.assertEquals("SpringController", apiDoc.getName());
+    public void getRequestMappings_noClassAnnotation() throws NoSuchMethodException {
+        Class<?> ctrl = StandardController.class;
+        Method none = ctrl.getDeclaredMethod("none");
+        Method slash = ctrl.getDeclaredMethod("slash");
+        Method slashPath = ctrl.getDeclaredMethod("slashPath");
+        Method longPath = ctrl.getDeclaredMethod("slashLongPath");
+        Method pathAttribute = ctrl.getDeclaredMethod("pathAttribute");
 
-        boolean slashPath = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/path"));
-        assertTrue(slashPath);
-
-        boolean slash = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/"));
-        assertTrue(slash);
+        assertEquals(singletonList("/"), MappingsResolver.getRequestMappings(none, ctrl));
+        assertEquals(singletonList("/"), MappingsResolver.getRequestMappings(slash, ctrl));
+        assertEquals(singletonList("/path"), MappingsResolver.getRequestMappings(slashPath, ctrl));
+        assertEquals(singletonList("/long/path"), MappingsResolver.getRequestMappings(longPath, ctrl));
+        assertEquals(singletonList("/path/attr"), MappingsResolver.getRequestMappings(pathAttribute, ctrl));
     }
 
     @SuppressWarnings("unused")
     @Controller
     @RequestMapping
-    private static class SpringController2 {
+    private static class EmptyAnnotatedController {
 
         @RequestMapping
         public void none() {
@@ -60,101 +69,91 @@ public class MappingsResolverTest {
     }
 
     @Test
-    public void testPath2() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController2.class);
-        Assert.assertEquals("SpringController2", apiDoc.getName());
+    public void getRequestMappings_emptyClassAnnotation() throws NoSuchMethodException {
+        Class<?> ctrl = EmptyAnnotatedController.class;
+        Method none = ctrl.getDeclaredMethod("none");
+        Method test = ctrl.getDeclaredMethod("test");
 
-        boolean none = apiDoc.getOperations().stream().anyMatch(input -> {
-            System.out.println(input.getPaths());
-            return input.getPaths().contains("/");
-        });
-        assertTrue(none);
+        assertEquals(singletonList("/"), MappingsResolver.getRequestMappings(none, ctrl));
+        assertEquals(singletonList("/test"), MappingsResolver.getRequestMappings(test, ctrl));
+    }
 
-        boolean test = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/test"));
-        assertTrue(test);
+    @SuppressWarnings("unused")
+    @Controller
+    @RequestMapping("/prefix")
+    private static class PrefixAnnotatedController {
+
+        @RequestMapping
+        public void none() {
+        }
+
+        @RequestMapping("/test")
+        public void test() {
+        }
+    }
+
+    @Test
+    public void getRequestMappings_classAnnotationWithPrefix() throws NoSuchMethodException {
+        Class<?> ctrl = PrefixAnnotatedController.class;
+        Method none = ctrl.getDeclaredMethod("none");
+        Method test = ctrl.getDeclaredMethod("test");
+
+        assertEquals(singletonList("/prefix"), MappingsResolver.getRequestMappings(none, ctrl));
+        assertEquals(singletonList("/prefix/test"), MappingsResolver.getRequestMappings(test, ctrl));
     }
 
     @SuppressWarnings("unused")
     @Controller
     @RequestMapping("/child")
-    private static class SpringControllerChild extends SpringController2 {
+    private static class PrefixOverrideChildController extends PrefixAnnotatedController {
 
     }
 
     @Test
-    public void testPathInherited() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringControllerChild.class);
-        Assert.assertEquals("SpringControllerChild", apiDoc.getName());
+    public void getRequestMappings_childController_prefixOverride() throws NoSuchMethodException {
+        Class<?> ctrl = PrefixOverrideChildController.class;
+        Method none = ctrl.getMethod("none");
+        Method test = ctrl.getMethod("test");
 
-        boolean none = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/child"));
-        assertTrue(none);
-
-        boolean test = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/child/test"));
-        assertTrue(test);
+        assertEquals(singletonList("/child"), MappingsResolver.getRequestMappings(none, ctrl));
+        assertEquals(singletonList("/child/test"), MappingsResolver.getRequestMappings(test, ctrl));
     }
 
     @SuppressWarnings("unused")
     @Controller
     @RequestMapping({"/path1", "/path2/"})
-    private static class SpringController3 {
+    private static class MultiPathController {
 
         @RequestMapping({"/path3", "path4"})
-        public void none() {
+        public void test() {
         }
     }
 
     @Test
-    public void testPath3() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController3.class);
-        Assert.assertEquals("SpringController3", apiDoc.getName());
+    public void getRequestMappings_multiplePaths() throws NoSuchMethodException {
+        Class<?> ctrl = MultiPathController.class;
+        Method test = ctrl.getMethod("test");
 
-        boolean allRight = apiDoc.getOperations()
-                                 .stream()
-                                 .anyMatch(input -> input.getPaths()
-                                                         .containsAll(Arrays.asList("/path1/path3", "/path1/path4",
-                                                                 "/path2/path3", "/path2/path4")));
-        assertTrue(allRight);
+        List<String> expectedPaths = Arrays.asList("/path1/path3", "/path1/path4", "/path2/path3", "/path2/path4");
+        assertEquals(expectedPaths, MappingsResolver.getRequestMappings(test, ctrl));
     }
 
     @SuppressWarnings("unused")
     @Controller
-    @RequestMapping("/path")
-    private static class SpringController4 {
+    @RequestMapping(value = "/val1", path = {"/path", "/path2"})
+    private static class ValueAndPathAttributeController {
 
         @RequestMapping
-        public void none() {
+        public void test() {
         }
     }
 
     @Test
-    public void testPath4() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController4.class);
-        Assert.assertEquals("SpringController4", apiDoc.getName());
+    public void getRequestMappings_mixValueAndPathAttributes() throws NoSuchMethodException {
+        Class<?> ctrl = ValueAndPathAttributeController.class;
+        Method test = ctrl.getMethod("test");
 
-        boolean allRight = apiDoc.getOperations().stream().anyMatch(input -> input.getPaths().contains("/path"));
-        assertTrue(allRight);
-    }
-
-    @SuppressWarnings("unused")
-    @Controller
-    @RequestMapping(path = {"/path", "/path2"}, value = "/val1")
-    private static class SpringController5 {
-
-        @RequestMapping
-        public void none() {
-        }
-    }
-
-    @Test
-    public void testPath5() {
-        ApiDoc apiDoc = TestUtils.buildDoc(SpringController5.class);
-        Assert.assertEquals("SpringController5", apiDoc.getName());
-
-        List<String> expectedPaths = Arrays.asList("/path", "/path2", "/val1");
-        boolean allRight = apiDoc.getOperations()
-                                 .stream()
-                                 .map(ApiOperationDoc::getPaths)
-                                 .anyMatch(paths -> paths.containsAll(expectedPaths));
-        assertTrue(allRight);
+        List<String> expectedPaths = Arrays.asList("/val1", "/path", "/path2");
+        assertEquals(expectedPaths, MappingsResolver.getRequestMappings(test, ctrl));
     }
 }

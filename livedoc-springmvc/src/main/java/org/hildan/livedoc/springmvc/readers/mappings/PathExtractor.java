@@ -2,11 +2,10 @@ package org.hildan.livedoc.springmvc.readers.mappings;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 class PathExtractor<A extends Annotation> {
@@ -26,12 +25,12 @@ class PathExtractor<A extends Annotation> {
         return new PathExtractor<>(annotationClass, Arrays.asList(pathsExtractors));
     }
 
-    Set<String> extractPaths(AnnotatedElement element) {
+    List<String> extractPaths(AnnotatedElement element) {
         A annotation = element.getAnnotation(annotationClass);
         if (annotation == null) {
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
-        Set<String> paths = new HashSet<>();
+        List<String> paths = new ArrayList<>();
         for (Function<A, String[]> pathExtractor : pathsExtractors) {
             Collections.addAll(paths, pathExtractor.apply(annotation));
         }
