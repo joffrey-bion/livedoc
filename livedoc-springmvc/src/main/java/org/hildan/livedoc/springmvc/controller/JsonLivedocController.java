@@ -7,7 +7,7 @@ import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
-import org.springframework.http.MediaType;
+import org.hildan.livedoc.springmvc.converter.LivedocMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +50,7 @@ public class JsonLivedocController {
 
     @RequestMapping(value = JsonLivedocController.JSON_DOC_ENDPOINT,
                     method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
+                    produces = LivedocMessageConverter.APPLICATION_LIVEDOC)
     @CrossOrigin
     @ResponseBody
     public Livedoc getJsonLivedoc(HttpServletRequest request) {

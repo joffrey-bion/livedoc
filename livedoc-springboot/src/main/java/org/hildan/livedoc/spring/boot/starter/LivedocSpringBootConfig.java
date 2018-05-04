@@ -5,19 +5,22 @@ import java.util.List;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.springmvc.controller.JsonLivedocController;
+import org.hildan.livedoc.springmvc.converter.LivedocMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableConfigurationProperties(LivedocProperties.class)
 @ConditionalOnClass(JsonLivedocController.class)
-public class LivedocSpringBootConfig {
+public class LivedocSpringBootConfig extends WebMvcConfigurerAdapter {
 
     static final String LIVEDOC_PROPERTIES_PREFIX = "livedoc";
 
@@ -35,6 +38,12 @@ public class LivedocSpringBootConfig {
         LivedocConfiguration config = getLivedocConfiguration(properties);
         ObjectMapper objectMapper = getObjectMapper();
         return new JsonLivedocController(apiInfo, config, objectMapper);
+    }
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // this is to make sure the ObjectMapper used to send the JSON livedoc is independent from the user
+        converters.add(0, new LivedocMessageConverter());
     }
 
     private static LivedocConfiguration getLivedocConfiguration(LivedocProperties properties) {

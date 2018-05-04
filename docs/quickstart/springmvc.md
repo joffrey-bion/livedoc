@@ -40,10 +40,9 @@ Here is an example Java configuration in Spring MVC:
 
 ```java
 @Configuration
-public class LivedocSpringBootConfig {
+public class LivedocControllerConfig {
 
-    // We don't directly get the ObjectMapper here because reasons:
-    // https://stackoverflow.com/questions/30060006/how-do-i-obtain-the-jackson-objectmapper-in-use-by-spring-4-1
+    // This is to get the actual ObjectMapper used by Spring
     @Autowired(required = false)
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
 
@@ -109,6 +108,29 @@ Spring, but it will be a new `ObjectMapper` with Spring defaults):
     </constructor-arg>
 </bean>
 ```
+
+### Make Livedoc's JSON serialization independent
+
+Sometimes, you'd like to configure a custom Jackson `ObjectMapper` for your API, which is a legitimate need. 
+That being said, if you have done so, your custom mapper could affect Livedoc's JSON output, which in turn could break 
+the Livedoc UI.
+
+To use an independent `ObjectMapper` for Livedoc's JSON serialization and avoid potential issues, simply add the 
+provided `LivedocMessageConverter` to your Web MVC configuration: 
+
+```java
+@Configuration
+public class WebConfig extends WebMvcConfigurerAdapter {
+                                     
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(0, new LivedocMessageConverter());
+    }
+}
+```
+
+The `LivedocMessageConverter` is configured to only support Livedoc's custom media type `application/livedoc+json`, 
+and thus won't affect your own API.
 
 ## Access the documentation
 
