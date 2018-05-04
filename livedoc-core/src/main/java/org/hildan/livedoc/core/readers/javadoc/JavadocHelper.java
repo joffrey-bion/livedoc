@@ -17,7 +17,7 @@ import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
 
 public class JavadocHelper {
 
-    private static final CommentFormatter COMMENT_FORMATTER = new CommentFormatter();
+    private static final CommentFormatter COMMENT_FORMATTER = new LivedocCommentFormatter();
 
     private static String formatComment(Comment comment) {
         return COMMENT_FORMATTER.format(comment).trim();

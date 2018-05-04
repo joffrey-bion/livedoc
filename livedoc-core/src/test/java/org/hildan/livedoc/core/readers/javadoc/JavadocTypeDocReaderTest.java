@@ -28,7 +28,7 @@ public class JavadocTypeDocReaderTest {
     private static class Person {
 
         /**
-         * The name of this person.
+         * The name of this {@link Person}.
          */
         private String name;
 
@@ -55,7 +55,7 @@ public class JavadocTypeDocReaderTest {
         }
 
         /**
-         * Gets this person's phone number.
+         * Gets this person's {@code phone number}.
          */
         public String getPhone() {
             return phone;
@@ -117,10 +117,10 @@ public class JavadocTypeDocReaderTest {
         assertEquals("age", ageDoc.getName());
         assertEquals("phone", phoneDoc.getName());
         // takes field doc if present
-        assertEquals("The name of this person.", nameDoc.getDescription());
+        assertEquals("The name of this <code>Person</code>.", nameDoc.getDescription());
         // takes the return description if no field doc
         assertEquals("this person's age", ageDoc.getDescription());
         // takes the method description if neither field doc nor return description
-        assertEquals("Gets this person's phone number.", phoneDoc.getDescription());
+        assertEquals("Gets this person's <code>phone number</code>.", phoneDoc.getDescription());
     }
 }
