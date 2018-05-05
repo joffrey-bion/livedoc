@@ -1,5 +1,16 @@
 # Change Log
 
+## [v4.4.2](https://bintray.com/joffrey-bion/maven/livedoc/4.4.2) (2018-05-05)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.4.1...v4.4.2)
+
+**Implemented enhancements:**
+
+- Support Javadoc @link/@code tags [\#88](https://github.com/joffrey-bion/livedoc/issues/88)
+
+**Fixed bugs:**
+
+- JSON output is affected by the user's custom ObjectMapper [\#106](https://github.com/joffrey-bion/livedoc/issues/106)
+
 ## [v4.4.1](https://bintray.com/joffrey-bion/maven/livedoc/4.4.1) (2018-04-29)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.4.0...v4.4.1)
 
@@ -43,10 +54,6 @@
 - Bad template for field of type Object [\#83](https://github.com/joffrey-bion/livedoc/issues/83)
 - Livedoc generates malformed JSON  [\#79](https://github.com/joffrey-bion/livedoc/issues/79)
 
-**Closed issues:**
-
-- Host a demo for users to have a feel of the UI [\#49](https://github.com/joffrey-bion/livedoc/issues/49)
-
 ## [v4.3.0](https://bintray.com/joffrey-bion/maven/livedoc/4.3.0) (2018-04-06)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.2.0...v4.3.0)
 
@@ -57,7 +64,6 @@
 **Closed issues:**
 
 - Livedoc-UI forgets the url if an error occurs during loading [\#80](https://github.com/joffrey-bion/livedoc/issues/80)
-- Remove deprecated stuff from Gradle build [\#77](https://github.com/joffrey-bion/livedoc/issues/77)
 
 ## [v4.2.0](https://bintray.com/joffrey-bion/maven/livedoc/4.2.0) (2018-03-29)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.1.0...v4.2.0)
@@ -73,10 +79,6 @@
 
 - Remove @ApiVisibility feature [\#74](https://github.com/joffrey-bion/livedoc/issues/74)
 - Add support for other Spring mapping annotations [\#69](https://github.com/joffrey-bion/livedoc/issues/69)
-
-**Closed issues:**
-
-- livedoc-ui-webjar v4 missing from MavenCentral [\#72](https://github.com/joffrey-bion/livedoc/issues/72)
 
 ## [v4.0.0](https://bintray.com/joffrey-bion/maven/livedoc/4.0.0) (2018-03-02)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v3.0.0...v4.0.0)
@@ -116,11 +118,6 @@
 - Jsondoc examples does not use settings from springs ObjectMapper [\#42](https://github.com/joffrey-bion/livedoc/issues/42)
 - NoClassDefFoundError: org/springframework/messaging/MessageHeaders [\#41](https://github.com/joffrey-bion/livedoc/issues/41)
 - Remove hard dependency on spring-boot-starter-web in livedoc-springmvc [\#40](https://github.com/joffrey-bion/livedoc/issues/40)
-
-**Closed issues:**
-
-- Use tabs for dependency inclusion with Gradle/Maven [\#50](https://github.com/joffrey-bion/livedoc/issues/50)
-- Add quick-start documentation in the README [\#48](https://github.com/joffrey-bion/livedoc/issues/48)
 
 ## [v2.1.1](https://bintray.com/joffrey-bion/maven/livedoc/2.1.1) (2017-09-28)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v2.1.0...v2.1.1)
