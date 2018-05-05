@@ -1,12 +1,13 @@
 package org.hildan.livedoc.spring.boot.starter;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.model.doc.Livedoc.MethodDisplay;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = LivedocSpringBootConfig.LIVEDOC_PROPERTIES_PREFIX)
+@ConfigurationProperties(prefix = "livedoc")
 public class LivedocProperties {
 
     /**
@@ -41,16 +42,16 @@ public class LivedocProperties {
      */
     private MethodDisplay displayMethodAs = MethodDisplay.URI;
 
-    public String getName() {
-        return name;
+    public Optional<String> getName() {
+        return Optional.ofNullable(name);
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getVersion() {
-        return version;
+    public Optional<String> getVersion() {
+        return Optional.ofNullable(version);
     }
 
     public void setVersion(String version) {

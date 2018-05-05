@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -19,10 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableConfigurationProperties(LivedocProperties.class)
+@PropertySource(value = "classpath:META-INF/build-info.properties", ignoreResourceNotFound = true)
 @ConditionalOnClass(JsonLivedocController.class)
 public class LivedocSpringBootConfig extends WebMvcConfigurerAdapter {
 
-    static final String LIVEDOC_PROPERTIES_PREFIX = "livedoc";
+    @Autowired
+    private Environment env;
 
     @Autowired
     private LivedocProperties properties;
@@ -58,10 +62,10 @@ public class LivedocSpringBootConfig extends WebMvcConfigurerAdapter {
         return config;
     }
 
-    private static ApiMetaData getApiMetaData(LivedocProperties properties) {
+    private ApiMetaData getApiMetaData(LivedocProperties properties) {
         ApiMetaData apiInfo = new ApiMetaData();
-        apiInfo.setName(properties.getName());
-        apiInfo.setVersion(properties.getVersion());
+        apiInfo.setName(properties.getName().orElseGet(() -> env.getProperty("build.name")));
+        apiInfo.setVersion(properties.getVersion().orElseGet(() -> env.getProperty("build.version")));
         apiInfo.setBaseUrl(properties.getBaseUrl());
         return apiInfo;
     }
