@@ -1,6 +1,5 @@
 package org.hildan.livedoc.spring.boot.starter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hildan.livedoc.core.annotations.ApiOperation;
@@ -28,7 +27,7 @@ public class LivedocProperties {
     /**
      * The list of packages that to scan to look for annotated classes to be documented.
      */
-    private List<String> packages = new ArrayList<>();
+    private List<String> packages;
 
     /**
      * Whether the playground should be enabled in the UI or not. Defaults to true.
