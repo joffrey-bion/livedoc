@@ -53,9 +53,11 @@ springBoot {
     buildInfo()
 }
 ```
-If the build info is available, Livedoc will fall back to this when you don't provide the name or version in your 
-`application.properties`. You can read more information about this in 
+You can read more information about this in 
 [the official documentation of the plugin](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/#integrating-with-actuator-build-info).
+
+If the build info is available, Livedoc will fall back to this when you don't provide the name or version in your 
+`application.properties`. 
 
 ## Enable JSON documentation on your configuration class
 
