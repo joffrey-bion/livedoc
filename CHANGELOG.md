@@ -1,5 +1,12 @@
 # Change Log
 
+## [v4.5.0](https://bintray.com/joffrey-bion/maven/livedoc/4.5.0) (2018-05-05)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.4.2...v4.5.0)
+
+**Implemented enhancements:**
+
+- Use build-info version as fallback for livedoc.version property [\#108](https://github.com/joffrey-bion/livedoc/issues/108)
+
 ## [v4.4.2](https://bintray.com/joffrey-bion/maven/livedoc/4.4.2) (2018-05-05)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.4.1...v4.4.2)
 
