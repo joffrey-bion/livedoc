@@ -5,5 +5,5 @@ since-tag=v0.1.0
 exclude-tags=v0.4.1,v0.4.2,v0.4.3
 bug-labels=bug
 enhancement-labels=enhancement
-exclude-labels=wontfix,duplicate,invalid,internal
+exclude-labels=wontfix,duplicate,invalid,internal,meta / documentation,question
 release-url=https://bintray.com/joffrey-bion/maven/livedoc/%s
