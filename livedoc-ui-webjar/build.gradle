@@ -28,6 +28,12 @@ task testJs(type: YarnTask) {
     args = ['test:oneshot']
 }
 
+task syncPackageVersion(type: YarnTask) {
+    args = ['version', '--new-version', project.version]
+}
+bundle.mustRunAfter(syncPackageVersion)
+rootProject.tasks.syncVersion.dependsOn(syncPackageVersion)
+
 jar {
     from('build') {
         include '*.*'
