@@ -24,17 +24,24 @@ If not already present, you may create `application.properties` in `src/main/res
 package), and add the following content:
 
 ```properties
-# mandatory configuration
+livedoc.packages=com.mycompany.controller,com.mycompany.model,org.example.external.model
+```
+
+That's right, the package list is the only required configuration for livedoc.
+If you want a bit more control, you may configure other properties:
+
+```properties
 livedoc.name=My API
 livedoc.version=1.0
-livedoc.packages[0]=com.mycompany.controller #packages in which you have your spring controllers
-livedoc.packages[1]=com.mycompany.model #packages in which you have your model classes
-livedoc.packages[2]=org.example.external.model #they can also belong to external jars
-# optional configuration
-livedoc.baseUrl=http://localhost:8080/api #defaults to current server and context path
+livedoc.packages=com.mycompany.controller,com.mycompany.model,org.example.external.model
+livedoc.baseUrl=http://localhost:8080/api
 livedoc.playgroundEnabled=true
 livedoc.displayMethodAs=URI
 ```
+
+Here is what each of these properties means:
+
+{% include configuration-variables.md %}
 
 ## Enable JSON documentation on your configuration class
 
@@ -57,3 +64,13 @@ By navigating to the `/jsondoc` endpoint on your server, you may get the JSON de
 
 More interesting, you may also use the provided UI with [very few steps](../livedoc-ui).
 
+## Note on Livedoc's JSON serialization
+
+Sometimes, you'd like to configure a custom Jackson `ObjectMapper` for your API, which is a legitimate need. 
+Such a custom mapper could affect Livedoc's JSON output, which in turn could break the Livedoc UI.
+
+This is why `@EnableJSONDoc` also registers a `LivedocMessageConverter`, which handles Livedoc's custom media type 
+`application/livedoc+json` returned by `/jsondoc`, using an independent `ObjectMapper`.
+
+This won't affect your own API, but it may be surprising that the JSON produced by `/jsondoc` does not follow your 
+configuration, hence this short note.

@@ -78,8 +78,12 @@ public class LivedocControllerConfig {
 }
 ```
 
-Here is an almost equivalent XML configuration (note that the `ObjectMapper` used here is not the one actually used by 
-Spring, but it will be a new `ObjectMapper` with Spring defaults):
+Here is what each of these properties means:
+
+{% include configuration-variables.md %}
+
+If you prefer XML, here is an almost equivalent XML configuration (note that the `ObjectMapper` used here is not the 
+one actually used by Spring, but it will be a new `ObjectMapper` with Spring defaults):
 ```xml
 <bean id="documentationController" class="org.hildan.livedoc.springmvc.controller.JsonLivedocController">
     <constructor-arg name="apiInfo">
