@@ -12,17 +12,22 @@ export function* watchFetchDoc(): SagaIterator {
   yield takeLatest(FETCH_DOC, fetchDoc);
 }
 
+const fetchOptions = {
+  headers: {
+    'Accept': 'application/livedoc+json'
+  },
+  mode: 'cors',
+  credentials: 'include',
+};
+
 function* fetchDoc(action: FetchDocAction): SagaIterator {
   try {
     console.log('Fetching documentation at', action.url);
-    const response: Response = yield call(fetch, action.url, {
-      mode: 'cors',
-      credentials: 'include',
-    });
+    const response: Response = yield call(fetch, action.url, fetchOptions);
     yield* handleResponse(response);
   } catch (error) {
-    console.error('Could not get documentation', error);
-    yield* handleError(error.toString());
+    yield* handleError('Could not fetch documentation. Potential causes: a malformed URL, network issue, or a' +
+            ' CORS request that is not allowed by the server. Please open the console for details.');
   }
 }
 
