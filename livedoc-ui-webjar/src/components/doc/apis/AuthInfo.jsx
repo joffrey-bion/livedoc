@@ -18,5 +18,5 @@ const Scheme = ({scheme}) => {
   if (!scheme) {
     return null;
   }
-  return [' – Scheme: ', <code>{scheme}</code>];
+  return <span> – Scheme: <code>{scheme}</code></span>;
 };
