@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, CardText, Collapse } from 'reactstrap';
 import type { AsyncCommand, AsyncMessageDoc, LivedocID } from '../../../../model/livedoc';
 import { RouteHelper } from '../../../../routing/routeHelper';
+import { Html } from '../../../shared/content/Html';
 import { MessageDetails } from './MessageDetails';
 
 export type MessagePanelProps = {
@@ -24,7 +25,7 @@ export const MessagePanel = ({messageDoc, parentApiId, open}: MessagePanelProps)
     <CardHeader className="api-method-header" tag={Link} to={linkUrl}>{command} {title}</CardHeader>
     <Collapse isOpen={open}>
       <CardBody>
-        {messageDoc.description && <CardText>{messageDoc.description}</CardText>}
+        {messageDoc.description && <CardText><Html content={messageDoc.description}/></CardText>}
         <MessageDetails messageDoc={messageDoc}/>
       </CardBody>
     </Collapse>

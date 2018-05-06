@@ -2,6 +2,7 @@
 import * as React from 'react';
 import type { ApiHeaderDoc, HeaderFilterType } from '../../../../model/livedoc';
 import { CodeElementsList } from '../../../shared/content/CodeElementsList';
+import { Html } from '../../../shared/content/Html';
 
 export type HeaderRowProps = {
   header: ApiHeaderDoc,
@@ -16,7 +17,7 @@ export const HeaderRow = ({header}: HeaderRowProps) => {
       <code>{header.name}</code>
     </td>
     <td>{value}<FormattedDefaultValue defaultValue={header.defaultValue}/></td>
-    {header.description && <td>{header.description}</td>}
+    {header.description && <td><Html content={header.description}/></td>}
   </tr>;
 };
 

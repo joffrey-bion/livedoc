@@ -39,7 +39,7 @@ public class BookController {
     }
 
     /**
-     * Gets a book given the book ID.
+     * Gets a {@link Book} given the book ID.
      *
      * @param id
      *         the ID of the book to find

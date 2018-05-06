@@ -11,6 +11,7 @@
     "material-ui": "^1.0.0-beta.29",
     "popper.js": "^1.12.9",
     "react": "^16.2.0",
+    "react-active-html": "^1.2.1",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",

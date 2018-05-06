@@ -2,7 +2,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, CardText, Collapse } from 'reactstrap';
-import type { ApiOperationDoc, ApiVerb, AsyncCommand } from '../../../../model/livedoc';
+import type { ApiOperationDoc, ApiVerb } from '../../../../model/livedoc';
+import { Html } from '../../../shared/content/Html';
 import { ApiOperationDetails } from './ApiOperationDetails';
 import './OperationPanel.css';
 
@@ -23,7 +24,7 @@ export const OperationPanel = ({operationDoc, open, collapseUrl, expandUrl}: Ope
     <CardHeader className="api-method-header" tag={Link} to={linkUrl}>{title} {verbs}</CardHeader>
     <Collapse isOpen={open}>
       <CardBody>
-        {operationDoc.description && <CardText>{operationDoc.description}</CardText>}
+        {operationDoc.description && <CardText><Html content={operationDoc.description}/></CardText>}
         <ApiOperationDetails operationDoc={operationDoc}/>
       </CardBody>
     </Collapse>

@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import type { ApiParamDoc } from '../../../../model/livedoc';
+import { Html } from '../../../shared/content/Html';
 import { TypeRefWithFormat } from './TypeRefWithFormat';
 
 export type ParamRowProps = {
@@ -15,6 +16,6 @@ export const ParamRow = ({param}: ParamRowProps) => {
     <td>
       <TypeRefWithFormat type={param.type} required={param.required} format={param.format}/>
     </td>
-    <td>{param.description}</td>
+    <td><Html content={param.description}/></td>
   </tr>;
 };
