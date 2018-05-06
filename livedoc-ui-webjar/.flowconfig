@@ -1,4 +1,5 @@
 [ignore]
+<PROJECT_ROOT>/node_modules/eslint-plugin-jsx-a11y/.*
 <PROJECT_ROOT>/node_modules/redux-persist/.*
 <PROJECT_ROOT>/\.gradle/.*
 
