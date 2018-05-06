@@ -6,7 +6,6 @@ import type { SendHttpRequestAction } from '../redux/actions/playground';
 import { actions, SUBMIT_HTTP } from '../redux/actions/playground';
 
 export function* watchPlaygroundActions(): SagaIterator {
-  console.log('Watching for SUBMIT_HTTP actions');
   yield takeLatest(SUBMIT_HTTP, sendHttpRequest);
 }
 

@@ -8,7 +8,6 @@ import type { FetchDocAction } from '../redux/actions/loader';
 import { actions, FETCH_DOC } from '../redux/actions/loader';
 
 export function* watchFetchDoc(): SagaIterator {
-  console.log('Watching for FETCH_DOC actions');
   yield takeLatest(FETCH_DOC, fetchDoc);
 }
 
