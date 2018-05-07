@@ -21,7 +21,12 @@ def getPropOrEnv = { String prop, String envVar, String defaultValue = null ->
     return System.getenv(envVar) ?: defaultValue
 }
 
+def static getDate() {
+    return new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("GMT"))
+}
+
 ext {
+    buildDate = getDate()
     githubUser = getPropOrEnv('githubUser', 'GITHUB_USER')
     githubRepoName = rootProject.name
     githubSlug = "$githubUser/$githubRepoName"
@@ -80,25 +85,30 @@ subprojects {
     }
 }
 
-// configure java-library
 configure(subprojects.findAll {it.name != 'sample-app'}) {
     apply plugin: 'java-library'
-
-    processResources {
-        filesMatching('**/*.properties') {
-            expand(projectVersion: project.version, buildDate: getDate())
-        }
-    }
-}
-
-def static getDate() {
-    return new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("GMT"))
-}
-
-// configure bintray/maven artifacts upload
-configure(subprojects.findAll {it.name != 'sample-app'}) {
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
+
+    processResources {
+        def expandProps = [projectVersion: project.version, buildDate: buildDate]
+        inputs.properties(expandProps)
+        filesMatching('**/*.properties') {
+            expand(expandProps)
+        }
+    }
+
+    jar {
+        manifest {
+            attributes([
+                    "Implementation-Title"  : project.name,
+                    "Implementation-Version": project.version,
+                    "Specification-Title"  : project.name,
+                    "Specification-Version": project.version,
+                    "Build-Date": buildDate,
+            ])
+        }
+    }
 
     afterEvaluate {
         task sourcesJar(type: Jar, dependsOn: classes) {
