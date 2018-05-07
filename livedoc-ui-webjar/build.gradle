@@ -8,9 +8,14 @@ description = 'The Livedoc UI packaged in a webjar'
 buildDir = 'build'
 
 node {
-    version = '9.7.1'
-    yarnVersion = '1.5.1'
+    version = '10.0.0'
+    yarnVersion = '1.6.0'
     download = true
+}
+
+project.afterEvaluate {
+    // install task outputs seem incorrect
+    tasks.yarn_install.outputs.dir(file('node_modules'))
 }
 
 task bundle(type: YarnTask) {
@@ -25,6 +30,8 @@ task start(type: YarnTask) {
 }
 
 task testJs(type: YarnTask) {
+    inputs.dir(file('src'))
+    outputs.files(file("${buildDir}/reports/yarn-tests-run.out")) // fake output to avoid re-run
     args = ['test:oneshot']
 }
 
