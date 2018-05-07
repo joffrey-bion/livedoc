@@ -36,7 +36,7 @@ task testJs(type: YarnTask) {
 }
 
 task syncPackageVersion(type: YarnTask) {
-    args = ['version', '--new-version', project.version]
+    args = ['version', '--no-git-tag-version', '--new-version', project.version]
 }
 bundle.mustRunAfter(syncPackageVersion)
 rootProject.tasks.syncVersion.dependsOn(syncPackageVersion)
