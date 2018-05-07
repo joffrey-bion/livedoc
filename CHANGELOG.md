@@ -1,5 +1,12 @@
 # Change Log
 
+## [v4.5.2](https://bintray.com/joffrey-bion/maven/livedoc/4.5.2) (2018-05-07)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.5.1...v4.5.2)
+
+**Fixed bugs:**
+
+- Incorrect Livedoc UI version in the webjar artifact [\#110](https://github.com/joffrey-bion/livedoc/issues/110)
+
 ## [v4.5.1](https://bintray.com/joffrey-bion/maven/livedoc/4.5.1) (2018-05-07)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.5.0...v4.5.1)
 
