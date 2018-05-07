@@ -92,9 +92,7 @@ configure(subprojects.findAll {it.name != 'sample-app'}) {
 }
 
 def static getDate() {
-    def date = new Date()
-    def formattedDate = date.format('MMM d, yyyy')
-    return formattedDate
+    return new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("GMT"))
 }
 
 // configure bintray/maven artifacts upload
