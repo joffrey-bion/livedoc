@@ -1,5 +1,12 @@
 # Change Log
 
+## [v4.5.1](https://bintray.com/joffrey-bion/maven/livedoc/4.5.1) (2018-05-07)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.5.0...v4.5.1)
+
+**Fixed bugs:**
+
+- Livedoc endpoint shows wrong livedoc version and badly parseable build date [\#109](https://github.com/joffrey-bion/livedoc/issues/109)
+
 ## [v4.5.0](https://bintray.com/joffrey-bion/maven/livedoc/4.5.0) (2018-05-05)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.4.2...v4.5.0)
 
