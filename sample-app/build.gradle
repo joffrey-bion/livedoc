@@ -7,7 +7,6 @@ apply plugin: 'java'
 apply plugin: 'com.palantir.docker'
 
 group = 'org.example.shelf'
-version = '0.1-SAMPLE'
 
 dependencies {
     // to enable documentation from Javadoc
@@ -27,7 +26,8 @@ springBoot {
 
 docker {
     name "${rootProject.dockerUser}/livedoc-demo"
-    tags 'latest', project.version
+    tags 'latest', "${project.version}"
     files jar.archivePath
     buildArgs(['JAR_FILE': "${jar.archiveName}"])
 }
+tasks.dockerPush.dependsOn { tasks.dockerTag }
