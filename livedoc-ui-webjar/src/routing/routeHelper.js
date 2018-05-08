@@ -20,9 +20,14 @@ export class RouteHelper {
     return `${apisUrl}/${apiId}`;
   }
 
-  static operationUrl(apiId: LivedocID, methodId: LivedocID): string {
+  static operationUrl(apiId: LivedocID, operationId: LivedocID): string {
     const apiUrl = RouteHelper.apiUrl(apiId);
-    return `${apiUrl}/${methodId}`;
+    return `${apiUrl}/${operationId}`;
+  }
+
+  static messageUrl(apiId: LivedocID, messageId: LivedocID): string {
+    const apiUrl = RouteHelper.apiUrl(apiId);
+    return `${apiUrl}/${messageId}`;
   }
 
   static typesUrl(): string {

@@ -15,7 +15,7 @@ export type MessagePanelProps = {
 
 export const MessagePanel = ({messageDoc, parentApiId, open}: MessagePanelProps) => {
   const collapseUrl = RouteHelper.apiUrl(parentApiId);
-  const expandUrl = RouteHelper.operationUrl(parentApiId, messageDoc.livedocId);
+  const expandUrl = RouteHelper.messageUrl(parentApiId, messageDoc.livedocId);
 
   const title = messageDoc.destinations || messageDoc.name;
   const command = <Badge style={getStyle(messageDoc.command)}>{messageDoc.command}</Badge>;
