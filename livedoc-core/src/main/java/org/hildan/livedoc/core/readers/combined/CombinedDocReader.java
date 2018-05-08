@@ -84,7 +84,7 @@ public class CombinedDocReader implements DocReader {
             @NotNull TemplateProvider templateProvider) {
         return readFromAllReadersAndMergeLists(
                 r -> r.buildAsyncMessageDocs(method, controller, parentApiDoc, typeReferenceProvider, templateProvider),
-                AsyncMessageDoc::getDestinations);
+                AsyncMessageDoc::getLivedocId);
     }
 
     private <D> Optional<D> readFromAllReadersAndMerge(Function<DocReader, Optional<D>> buildDoc) {
@@ -100,7 +100,7 @@ public class CombinedDocReader implements DocReader {
         return docReaders.stream()
                          .map(buildDoc)
                          .filter(l -> !l.isEmpty())
-                         .reduce((l1, l2) -> docMerger.mergeList(l1, l2, keyExtractor))
+                         .reduce((l1, l2) -> docMerger.mergeLists(l1, l2, keyExtractor))
                          .orElse(Collections.emptyList());
     }
 }

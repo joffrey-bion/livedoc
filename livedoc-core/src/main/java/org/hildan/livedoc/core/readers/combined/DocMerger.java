@@ -123,23 +123,28 @@ public class DocMerger {
     @NotNull
     public <T extends Comparable<T>, K> List<T> mergeAndSort(List<T> base, List<T> overrides,
             Function<T, K> keyExtractor) {
-        List<T> overridden = mergeList(base, overrides, keyExtractor);
+        List<T> overridden = mergeLists(base, overrides, keyExtractor);
         Collections.sort(overridden);
         return overridden;
     }
 
     @NotNull
-    public <T, K> List<T> mergeList(List<T> base, List<T> overrides, Function<T, K> keyExtractor) {
+    public <T, K> List<T> mergeLists(List<T> base, List<T> overrides, Function<T, K> keyExtractor) {
         List<T> basePool = new ArrayList<>(base);
-        List<T> overridden = new ArrayList<>();
-        for (T o : overrides) {
+        basePool.addAll(overrides);
+        return mergeList(basePool, keyExtractor);
+    }
+
+    @NotNull
+    public <T, K> List<T> mergeList(List<T> list, Function<T, K> keyExtractor) {
+        List<T> mergedList = new ArrayList<>();
+        for (T o : list) {
             K key = keyExtractor.apply(o);
-            Optional<T> match = takeMatch(basePool, keyExtractor, key);
+            Optional<T> match = takeMatch(mergedList, keyExtractor, key);
             T merged = match.map(b -> merge(b, o)).orElse(o);
-            overridden.add(merged);
+            mergedList.add(merged);
         }
-        overridden.addAll(basePool);
-        return overridden;
+        return mergedList;
     }
 
     private static <T, K> Optional<T> takeMatch(List<T> basePool, Function<T, K> keyExtractor, K key) {

@@ -41,6 +41,7 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
         this.stage = null;
         this.group = "";
         this.operations = new ArrayList<>();
+        this.messages = new ArrayList<>();
         this.supportedVersions = null;
         this.auth = null;
     }
@@ -132,7 +133,8 @@ public class ApiDoc implements Comparable<ApiDoc>, Groupable, Secured, Staged, V
     @Override
     public ApiDoc merge(ApiDoc override, DocMerger merger) {
         ApiDoc merged = merger.mergeProperties(this, override, new ApiDoc());
-        merged.operations = merger.mergeAndSort(this.operations, override.operations, ApiOperationDoc::getPaths);
+        merged.operations = merger.mergeAndSort(this.operations, override.operations, ApiOperationDoc::getLivedocId);
+        merged.messages = merger.mergeAndSort(this.messages, override.messages, AsyncMessageDoc::getLivedocId);
         return merged;
     }
 }

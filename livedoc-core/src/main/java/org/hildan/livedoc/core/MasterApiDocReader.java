@@ -13,6 +13,7 @@ import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.readers.DocReader;
+import org.hildan.livedoc.core.readers.combined.DocMerger;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.validators.ApiOperationDocDefaults;
@@ -65,12 +66,15 @@ public class MasterApiDocReader {
 
     private List<AsyncMessageDoc> readAsyncMessages(Class<?> controller, ApiDoc doc,
             TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
-        return getMethodsUsingMessages(controller).stream()
-                                                  .map(m -> docReader.buildAsyncMessageDocs(m, controller, doc,
-                                                          typeReferenceProvider, templateProvider))
-                                                  .flatMap(Collection::stream)
-                                                  .sorted()
-                                                  .collect(Collectors.toList());
+        List<Method> methods = getMethodsUsingMessages(controller);
+        List<AsyncMessageDoc> messages = methods.stream()
+                                                .map(m -> docReader.buildAsyncMessageDocs(m, controller, doc,
+                                                        typeReferenceProvider, templateProvider))
+                                                .flatMap(Collection::stream)
+                                                .sorted()
+                                                .collect(Collectors.toList());
+        List<AsyncMessageDoc> mergedMessages = new DocMerger().mergeList(messages, AsyncMessageDoc::getLivedocId);
+        return mergedMessages.stream().sorted().collect(Collectors.toList());
     }
 
     private List<Method> getMethodsUsingMessages(Class<?> controller) {

@@ -71,11 +71,6 @@ public class AsyncMessageDoc extends AbstractDoc implements Comparable<AsyncMess
         if (!firstPath.startsWith("-")) {
             firstPath = "-" + firstPath;
         }
-        StompCommand command = getCommand();
-        if (command == StompCommand.SUBSCRIBE) {
-            // make it simple for standard subscriptions
-            return LivedocUtils.asLivedocId(firstPath);
-        }
         return LivedocUtils.asLivedocId(getCommand().toString() + "-" + firstPath);
     }
 
@@ -188,7 +183,7 @@ public class AsyncMessageDoc extends AbstractDoc implements Comparable<AsyncMess
         doc.setDestinationVariables(
                 merger.mergeAndSort(this.getDestinationVariables(), override.getDestinationVariables(),
                         ParamDoc::getName));
-        doc.setHeaders(merger.mergeList(this.getHeaders(), override.getHeaders(), HeaderDoc::getName));
+        doc.setHeaders(merger.mergeLists(this.getHeaders(), override.getHeaders(), HeaderDoc::getName));
         return doc;
     }
 

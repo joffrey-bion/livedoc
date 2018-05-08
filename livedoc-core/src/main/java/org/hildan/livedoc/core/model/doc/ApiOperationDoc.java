@@ -260,7 +260,7 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         // For paths, consumes, produces, and errors, we want the last non empty list to win, no merge
         doc.pathParameters = merger.mergeAndSort(this.pathParameters, override.pathParameters, ParamDoc::getName);
         doc.queryParameters = merger.mergeAndSort(this.queryParameters, override.queryParameters, ParamDoc::getName);
-        doc.headers = merger.mergeList(this.headers, override.headers, HeaderDoc::getName);
+        doc.headers = merger.mergeLists(this.headers, override.headers, HeaderDoc::getName);
         return doc;
     }
 

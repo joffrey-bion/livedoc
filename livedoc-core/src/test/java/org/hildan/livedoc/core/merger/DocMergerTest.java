@@ -54,11 +54,11 @@ public class DocMergerTest {
         List<NotMergeable> list1and2 = Arrays.asList(item1, item2);
         List<NotMergeable> list2and1 = Arrays.asList(item2, item1);
 
-        assertEquals(list1, merger.mergeList(list1, listEmpty, o -> o.num));
-        assertEquals(list1, merger.mergeList(listEmpty, list1, o -> o.num));
+        assertEquals(list1, merger.mergeLists(list1, listEmpty, o -> o.num));
+        assertEquals(list1, merger.mergeLists(listEmpty, list1, o -> o.num));
 
-        assertEquals(list2and1, merger.mergeList(list1, list2, o -> o.num));
-        assertEquals(list1and2, merger.mergeList(list2, list1, o -> o.num));
+        assertEquals(list1and2, merger.mergeLists(list1, list2, o -> o.num));
+        assertEquals(list2and1, merger.mergeLists(list2, list1, o -> o.num));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class DocMergerTest {
         List<NotMergeable> list1 = Collections.singletonList(item1data1);
         List<NotMergeable> list2 = Collections.singletonList(item1data2);
 
-        assertEquals(list2, merger.mergeList(list1, list2, o -> o.num));
+        assertEquals(list2, merger.mergeLists(list1, list2, o -> o.num));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class DocMergerTest {
         List<MergeableObj> list2 = Collections.singletonList(item1data2);
         List<MergeableObj> expectedMergedList = Collections.singletonList(item1merged);
 
-        assertEquals(expectedMergedList, merger.mergeList(list1, list2, o -> o.num));
+        assertEquals(expectedMergedList, merger.mergeLists(list1, list2, o -> o.num));
     }
 
     @Test
@@ -102,6 +102,6 @@ public class DocMergerTest {
 
         List<MergeableObj> expected = Arrays.asList(item1, item3merged, item2merged);
 
-        assertEquals(expected, merger.mergeList(list1, list2, o -> o.num));
+        assertEquals(expected, merger.mergeLists(list1, list2, o -> o.num));
     }
 }
