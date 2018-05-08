@@ -42,7 +42,7 @@ public class FlowDoc implements Comparable<FlowDoc>, Groupable {
         for (ApiFlowStep apiFlowStep : annotation.steps()) {
             FlowStepDoc flowStepDoc = FlowStepDoc.buildFromAnnotation(apiFlowStep, apiOperationDocsById);
             flowDoc.addStep(flowStepDoc);
-            flowDoc.addMethod(flowStepDoc.getApiOperationDoc());
+            flowDoc.addOperation(flowStepDoc.getApiOperationDoc());
         }
         return flowDoc;
     }
@@ -104,8 +104,8 @@ public class FlowDoc implements Comparable<FlowDoc>, Groupable {
         this.operations = operations;
     }
 
-    public void addMethod(ApiOperationDoc method) {
-        this.operations.add(method);
+    public void addOperation(ApiOperationDoc operation) {
+        this.operations.add(operation);
     }
 
     @Override

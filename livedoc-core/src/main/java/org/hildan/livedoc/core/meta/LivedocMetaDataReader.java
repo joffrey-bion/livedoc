@@ -7,10 +7,18 @@ import java.util.Properties;
 import org.hildan.livedoc.core.model.doc.LivedocMetaData;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This component is responsible for reading metadata about the Livedoc library itself, like the version or build date.
+ */
 public class LivedocMetaDataReader {
 
     private static final String META_DATA_RESOURCE = "livedoc.properties";
 
+    /**
+     * Reads metadata about Livedoc, such as version or build date.
+     *
+     * @return a filled up {@link LivedocMetaData} object
+     */
     @NotNull
     public static LivedocMetaData read() {
         InputStream in = LivedocMetaDataReader.class.getResourceAsStream(META_DATA_RESOURCE);

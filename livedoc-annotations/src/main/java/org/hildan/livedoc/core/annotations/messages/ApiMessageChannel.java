@@ -22,12 +22,12 @@ public @interface ApiMessageChannel {
 
     /**
      * A name for the messages sent on this channel. Imagine that a function to subscribe to this channel could be
-     * called "watchXxx()", where "Xxx" is the name specified here.
+     * called "watchXxx()", where "xxx" is the name specified here.
      */
     String name() default "";
 
     /**
-     * A short description of the messages exchanged on this channel.
+     * A single-sentence description of the messages exchanged on this channel.
      */
     String summary() default "";
 

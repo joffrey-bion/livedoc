@@ -15,7 +15,7 @@ import org.hildan.livedoc.core.model.doc.ApiVerb;
  * This annotation is not necessary for a method to be understood as an API operation, this depends on the
  * configuration. For instance, in the context of a Spring application, scanners are defined to look for request
  * mappings, in which case Spring annotations are sufficient. That being said, this annotation can be used to provide
- * additional documentation information, like a description for instance.
+ * additional documentation information, or override automatically-generated pieces of the documentation.
  */
 @Documented
 @Target(ElementType.METHOD)
@@ -25,19 +25,25 @@ public @interface ApiOperation {
     String DEFAULT_RESPONSE_STATUS = "200 - OK";
 
     /**
-     * An optional custom identifier to be refer to this method from {@link ApiFlowStep#apiOperationId()}. This string
-     * has to be unique inside the Livedoc documentation. It's the responsibility of the documentation writer to
-     * guarantee this uniqueness.
+     * An optional custom identifier to refer to this operation from {@link ApiFlowStep#apiOperationId()}. This string
+     * has to be unique along all API operations within the Livedoc documentation. It's the responsibility of the
+     * documentation writer to guarantee this uniqueness.
      */
     String id() default "";
 
     /**
-     * The relative path for this method (ex. /country/get/{name})
+     * The HTTP methods mapped to this operation.
+     */
+    ApiVerb[] verbs() default {};
+
+    /**
+     * The relative path(s) that map to this operation. They may contain path variables between braces. For instance:
+     * {@code /country/get/{name}}
      */
     String[] path() default {};
 
     /**
-     * A summary of what the method does. It's like a short description.
+     * A single-sentence summary of what this operation does. It's like a short description.
      */
     String summary() default "";
 
@@ -47,22 +53,18 @@ public @interface ApiOperation {
     String description() default "";
 
     /**
-     * The request verbs allowed for this method.
-     */
-    ApiVerb[] verbs() default {};
-
-    /**
-     * An array of strings representing media types produced by the method, like application/json, application/xml, ...
+     * The media types that can be produced by this operation as response body, e.g. {@code application/json}.
      */
     String[] produces() default {};
 
     /**
-     * An array of strings representing media types consumed by the method, like application/json, application/xml, ...
+     * The media types supported by this operation in incoming requests, e.g. {@code application/json}.
      */
     String[] consumes() default {};
 
     /**
-     * Response status code that this method will return to the caller. Defaults to {@value #DEFAULT_RESPONSE_STATUS}.
+     * The response status code that this method will return to the caller. Defaults to {@value
+     * #DEFAULT_RESPONSE_STATUS}.
      */
     String responseStatusCode() default DEFAULT_RESPONSE_STATUS;
 }

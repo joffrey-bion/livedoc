@@ -7,7 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Describes a header that is expected in the request. This annotation should be used inside {@link ApiHeaders}.
+ * Describes a header that is expected in a request to map to a specific API operation. This annotation should be used
+ * inside {@link ApiHeaders}, or on a method parameter that receives the value of a request header.
  *
  * @see ApiHeaders
  */
@@ -17,7 +18,7 @@ import java.lang.annotation.Target;
 public @interface ApiHeader {
 
     /**
-     * The name of the header parameter
+     * The name of the header
      */
     String name() default "";
 
@@ -27,7 +28,7 @@ public @interface ApiHeader {
     String description() default "";
 
     /**
-     * An array representing the allowed values this header can have.
+     * An optional array representing the allowed values this header can have. By default, any value is accepted.
      */
     String[] allowedValues() default {"*"};
 }
