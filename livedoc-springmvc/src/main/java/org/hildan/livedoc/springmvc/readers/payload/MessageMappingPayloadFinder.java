@@ -28,7 +28,13 @@ public class MessageMappingPayloadFinder {
     public static LivedocType getPayloadType(Method method, TypeReferenceProvider typeReferenceProvider) {
         int index = getBodyParamIndex(method);
         if (index < 0) {
-            return null;
+            if (hasWayOfAccessingMessagePayload(method)) {
+                // we don't know the payload type, but maybe this method expects one anyway
+                return null;
+            } else {
+                // this method doesn't have access to the message payload, so we don't really expect any
+                return typeReferenceProvider.getReference(void.class);
+            }
         }
         Type bodyParamType = method.getGenericParameterTypes()[index];
         return typeReferenceProvider.getReference(bodyParamType);
@@ -74,5 +80,9 @@ public class MessageMappingPayloadFinder {
             }
         }
         return false;
+    }
+
+    private static boolean hasWayOfAccessingMessagePayload(Method method) {
+        return Arrays.stream(method.getParameterTypes()).anyMatch(Message.class::equals);
     }
 }

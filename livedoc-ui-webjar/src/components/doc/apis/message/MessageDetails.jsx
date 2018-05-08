@@ -22,7 +22,7 @@ export const MessageDetails = ({messageDoc}: MessageDetailsProps) => {
   if (doc.headers && doc.headers.length > 0) {
     rows.push(row('Headers', <HeadersTable headers={doc.headers}/>));
   }
-  if (doc.payloadType && doc.payloadType.oneLineText !== 'void') {
+  if (doc.payloadType) {
     rows.push(row('Payload type', <TypeRef type={doc.payloadType}/>));
   }
   if (doc.auth) {
