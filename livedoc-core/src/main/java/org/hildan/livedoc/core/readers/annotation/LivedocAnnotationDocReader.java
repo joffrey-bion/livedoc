@@ -2,12 +2,13 @@ package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.annotations.Api;
 import org.hildan.livedoc.core.annotations.ApiOperation;
+import org.hildan.livedoc.core.annotations.messages.ApiMessageChannel;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
@@ -58,16 +59,17 @@ public class LivedocAnnotationDocReader implements DocReader {
 
     @Override
     public boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller) {
-        // TODO
-        return false;
+        return method.getDeclaredAnnotationsByType(ApiMessageChannel.class).length > 0;
     }
 
     @NotNull
     @Override
-    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
-            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
-            @NotNull TemplateProvider templateProvider) {
-        // TODO
-        return Collections.emptyList();
+    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Collection<Method> methods,
+            @NotNull Class<?> controller, @NotNull ApiDoc parentApiDoc,
+            @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
+        return methods.stream()
+                      .map(m -> MessagesDocReader.readAsyncMessages(m, typeReferenceProvider))
+                      .flatMap(Collection::stream)
+                      .collect(Collectors.toList());
     }
 }

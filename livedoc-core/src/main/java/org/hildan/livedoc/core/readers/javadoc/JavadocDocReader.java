@@ -61,9 +61,9 @@ public class JavadocDocReader implements DocReader {
 
     @NotNull
     @Override
-    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
-            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
-            @NotNull TemplateProvider templateProvider) {
+    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Collection<Method> methods,
+            @NotNull Class<?> controller, @NotNull ApiDoc parentApiDoc,
+            @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
         // where to take the description depends on whether it's a SEND or SUBSCRIBE msg
         // this reader does not have enough information to put something sensible here
         return Collections.emptyList();

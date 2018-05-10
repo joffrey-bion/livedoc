@@ -72,21 +72,6 @@ public class CombinedDocReader implements DocReader {
                 r -> r.buildApiOperationDoc(method, controller, parentApiDoc, typeReferenceProvider, templateProvider));
     }
 
-    @Override
-    public boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller) {
-        return docReaders.stream().anyMatch(r -> r.usesAsyncMessages(method, controller));
-    }
-
-    @NotNull
-    @Override
-    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
-            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
-            @NotNull TemplateProvider templateProvider) {
-        return readFromAllReadersAndMergeLists(
-                r -> r.buildAsyncMessageDocs(method, controller, parentApiDoc, typeReferenceProvider, templateProvider),
-                AsyncMessageDoc::getLivedocId);
-    }
-
     private <D> Optional<D> readFromAllReadersAndMerge(Function<DocReader, Optional<D>> buildDoc) {
         return docReaders.stream()
                          .map(buildDoc)
@@ -95,12 +80,21 @@ public class CombinedDocReader implements DocReader {
                          .reduce(docMerger::merge);
     }
 
-    private <D> List<D> readFromAllReadersAndMergeLists(Function<DocReader, List<D>> buildDoc,
-            Function<D, ?> keyExtractor) {
+    @Override
+    public boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller) {
+        return docReaders.stream().anyMatch(r -> r.usesAsyncMessages(method, controller));
+    }
+
+    @NotNull
+    @Override
+    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Collection<Method> methods,
+            @NotNull Class<?> controller, @NotNull ApiDoc parentApiDoc,
+            @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
         return docReaders.stream()
-                         .map(buildDoc)
-                         .filter(l -> !l.isEmpty())
-                         .reduce((l1, l2) -> docMerger.mergeLists(l1, l2, keyExtractor))
+                         .map(reader -> reader.buildAsyncMessageDocs(methods, controller,
+                                 parentApiDoc, typeReferenceProvider, templateProvider))
+                         .map(docs -> docMerger.mergeList(docs, AsyncMessageDoc::getLivedocId))
+                         .reduce((docs1, docs2) -> docMerger.mergeLists(docs1, docs2, AsyncMessageDoc::getLivedocId))
                          .orElse(Collections.emptyList());
     }
 }

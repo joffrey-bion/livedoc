@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
@@ -111,9 +112,12 @@ public class SpringDocReader implements DocReader {
 
     @NotNull
     @Override
-    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
-            @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
-            @NotNull TemplateProvider templateProvider) {
-        return MessageHandlerReader.read(method, controller, typeReferenceProvider);
+    public List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Collection<Method> methods,
+            @NotNull Class<?> controller, @NotNull ApiDoc parentApiDoc,
+            @NotNull TypeReferenceProvider typeReferenceProvider, @NotNull TemplateProvider templateProvider) {
+        return methods.stream()
+                      .map(m -> MessageHandlerReader.read(m, controller, typeReferenceProvider))
+                      .flatMap(Collection::stream)
+                      .collect(Collectors.toList());
     }
 }

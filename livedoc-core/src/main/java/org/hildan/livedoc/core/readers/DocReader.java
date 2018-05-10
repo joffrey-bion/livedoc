@@ -95,12 +95,12 @@ public interface DocReader {
     boolean usesAsyncMessages(@NotNull Method method, @NotNull Class<?> controller);
 
     /**
-     * Builds {@link AsyncMessageDoc}s relative to the given method. Any method could be passed on here, even the ones
+     * Builds {@link AsyncMessageDoc}s relative to the given methods. Any method could be passed on here, even the ones
      * for which this reader's {@link #usesAsyncMessages(Method, Class)} returned false. If this reader can't read any
-     * documentation data for the given method, it should return an empty list.
+     * documentation data for the given methods, it should return an empty list.
      *
-     * @param method
-     *         the method to document
+     * @param methods
+     *         the methods to document
      * @param controller
      *         the controller in which the given method should be resolved. Cannot be retrieved from the {@link Method}
      *         because the method could be inherited from a parent controller.
@@ -115,7 +115,7 @@ public interface DocReader {
      * reader is not able to build any doc for the given method.
      */
     @NotNull
-    List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Method method, @NotNull Class<?> controller,
+    List<AsyncMessageDoc> buildAsyncMessageDocs(@NotNull Collection<Method> methods, @NotNull Class<?> controller,
             @NotNull ApiDoc parentApiDoc, @NotNull TypeReferenceProvider typeReferenceProvider,
             @NotNull TemplateProvider templateProvider);
 }

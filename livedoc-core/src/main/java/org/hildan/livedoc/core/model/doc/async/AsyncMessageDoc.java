@@ -23,6 +23,9 @@ import org.jetbrains.annotations.NotNull;
 public class AsyncMessageDoc extends AbstractDoc implements Comparable<AsyncMessageDoc>, Mergeable<AsyncMessageDoc>,
         Secured, Staged, Versioned {
 
+    private static final Comparator<AsyncMessageDoc> COMMAND_COMPARATOR = Comparator.comparing(
+            AsyncMessageDoc::getCommand);
+
     private static final Comparator<AsyncMessageDoc> DESTS_COMPARATOR = LivedocUtils.comparingFirstItem(
             AsyncMessageDoc::getDestinations);
 
@@ -189,6 +192,11 @@ public class AsyncMessageDoc extends AbstractDoc implements Comparable<AsyncMess
 
     @Override
     public int compareTo(@NotNull AsyncMessageDoc o) {
-        return DESTS_COMPARATOR.compare(this, o);
+        return COMMAND_COMPARATOR.thenComparing(DESTS_COMPARATOR).compare(this, o);
+    }
+
+    @Override
+    public String toString() {
+        return command + " " + destinations;
     }
 }
