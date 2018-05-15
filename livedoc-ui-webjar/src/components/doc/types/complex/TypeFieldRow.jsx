@@ -1,14 +1,14 @@
 // @flow
 import * as React from 'react';
-import type { ApiObjectFieldDoc } from '../../../../model/livedoc';
+import type { ApiPropertyDoc } from '../../../../model/livedoc';
 import { TypeRef } from '../../typeref/TypeRef';
 
 export type TypeFieldRowProps = {
-  field: ApiObjectFieldDoc,
+  field: ApiPropertyDoc,
 }
 
 export const TypeFieldRow = (props: TypeFieldRowProps) => {
-  const field: ApiObjectFieldDoc = props.field;
+  const field: ApiPropertyDoc = props.field;
   const desc = field.description && <p>{field.description}</p>;
   return <tr>
     <td><code>{field.name}</code></td>

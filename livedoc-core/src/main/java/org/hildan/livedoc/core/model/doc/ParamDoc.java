@@ -1,14 +1,10 @@
 package org.hildan.livedoc.core.model.doc;
 
-import java.util.UUID;
-
 import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.combined.DocMerger;
 import org.hildan.livedoc.core.readers.combined.Mergeable;
 
 public class ParamDoc extends AbstractDoc implements Comparable<ParamDoc>, Mergeable<ParamDoc> {
-
-    public final String livedocId = UUID.randomUUID().toString();
 
     private LivedocType type;
 

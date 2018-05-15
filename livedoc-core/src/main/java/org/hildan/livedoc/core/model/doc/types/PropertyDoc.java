@@ -2,7 +2,6 @@ package org.hildan.livedoc.core.model.doc.types;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import org.hildan.livedoc.core.model.doc.AbstractDoc;
 import org.hildan.livedoc.core.model.doc.version.VersionDoc;
@@ -15,8 +14,6 @@ import org.hildan.livedoc.core.readers.combined.SpecialDefaultIntValue;
 import com.google.common.base.Joiner;
 
 public class PropertyDoc extends AbstractDoc implements Comparable<PropertyDoc>, Versioned, Mergeable<PropertyDoc> {
-
-    public final String livedocId = UUID.randomUUID().toString();
 
     private LivedocType type;
 

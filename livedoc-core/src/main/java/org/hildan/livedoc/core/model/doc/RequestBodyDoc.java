@@ -1,12 +1,8 @@
 package org.hildan.livedoc.core.model.doc;
 
-import java.util.UUID;
-
 import org.hildan.livedoc.core.model.types.LivedocType;
 
 public class RequestBodyDoc {
-
-    public final String livedocId = UUID.randomUUID().toString();
 
     private final LivedocType type;
 

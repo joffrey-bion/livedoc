@@ -2,14 +2,11 @@ package org.hildan.livedoc.core.model.doc.headers;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import org.hildan.livedoc.core.readers.combined.DocMerger;
 import org.hildan.livedoc.core.readers.combined.Mergeable;
 
 public class HeaderDoc implements Mergeable<HeaderDoc> {
-
-    public final String livedocId = UUID.randomUUID().toString();
 
     private String name;
 

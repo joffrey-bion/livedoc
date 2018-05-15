@@ -1,10 +1,6 @@
 package org.hildan.livedoc.core.model.doc;
 
-import java.util.UUID;
-
 public class ApiErrorDoc {
-
-    public final String livedocId = UUID.randomUUID().toString();
 
     private String code;
 

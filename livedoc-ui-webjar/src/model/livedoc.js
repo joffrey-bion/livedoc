@@ -57,7 +57,7 @@ export type ApiAuthDoc = {
 
 export type ApiAuthType = 'NONE' | 'BASIC_AUTH' | 'TOKEN' ;
 
-export type ApiRequestBodyDoc = Identified & {
+export type ApiRequestBodyDoc = {
   type: LivedocType,
   template: any,
 }
@@ -69,7 +69,7 @@ export type ApiDoc = Identified & Named & Versioned & Secured & Staged & {
   messages: Array<AsyncMessageDoc>,
 };
 
-export type ApiErrorDoc = Identified & {
+export type ApiErrorDoc = {
   code: string,
   description: string
 }
@@ -97,7 +97,7 @@ export type GlobalDocPage = Identified & {
   content: string,
 }
 
-export type ApiHeaderDoc = Identified & Named & {
+export type ApiHeaderDoc = Named & {
   description: string,
   type: HeaderFilterType,
   values: Array<string>,
@@ -142,13 +142,13 @@ export type AsyncCommand = 'SEND' | 'SUBSCRIBE';
 export type ApiTypeDoc = Identified & Named & LivedocHints & Versioned & Staged & {
   description: string,
   group: string,
-  fields: Array<ApiObjectFieldDoc>,
+  fields: Array<ApiPropertyDoc>,
   auth: ApiAuthDoc,
   allowedValues: ?Array<string>,
   template: any,
 };
 
-export type ApiObjectFieldDoc = Identified & Named & LivedocHints & Versioned & {
+export type ApiPropertyDoc = Named & LivedocHints & Versioned & {
   description: string,
   type: LivedocType,
   format: Array<string>,
