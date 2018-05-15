@@ -1,7 +1,10 @@
 //@flow
+import * as React from 'react';
 import activeHtml from 'react-active-html';
+import { LivedocLink } from './LivedocLink';
 
 const componentsMap = {
+  a: props => <Anchor {...props} />,
 };
 
 export type HtmlProps = {
@@ -13,4 +16,11 @@ export const Html = ({content}: HtmlProps) => {
     return null;
   }
   return activeHtml(content, componentsMap);
+};
+
+const Anchor = (props) => {
+  if (props.href.indexOf('livedoc://') === 0) {
+    return <LivedocLink url={props.href} {...props}/>;
+  }
+  return <a href={props.href} {...props}/>;
 };
