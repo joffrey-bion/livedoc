@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hildan.livedoc.core.model.doc.headers.HeaderDoc;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ValueConstants;
@@ -28,12 +29,12 @@ class HttpHeadersReader {
     static List<HeaderDoc> buildHeadersDoc(Method method, Class<?> controller) {
         Set<HeaderDoc> headers = new HashSet<>(extractHeadersFromParams(method));
 
-        RequestMapping methodAnnotation = method.getAnnotation(RequestMapping.class);
+        RequestMapping methodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
         if (methodAnnotation != null) {
             headers.addAll(extractHeaders(methodAnnotation));
         }
 
-        RequestMapping typeAnnotation = controller.getAnnotation(RequestMapping.class);
+        RequestMapping typeAnnotation = AnnotatedElementUtils.findMergedAnnotation(controller, RequestMapping.class);
         if (typeAnnotation != null) {
             headers.addAll(extractHeaders(typeAnnotation));
         }

@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 public class PathUtils {
 
+    @NotNull
     public static List<String> joinAll(Collection<String> pathPrefixes, Collection<String> pathsSuffixes) {
         List<String> mappings = new ArrayList<>();
         for (String controllerPath : pathPrefixes) {
@@ -16,6 +19,7 @@ public class PathUtils {
         return mappings;
     }
 
+    @NotNull
     private static String join(String path1, String path2) {
         boolean path1HasSep = path1.endsWith("/");
         boolean path2HasSep = path2.startsWith("/");

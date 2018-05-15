@@ -9,11 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.model.doc.ApiVerb;
-import org.hildan.livedoc.springmvc.utils.ClasspathUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -48,23 +44,9 @@ class HttpMethodReader {
     }
 
     private static List<RequestMethod> getMethods(AnnotatedElement element) {
-        RequestMapping requestMapping = element.getAnnotation(RequestMapping.class);
+        RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(element, RequestMapping.class);
         if (requestMapping != null) {
             return Arrays.asList(requestMapping.method());
-        }
-        if (ClasspathUtils.isGetMappingOnClasspath()) {
-            if (element.isAnnotationPresent(GetMapping.class)) {
-                return Collections.singletonList(RequestMethod.GET);
-            }
-            if (element.isAnnotationPresent(PostMapping.class)) {
-                return Collections.singletonList(RequestMethod.POST);
-            }
-            if (element.isAnnotationPresent(PutMapping.class)) {
-                return Collections.singletonList(RequestMethod.PUT);
-            }
-            if (element.isAnnotationPresent(DeleteMapping.class)) {
-                return Collections.singletonList(RequestMethod.DELETE);
-            }
         }
         return Collections.emptyList();
     }

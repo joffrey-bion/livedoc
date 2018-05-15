@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -60,7 +61,7 @@ class HttpMediaTypeReader {
     }
 
     private static String[] extractFrom(AnnotatedElement element, Function<RequestMapping, String[]> extractor) {
-        RequestMapping requestMapping = element.getAnnotation(RequestMapping.class);
+        RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(element, RequestMapping.class);
         if (requestMapping != null) {
             return extractor.apply(requestMapping);
         }

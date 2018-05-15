@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 public class HttpMediaTypeReaderTest {
@@ -20,20 +21,16 @@ public class HttpMediaTypeReaderTest {
 
         @RequestMapping(value = "/produces-one", produces = MediaType.APPLICATION_JSON_VALUE)
         public void producesOne() {
-
         }
 
         @RequestMapping(value = "/produces-two",
                 produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
         public void producesTwo() {
-
         }
 
         @RequestMapping(value = "/produces-three")
         public void producesThree() {
-
         }
-
     }
 
     @Test
@@ -71,7 +68,7 @@ public class HttpMediaTypeReaderTest {
 
         }
 
-        @RequestMapping(value = "/produces-two",
+        @GetMapping(value = "/produces-two",
                 produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
         public void producesTwo() {
 

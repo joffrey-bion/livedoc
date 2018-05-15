@@ -13,6 +13,7 @@ import org.hildan.livedoc.core.model.types.LivedocType;
 import org.hildan.livedoc.core.readers.javadoc.JavadocHelper;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,12 +29,12 @@ class QueryParamReader {
             TypeReferenceProvider typeReferenceProvider) {
         List<ParamDoc> paramDocs = new ArrayList<>();
 
-        RequestMapping requestMapping = controller.getAnnotation(RequestMapping.class);
+        RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(controller, RequestMapping.class);
         if (requestMapping != null) {
             paramDocs.addAll(getParamDocsFromAnnotation(method, requestMapping, typeReferenceProvider));
         }
 
-        requestMapping = method.getAnnotation(RequestMapping.class);
+        requestMapping = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
         if (requestMapping != null) {
             paramDocs.addAll(getParamDocsFromAnnotation(method, requestMapping, typeReferenceProvider));
         }

@@ -137,23 +137,4 @@ public class MappingsResolverTest {
         List<String> expectedPaths = Arrays.asList("/path1/path3", "/path1/path4", "/path2/path3", "/path2/path4");
         assertEquals(expectedPaths, MappingsResolver.getRequestMappings(test, ctrl));
     }
-
-    @SuppressWarnings("unused")
-    @Controller
-    @RequestMapping(value = "/val1", path = {"/path", "/path2"})
-    private static class ValueAndPathAttributeController {
-
-        @RequestMapping
-        public void test() {
-        }
-    }
-
-    @Test
-    public void getRequestMappings_mixValueAndPathAttributes() throws NoSuchMethodException {
-        Class<?> ctrl = ValueAndPathAttributeController.class;
-        Method test = ctrl.getMethod("test");
-
-        List<String> expectedPaths = Arrays.asList("/val1", "/path", "/path2");
-        assertEquals(expectedPaths, MappingsResolver.getRequestMappings(test, ctrl));
-    }
 }
