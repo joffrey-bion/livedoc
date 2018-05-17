@@ -90,8 +90,7 @@ public class LivedocReaderBuilder {
     }
 
     /**
-     * Defines the {@link GlobalDocReader} to use to generate the global documentation of the API (general info, flows,
-     * migrations).
+     * Defines the {@link GlobalDocReader} to use to generate the global documentation of the API (free text pages).
      *
      * @param reader
      *         the {@link GlobalDocReader} to use

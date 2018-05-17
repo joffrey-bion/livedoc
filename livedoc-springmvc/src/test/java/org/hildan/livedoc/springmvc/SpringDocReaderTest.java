@@ -89,7 +89,6 @@ public class SpringDocReaderTest {
         assertTrue(apiDoc.getMessages().isEmpty());
 
         ApiOperationDoc opDoc = operations.get(0);
-        assertNull(opDoc.getId());
         assertEquals("handlerMethod", opDoc.getName());
         assertNull(opDoc.getSummary());
         assertNull(opDoc.getDescription());

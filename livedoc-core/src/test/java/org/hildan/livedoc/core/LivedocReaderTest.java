@@ -15,7 +15,6 @@ import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 import org.hildan.livedoc.core.model.doc.Livedoc;
-import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
 import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
 import org.junit.Test;
@@ -34,7 +33,6 @@ public class LivedocReaderTest {
 
         checkApis(livedoc);
         checkObjects(livedoc);
-        checkFlows(livedoc);
         checkAllVerbsUsed(livedoc);
     }
 
@@ -93,17 +91,6 @@ public class LivedocReaderTest {
         List<String> expectedRestaurantObjectNames = new ArrayList<>();
         expectedRestaurantObjectNames.add("customPizzaObject");
         assertEquals(expectedRestaurantObjectNames, restaurantObjectNames);
-    }
-
-    private static void checkFlows(Livedoc livedoc) {
-        List<Group<FlowDoc>> flowGroups = livedoc.getFlows();
-        assertEquals(1, flowGroups.size());
-
-        Group<FlowDoc> flowGroup = flowGroups.get(0);
-        assertNotNull(flowGroup);
-        assertEquals("", flowGroup.getGroupName());
-        assertNotNull(flowGroup.getElements());
-        assertEquals(2, flowGroup.getElements().size());
     }
 
     private static void checkAllVerbsUsed(Livedoc livedoc) {

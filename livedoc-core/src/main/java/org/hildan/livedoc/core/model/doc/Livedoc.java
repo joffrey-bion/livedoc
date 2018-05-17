@@ -2,7 +2,6 @@ package org.hildan.livedoc.core.model.doc;
 
 import java.util.List;
 
-import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
 import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
@@ -16,8 +15,6 @@ public class Livedoc {
     private List<Group<ApiDoc>> apis;
 
     private List<Group<TypeDoc>> types;
-
-    private List<Group<FlowDoc>> flows;
 
     private GlobalDoc global;
 
@@ -60,14 +57,6 @@ public class Livedoc {
         this.types = types;
     }
 
-    public List<Group<FlowDoc>> getFlows() {
-        return flows;
-    }
-
-    public void setFlows(List<Group<FlowDoc>> flows) {
-        this.flows = flows;
-    }
-
     public boolean isPlaygroundEnabled() {
         return playgroundEnabled;
     }
@@ -92,10 +81,9 @@ public class Livedoc {
         this.global = global;
     }
 
-    @Override
     public String toString() {
-        return "Livedoc [apiInfo=" + apiInfo + ", apis=" + apis + ", types=" + types + ", flows=" + flows + ", global="
-                + global + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs=" + displayMethodAs + "]";
+        return "Livedoc{" + "livedocInfo=" + livedocInfo + ", apiInfo=" + apiInfo + ", apis=" + apis + ", types="
+                + types + ", global=" + global + ", playgroundEnabled=" + playgroundEnabled + ", displayMethodAs="
+                + displayMethodAs + '}';
     }
-
 }

@@ -4,7 +4,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
-import org.example.shelf.documentation.DocumentationConstants;
+import org.example.shelf.documentation.Documentation;
 import org.example.shelf.model.Author;
 import org.example.shelf.repository.AuthorRepository;
 import org.hildan.livedoc.core.annotations.Api;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Api(description = "The author services", name = "Author services", group = DocumentationConstants.GROUP_LIBRARY)
+@Api(description = "The author services", name = "Author services", group = Documentation.GROUP_LIBRARY)
 @ApiAuthToken(roles = {"*"}, testTokens = "abc", scheme = "Bearer")
 @RestController
 @RequestMapping(value = "/authors", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,20 +47,20 @@ public class AuthorController {
         this.authorRepository = authorRepository;
     }
 
-    @ApiOperation(id = DocumentationConstants.AUTHOR_FIND_ALL, description = "Returns the list of all authors")
+    @ApiOperation(description = "Returns the list of all authors")
     @GetMapping
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
 
-    @ApiOperation(id = DocumentationConstants.AUTHOR_FIND_ONE, description = "Gets the author with the given ID")
+    @ApiOperation(description = "Gets the author with the given ID")
     @ApiAuthToken
     @GetMapping("/{id}")
     public Author findOne(@ApiPathParam(name = "id") @PathVariable Long id) {
         return authorRepository.findOne(id);
     }
 
-    @ApiOperation(id = DocumentationConstants.AUTHOR_SAVE, description = "Creates a new author with the given data")
+    @ApiOperation(description = "Creates a new author with the given data")
     @ApiMessageChannel(destinations = "/created",
             payloadType = String.class,
             description = "messages triggered upon " + "creation of a new author")
@@ -76,7 +76,7 @@ public class AuthorController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @ApiOperation(id = DocumentationConstants.AUTHOR_DELETE, description = "Deletes the author with the given ID")
+    @ApiOperation(description = "Deletes the author with the given ID")
     @DeleteMapping(value = "/{id}", headers = "example=value")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@ApiPathParam(name = "id") @PathVariable Long id) {

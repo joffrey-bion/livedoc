@@ -33,8 +33,6 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     private static final Comparator<ApiOperationDoc> COMPARATOR = PATHS_COMPARATOR.thenComparing(VERBS_COMPARATOR)
                                                                                   .thenComparing(PARAMS_COMPARATOR);
 
-    private String id;
-
     private String name;
 
     private String summary;
@@ -71,8 +69,6 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     private Stage stage;
 
     public ApiOperationDoc() {
-        super();
-        this.id = null;
         this.description = null;
         this.summary = null;
         this.paths = new ArrayList<>();
@@ -101,14 +97,6 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
             firstPath = "-" + firstPath;
         }
         return LivedocUtils.asLivedocId(firstVerb + firstPath);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

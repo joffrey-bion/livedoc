@@ -3,19 +3,15 @@ package org.hildan.livedoc.core;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.hildan.livedoc.core.config.LivedocConfiguration;
 import org.hildan.livedoc.core.meta.LivedocMetaDataReader;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
-import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.core.model.doc.LivedocMetaData;
-import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
 import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
 import org.hildan.livedoc.core.model.doc.types.TypeDoc;
 import org.hildan.livedoc.core.model.groups.Group;
@@ -110,7 +106,6 @@ public class LivedocReader {
         Collection<ApiDoc> apiDocs = masterApiDocReader.readApiDocs(typeReferenceProvider, templateProvider);
         Set<Class<?>> types = getClassesToDocument();
         List<TypeDoc> typeDocs = masterTypeDocReader.readTypeDocs(types, typeReferenceProvider, templateProvider);
-        Set<FlowDoc> flowDocs = globalDocReader.getApiFlowDocs(getAllApiOperationDocsById(apiDocs));
 
         GlobalTemplateData templateData = new GlobalTemplateData(apiInfo, livedocInfo, configuration.getPackages());
         GlobalDoc globalDoc = globalDocReader.getApiGlobalDoc(configuration, templateData);
@@ -120,16 +115,8 @@ public class LivedocReader {
         livedoc.setDisplayMethodAs(configuration.getDisplayMethodAs());
         livedoc.setApis(Group.groupAndSort(apiDocs));
         livedoc.setTypes(Group.groupAndSort(typeDocs));
-        livedoc.setFlows(Group.groupAndSort(flowDocs));
         livedoc.setGlobal(globalDoc);
         return livedoc;
-    }
-
-    private Map<String, ApiOperationDoc> getAllApiOperationDocsById(Collection<ApiDoc> apiDocs) {
-        return apiDocs.stream()
-                      .flatMap(api -> api.getOperations().stream())
-                      .filter(m -> m.getId() != null && !m.getId().isEmpty())
-                      .collect(Collectors.toMap(ApiOperationDoc::getId, x -> x));
     }
 
     private Set<Class<?>> getClassesToDocument() {

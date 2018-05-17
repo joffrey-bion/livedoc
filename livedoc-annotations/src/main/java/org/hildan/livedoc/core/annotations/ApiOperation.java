@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hildan.livedoc.core.annotations.flow.ApiFlowStep;
 import org.hildan.livedoc.core.model.doc.ApiVerb;
 
 /**
@@ -23,13 +22,6 @@ import org.hildan.livedoc.core.model.doc.ApiVerb;
 public @interface ApiOperation {
 
     String DEFAULT_RESPONSE_STATUS = "200 - OK";
-
-    /**
-     * An optional custom identifier to refer to this operation from {@link ApiFlowStep#apiOperationId()}. This string
-     * has to be unique along all API operations within the Livedoc documentation. It's the responsibility of the
-     * documentation writer to guarantee this uniqueness.
-     */
-    String id() default "";
 
     /**
      * The HTTP methods mapped to this operation.

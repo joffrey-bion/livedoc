@@ -17,7 +17,6 @@ const NavPanel = ({livedoc}: NavPanelProps) => {
     <Route path="/global" component={(props) => <GlobalNavSection globalDoc={livedoc.global} {...props}/>}/>
     <Route path="/apis" component={(props) => <NavSection groups={createNavGroups(livedoc.apis)} {...props}/>}/>
     <Route path="/types" component={(props) => <NavSection groups={createNavGroups(livedoc.types)} {...props}/>}/>
-    <Route path="/flows" component={(props) => <NavSection groups={createNavGroups(livedoc.flows)} {...props}/>}/>
   </Switch>;
 };
 

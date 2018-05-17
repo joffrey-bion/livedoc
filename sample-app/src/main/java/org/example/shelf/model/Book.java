@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.example.shelf.documentation.DocumentationConstants;
+import org.example.shelf.documentation.Documentation;
 import org.hildan.livedoc.core.annotations.types.ApiType;
 import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
 
@@ -17,7 +17,7 @@ import org.hildan.livedoc.core.annotations.types.ApiTypeProperty;
  * Represents a book. Every book has an <code>Author</code> and a price.
  */
 @Entity
-@ApiType(group = DocumentationConstants.GROUP_LIBRARY)
+@ApiType(group = Documentation.GROUP_LIBRARY)
 public class Book {
 
     @Id

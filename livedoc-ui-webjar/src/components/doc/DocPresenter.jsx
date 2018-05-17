@@ -5,7 +5,6 @@ import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import type { Livedoc } from '../../model/livedoc';
 import type { State } from '../../model/state';
 import { ApisScene } from './apis/ApisScene';
-import { FlowsScene } from './flows/FlowsScene';
 import { GlobalDocScene } from './global/GlobalDocScene';
 import { TypesScene } from './types/TypesScene';
 
@@ -28,8 +27,6 @@ const DocPresenter = (props: DocPresenterProps) => {
       <Route path="/apis/:apiId/:methodId" render={renderApi}/>
       <Route exact path="/types" render={renderType}/>
       <Route path="/types/:typeId" render={renderType}/>
-      <Route exact path="/flows" render={renderFlow}/>
-      <Route path="/flows/:flowId" render={renderFlow}/>
       <Redirect to="/global"/>
     </Switch>
   </section>;
@@ -38,9 +35,6 @@ const DocPresenter = (props: DocPresenterProps) => {
 const renderApi = ({match}) => <ApisScene selectedApiId={match.params.apiId} selectedMethodId={match.params.methodId}/>;
 
 const renderType = ({match}) => <TypesScene selectedTypeId={match.params.typeId}/>;
-
-const renderFlow = ({match}) => <FlowsScene selectedFlowId={match.params.flowId}
-                                            selectedMethodId={match.params.methodId}/>;
 
 const mapStateToProps = (state: State) => ({
   loading: state.loader.loading,

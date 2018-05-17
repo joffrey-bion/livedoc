@@ -1,6 +1,6 @@
 // @flow
 import type {
-  ApiDoc, ApiFlowDoc, ApiGlobalDoc, ApiOperationDoc, ApiTypeDoc, Group, Identified, Livedoc, LivedocID,
+  ApiDoc, ApiGlobalDoc, ApiOperationDoc, ApiTypeDoc, Group, Identified, Livedoc, LivedocID,
 } from '../model/livedoc';
 import type { State } from '../model/state';
 import type { Action } from './actions';
@@ -38,10 +38,6 @@ export function getApi(id: LivedocID, state: State): ?ApiDoc {
 
 export function getType(id: LivedocID, state: State): ?ApiTypeDoc {
   return state.livedoc && getElementById(id, state.livedoc.types);
-}
-
-export function getFlow(id: LivedocID, state: State): ?ApiFlowDoc {
-  return state.livedoc && getElementById(id, state.livedoc.flows);
 }
 
 export function getMethod(apiId: LivedocID, methodId: LivedocID, state: State): ?ApiOperationDoc {

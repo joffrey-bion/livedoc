@@ -36,7 +36,6 @@ public class ApiOperationDocReader {
 
         ApiOperation methodAnnotation = method.getAnnotation(ApiOperation.class);
         if (methodAnnotation != null) {
-            apiOperationDoc.setId(nullifyIfEmpty(methodAnnotation.id()));
             apiOperationDoc.setPaths(Arrays.asList(methodAnnotation.path()));
             apiOperationDoc.setVerbs(Arrays.asList(methodAnnotation.verbs()));
             apiOperationDoc.setSummary(nullifyIfEmpty(methodAnnotation.summary()));

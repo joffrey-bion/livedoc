@@ -13,6 +13,5 @@ export const TopNav = () => {
     <TopNavItem path="/global" name='Global'/>
     <TopNavItem path="/apis" name='APIs'/>
     <TopNavItem path="/types" name='Types'/>
-    <TopNavItem path="/flows" name='Flows'/>
   </Nav>;
 };

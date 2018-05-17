@@ -2,11 +2,10 @@ package org.example.shelf.controller;
 
 import java.util.List;
 
-import org.example.shelf.documentation.DocumentationConstants;
+import org.example.shelf.documentation.Documentation;
 import org.example.shelf.model.Book;
 import org.example.shelf.repository.BookRepository;
 import org.hildan.livedoc.core.annotations.Api;
-import org.hildan.livedoc.core.annotations.ApiOperation;
 import org.hildan.livedoc.core.annotations.ApiPathParam;
 import org.hildan.livedoc.core.annotations.ApiRequestBodyType;
 import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
@@ -28,7 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @RestController
 @RequestMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(description = "The books controller", name = "Books services", group = DocumentationConstants.GROUP_LIBRARY)
+@Api(description = "The books controller", name = "Books services", group = Documentation.GROUP_LIBRARY)
 public class BookController {
 
     private final BookRepository bookRepository;
@@ -46,7 +45,6 @@ public class BookController {
      *
      * @return the book with the given ID, ro null if none were found
      */
-    @ApiOperation(id = DocumentationConstants.BOOK_FIND_ONE)
     @ApiResponseBodyType
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Book findOne(@ApiPathParam(name = "id") @PathVariable Long id) {
@@ -58,7 +56,6 @@ public class BookController {
      *
      * @return all the books
      */
-    @ApiOperation(id = DocumentationConstants.BOOK_FIND_ALL)
     @RequestMapping(method = RequestMethod.GET)
     @ApiResponseBodyType
     public List<Book> findAll() {
@@ -75,7 +72,6 @@ public class BookController {
      *
      * @return nothing (wrapped in a {@link ResponseEntity})
      */
-    @ApiOperation(id = DocumentationConstants.BOOK_SAVE)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponseBodyType
@@ -85,7 +81,7 @@ public class BookController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriComponentsBuilder.path("/books/{id}").buildAndExpand(book.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     /**
@@ -94,7 +90,6 @@ public class BookController {
      * @param id
      *         the ID of the book to delete
      */
-    @ApiOperation(id = DocumentationConstants.BOOK_DELETE)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void delete(@ApiPathParam(name = "id") @PathVariable Long id) {

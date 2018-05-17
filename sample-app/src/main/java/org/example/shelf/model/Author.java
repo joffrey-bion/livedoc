@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.example.shelf.documentation.DocumentationConstants;
+import org.example.shelf.documentation.Documentation;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hildan.livedoc.core.annotations.types.ApiType;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Represents an author. Every author has a list of <code>Book</code>s.
  */
 @Entity
-@ApiType(group = DocumentationConstants.GROUP_LIBRARY)
+@ApiType(group = Documentation.GROUP_LIBRARY)
 public class Author {
 
     @Id

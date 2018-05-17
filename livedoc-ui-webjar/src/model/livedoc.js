@@ -26,7 +26,6 @@ export type Livedoc = {
   apiInfo: ApiMetaData,
   apis: Array<Group<ApiDoc>>,
   types: Array<Group<ApiTypeDoc>>,
-  flows: Array<Group<ApiFlowDoc>>,
   global: ApiGlobalDoc,
   playgroundEnabled: boolean,
   displayMethodAs: MethodDisplay,
@@ -72,19 +71,6 @@ export type ApiDoc = Identified & Named & Versioned & Secured & Staged & {
 export type ApiErrorDoc = {
   code: string,
   description: string
-}
-
-export type ApiFlowDoc = Identified & Named & {
-  description: string,
-  preconditions: Array<string>,
-  steps: Array<ApiFlowStepDoc>,
-  operations: Array<ApiOperationDoc>,
-  group: string,
-}
-
-export type ApiFlowStepDoc = Identified & {
-  apiOperationId: string,
-  apiOperationDoc: ApiOperationDoc,
 }
 
 export type ApiGlobalDoc = {

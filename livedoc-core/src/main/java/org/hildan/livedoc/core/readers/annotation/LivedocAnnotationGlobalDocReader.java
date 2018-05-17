@@ -1,21 +1,11 @@
 package org.hildan.livedoc.core.readers.annotation;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
-import org.hildan.livedoc.core.annotations.flow.ApiFlow;
-import org.hildan.livedoc.core.annotations.flow.ApiFlowSet;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPage;
 import org.hildan.livedoc.core.annotations.global.ApiGlobalPages;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
-import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
-import org.hildan.livedoc.core.model.doc.flow.FlowDoc;
 import org.hildan.livedoc.core.model.doc.global.GlobalDoc;
 import org.hildan.livedoc.core.readers.GlobalDocReader;
 import org.hildan.livedoc.core.scanners.AnnotatedTypesFinder;
@@ -62,22 +52,5 @@ public class LivedocAnnotationGlobalDocReader implements GlobalDocReader {
                     annotationClass.getSimpleName());
         }
         return classes.iterator().next();
-    }
-
-    @NotNull
-    @Override
-    public Set<FlowDoc> getApiFlowDocs(Map<String, ? extends ApiOperationDoc> apiOperationDocsById) {
-        Collection<Class<?>> classesWithFlows = annotatedTypesFinder.apply(ApiFlowSet.class);
-        return classesWithFlows.stream()
-                               .map(Class::getMethods)
-                               .flatMap(Arrays::stream)
-                               .map(method -> method.getAnnotation(ApiFlow.class))
-                               .filter(Objects::nonNull)
-                               .map(flowAnnotation -> getApiFlowDoc(apiOperationDocsById, flowAnnotation))
-                               .collect(Collectors.toCollection(TreeSet::new));
-    }
-
-    private FlowDoc getApiFlowDoc(Map<String, ? extends ApiOperationDoc> apiOperationDocsById, ApiFlow flowAnnotation) {
-        return FlowDoc.buildFromAnnotation(flowAnnotation, apiOperationDocsById);
     }
 }
