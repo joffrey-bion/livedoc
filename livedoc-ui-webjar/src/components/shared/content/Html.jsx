@@ -22,5 +22,6 @@ const Anchor = (props) => {
   if (props.href.indexOf('livedoc://') === 0) {
     return <LivedocLink url={props.href} {...props}/>;
   }
-  return <a href={props.href} {...props}/>;
+  const {href, children, ...other} = props;
+  return <a href={href} {...other}>{children}</a>;
 };
