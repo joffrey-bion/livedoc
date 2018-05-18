@@ -133,9 +133,7 @@ class ApiGlobalDocReader {
 
     private String readTemplate(String templateName) {
         Configuration config = getFreemarkerConfig();
-        if (config == null) {
-            throw new RuntimeException("Missing FreeMarker configuration");
-        }
+        FreeMarkerUtils.addDefaultConfiguration(config);
         try {
             return FreeMarkerUtils.loadTemplateAsString(config, templateData, templateName);
         } catch (IOException e) {
@@ -145,6 +143,7 @@ class ApiGlobalDocReader {
         }
     }
 
+    @NotNull
     private Configuration getFreemarkerConfig() {
         Configuration freeMarkerConfig = configuration.getFreemarkerConfig();
         if (freeMarkerConfig != null) {
@@ -153,6 +152,7 @@ class ApiGlobalDocReader {
         return createClassRelativeConfiguration();
     }
 
+    @NotNull
     private Configuration createClassRelativeConfiguration() {
         Configuration configuration = new Configuration();
         configuration.setClassForTemplateLoading(globalDocClass, "");

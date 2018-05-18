@@ -129,6 +129,67 @@ public class GlobalDocReaderTest {
         assertEquals("Paragraph from template with API name: " + TEST_API_NAME, page.getContent().trim());
     }
 
+    @Test
+    public void getApiGlobalDoc_templateReference_apiRefDirective() {
+        @ApiGlobalPage(title = "From Template With Refs", template = "freemarker_with_api_ref.ftl")
+        class GlobalWithTemplate {}
+
+        GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
+        assertNotNull(globalDoc);
+        assertEquals("from+template+with+refs", globalDoc.getHomePageId());
+
+        List<GlobalDocPage> pages = globalDoc.getPages();
+        assertNotNull(pages);
+        assertFalse(pages.isEmpty());
+
+        GlobalDocPage page = pages.get(0);
+        assertEquals("from+template+with+refs", page.getLivedocId());
+        assertEquals("From Template With Refs", page.getTitle());
+        assertEquals("Reference to <a href=\"livedoc://api/org.example.ReferencedApi\">an API</a>.",
+                page.getContent().trim());
+    }
+
+    @Test
+    public void getApiGlobalDoc_templateReference_opRefDirective() {
+        @ApiGlobalPage(title = "From Template With Refs", template = "freemarker_with_op_ref.ftl")
+        class GlobalWithTemplate {}
+
+        GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
+        assertNotNull(globalDoc);
+        assertEquals("from+template+with+refs", globalDoc.getHomePageId());
+
+        List<GlobalDocPage> pages = globalDoc.getPages();
+        assertNotNull(pages);
+        assertFalse(pages.isEmpty());
+
+        GlobalDocPage page = pages.get(0);
+        assertEquals("from+template+with+refs", page.getLivedocId());
+        assertEquals("From Template With Refs", page.getTitle());
+        assertEquals("Reference to <a href=\"livedoc://api/org.example.ReferencedApi/some-operation\">an "
+                        + "operation</a>.",
+                page.getContent().trim());
+    }
+
+    @Test
+    public void getApiGlobalDoc_templateReference_typeRefDirective() {
+        @ApiGlobalPage(title = "From Template With Refs", template = "freemarker_with_type_ref.ftl")
+        class GlobalWithTemplate {}
+
+        GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
+        assertNotNull(globalDoc);
+        assertEquals("from+template+with+refs", globalDoc.getHomePageId());
+
+        List<GlobalDocPage> pages = globalDoc.getPages();
+        assertNotNull(pages);
+        assertFalse(pages.isEmpty());
+
+        GlobalDocPage page = pages.get(0);
+        assertEquals("from+template+with+refs", page.getLivedocId());
+        assertEquals("From Template With Refs", page.getTitle());
+        assertEquals("Reference to <a href=\"livedoc://type/org.example.ReferencedType\">a type</a>.",
+                page.getContent().trim());
+    }
+
     public static class MyPageGenerator implements PageGenerator {
         @Override
         public String generate(GlobalTemplateData templateData) {

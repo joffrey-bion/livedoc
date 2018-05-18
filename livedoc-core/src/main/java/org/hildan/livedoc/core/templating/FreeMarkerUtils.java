@@ -12,7 +12,13 @@ public class FreeMarkerUtils {
     public static Configuration createDefaultFreeMarkerConfig() {
         Configuration configuration = new Configuration();
         configuration.setClassForTemplateLoading(FreeMarkerUtils.class, "");
+        addDefaultConfiguration(configuration);
         return configuration;
+    }
+
+    public static void addDefaultConfiguration(Configuration configuration) {
+        configuration.setSharedVariable("type_ref", new LivedocTypeRefDirective());
+        configuration.setSharedVariable("api_ref", new LivedocApiRefDirective());
     }
 
     public static String loadTemplateAsString(Configuration configuration, GlobalTemplateData templateData,
@@ -26,4 +32,5 @@ public class FreeMarkerUtils {
         template.process(templateData, out);
         return out.toString();
     }
+
 }
