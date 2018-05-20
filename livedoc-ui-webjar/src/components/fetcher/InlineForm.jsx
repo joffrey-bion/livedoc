@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Input, InputGroup, InputGroupButton } from 'reactstrap';
 
-type Props = {
+type InlineFormProps = {
   initialValue: string,
   hintText: string,
   onSubmit: string => void,
@@ -10,13 +10,13 @@ type Props = {
   [otherProps: any]: any,
 }
 
-type State = {
+type InlineFormState = {
   value: string
 }
 
-export class InlineForm extends React.Component<Props, State> {
+export class InlineForm extends React.Component<InlineFormProps, InlineFormState> {
 
-  constructor(props: Props) {
+  constructor(props: InlineFormProps) {
     super(props);
     this.state = {
       value: props.initialValue,
@@ -25,7 +25,7 @@ export class InlineForm extends React.Component<Props, State> {
 
   setValue(value: string) {
     this.setState({value});
-  };
+  }
 
   render() {
     return <InputGroup {...this.props.otherProps}>
