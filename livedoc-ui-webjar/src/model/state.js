@@ -6,23 +6,17 @@ import type { ResponseMetaData } from './playground';
 export type LoaderState = {
   +loading: boolean,
   +loadingError: ?string,
-  +url: ?string
+  +url: ?string,
 }
-export const newLoaderState = () => ({
+export const newLoaderState = (): LoaderState => ({
   loading: false,
   loadingError: null,
-  url: computeInitialUrl(),
+  url: null,
 });
 
-function computeInitialUrl(): string {
-  const url = new URL(window.location.href);
-  const specifiedUrl = url.searchParams.get('url');
-  if (specifiedUrl) {
-    return specifiedUrl;
-  }
-  // if using the webjar, then the doc endpoint in on the same server at /jsondoc, so "/jsondoc" is sufficient
-  // if using an independent UI, then it is likely that the app server URL ends in /jsondoc, so this string helps anyway
-  return '/jsondoc';
+export type DocState = {
+  +livedoc: Livedoc,
+  +srcUrl: string,
 }
 
 export type PlaygroundState = {
@@ -32,25 +26,23 @@ export type PlaygroundState = {
   +responseBody: ?string,
   +error: any,
 }
-export function newPlaygroundState(): PlaygroundState {
-  return {
-    waitingResponse: false,
-    streamingResponse: false,
-    responseMeta: null,
-    responseBody: null,
-    error: null,
-  };
-}
+export const newPlaygroundState = (): PlaygroundState => ({
+  waitingResponse: false,
+  streamingResponse: false,
+  responseMeta: null,
+  responseBody: null,
+  error: null,
+});
 
 export type State = {
   +uiVersion: string,
   +loader: LoaderState,
-  +livedoc: ?Livedoc,
+  +doc: ?DocState,
   +playground: PlaygroundState,
 }
 export const newState = () => ({
   uiVersion: APP_VERSION,
   loader: newLoaderState(),
-  livedoc: null,
+  doc: null,
   playground: newPlaygroundState(),
 });

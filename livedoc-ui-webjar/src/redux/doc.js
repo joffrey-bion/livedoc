@@ -2,20 +2,21 @@
 import type {
   ApiDoc, ApiGlobalDoc, ApiOperationDoc, ApiTypeDoc, Group, Identified, Livedoc, LivedocID,
 } from '../model/livedoc';
-import type { State } from '../model/state';
+import type { DocState, State } from '../model/state';
 import type { Action } from './actions';
-import { DOC_FETCH_ERROR, DOC_FETCHED, FETCH_DOC, RESET } from "./actions/loader";
+import { DOC_FETCHED, RESET } from './actions/loader';
 
-export default (livedoc: ?Livedoc = null, action: Action) => {
+export const docReducer = (state: ?DocState = null, action: Action): ?DocState => {
   switch (action.type) {
     case DOC_FETCHED:
-      return action.livedoc;
-    case FETCH_DOC:
-    case DOC_FETCH_ERROR:
+      return {
+        livedoc: action.livedoc,
+        srcUrl: action.srcUrl,
+      };
     case RESET:
       return null;
     default:
-      return livedoc;
+      return state;
   }
 };
 
@@ -29,15 +30,15 @@ const getElementById = <T : Identified>(id: ?LivedocID, groups: Array<Group<T>>)
 };
 
 export function getGlobalDoc(state: State): ?ApiGlobalDoc {
-  return state.livedoc && state.livedoc.global;
+  return state.doc && state.doc.livedoc.global;
 }
 
 export function getApi(id: LivedocID, state: State): ?ApiDoc {
-  return state.livedoc && getElementById(id, state.livedoc.apis);
+  return state.doc && getElementById(id, state.doc.livedoc.apis);
 }
 
 export function getType(id: LivedocID, state: State): ?ApiTypeDoc {
-  return state.livedoc && getElementById(id, state.livedoc.types);
+  return state.doc && getElementById(id, state.doc.livedoc.types);
 }
 
 export function getMethod(apiId: LivedocID, methodId: LivedocID, state: State): ?ApiOperationDoc {
@@ -55,5 +56,16 @@ export function getMethod(apiId: LivedocID, methodId: LivedocID, state: State): 
 }
 
 export function isDocLoaded(state: State): boolean {
-  return state.livedoc !== null;
+  return state.doc != null;
+}
+
+export function getLoadedDoc(state: State): ?Livedoc {
+  if (!state.doc || !state.doc.livedoc) {
+    throw new Error("No Livedoc loaded");
+  }
+  return state.doc.livedoc;
+}
+
+export function getLoadedDocUrl(state: State): ?string {
+  return state.doc && state.doc.srcUrl;
 }

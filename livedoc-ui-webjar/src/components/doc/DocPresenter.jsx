@@ -2,20 +2,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
-import type { Livedoc } from '../../model/livedoc';
 import type { State } from '../../model/state';
+import { isDocLoaded } from '../../redux/doc';
 import { ApisScene } from './apis/ApisScene';
 import { GlobalDocScene } from './global/GlobalDocScene';
 import { TypesScene } from './types/TypesScene';
 
 export type DocPresenterProps = {
-  loading: boolean,
-  url: ?string,
-  livedoc: ?Livedoc
+  docPresent: boolean
 }
 
-const DocPresenter = (props: DocPresenterProps) => {
-  if (!props.livedoc) {
+const DocPresenter = ({docPresent}: DocPresenterProps) => {
+  if (!docPresent) {
     return <p>Please provide a URL to fetch a documentation.</p>;
   }
 
@@ -37,9 +35,7 @@ const renderApi = ({match}) => <ApisScene selectedApiId={match.params.apiId} sel
 const renderType = ({match}) => <TypesScene selectedTypeId={match.params.typeId}/>;
 
 const mapStateToProps = (state: State) => ({
-  loading: state.loader.loading,
-  url: state.loader.url,
-  livedoc: state.livedoc,
+  docPresent: isDocLoaded(state),
 });
 
 const mapDispatchToProps = {};

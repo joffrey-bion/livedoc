@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import type { ApiTypeDoc, LivedocID } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
-import { getType } from '../../../redux/livedoc';
+import { getType } from '../../../redux/doc';
 import { JsonCard } from '../../shared/cards/JsonCard';
 
 export type TypeExampleProps = {

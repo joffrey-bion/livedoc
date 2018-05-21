@@ -5,7 +5,7 @@ import type { Action } from './actions';
 import { RESET } from './actions/loader';
 import { CANCEL_REQUEST, RECEIVE_BODY, RECEIVE_METADATA, REQUEST_FAILED, SUBMIT_HTTP } from './actions/playground';
 
-export default (state: PlaygroundState = newPlaygroundState(), action: Action): PlaygroundState => {
+export const playgroundReducer = (state: PlaygroundState = newPlaygroundState(), action: Action): PlaygroundState => {
   switch (action.type) {
     case SUBMIT_HTTP:
       return {

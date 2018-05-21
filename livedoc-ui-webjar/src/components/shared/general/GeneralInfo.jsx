@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
 import type { Livedoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
+import { getLoadedDoc } from '../../../redux/doc';
 
 export type GeneralInfoProps = {
   livedoc: ?Livedoc
@@ -33,7 +34,7 @@ const GeneralInfoPresenter = (props: GeneralInfoProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  livedoc: state.livedoc,
+  livedoc: getLoadedDoc(state),
 });
 
 const mapDispatchToProps = {};

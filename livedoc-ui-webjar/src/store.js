@@ -9,16 +9,16 @@ import createSagaMiddleware from 'redux-saga';
 import { APP_VERSION } from './App';
 import type { State } from './model/state';
 import { newState } from './model/state';
-import livedocReducer from './redux/livedoc';
-import loaderReducer from './redux/loader';
-import playgroundReducer from './redux/playground';
-import rootSaga from './sagas';
+import { docReducer } from './redux/doc';
+import { loaderReducer } from './redux/loader';
+import { playgroundReducer } from './redux/playground';
+import { rootSaga } from './sagas/rootSaga';
 
 // using the app's version in the key prevents rehydration of an out-of-date state
 const persistConfig = {
   key: `livedoc-${APP_VERSION}`,
   storage,
-  whitelist: ['livedoc'],
+  whitelist: ['doc'],
 };
 
 export default function configureStore(history: any, initialState: State = newState()) {
@@ -32,7 +32,7 @@ export default function configureStore(history: any, initialState: State = newSt
 
   const reducers = persistCombineReducers(persistConfig, {
     uiVersion: (state, action) => APP_VERSION,
-    livedoc: livedocReducer,
+    doc: docReducer,
     loader: loaderReducer,
     playground: playgroundReducer,
     router: routerReducer,

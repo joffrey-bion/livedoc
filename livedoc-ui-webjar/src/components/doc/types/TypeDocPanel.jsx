@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import type { ApiTypeDoc, LivedocID } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
-import { getType } from '../../../redux/livedoc';
+import { getType } from '../../../redux/doc';
 import { RouteHelper } from '../../../routing/routeHelper';
 import { ContentHeader } from '../../shared/content/ContentHeader';
 import { ComplexTypeDetails } from './complex/ComplexTypeDetails';

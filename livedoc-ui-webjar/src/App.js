@@ -4,29 +4,36 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { Doc } from './components/doc/DocPresenter';
 import { DocFetcher } from './components/fetcher/DocFetcher';
+import { LoadingSpinner } from './components/shared/LoadingSpinner';
 import { Header } from './components/header/Header';
 import type { State } from './model/state';
-import { isDocLoaded } from './redux/livedoc';
+import type { LoadingState } from './redux/loader';
+import { getLoadingState } from './redux/loader';
 
 export const APP_VERSION = process.env.REACT_APP_VERSION || '?:?:?';
 
-type Props = {
-  loading: boolean,
-  url: ?string,
-  docLoaded: boolean,
+type AppProps = {
+  loadingState: LoadingState,
 }
 
-const AppPresenter = (props: Props) => (<div>
-          <Header/>
-          <Switch>
-            <Route path="/fetch" render={() => <DocFetcher/>}/>
-            {!props.docLoaded && <Redirect to="/fetch"/>}
-            <Route path="/" component={Doc}/>
-          </Switch>
-        </div>);
+const AppPresenter = (props: AppProps) => (<div>
+  <Header/>
+  <AppContent {...props}/>
+</div>);
 
-const mapStateToProps = (state: State) => ({
-  docLoaded: isDocLoaded(state),
+const AppContent = ({loadingState}: AppProps) => {
+  if (loadingState === 'LOADING_NEW') {
+    return <LoadingSpinner/>;
+  }
+  return <Switch>
+    <Route path="/fetch" render={() => <DocFetcher/>}/>
+    {loadingState === 'IDLE_EMPTY' && <Redirect to="/fetch"/>}
+    <Route path="/" component={Doc}/>
+  </Switch>;
+};
+
+const mapStateToProps = (state: State): AppProps => ({
+  loadingState: getLoadingState(state),
 });
 
 const mapDispatchToProps = {};

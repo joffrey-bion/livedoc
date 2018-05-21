@@ -6,7 +6,7 @@ import { Card } from 'reactstrap';
 import type { ApiOperationDoc, LivedocID } from '../../model/livedoc';
 import type { State } from '../../model/state';
 import { actions as playgroundActions } from '../../redux/actions/playground';
-import { getMethod } from '../../redux/livedoc';
+import { getLoadedDoc, getMethod } from '../../redux/doc';
 import { PlaygroundForm } from './PlaygroundForm';
 import { PlaygroundResponse } from './response/PlaygroundResponse';
 
@@ -35,10 +35,13 @@ type PlaygroundOwnProps = {
   selectedOperationId: ?LivedocID,
 }
 
-const mapStateToProps = (state: State, {selectedApiId, selectedOperationId}: PlaygroundOwnProps) => ({
-  baseUrl: state.livedoc && state.livedoc.apiInfo.baseUrl,
-  operationDoc: selectedApiId && selectedOperationId && getMethod(selectedApiId, selectedOperationId, state),
-});
+const mapStateToProps = (state: State, {selectedApiId, selectedOperationId}: PlaygroundOwnProps) => {
+  const loadedDoc = getLoadedDoc(state);
+  return {
+    baseUrl: loadedDoc && loadedDoc.apiInfo.baseUrl,
+    operationDoc: selectedApiId && selectedOperationId && getMethod(selectedApiId, selectedOperationId, state),
+  };
+};
 
 const mapDispatchToProps = {
   submitRequest: playgroundActions.sendRequest,

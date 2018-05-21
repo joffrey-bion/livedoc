@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import type { ApiDoc, ApiOperationDoc, LivedocID } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
-import { getApi } from '../../../redux/livedoc';
+import { getApi } from '../../../redux/doc';
 import { RouteHelper } from '../../../routing/routeHelper';
 import { ContentHeader } from '../../shared/content/ContentHeader';
 import { MessagePanel } from './message/MessagePanel';

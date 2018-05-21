@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import type { ApiGlobalDoc } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
-import { getGlobalDoc } from '../../../redux/livedoc';
+import { getGlobalDoc } from '../../../redux/doc';
 import { RouteHelper } from '../../../routing/routeHelper';
 import { GlobalDocPage } from './GlobalDocPage';
 

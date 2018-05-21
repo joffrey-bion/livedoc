@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import type { Group, Identified, Livedoc, Named } from '../../../model/livedoc';
 import type { State } from '../../../model/state';
+import { getLoadedDoc } from '../../../redux/doc';
 import { GlobalNavSection } from './GlobalNavSection';
 import type { NavGroupDescription } from './NavGroup';
 import { NavSection } from './NavSection';
@@ -31,7 +32,7 @@ function createNavGroups<T : Identified & Named>(groups: Array<Group<T>>): Array
 }
 
 const mapStateToProps = (state: State) => ({
-  livedoc: state.livedoc,
+  livedoc: getLoadedDoc(state),
 });
 
 const mapDispatchToProps = {};
