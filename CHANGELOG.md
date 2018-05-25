@@ -1,5 +1,22 @@
 # Change Log
 
+## [v5.0.0](https://bintray.com/joffrey-bion/maven/livedoc/5.0.0) (2018-05-25)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.5.2...v5.0.0)
+
+**Implemented enhancements:**
+
+- Re-sync doc even if found in local storage [\#114](https://github.com/joffrey-bion/livedoc/issues/114)
+- Support links to doc elements from descriptions and free text pages [\#111](https://github.com/joffrey-bion/livedoc/issues/111)
+
+**Fixed bugs:**
+
+- HTML is not properly displayed in ApiType descriptions [\#115](https://github.com/joffrey-bion/livedoc/issues/115)
+- Mime types not read from GetMapping and the likes [\#107](https://github.com/joffrey-bion/livedoc/issues/107)
+
+**Closed issues:**
+
+- Remove the "flows" feature [\#112](https://github.com/joffrey-bion/livedoc/issues/112)
+
 ## [v4.5.2](https://bintray.com/joffrey-bion/maven/livedoc/4.5.2) (2018-05-07)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.5.1...v4.5.2)
 
@@ -27,6 +44,7 @@
 **Implemented enhancements:**
 
 - Support Javadoc @link/@code tags [\#88](https://github.com/joffrey-bion/livedoc/issues/88)
+- Add real support for websocket messages API [\#3](https://github.com/joffrey-bion/livedoc/issues/3)
 
 **Fixed bugs:**
 
