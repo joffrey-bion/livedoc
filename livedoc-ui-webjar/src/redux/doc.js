@@ -44,12 +44,12 @@ export function getType(id: LivedocID, state: State): ?ApiTypeDoc {
 export function getMethod(apiId: LivedocID, methodId: LivedocID, state: State): ?ApiOperationDoc {
   const api: ?ApiDoc = getApi(apiId, state);
   if (!api) {
-    console.error("API not found for ID " + apiId);
+    console.error(`API not found for ID ${apiId}`);
     return;
   }
   const matchingMethods = api.operations.filter(m => m.livedocId === methodId);
   if (matchingMethods.length === 0) {
-    console.error("Method not found for ID " + apiId);
+    console.error(`Method not found for ID ${methodId} in API ${apiId}`);
     return;
   }
   return matchingMethods[0];
