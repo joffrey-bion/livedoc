@@ -4,10 +4,20 @@ const GLOBAL: string = '/global';
 const APIS: string = '/apis';
 const TYPES: string = '/types';
 
+/*
+Implementation note: every ID is URL-encoded again here, despite the fact that the server already did.
+This is to counter-effect the extra decoding performed by react-router, and more specifically the history library.
+This issue is tracked here: https://github.com/ReactTraining/history/issues/505
+ */
+function workaroundRouterIssue(input: String) {
+  return encodeURIComponent(encodeURIComponent(input));
+}
+
 export class RouteHelper {
 
   static globalPageUrl(pageId: LivedocID): string {
-    return `${GLOBAL}/${pageId}`;
+    const reencodedId = workaroundRouterIssue(pageId);
+    return `${GLOBAL}/${reencodedId}`;
   }
 
   static apisUrl(): string {
@@ -16,17 +26,20 @@ export class RouteHelper {
 
   static apiUrl(apiId: LivedocID): string {
     const apisUrl = RouteHelper.apisUrl();
-    return `${apisUrl}/${apiId}`;
+    const reencodedId = workaroundRouterIssue(apiId);
+    return `${apisUrl}/${reencodedId}`;
   }
 
   static operationUrl(apiId: LivedocID, operationId: LivedocID): string {
     const apiUrl = RouteHelper.apiUrl(apiId);
-    return `${apiUrl}/${operationId}`;
+    const reencodedId = workaroundRouterIssue(operationId);
+    return `${apiUrl}/${reencodedId}`;
   }
 
   static messageUrl(apiId: LivedocID, messageId: LivedocID): string {
     const apiUrl = RouteHelper.apiUrl(apiId);
-    return `${apiUrl}/${messageId}`;
+    const reencodedId = workaroundRouterIssue(messageId);
+    return `${apiUrl}/${reencodedId}`;
   }
 
   static typesUrl(): string {
@@ -35,6 +48,7 @@ export class RouteHelper {
 
   static typeUrl(typeId: LivedocID): string {
     const typesUrl = RouteHelper.typesUrl();
-    return `${typesUrl}/${typeId}`;
+    const reencodedId = workaroundRouterIssue(typeId);
+    return `${typesUrl}/${reencodedId}`;
   }
 }

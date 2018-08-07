@@ -90,7 +90,7 @@ public class BookController {
      * @param id
      *         the ID of the book to delete
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id:[0-9]+}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void delete(@ApiPathParam(name = "id") @PathVariable Long id) {
         Book book = bookRepository.findOne(id);
