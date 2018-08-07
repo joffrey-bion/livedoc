@@ -91,7 +91,8 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
         // a given verb with a given path is by definition unique, even among controllers
         String firstVerb = verbs.isEmpty() ? "" : verbs.get(0).toString();
         String firstPath = paths.isEmpty() ? "" : paths.get(0);
-        firstPath = firstPath.replaceAll("[{}]", "");
+        // remove path param syntax with braces and format, such as {id:[0-9]+}
+        firstPath = firstPath.replaceAll("\\{(\\w+)(:[^}]*)?}", "$1");
         firstPath = firstPath.replaceAll("/", "-");
         if (!firstPath.startsWith("-")) {
             firstPath = "-" + firstPath;
