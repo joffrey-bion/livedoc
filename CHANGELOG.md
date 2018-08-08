@@ -1,5 +1,12 @@
 # Change Log
 
+## [v5.0.1](https://bintray.com/joffrey-bion/maven/livedoc/5.0.1) (2018-08-08)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v5.0.0...v5.0.1)
+
+**Fixed bugs:**
+
+- @RequestMapping using regex not working in UI [\#122](https://github.com/joffrey-bion/livedoc/issues/122)
+
 ## [v5.0.0](https://bintray.com/joffrey-bion/maven/livedoc/5.0.0) (2018-05-25)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.5.2...v5.0.0)
 
