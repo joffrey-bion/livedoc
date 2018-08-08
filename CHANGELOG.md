@@ -1,5 +1,16 @@
 # Change Log
 
+## [v5.1.0](https://bintray.com/joffrey-bion/maven/livedoc/5.1.0) (2018-08-09)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v5.0.1...v5.1.0)
+
+**Implemented enhancements:**
+
+- Version the API spec independently from the library [\#120](https://github.com/joffrey-bion/livedoc/issues/120)
+
+**Fixed bugs:**
+
+- Livedoc generates duplicate ids [\#118](https://github.com/joffrey-bion/livedoc/issues/118)
+
 ## [v5.0.1](https://bintray.com/joffrey-bion/maven/livedoc/5.0.1) (2018-08-08)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v5.0.0...v5.0.1)
 
