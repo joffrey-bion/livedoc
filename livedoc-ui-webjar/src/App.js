@@ -11,6 +11,7 @@ import type { LoadingState } from './redux/loader';
 import { getLoadingState } from './redux/loader';
 
 export const APP_VERSION = process.env.REACT_APP_VERSION || '?:?:?';
+export const APP_SPEC_VERSION = parseInt(process.env.REACT_APP_SPEC_VERSION, 10) || 0;
 
 type AppProps = {
   loadingState: LoadingState,

@@ -39,6 +39,7 @@ export type ApiMetaData = {
 
 export type LivedocMetaData = {
   version: string,
+  specVersion: ?number,
   buildDate: string,
 }
 
