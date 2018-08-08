@@ -33,6 +33,8 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     private static final Comparator<ApiOperationDoc> COMPARATOR = PATHS_COMPARATOR.thenComparing(VERBS_COMPARATOR)
                                                                                   .thenComparing(PARAMS_COMPARATOR);
 
+    private String livedocId;
+
     private String name;
 
     private String summary;
@@ -88,16 +90,11 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     }
 
     public String getLivedocId() {
-        // a given verb with a given path is by definition unique, even among controllers
-        String firstVerb = verbs.isEmpty() ? "" : verbs.get(0).toString();
-        String firstPath = paths.isEmpty() ? "" : paths.get(0);
-        // remove path param syntax with braces and format, such as {id:[0-9]+}
-        firstPath = firstPath.replaceAll("\\{(\\w+)(:[^}]*)?}", "$1");
-        firstPath = firstPath.replaceAll("/", "-");
-        if (!firstPath.startsWith("-")) {
-            firstPath = "-" + firstPath;
-        }
-        return LivedocUtils.asLivedocId(firstVerb + firstPath);
+        return livedocId;
+    }
+
+    public void setLivedocId(String livedocId) {
+        this.livedocId = livedocId;
     }
 
     public String getName() {
@@ -256,5 +253,12 @@ public class ApiOperationDoc extends AbstractDoc implements Comparable<ApiOperat
     @Override
     public int compareTo(@NotNull ApiOperationDoc o) {
         return COMPARATOR.compare(this, o);
+    }
+
+    @Override
+    public String toString() {
+        String firstVerb = verbs.isEmpty() ? "" : verbs.get(0).toString();
+        String firstPath = paths.isEmpty() ? "" : paths.get(0);
+        return firstVerb + " " + firstPath;
     }
 }

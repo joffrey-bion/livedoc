@@ -18,7 +18,7 @@ import org.hildan.livedoc.core.model.types.SimpleClassReference;
 import org.hildan.livedoc.core.model.types.TypeVariableReference;
 import org.hildan.livedoc.core.model.types.VoidTypeReference;
 import org.hildan.livedoc.core.model.types.WildcardTypeReference;
-import org.hildan.livedoc.core.util.LivedocUtils;
+import org.hildan.livedoc.core.readers.LivedocIdGenerator;
 import org.jetbrains.annotations.NotNull;
 
 public class TypeReferenceBuilder implements GenericTypeHandler<LivedocType> {
@@ -36,7 +36,7 @@ public class TypeReferenceBuilder implements GenericTypeHandler<LivedocType> {
 
     @Override
     public LivedocType handleSimpleClass(@NotNull Class<?> clazz) {
-        String livedocId = typeFilter.test(clazz) ? LivedocUtils.getLivedocId(clazz) : null;
+        String livedocId = typeFilter.test(clazz) ? LivedocIdGenerator.getTypeId(clazz) : null;
         return new SimpleClassReference(getCustomClassName(clazz), clazz, livedocId);
     }
 

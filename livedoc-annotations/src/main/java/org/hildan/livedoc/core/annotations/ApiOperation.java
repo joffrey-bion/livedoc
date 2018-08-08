@@ -24,6 +24,13 @@ public @interface ApiOperation {
     String DEFAULT_RESPONSE_STATUS = "200 - OK";
 
     /**
+     * The livedoc ID of this operation. This ID is used to uniquely identify this operation across the whole doc.
+     * The default generated one is usually sufficient, but this override can be used to solve conflicts when 2
+     * operations cannot be distinguished based on verb and paths only.
+     */
+    String id() default "";
+
+    /**
      * The HTTP methods mapped to this operation.
      */
     ApiVerb[] verbs() default {};

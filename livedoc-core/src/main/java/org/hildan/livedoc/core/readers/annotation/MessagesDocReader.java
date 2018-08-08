@@ -24,6 +24,7 @@ public class MessagesDocReader {
     private static AsyncMessageDoc createMessageDoc(ApiMessageChannel a, Method method,
             TypeReferenceProvider typeReferenceProvider) {
         AsyncMessageDoc doc = new AsyncMessageDoc();
+        doc.setLivedocId(nullifyIfEmpty(a.id()));
         doc.setName(nullifyIfEmpty(a.name()));
         doc.setSummary(nullifyIfEmpty(a.summary()));
         doc.setDescription(nullifyIfEmpty(a.description()));

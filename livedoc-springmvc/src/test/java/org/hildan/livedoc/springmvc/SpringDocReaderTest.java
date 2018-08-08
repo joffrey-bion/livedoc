@@ -302,7 +302,7 @@ public class SpringDocReaderTest {
             return 0;
         }
 
-        @ApiOperation(description = "Gets a string", path = "/overridden", verbs = ApiVerb.GET)
+        @ApiOperation(id = "custom-id", description = "Gets a string", path = "/overridden", verbs = ApiVerb.GET)
         @RequestMapping(value = "/string/{name}",
                 headers = "header=test",
                 params = "delete",
@@ -363,6 +363,7 @@ public class SpringDocReaderTest {
     }
 
     private static void checkIntegerOperation(ApiOperationDoc opDoc) {
+        assertEquals("GET-api", opDoc.getLivedocId());
         assertEquals("integer", opDoc.getName());
         assertEquals("Gets an integer.", opDoc.getDescription());
 
@@ -388,6 +389,7 @@ public class SpringDocReaderTest {
     }
 
     private static void checkStringOperation(ApiOperationDoc opDoc) {
+        assertEquals("custom-id", opDoc.getLivedocId());
         assertEquals("string", opDoc.getName());
         assertEquals("Gets a string", opDoc.getDescription());
 

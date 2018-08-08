@@ -48,7 +48,7 @@ public class LivedocAnnotationTypeDocReaderTest {
     }
 
     @SuppressWarnings({"unused", "DefaultAnnotationParam"})
-    @ApiType(name = "test-object")
+    @ApiType(id = "custom-type-id", name = "test-object")
     @ApiStage(Stage.PRE_ALPHA)
     @ApiVersion(since = "1.0", until = "2.12")
     private class TestObject {
@@ -109,6 +109,7 @@ public class LivedocAnnotationTypeDocReaderTest {
     public void testApiObjectDoc() {
         Object mockTemplate = new Object();
         TypeDoc doc = buildDoc(TestObject.class, type -> mockTemplate);
+        assertEquals("custom-type-id", doc.getLivedocId());
         assertEquals("test-object", doc.getName());
         assertEquals(14, doc.getFields().size());
         assertEquals("1.0", doc.getSupportedVersions().getSince());

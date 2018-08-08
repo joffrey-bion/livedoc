@@ -618,13 +618,13 @@ public class ApiDocTest {
     @Api(name = "ISSUE-110", description = "ISSUE-110")
     private class TestMultipleParamsWithSameMethod {
 
-        @ApiOperation(path = "/search", description = "search one by title")
+        @ApiOperation(id = "search-by-title", path = "/search", description = "search one by title")
         @ApiResponseBodyType
         public List findByTitle(@ApiQueryParam(name = "title") String title) {
             return null;
         }
 
-        @ApiOperation(path = "/search", description = "search one by content")
+        @ApiOperation(id = "search-by-content", path = "/search", description = "search one by content")
         @ApiResponseBodyType
         public List findByContent(@ApiQueryParam(name = "content") String content) {
             return null;

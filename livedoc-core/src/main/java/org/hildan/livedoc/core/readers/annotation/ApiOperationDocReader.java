@@ -36,6 +36,10 @@ public class ApiOperationDocReader {
 
         ApiOperation methodAnnotation = method.getAnnotation(ApiOperation.class);
         if (methodAnnotation != null) {
+            String overriddenId = nullifyIfEmpty(methodAnnotation.id());
+            if (overriddenId != null) {
+                apiOperationDoc.setLivedocId(overriddenId);
+            }
             apiOperationDoc.setPaths(Arrays.asList(methodAnnotation.path()));
             apiOperationDoc.setVerbs(Arrays.asList(methodAnnotation.verbs()));
             apiOperationDoc.setSummary(nullifyIfEmpty(methodAnnotation.summary()));
@@ -44,7 +48,6 @@ public class ApiOperationDocReader {
             apiOperationDoc.setProduces(Arrays.asList(methodAnnotation.produces()));
             apiOperationDoc.setResponseStatusCode(methodAnnotation.responseStatusCode());
         }
-
         return apiOperationDoc;
     }
 

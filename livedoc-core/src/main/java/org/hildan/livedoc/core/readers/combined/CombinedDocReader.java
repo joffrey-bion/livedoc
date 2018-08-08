@@ -13,6 +13,7 @@ import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
 import org.hildan.livedoc.core.readers.DocReader;
+import org.hildan.livedoc.core.readers.LivedocIdGenerator;
 import org.hildan.livedoc.core.readers.annotation.LivedocAnnotationDocReader;
 import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
@@ -93,8 +94,16 @@ public class CombinedDocReader implements DocReader {
         return docReaders.stream()
                          .map(reader -> reader.buildAsyncMessageDocs(methods, controller,
                                  parentApiDoc, typeReferenceProvider, templateProvider))
-                         .map(docs -> docMerger.mergeList(docs, AsyncMessageDoc::getLivedocId))
-                         .reduce((docs1, docs2) -> docMerger.mergeLists(docs1, docs2, AsyncMessageDoc::getLivedocId))
+                         .map(this::mergeList)
+                         .reduce(this::mergeLists)
                          .orElse(Collections.emptyList());
+    }
+
+    private List<AsyncMessageDoc> mergeList(List<AsyncMessageDoc> docs) {
+        return docMerger.mergeList(docs, LivedocIdGenerator::defaultMessageId);
+    }
+
+    private List<AsyncMessageDoc> mergeLists(List<AsyncMessageDoc> docs1, List<AsyncMessageDoc> docs2) {
+        return docMerger.mergeLists(docs1, docs2, LivedocIdGenerator::defaultMessageId);
     }
 }

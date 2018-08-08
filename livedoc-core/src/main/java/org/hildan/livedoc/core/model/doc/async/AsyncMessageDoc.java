@@ -29,6 +29,8 @@ public class AsyncMessageDoc extends AbstractDoc implements Comparable<AsyncMess
     private static final Comparator<AsyncMessageDoc> DESTS_COMPARATOR = LivedocUtils.comparingFirstItem(
             AsyncMessageDoc::getDestinations);
 
+    private String livedocId;
+
     private String name;
 
     private String summary;
@@ -67,14 +69,11 @@ public class AsyncMessageDoc extends AbstractDoc implements Comparable<AsyncMess
     }
 
     public String getLivedocId() {
-        // a given verb with a given path is by definition unique, even among controllers
-        String firstPath = destinations.isEmpty() ? "" : destinations.get(0);
-        firstPath = firstPath.replaceAll("[{}]", "");
-        firstPath = firstPath.replaceAll("/", "-");
-        if (!firstPath.startsWith("-")) {
-            firstPath = "-" + firstPath;
-        }
-        return LivedocUtils.asLivedocId(getCommand().toString() + "-" + firstPath);
+        return livedocId;
+    }
+
+    public void setLivedocId(String livedocId) {
+        this.livedocId = livedocId;
     }
 
     public String getName() {

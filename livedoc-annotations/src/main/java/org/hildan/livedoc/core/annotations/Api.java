@@ -31,6 +31,12 @@ import java.lang.annotation.Target;
 public @interface Api {
 
     /**
+     * The livedoc ID of this API. This ID is used to uniquely identify this API across the whole doc.
+     * The default generated one is usually sufficient, but this override can be used to customize it.
+     */
+    String id() default "";
+
+    /**
      * The name of the API
      */
     String name() default "";

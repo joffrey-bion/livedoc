@@ -62,19 +62,19 @@ public class GlobalDocReaderTest {
 
         GlobalDoc globalDoc = buildGlobalDocFor(Global.class);
         assertNotNull(globalDoc);
-        assertEquals("home", globalDoc.getHomePageId());
+        assertEquals("Home", globalDoc.getHomePageId());
 
         List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
         GlobalDocPage page0 = pages.get(0);
-        assertEquals("home", page0.getLivedocId());
+        assertEquals("Home", page0.getLivedocId());
         assertEquals("Home", page0.getTitle());
         assertEquals("<h1>Title</h1><p>Description</p>", page0.getContent());
 
         GlobalDocPage page1 = pages.get(1);
-        assertEquals("secondary", page1.getLivedocId());
+        assertEquals("Secondary", page1.getLivedocId());
         assertEquals("Secondary", page1.getTitle());
         assertEquals("<h1>Title 2</h1><p>Description 2</p>", page1.getContent());
     }
@@ -98,14 +98,14 @@ public class GlobalDocReaderTest {
     private static void assertElementsFromResourceFile(Class<?> clazz) {
         GlobalDoc globalDoc = buildGlobalDocFor(clazz);
         assertNotNull(globalDoc);
-        assertEquals("from+file", globalDoc.getHomePageId());
+        assertEquals("From+File", globalDoc.getHomePageId());
 
         List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
         GlobalDocPage page = pages.get(0);
-        assertEquals("from+file", page.getLivedocId());
+        assertEquals("From+File", page.getLivedocId());
         assertEquals("From File", page.getTitle());
         assertEquals("Paragraph from file", page.getContent());
     }
@@ -117,14 +117,14 @@ public class GlobalDocReaderTest {
 
         GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
         assertNotNull(globalDoc);
-        assertEquals("from+template", globalDoc.getHomePageId());
+        assertEquals("From+Template", globalDoc.getHomePageId());
 
         List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
         GlobalDocPage page = pages.get(0);
-        assertEquals("from+template", page.getLivedocId());
+        assertEquals("From+Template", page.getLivedocId());
         assertEquals("From Template", page.getTitle());
         assertEquals("Paragraph from template with API name: " + TEST_API_NAME, page.getContent().trim());
     }
@@ -136,14 +136,14 @@ public class GlobalDocReaderTest {
 
         GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
         assertNotNull(globalDoc);
-        assertEquals("from+template+with+refs", globalDoc.getHomePageId());
+        assertEquals("From+Template+With+Refs", globalDoc.getHomePageId());
 
         List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
         GlobalDocPage page = pages.get(0);
-        assertEquals("from+template+with+refs", page.getLivedocId());
+        assertEquals("From+Template+With+Refs", page.getLivedocId());
         assertEquals("From Template With Refs", page.getTitle());
         assertEquals("Reference to <a href=\"livedoc://api/org.example.ReferencedApi\">an API</a>.",
                 page.getContent().trim());
@@ -156,14 +156,14 @@ public class GlobalDocReaderTest {
 
         GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
         assertNotNull(globalDoc);
-        assertEquals("from+template+with+refs", globalDoc.getHomePageId());
+        assertEquals("From+Template+With+Refs", globalDoc.getHomePageId());
 
         List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
         GlobalDocPage page = pages.get(0);
-        assertEquals("from+template+with+refs", page.getLivedocId());
+        assertEquals("From+Template+With+Refs", page.getLivedocId());
         assertEquals("From Template With Refs", page.getTitle());
         assertEquals("Reference to <a href=\"livedoc://api/org.example.ReferencedApi/some-operation\">an "
                         + "operation</a>.",
@@ -177,14 +177,14 @@ public class GlobalDocReaderTest {
 
         GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithTemplate.class);
         assertNotNull(globalDoc);
-        assertEquals("from+template+with+refs", globalDoc.getHomePageId());
+        assertEquals("From+Template+With+Refs", globalDoc.getHomePageId());
 
         List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
         GlobalDocPage page = pages.get(0);
-        assertEquals("from+template+with+refs", page.getLivedocId());
+        assertEquals("From+Template+With+Refs", page.getLivedocId());
         assertEquals("From Template With Refs", page.getTitle());
         assertEquals("Reference to <a href=\"livedoc://type/org.example.ReferencedType\">a type</a>.",
                 page.getContent().trim());
@@ -204,14 +204,14 @@ public class GlobalDocReaderTest {
 
         GlobalDoc globalDoc = buildGlobalDocFor(GlobalWithGenerator.class);
         assertNotNull(globalDoc);
-        assertEquals("from+generator", globalDoc.getHomePageId());
+        assertEquals("From+Generator", globalDoc.getHomePageId());
 
         List<GlobalDocPage> pages = globalDoc.getPages();
         assertNotNull(pages);
         assertFalse(pages.isEmpty());
 
         GlobalDocPage page = pages.get(0);
-        assertEquals("from+generator", page.getLivedocId());
+        assertEquals("From+Generator", page.getLivedocId());
         assertEquals("From Generator", page.getTitle());
         assertEquals("Generated test content", page.getContent());
     }

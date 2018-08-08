@@ -1,6 +1,6 @@
 package org.hildan.livedoc.core.model.doc.global;
 
-import org.hildan.livedoc.core.util.LivedocUtils;
+import org.hildan.livedoc.core.readers.LivedocIdGenerator;
 
 public class GlobalDocPage {
 
@@ -14,7 +14,7 @@ public class GlobalDocPage {
     }
 
     public String getLivedocId() {
-        return LivedocUtils.asLivedocId(title);
+        return LivedocIdGenerator.asLivedocId(title);
     }
 
     public String getTitle() {

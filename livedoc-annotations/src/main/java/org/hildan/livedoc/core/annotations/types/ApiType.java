@@ -19,6 +19,12 @@ import org.hildan.livedoc.core.annotations.ApiResponseBodyType;
 public @interface ApiType {
 
     /**
+     * The livedoc ID of this type. This ID is used to uniquely identify this type across the whole doc.
+     * The default generated one is usually sufficient, but this override can be used to customize it.
+     */
+    String id() default "";
+
+    /**
      * The name of the object, to be referenced by other annotations with an "object" attribute
      *
      * @see ApiRequestBodyType

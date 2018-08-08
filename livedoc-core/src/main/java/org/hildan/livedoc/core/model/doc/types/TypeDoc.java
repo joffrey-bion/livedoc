@@ -9,7 +9,7 @@ import org.hildan.livedoc.core.model.doc.Staged;
 import org.hildan.livedoc.core.model.doc.version.VersionDoc;
 import org.hildan.livedoc.core.model.doc.version.Versioned;
 import org.hildan.livedoc.core.model.groups.Groupable;
-import org.hildan.livedoc.core.util.LivedocUtils;
+import org.hildan.livedoc.core.readers.LivedocIdGenerator;
 
 public class TypeDoc extends AbstractDoc implements Comparable<TypeDoc>, Groupable, Staged, Versioned {
 
@@ -34,7 +34,7 @@ public class TypeDoc extends AbstractDoc implements Comparable<TypeDoc>, Groupab
     private boolean show;
 
     public TypeDoc(Class<?> clazz) {
-        this.livedocId = LivedocUtils.getLivedocId(clazz);
+        this.livedocId = LivedocIdGenerator.getTypeId(clazz);
         this.name = null;
         this.description = null;
         this.supportedVersions = null;

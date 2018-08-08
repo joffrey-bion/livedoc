@@ -4,11 +4,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.hildan.livedoc.core.exceptions.LivedocException;
 import org.hildan.livedoc.core.model.doc.ApiDoc;
 import org.hildan.livedoc.core.model.doc.ApiOperationDoc;
 import org.hildan.livedoc.core.model.doc.async.AsyncMessageDoc;
@@ -17,6 +20,7 @@ import org.hildan.livedoc.core.scanners.templates.TemplateProvider;
 import org.hildan.livedoc.core.scanners.types.references.TypeReferenceProvider;
 import org.hildan.livedoc.core.validators.ApiOperationDocDefaults;
 import org.hildan.livedoc.core.validators.ApiOperationDocValidator;
+import org.hildan.livedoc.core.validators.AsyncMessageDocDefaults;
 
 public class MasterApiDocReader {
 
@@ -42,8 +46,25 @@ public class MasterApiDocReader {
 
     private List<ApiOperationDoc> readApiOperationDocs(Class<?> controller, ApiDoc doc,
             TypeReferenceProvider typeReferenceProvider, TemplateProvider templateProvider) {
-        return buildDocs(getApiOperationMethods(controller),
+        List<ApiOperationDoc> docs = buildDocs(getApiOperationMethods(controller),
                 m -> readApiOperationDoc(m, controller, doc, typeReferenceProvider, templateProvider));
+        validateIds(docs);
+        return docs;
+    }
+
+    private static void validateIds(List<ApiOperationDoc> docs) {
+        Map<String, ApiOperationDoc> seenIds = new HashMap<>();
+        for (ApiOperationDoc doc : docs) {
+            String id = doc.getLivedocId();
+            ApiOperationDoc other = seenIds.get(id);
+            if (other != null) {
+                String error = String.format("Duplicate ID \"%s\" for operations %s and %s. If these operations only "
+                        + "differ by mime type, please customize at least one of their IDs using @ApiOperation(id = "
+                        + "...)", id, doc, other);
+                throw new LivedocException(error);
+            }
+            seenIds.put(id, doc);
+        }
     }
 
     private List<Method> getApiOperationMethods(Class<?> controller) {
@@ -68,6 +89,7 @@ public class MasterApiDocReader {
         List<Method> methods = getMethodsUsingMessages(controller);
         return docReader.buildAsyncMessageDocs(methods, controller, doc, typeReferenceProvider, templateProvider)
                         .stream()
+                        .peek(AsyncMessageDocDefaults::complete)
                         .sorted()
                         .collect(Collectors.toList());
     }

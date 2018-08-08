@@ -21,6 +21,12 @@ import org.hildan.livedoc.core.annotations.ApiPathParam;
 public @interface ApiMessageChannel {
 
     /**
+     * The livedoc ID of this message channel. This ID is used to uniquely identify this channel across the whole doc.
+     * The default generated one is usually sufficient, but this override can be used to customize it.
+     */
+    String id() default "";
+
+    /**
      * A name for the messages sent on this channel. Imagine that a function to subscribe to this channel could be
      * called "watchXxx()", where "xxx" is the name specified here.
      */
