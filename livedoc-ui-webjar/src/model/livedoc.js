@@ -29,6 +29,7 @@ export type Livedoc = {
   global: ApiGlobalDoc,
   playgroundEnabled: boolean,
   displayMethodAs: MethodDisplay,
+  error: string,
 };
 
 export type ApiMetaData = {

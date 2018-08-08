@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hildan.livedoc.core.LivedocReader;
 import org.hildan.livedoc.core.config.LivedocConfiguration;
+import org.hildan.livedoc.core.meta.LivedocMetaDataReader;
 import org.hildan.livedoc.core.model.doc.ApiMetaData;
 import org.hildan.livedoc.core.model.doc.Livedoc;
 import org.hildan.livedoc.springmvc.SpringLivedocReaderFactory;
@@ -58,7 +59,12 @@ public class JsonLivedocController {
         if (userDefinedBaseUrl == null) {
             apiInfo.setBaseUrl(getBaseUrl(request));
         }
-        return livedocReader.read(apiInfo);
+        try {
+            return livedocReader.read(apiInfo);
+        } catch (RuntimeException e) {
+            // better to have some info rather than an HTTP 500
+            return new Livedoc(LivedocMetaDataReader.read(), e.getMessage());
+        }
     }
 
     private static String getBaseUrl(HttpServletRequest request) {

@@ -22,15 +22,24 @@ public class Livedoc {
 
     private MethodDisplay displayMethodAs;
 
+    private final String error;
+
     public enum MethodDisplay {
         URI,
         SUMMARY,
         METHOD
     }
 
+    public Livedoc(LivedocMetaData livedocInfo, String error) {
+        this.livedocInfo = livedocInfo;
+        this.apiInfo = null;
+        this.error = error;
+    }
+
     public Livedoc(LivedocMetaData livedocInfo, ApiMetaData apiInfo) {
         this.livedocInfo = livedocInfo;
         this.apiInfo = apiInfo;
+        this.error = null;
     }
 
     public LivedocMetaData getLivedocInfo() {
@@ -79,6 +88,10 @@ public class Livedoc {
 
     public void setGlobal(GlobalDoc global) {
         this.global = global;
+    }
+
+    public String getError() {
+        return error;
     }
 
     public String toString() {
