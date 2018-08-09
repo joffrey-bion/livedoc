@@ -1,4 +1,5 @@
 // @flow
+import './polyfills'
 import 'bootstrap/dist/css/bootstrap.css';
 import createHistory from 'history/createHashHistory';
 import React from 'react';
