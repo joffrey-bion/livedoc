@@ -21,7 +21,6 @@ const PlaygroundResponseDumb = (props: PlaygroundResponseProps) => {
     return <Alert color='primary'>Waiting for response...</Alert>;
   }
   if (props.error) {
-    console.error('Here is the error', props.error);
     return <Alert color='danger'>An error occurred</Alert>;
   }
   if (!props.responseMeta) {

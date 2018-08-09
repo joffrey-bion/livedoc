@@ -21,7 +21,7 @@ function* sendHttpRequest(action: SendHttpRequestAction): SagaIterator {
     const responseBody: string = yield apply(response, response.text);
     yield put(actions.displayResponseBody(responseBody));
   } catch (error) {
-    console.error('Playground request failed', error);
+    console.error('Playground request failed:', error);
     yield put(actions.requestError(error));
   }
 }
