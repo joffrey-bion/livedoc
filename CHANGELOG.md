@@ -1,6 +1,13 @@
 # Change Log
 
-## [v5.1.0](https://bintray.com/joffrey-bion/maven/livedoc/5.1.0) (2018-08-09)
+## [v5.1.1](https://bintray.com/joffrey-bion/maven/livedoc/5.1.1) (2018-08-10)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v5.1.0...v5.1.1)
+
+**Fixed bugs:**
+
+- IE11 not working [\#121](https://github.com/joffrey-bion/livedoc/issues/121)
+
+## [v5.1.0](https://bintray.com/joffrey-bion/maven/livedoc/5.1.0) (2018-08-08)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v5.0.1...v5.1.0)
 
 **Implemented enhancements:**
