@@ -1,14 +1,14 @@
 // @flow
 import { push } from 'react-router-redux';
 import type { SagaIterator } from 'redux-saga';
-import { apply, call, put, takeLatest } from 'redux-saga/effects';
+import { all, apply, call, put, takeLatest } from 'redux-saga/effects';
 import { APP_SPEC_VERSION, APP_VERSION } from '../App';
 import type { Livedoc } from '../model/livedoc';
 import type { FetchDocAction, ReloadDocAction } from '../redux/actions/loader';
 import { actions, FETCH_DOC, RELOAD_DOC } from '../redux/actions/loader';
 
 export function* watchFetchDoc(): SagaIterator {
-  yield [takeLatest(FETCH_DOC, fetchDoc), takeLatest(RELOAD_DOC, reloadDoc)];
+  yield all([takeLatest(FETCH_DOC, fetchDoc), takeLatest(RELOAD_DOC, reloadDoc)]);
 }
 
 const fetchOptions = {

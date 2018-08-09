@@ -46,5 +46,5 @@ const FormattedDefaultValue = ({defaultValue}) => {
   if (defaultValue === null) {
     return null;
   }
-  return [<br/>, 'Default: ', <code>{defaultValue}</code>];
+  return <div>Default: <code>{defaultValue}</code></div>;
 };
