@@ -33,6 +33,7 @@ export type Livedoc = {
 };
 
 export type ApiMetaData = {
+  name: string,
   version: string,
   baseUrl: string,
 }

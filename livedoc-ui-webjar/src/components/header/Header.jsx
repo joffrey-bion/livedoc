@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import type { State } from '../../model/state';
-import { getLoadedDocUrl, isDocLoaded } from '../../redux/doc';
 import { actions } from '../../redux/actions/loader';
+import { getLoadedDocUrl, isDocLoaded } from '../../redux/doc';
+import { IconButton } from '../shared/button/IconButton';
 import './Header.css';
 import logo from './livedoc-logo-round-white.svg';
 import { TopNav } from './TopNav';
@@ -14,22 +15,28 @@ export type HeaderProps = {
   uiVersion: string,
   homeUrl: string,
   docLoaded: boolean,
+  saveDoc: () => void,
   reset: () => void,
 }
 
 const HeaderLogo = () => (<img src={logo} alt="Livedoc Logo" width={20} className="logo"/>);
 
-const CloseButton = ({reset}) => (<button type="button" onClick={reset} className="close" aria-label="Reset">
-  <span aria-hidden="true">&times;</span>
-</button>);
+const ToolbarIconButton = ({icon, onClick, ...props}) => (
+        <IconButton icon={icon} onClick={onClick} className="toolbar-icon" {...props} />
+);
 
-const HeaderPresenter = ({uiVersion, homeUrl, docLoaded, reset}: HeaderProps) => (<Navbar className="header">
+const CloseButton = ({reset}) => <ToolbarIconButton title="Reset" icon="times" onClick={reset} />;
+
+const SaveButton = ({saveDoc}) => <ToolbarIconButton title="Save doc" icon="download" onClick={saveDoc} />;
+
+const HeaderPresenter = ({uiVersion, homeUrl, docLoaded, saveDoc, reset}: HeaderProps) => (<Navbar className="header">
   <NavbarBrand href={homeUrl}>
     <HeaderLogo/>
     <span className="title">Livedoc UI</span>
     <span className="version">v{uiVersion}</span>
   </NavbarBrand>
   {docLoaded && <TopNav/>}
+  {docLoaded && <SaveButton saveDoc={saveDoc}/>}
   {docLoaded && <CloseButton reset={reset}/>}
 </Navbar>);
 
@@ -44,6 +51,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
+  saveDoc: actions.saveDoc,
   reset: actions.reset,
 };
 
