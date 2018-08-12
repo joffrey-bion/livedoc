@@ -5799,6 +5799,10 @@ react-event-listener@^0.5.0, react-event-listener@^0.5.1:
     prop-types "^15.6.0"
     warning "^3.0.0"
 
+react-file-picker@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-file-picker/-/react-file-picker-0.0.5.tgz#b1505080c7d2d22149aeae879638007e8e3154ae"
+
 react-jss@^8.1.0:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/react-jss/-/react-jss-8.2.1.tgz#b2905063ba8b950f095a139a75232d851c79e15e"

@@ -4,7 +4,7 @@ import type {
 } from '../model/livedoc';
 import type { DocState, State } from '../model/state';
 import type { Action } from './actions';
-import { DOC_FETCHED, RESET } from './actions/loader';
+import { DOC_FETCHED, DOC_LOADED_FROM_FILE, RESET } from './actions/loader';
 
 export const docReducer = (state: ?DocState = null, action: Action): ?DocState => {
   switch (action.type) {
@@ -12,6 +12,11 @@ export const docReducer = (state: ?DocState = null, action: Action): ?DocState =
       return {
         livedoc: action.livedoc,
         srcUrl: action.srcUrl,
+      };
+    case DOC_LOADED_FROM_FILE:
+      return {
+        livedoc: action.livedoc,
+        srcUrl: null,
       };
     case RESET:
       return null;

@@ -1,8 +1,10 @@
 // @flow
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
+import { FilePicker } from 'react-file-picker';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Alert, Container, Row } from 'reactstrap';
+import { Alert, Button, Col, Container, Row } from 'reactstrap';
 import type { State } from '../../model/state';
 import { actions } from '../../redux/actions/loader';
 import { InlineForm } from './InlineForm';
@@ -11,6 +13,7 @@ type DocFetcherProps = {
   loadingError: ?string,
   initialUrl: string,
   fetchDoc: (url: string) => void,
+  loadFile: (file: File) => void,
 }
 
 const FetchError = ({loadingError}) => {
@@ -20,12 +23,19 @@ const FetchError = ({loadingError}) => {
   return <Alert color="danger">{loadingError}</Alert>;
 };
 
-const DocFetcherPresenter = ({loadingError, initialUrl, fetchDoc, ...other}: DocFetcherProps) => {
+const DocFetcherPresenter = ({loadingError, initialUrl, loadFile, fetchDoc, ...other}: DocFetcherProps) => {
   return <Container style={{height: '10rem'}}>
     <Row className="h-100 align-items-center">
-      <InlineForm hintText='URL to JSON documentation' btnLabel='Get Doc'
-                  initialValue={initialUrl}
-                  onSubmit={fetchDoc} {...other}/>
+      <Col>
+        <InlineForm hintText='URL to JSON documentation' btnLabel='Fetch Doc'
+                    initialValue={initialUrl}
+                    onSubmit={fetchDoc} {...other}/>
+      </Col>
+      <Col md={{size: "auto"}}>
+        <FilePicker extensions={['json']} onChange={loadFile} onError={e => console.error(e)}>
+          <Button title="Load the doc from a local file" color="info"><FontAwesomeIcon icon="file-upload"/> Import file</Button>
+        </FilePicker>
+      </Col>
     </Row>
     <FetchError loadingError={loadingError}/>
   </Container>;
@@ -58,6 +68,7 @@ function getDocUrlFromQuery() {
 
 const mapDispatchToProps = {
   fetchDoc: actions.fetchDoc,
+  loadFile: actions.loadDocFromFile,
 };
 
 export const DocFetcher = withRouter(connect(mapStateToProps, mapDispatchToProps)(DocFetcherPresenter));

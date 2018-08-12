@@ -2,7 +2,15 @@
 import type { LoaderState, State } from '../model/state';
 import { newLoaderState } from '../model/state';
 import type { Action } from './actions';
-import { DOC_FETCH_ERROR, DOC_FETCHED, FETCH_DOC, RELOAD_DOC, RESET } from './actions/loader';
+import {
+  DOC_FETCH_ERROR,
+  DOC_FETCHED,
+  DOC_LOADED_FROM_FILE,
+  FETCH_DOC,
+  LOAD_DOC_FROM_FILE,
+  RELOAD_DOC,
+  RESET,
+} from './actions/loader';
 import { isDocLoaded } from './doc';
 
 export const loaderReducer = (state: LoaderState = newLoaderState(), action: Action): LoaderState => {
@@ -14,7 +22,14 @@ export const loaderReducer = (state: LoaderState = newLoaderState(), action: Act
         loadingError: null,
         url: action.url,
       };
+    case LOAD_DOC_FROM_FILE:
+      return {
+        loading: true,
+        loadingError: null,
+        url: null,
+      };
     case DOC_FETCHED:
+    case DOC_LOADED_FROM_FILE:
       return {
         loading: false,
         loadingError: null,

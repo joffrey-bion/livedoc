@@ -16,7 +16,7 @@ export const newLoaderState = (): LoaderState => ({
 
 export type DocState = {
   +livedoc: Livedoc,
-  +srcUrl: string,
+  +srcUrl: ?string,
 }
 
 export type PlaygroundState = {
