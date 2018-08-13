@@ -1,12 +1,11 @@
 // @flow
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
-import { FilePicker } from 'react-file-picker';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Alert, Button, Col, Container, Row } from 'reactstrap';
+import { Alert, Col, Container, Row } from 'reactstrap';
 import type { State } from '../../model/state';
 import { actions } from '../../redux/actions/loader';
+import { FilePickerButton } from '../shared/button/FilePickerButton';
 import { InlineForm } from './InlineForm';
 
 type DocFetcherProps = {
@@ -27,14 +26,17 @@ const DocFetcherPresenter = ({loadingError, initialUrl, loadFile, fetchDoc, ...o
   return <Container style={{height: '10rem'}}>
     <Row className="h-100 align-items-center">
       <Col>
-        <InlineForm hintText='URL to JSON documentation' btnLabel='Fetch Doc'
+        <InlineForm btnLabel='Fetch Doc'
+                    btnTitle='Fetch the doc as JSON from the given URL'
+                    hintText='URL to JSON documentation'
                     initialValue={initialUrl}
                     onSubmit={fetchDoc} {...other}/>
       </Col>
-      <Col md={{size: "auto"}}>
-        <FilePicker extensions={['json']} onChange={loadFile} onError={e => console.error(e)}>
-          <Button title="Load the doc from a local file" color="info"><FontAwesomeIcon icon="file-upload"/> Import file</Button>
-        </FilePicker>
+      <Col md={{size: 'auto'}}>
+        <FilePickerButton label="Import file"
+                          title="Load the doc from a local JSON file"
+                          color="info"
+                          onChange={loadFile}/>
       </Col>
     </Row>
     <FetchError loadingError={loadingError}/>
