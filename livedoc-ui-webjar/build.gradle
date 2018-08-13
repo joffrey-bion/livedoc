@@ -8,8 +8,8 @@ description = 'The Livedoc UI packaged in a webjar'
 buildDir = 'build'
 
 node {
-    version = '10.0.0'
-    yarnVersion = '1.6.0'
+    version = '10.8.0'
+    yarnVersion = '1.9.4'
     download = true
 }
 
