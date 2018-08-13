@@ -19,18 +19,18 @@ function* saveDoc(): SagaIterator {
 
     yield call(saveAs, data, filename);
   } catch (error) {
-    console.error("Could not save doc to file", error);
+    console.error('Could not save doc to file', error);
   }
 }
 
 function getFilename(livedoc: Livedoc): string {
-  const {name , version} = livedoc.apiInfo;
-  const namePart = (name && `${name}-`) || '';
+  const {name, version} = livedoc.apiInfo;
+  const namePart = (name && `${name.toLowerCase().replace(/\s+/g, "-")}-`) || '';
   const versionPart = (version && `-${version}`) || '';
   return `${namePart}livedoc${versionPart}.json`;
 }
 
 function toJsonBlob(livedoc: Livedoc): Blob {
   const json = JSON.stringify(livedoc);
-  return new Blob([json], {type: "application/json;charset=utf-8"});
+  return new Blob([json], {type: 'application/json;charset=utf-8'});
 }
