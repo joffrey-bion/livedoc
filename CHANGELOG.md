@@ -1,6 +1,13 @@
 # Change Log
 
-## [v5.1.1](https://bintray.com/joffrey-bion/maven/livedoc/5.1.1) (2018-08-10)
+## [v5.2.0](https://bintray.com/joffrey-bion/maven/livedoc/5.2.0) (2018-08-14)
+[Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v5.1.1...v5.2.0)
+
+**Implemented enhancements:**
+
+- Export to file and import from file [\#117](https://github.com/joffrey-bion/livedoc/issues/117)
+
+## [v5.1.1](https://bintray.com/joffrey-bion/maven/livedoc/5.1.1) (2018-08-09)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v5.1.0...v5.1.1)
 
 **Fixed bugs:**
@@ -108,7 +115,7 @@
 
 **Fixed bugs:**
 
-- \[web-ui\] TypeError: Cannot read property 'sections' of null [\#87](https://github.com/joffrey-bion/livedoc/issues/87)
+- TypeError: Cannot read property 'sections' of null [\#87](https://github.com/joffrey-bion/livedoc/issues/87)
 
 ## [v4.3.1](https://bintray.com/joffrey-bion/maven/livedoc/4.3.1) (2018-04-09)
 [Full Changelog](https://github.com/joffrey-bion/livedoc/compare/v4.3.0...v4.3.1)
