@@ -1,0 +1,18 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.2.61'
+    id 'java-gradle-plugin'
+}
+
+dependencies {
+    compileOnly gradleApi()
+    implementation project(':livedoc-core')
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.61'
+
+    testCompileOnly gradleTestKit()
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.assertj:assertj-core:3.6.2'
+}
+
+repositories {
+    jcenter()
+}

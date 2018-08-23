@@ -85,7 +85,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll {it.name != 'sample-app'}) {
+configure(subprojects.findAll {it.name != 'sample-app' && it.name != 'livedoc-gradle-plugin'}) {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
