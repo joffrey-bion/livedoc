@@ -1,3 +1,5 @@
+import org.apache.tomcat.Jar
+
 buildscript {
     repositories {
         jcenter()
@@ -33,7 +35,7 @@ ext {
     githubRepoUrl = "https://github.com/$githubSlug"
     ossrhUserToken = getPropOrEnv('ossrhUserToken', 'OSSRH_USER_TOKEN')
     ossrhKey = getPropOrEnv('ossrhKey', 'OSSRH_KEY')
-    dockerUser = getPropOrEnv('dockerUser', 'DOCKER_USER')
+    dockerUser = getPropOrEnv('dockerUser', 'DOCKER_USERNAME')
 }
 
 def pomConfig = {
@@ -169,7 +171,6 @@ configure(subprojects.findAll {it.name != 'sample-app'}) {
             }
         }
         bintrayUpload.dependsOn(build)
-        rootProject.tasks.release.dependsOn(bintrayUpload)
     }
 }
 

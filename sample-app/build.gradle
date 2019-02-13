@@ -35,5 +35,3 @@ docker {
 }
 tasks.docker.dependsOn(tasks.build)
 tasks.dockerPush.dependsOn { tasks.dockerTag }
-
-rootProject.tasks.release.dependsOn(tasks.dockerPush)
