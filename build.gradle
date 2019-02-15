@@ -1,5 +1,3 @@
-import org.apache.tomcat.Jar
-
 buildscript {
     repositories {
         jcenter()
