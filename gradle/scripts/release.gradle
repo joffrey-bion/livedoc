@@ -9,37 +9,7 @@ def execute = { String[] command ->
     }
 }
 
-def getChangelogReleaseUrlBeginning = {
-    try {
-        Properties props = new Properties()
-        props.load(new FileInputStream('.github_changelog_generator'))
-        String versionUrlTemplate = props.getProperty('release-url')
-        int versionIndex = versionUrlTemplate.indexOf('%s')
-        if (versionIndex < 0) {
-            return null
-        }
-        return versionUrlTemplate.substring(0, versionIndex)
-    }
-    catch (Exception e) {
-        return null
-    }
-}
-
 task syncVersion {
-}
-
-task generateChangeLog {
-    doLast {
-        execute 'github_changelog_generator', '--no-verbose', '--future-release', "v${project.version}"
-        // fix the bintray links (remove V prefix)
-        String changelogFile = 'CHANGELOG.md'
-        String changelogContents = new File(changelogFile).getText('UTF-8')
-        String releaseUrlStart = getChangelogReleaseUrlBeginning()
-        if (releaseUrlStart != null) {
-            changelogContents = changelogContents.replaceAll(releaseUrlStart + 'v', releaseUrlStart)
-            new File(changelogFile).write(changelogContents, 'UTF-8')
-        }
-    }
 }
 
 task commitRelease {
@@ -53,7 +23,7 @@ task commitRelease {
     }
 }
 commitRelease.dependsOn(syncVersion)
-commitRelease.dependsOn(generateChangeLog)
+commitRelease.dependsOn(generateChangelog)
 
 task tagRelease {
     doLast {

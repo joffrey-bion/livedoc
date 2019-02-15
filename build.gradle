@@ -1,11 +1,17 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath "gradle.plugin.org.hildan.gradle:gradle-github-changelog:0.8.0"
     }
 }
+
+apply plugin: "org.hildan.github.changelog"
 
 allprojects {
     group = 'org.hildan.livedoc'
@@ -172,3 +178,12 @@ configure(subprojects.findAll {it.name != 'sample-app'}) {
     }
 }
 
+changelog {
+    githubUser = "joffrey-bion"
+    futureVersionTag = rootProject.version.toString()
+    sinceTag = "v0.1.1"
+    skipTags = ["v0.4.1", "v0.4.2", "v0.4.3"] // these tags were experiments
+    excludeLabels = ["wontfix","duplicate","invalid","internal","meta / documentation","question"]
+    releaseUrlTemplate = "https://bintray.com/joffrey-bion/maven/livedoc/%s"
+    releaseUrlTagTransform = { it.substring(1) }
+}
