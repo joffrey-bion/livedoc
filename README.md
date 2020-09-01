@@ -20,8 +20,14 @@ Check out the [official documentation](https://joffrey-bion.github.io/livedoc) t
 
 ## Livedoc UI Demo
 
-Check out the [live demo of Livedoc's UI](http://livedoc-demo.hildan.org:8080/livedoc/index.html) to see what it looks 
-like. You can see the code directly in this Github repository as the
+Try it yourself! Run the demo:
+
+```
+docker run -p 8080:8080 docker.io/hildan/livedoc-demo:latest
+```
+
+Then navigate to http://localhost:8080/livedoc/index.html to see what it looks like.
+You can see the code directly in this Github repository as the
  [sample-app subproject](https://github.com/joffrey-bion/livedoc/tree/master/sample-app).
 
 ## Credits
