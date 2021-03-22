@@ -1,8 +1,7 @@
 # Livedoc
 
-[![Bintray Download](https://img.shields.io/bintray/v/joffrey-bion/maven/livedoc-core.svg)](https://bintray.com/joffrey-bion/maven/livedoc-core/_latestVersion)
 [![Maven central version](https://img.shields.io/maven-central/v/org.hildan.livedoc/livedoc-core.svg)](http://mvnrepository.com/artifact/org.hildan.livedoc/livedoc-core)
-[![Build Status](https://travis-ci.org/joffrey-bion/livedoc.svg?branch=master)](https://travis-ci.org/joffrey-bion/livedoc)
+[![Github Build](https://img.shields.io/github/workflow/status/joffrey-bion/livedoc/CI%20Build?label=build&logo=github)](https://github.com/joffrey-bion/livedoc/actions?query=workflow%3A%22CI+Build%22)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/joffrey-bion/fx-gson/blob/master/LICENSE)
 
 [Livedoc](https://joffrey-bion.github.io/livedoc) is a documentation generator for REST and websocket services, 
