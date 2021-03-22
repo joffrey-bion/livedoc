@@ -1,9 +1,0 @@
-user=joffrey-bion
-project=livedoc
-since-tag=v0.1.0
-# these tags were experiments
-exclude-tags=v0.4.1,v0.4.2,v0.4.3
-bug-labels=bug
-enhancement-labels=enhancement
-exclude-labels=wontfix,duplicate,invalid,internal,meta / documentation,question
-release-url=https://bintray.com/joffrey-bion/maven/livedoc/%s
